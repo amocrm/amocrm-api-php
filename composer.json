@@ -1,0 +1,46 @@
+{
+    "name": "amocrm/api-client",
+    "description": "amoCRM API Client",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nikita Bessudnov",
+            "email": "nbessudnov@team.amocrm.com",
+            "homepage": "https://github.com/bessudnov"
+        }
+    ],
+    "keywords": [
+        "amocrm api",
+        "oauth2",
+        "api client",
+        "client",
+        "authorization",
+        "authorisation",
+        "amocrm"
+    ],
+    "require": {
+        "php": ">=7.1",
+        "ext-json": "*",
+        "amocrm/oauth2-amocrm": "^2.0",
+        "guzzlehttp/guzzle": "6.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "squizlabs/php_codesniffer": "3.5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "AmoCRM\\": "src/",
+            "AmoCRM\\Client\\": "src/AmoCRM/Client",
+            "AmoCRM\\OAuth\\": "src/AmoCRM/OAuth",
+            "AmoCRM\\EntitiesServices\\": "src/AmoCRM/EntitiesServices",
+            "AmoCRM\\Exceptions\\": "src/AmoCRM/Exceptions",
+            "AmoCRM\\Models\\": "src/AmoCRM/Models"
+        }
+    },
+    "scripts": {
+        "style:check": "vendor/bin/phpcs",
+        "style:fix": "vendor/bin/phpcbf",
+        "serve": "php -S localhost:8181"
+    }
+}
