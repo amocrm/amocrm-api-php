@@ -3,14 +3,31 @@
 namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\Client\AmoCRMApiRequest;
+use AmoCRM\Collections\BaseApiCollection;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Models\BaseApiModel;
 
-class BaseEntity
+abstract class BaseEntity
 {
     /**
      * @var string
      * override in child
      */
     protected $method = '';
+
+    /**
+     * @var string
+     * override in child
+     */
+    protected $collectionClass = '';
+
+    /**
+     * @var string
+     * override in child
+     */
+    protected $itemClass = '';
 
     /**
      * @var AmoCRMApiRequest
@@ -23,35 +40,90 @@ class BaseEntity
     }
 
     /**
-     * @param array $filter
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \AmoCRM\Exceptions\AmoCRMoAuthApiException
+     * Метод для получения сущностей из ответа сервера
+     * @param array $response
+     * @return array
      */
-    public function get(array $filter = [])
-    {
-        $response = $this->request->get($this->method, $filter);
+    abstract protected function getEntitiesFromResponse(array $response): array;
 
-        return $response;
+    /**
+     * Получение коллекции сущностей
+     * @param BaseEntityFilter $filter
+     * @return BaseApiCollection|null
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function get(BaseEntityFilter $filter): ?BaseApiCollection
+    {
+        $response = $this->request->get($this->method, $filter->buildFilter());
+
+        /** @var BaseApiCollection $collection */
+        $collection = new $this->collectionClass();
+        $entities = $this->getEntitiesFromResponse($response);
+
+        $collection = !empty($entities) ? $collection->fromArray($entities) : null;
+
+        return $collection;
     }
 
     /**
-     * //todo array filter to filter object
-     * @param array $filter
-     * @throws \AmoCRM\Exceptions\AmoCRMoAuthApiException
+     * Обновление одной конкретной сущности
+     * @param int|string $id
+     * @return BaseApiCollection|null
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
      */
-    public function add(array $filter)
+    public function getOne($id): ?BaseApiModel
     {
-        $response = $this->request->post($this->method, $filter);
+        $response = $this->request->get($this->method . '/' . $id);
+
+        /** @var BaseApiModel $entity */
+        $entity = new $this->itemClass();
+
+        $entity = !empty($response) ? $entity->fromArray($response) : null;
+
+        return $entity;
     }
 
     /**
-     * //todo array filter to filter object
-     * @param array $filter
-     * @throws \AmoCRM\Exceptions\AmoCRMoAuthApiException
+     * Добавление коллекции сущностей
+     * @param BaseApiCollection $collection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
      */
-    public function update(array $filter)
+    public function add(BaseApiCollection $collection)
     {
-        $response = $this->request->get($this->method, $filter);
+        $response = $this->request->post($this->method, $collection->toArray());
+        //todo parse response and fill collection object with id by request_id
+    }
+
+    /**
+     * Обновление коллекции сущностей
+     * @param BaseApiCollection $collection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function update(BaseApiCollection $collection)
+    {
+        $response = $this->request->patch($this->method, $collection->toArray());
+        //todo parse response and fill collection with request_id
+    }
+
+    /**
+     * Обновление одной конкретной сущности
+     * @param BaseApiModel $apiModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function updateOne(BaseApiModel $apiModel)
+    {
+        $id = method_exists($apiModel, 'getId') ? $apiModel->getId() : null;
+
+        if (is_null($id)) {
+            throw new AmoCRMApiException('Empty id in model ' . json_encode($apiModel->toArray()));
+        }
+
+        $response = $this->request->patch($this->method . $apiModel->getId(), $apiModel->toArray());
+        //todo parse response and fill object with id by request_id
     }
 }

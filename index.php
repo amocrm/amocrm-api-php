@@ -1,6 +1,10 @@
 <?php
 
 use AmoCRM\Client\AmoCRMApiClient;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Filters\LeadFilter;
+use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 define('TOKEN_FILE', DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'token_info.json');
@@ -83,9 +87,31 @@ if (!isset($_GET['request'])) {
                 );
             });
 
+    $filter = new LeadFilter();
+    $filter->setIds([3912171, 3921175])
+        ->setResponsibleUserIds([504141]);
+
     try {
-        $leads = $apiClient->leads()->get();
-    } catch (\AmoCRM\Exceptions\AmoCRMApiException $e) {
+        $leads = $apiClient->leads()->get($filter);
+    } catch (AmoCRMApiException $e) {
+        echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+        die;
+    } catch (AmoCRMoAuthApiException $e) {
+        echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+        die;
+    }
+
+    foreach ($leads as $lead) {
+        $lead->setName('qwrqwr');
+        $lead->setPrice(12);
+    }
+
+    try {
+        $apiClient->leads()->update($leads);
+    } catch (AmoCRMApiException $e) {
+        echo 'Error happen - ' . $e->getMessage() . $e->getTitle();
+        die;
+    } catch (AmoCRMoAuthApiException $e) {
         echo 'Error happen - ' . $e->getMessage();
         die;
     }
@@ -114,7 +140,7 @@ function saveToken($accessToken)
 }
 
 /**
- * @return \League\OAuth2\Client\Token\AccessToken
+ * @return AccessToken
  */
 function getToken()
 {
@@ -131,7 +157,7 @@ function getToken()
         && isset($accessToken['expires'])
         && isset($accessToken['baseDomain'])
     ) {
-        return new \League\OAuth2\Client\Token\AccessToken([
+        return new AccessToken([
             'access_token' => $accessToken['accessToken'],
             'refresh_token' => $accessToken['refreshToken'],
             'expires' => $accessToken['expires'],

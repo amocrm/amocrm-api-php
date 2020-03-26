@@ -2,7 +2,9 @@
 
 namespace AmoCRM\Exceptions;
 
-class AmoCRMApiException extends \Exception
+use Exception;
+
+class AmoCRMApiException extends Exception
 {
     /**
      * @var int
@@ -12,10 +14,29 @@ class AmoCRMApiException extends \Exception
     /**
      * @var string
      */
-    protected $description;
+    protected $description = "";
 
     /**
      * @var string
      */
-    protected $title;
+    protected $title = "";
+
+    /**
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
 }
