@@ -24,7 +24,7 @@ abstract class BaseEntity
     protected $collectionClass = '';
 
     /**
-     * @var string
+     * @var BaseApiModel
      * override in child
      */
     protected $itemClass = '';
@@ -49,13 +49,20 @@ abstract class BaseEntity
     /**
      * Получение коллекции сущностей
      * @param BaseEntityFilter $filter
+     * @param array $with
      * @return BaseApiCollection|null
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function get(BaseEntityFilter $filter): ?BaseApiCollection
+    public function get(BaseEntityFilter $filter, array $with = []): ?BaseApiCollection
     {
-        $response = $this->request->get($this->method, $filter->buildFilter());
+        $queryParams = $filter->buildFilter();
+        $with = array_intersect($with, $this->itemClass::getAvailableWith());
+        if (!empty($with)) {
+            $queryParams['with'] = implode(',', $with);
+        }
+
+        $response = $this->request->get($this->method, $queryParams);
 
         /** @var BaseApiCollection $collection */
         $collection = new $this->collectionClass();
@@ -69,13 +76,19 @@ abstract class BaseEntity
     /**
      * Обновление одной конкретной сущности
      * @param int|string $id
+     * @param array $with
      * @return BaseApiCollection|null
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function getOne($id): ?BaseApiModel
+    public function getOne($id, array $with = []): ?BaseApiModel
     {
-        $response = $this->request->get($this->method . '/' . $id);
+        $queryParams = [];
+        $with = array_intersect($with, $this->itemClass::getAvailableWith());
+        if (!empty($with)) {
+            $queryParams['with'] = implode(',', $with);
+        }
+        $response = $this->request->get($this->method . '/' . $id, $queryParams);
 
         /** @var BaseApiModel $entity */
         $entity = new $this->itemClass();

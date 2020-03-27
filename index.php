@@ -92,7 +92,7 @@ if (!isset($_GET['request'])) {
         ->setResponsibleUserIds([504141]);
 
     try {
-        $leads = $apiClient->leads()->get($filter);
+        $leads = $apiClient->leads()->get($filter, [\AmoCRM\Models\LeadModel::IS_PRICE_BY_ROBOT]);
     } catch (AmoCRMApiException $e) {
         echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
         die;
@@ -101,6 +101,7 @@ if (!isset($_GET['request'])) {
         die;
     }
 
+    var_dump($leads); die;
     foreach ($leads as $lead) {
         $lead->setName('qwrqwr');
         $lead->setPrice(12);

@@ -768,6 +768,10 @@ class LeadModel extends BaseApiModel
             $leadModel->setRequestId($lead['request_id']);
         }
 
+        if (isset($lead['is_price_modified_by_robot']) && !is_null($lead['is_price_modified_by_robot'])) {
+            $leadModel->setIsPriceModifiedByRobot((bool)$lead['is_price_modified_by_robot']);
+        }
+
         return $leadModel;
     }
 
@@ -850,9 +854,9 @@ class LeadModel extends BaseApiModel
 //        }
 //
 //        if (in_array(self::IS_PRICE_BY_ROBOT, $appends, true)) {
-//            if (!is_null($this->getIsPriceModifiedByRobot())) {
-//                $result['is_price_modified_by_robot'] = $this->getIsPriceModifiedByRobot();
-//            }
+        if (!is_null($this->getIsPriceModifiedByRobot())) {
+            $result['is_price_modified_by_robot'] = $this->getIsPriceModifiedByRobot();
+        }
 //        }
 //
 //        if (in_array(self::LOSS_REASON, $appends, true)) {
@@ -914,5 +918,18 @@ class LeadModel extends BaseApiModel
         $this->requestId = $requestId;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAvailableWith(): array
+    {
+        return [
+            self::CATALOG_ELEMENTS_LINKS,
+            self::IS_PRICE_BY_ROBOT,
+            self::CONTACTS,
+            self::LOSS_REASON,
+        ];
     }
 }
