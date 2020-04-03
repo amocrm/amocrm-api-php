@@ -38,7 +38,9 @@
       "AmoCRM\\Exceptions\\": "src/AmoCRM/Exceptions",
       "AmoCRM\\Models\\": "src/AmoCRM/Models",
       "AmoCRM\\Collections\\": "src/AmoCRM/Collections",
-      "AmoCRM\\Filters\\": "src/AmoCRM/Filters"
+      "AmoCRM\\Filters\\": "src/AmoCRM/Filters",
+      "AmoCRM\\Factories\\": "src/AmoCRM/Factories",
+      "AmoCRM\\Helpers\\": "src/AmoCRM/Helpers"
     }
   },
   "scripts": {

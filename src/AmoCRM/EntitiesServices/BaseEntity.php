@@ -32,7 +32,7 @@ abstract class BaseEntity
     /**
      * @var AmoCRMApiRequest
      */
-    private $request;
+    protected $request;
 
     public function __construct(AmoCRMApiRequest $request)
     {

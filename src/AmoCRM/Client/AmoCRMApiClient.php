@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\EntitiesServices\Account;
 use AmoCRM\EntitiesServices\Leads;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use League\OAuth2\Client\Token\AccessToken;
@@ -121,5 +122,17 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Leads($request);
+    }
+
+    /**
+     * Метод вернет объект сделок
+     * @TODO make static
+     * @return Account
+     */
+    public function account()
+    {
+        $request = $this->buildRequest();
+
+        return new Account($request);
     }
 }
