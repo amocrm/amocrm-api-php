@@ -40,6 +40,14 @@ abstract class BaseEntity
     }
 
     /**
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
      * Метод для получения сущностей из ответа сервера
      * @param array $response
      * @return array
@@ -62,7 +70,7 @@ abstract class BaseEntity
             $queryParams['with'] = implode(',', $with);
         }
 
-        $response = $this->request->get($this->method, $queryParams);
+        $response = $this->request->get($this->getMethod(), $queryParams);
 
         /** @var BaseApiCollection $collection */
         $collection = new $this->collectionClass();
@@ -88,7 +96,7 @@ abstract class BaseEntity
         if (!empty($with)) {
             $queryParams['with'] = implode(',', $with);
         }
-        $response = $this->request->get($this->method . '/' . $id, $queryParams);
+        $response = $this->request->get($this->getMethod() . '/' . $id, $queryParams);
 
         /** @var BaseApiModel $entity */
         $entity = new $this->itemClass();
@@ -99,44 +107,85 @@ abstract class BaseEntity
     }
 
     /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     * @return BaseApiCollection
+     */
+    protected function processUpdate(BaseApiCollection $collection, array $response): BaseApiCollection
+    {
+        //override in child
+        return $collection;
+    }
+
+    /**
+     * @param BaseApiModel $model
+     * @param array $response
+     * @return BaseApiModel
+     */
+    protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
+    {
+        //override in child
+        return $model;
+    }
+
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     * @return BaseApiCollection
+     */
+    protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
+    {
+        //override in child
+        return $collection;
+    }
+
+    /**
      * Добавление коллекции сущностей
      * @param BaseApiCollection $collection
+     * @return BaseApiCollection
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function add(BaseApiCollection $collection)
+    public function add(BaseApiCollection $collection): BaseApiCollection
     {
-        $response = $this->request->post($this->method, $collection->toArray());
-        //todo parse response and fill collection object with id by request_id
+        $response = $this->request->post($this->getMethod(), $collection->toApi());
+        $collection = $this->processAdd($collection, $response);
+
+        return $collection;
     }
 
     /**
      * Обновление коллекции сущностей
      * @param BaseApiCollection $collection
+     * @return BaseApiCollection
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function update(BaseApiCollection $collection)
+    public function update(BaseApiCollection $collection): BaseApiCollection
     {
-        $response = $this->request->patch($this->method, $collection->toArray());
-        //todo parse response and fill collection with request_id
+        $response = $this->request->patch($this->getMethod(), $collection->toApi());
+        $collection = $this->processUpdate($collection, $response);
+
+        return $collection;
     }
 
     /**
      * Обновление одной конкретной сущности
      * @param BaseApiModel $apiModel
+     * @return BaseApiCollection|BaseApiModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function updateOne(BaseApiModel $apiModel)
+    public function updateOne(BaseApiModel $apiModel): BaseApiModel
     {
         $id = method_exists($apiModel, 'getId') ? $apiModel->getId() : null;
-
         if (is_null($id)) {
-            throw new AmoCRMApiException('Empty id in model ' . json_encode($apiModel->toArray()));
+            throw new AmoCRMApiException('Empty id in model ' . json_encode($apiModel->toApi()));
         }
 
-        $response = $this->request->patch($this->method . $apiModel->getId(), $apiModel->toArray());
-        //todo parse response and fill object with id by request_id
+        $response = $this->request->patch($this->getMethod() . $apiModel->getId(), $apiModel->toApi());
+        $apiModel = $this->processUpdateOne($apiModel, $response);
+
+        return $apiModel;
     }
 }

@@ -5,9 +5,9 @@ namespace AmoCRM\Models;
 abstract class BaseApiModel
 {
     /**
-     * @return mixed
+     * @return array
      */
-    abstract public function toArray();
+    abstract public function toArray(): array;
 
     /**
      * @return array
@@ -16,4 +16,10 @@ abstract class BaseApiModel
     {
         return [];
     }
+
+    /**
+     * @param int|null $requestId
+     * @return array
+     */
+    abstract public function toApi(int $requestId = null): array;
 }

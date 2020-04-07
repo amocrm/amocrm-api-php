@@ -862,4 +862,13 @@ class AccountModel extends BaseApiModel
             self::DATETIME_SETTINGS,
         ];
     }
+
+    /**
+     * @param int|null $requestId
+     * @return array
+     */
+    public function toApi(int $requestId = null): array
+    {
+        return $this->toArray();
+    }
 }

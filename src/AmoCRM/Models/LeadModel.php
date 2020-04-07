@@ -2,6 +2,9 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Client\AmoCRMApiRequest;
+use AmoCRM\Collections\CustomFieldsValuesCollection;
+use AmoCRM\Collections\TagsCollection;
 use InvalidArgumentException;
 
 class LeadModel extends BaseApiModel
@@ -10,11 +13,6 @@ class LeadModel extends BaseApiModel
     const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
     const LOSS_REASON = 'loss_reason';
     const CONTACTS = 'contacts';
-//
-//    /**
-//     * @var array
-//     */
-//    protected $appends = [];
 
     /**
      * @var int
@@ -96,10 +94,10 @@ class LeadModel extends BaseApiModel
      */
     protected $isDeleted;
 
-//    /**
-//     * @var EntityTagsCollection|null
-//     */
-//    protected $tags;
+    /**
+     * @var TagsCollection
+     */
+    protected $tags;
 
     /**
      * @var int|null
@@ -111,10 +109,10 @@ class LeadModel extends BaseApiModel
      */
     protected $companyId;
 
-//    /**
-//     * @var CustomFieldsValuesApiCollection|null
-//     */
-//    protected $customFields;
+    /**
+     * @var CustomFieldsValuesCollection|null
+     */
+    protected $customFieldsValues;
 
     /**
      * @var int|null
@@ -152,9 +150,9 @@ class LeadModel extends BaseApiModel
     protected $requestId = null;
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -472,25 +470,25 @@ class LeadModel extends BaseApiModel
         return $this;
     }
 
-//    /**
-//     * @return EntityTagsCollection|null
-//     */
-//    public function getTags(): ?EntityTagsCollection
-//    {
-//        return $this->tags;
-//    }
-//
-//    /**
-//     * @param EntityTagsCollection|null $tags
-//     *
-//     * @return self
-//     */
-//    public function setTags(?EntityTagsCollection $tags): self
-//    {
-//        $this->tags = $tags;
-//
-//        return $this;
-//    }
+    /**
+     * @return TagsCollection
+     */
+    public function getTags(): TagsCollection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param TagsCollection $tags
+     *
+     * @return self
+     */
+    public function setTags(TagsCollection $tags): self
+    {
+        $this->tags = $tags;
+
+        return $this;
+    }
 
     /**
      * @return int|null
@@ -532,25 +530,25 @@ class LeadModel extends BaseApiModel
         return $this;
     }
 
-//    /**
-//     * @return CustomFieldsValuesApiCollection|null
-//     */
-//    public function getCustomFields(): ?CustomFieldsValuesApiCollection
-//    {
-//        return $this->customFields;
-//    }
-//
-//    /**
-//     * @param CustomFieldsValuesApiCollection|null $values
-//     *
-//     * @return self
-//     */
-//    public function setCustomFields(?CustomFieldsValuesApiCollection $values): self
-//    {
-//        $this->customFields = $values;
-//
-//        return $this;
-//    }
+    /**
+     * @return CustomFieldsValuesCollection|null
+     */
+    public function getCustomFieldsValues(): ?CustomFieldsValuesCollection
+    {
+        return $this->customFieldsValues;
+    }
+
+    /**
+     * @param CustomFieldsValuesCollection|null $values
+     *
+     * @return self
+     */
+    public function setCustomFieldsValues(?CustomFieldsValuesCollection $values): self
+    {
+        $this->customFieldsValues = $values;
+
+        return $this;
+    }
 
     /**
      * @return int|null
@@ -625,7 +623,7 @@ class LeadModel extends BaseApiModel
      *
      * @return self
      */
-    public function setIsPriceModifiedByRobot(?bool $flag): self
+    private function setIsPriceModifiedByRobot(?bool $flag): self
     {
         $this->isPriceModifiedByRobot = $flag;
 
@@ -734,10 +732,12 @@ class LeadModel extends BaseApiModel
             $leadModel->setCompanyId($lead['linked_company_id'] > 0 ? (int)$lead['linked_company_id'] : null);
         }
 //        $customFieldsValues = null;
-//        if (!empty($lead['custom_fields'])) {
-//            $customFieldsValues = CustomFieldsValuesApiCollection::fromArray($lead['custom_fields']);
-//        }
-//        $leadModel->setCustomFields($customFieldsValues);
+        if (!empty($lead['custom_fields_values'])) {
+            $valuesCollection = new CustomFieldsValuesCollection();
+            $customFieldsValues = $valuesCollection->fromArray($lead['custom_fields_values']);
+            $leadModel->setCustomFieldsValues($customFieldsValues);
+        }
+
         if (!is_null($lead['created_by'])) {
             $leadModel->setCreatedBy((int)$lead['created_by']);
         }
@@ -759,13 +759,16 @@ class LeadModel extends BaseApiModel
         if (!is_null($lead['is_deleted'])) {
             $leadModel->setIsDeleted((bool)$lead['is_deleted']);
         }
-//        $leadModel->setTags(empty($lead['tags']) ? null : EntityTagsCollection::fromArray($lead['tags']));
+
+        if (!empty($lead[AmoCRMApiRequest::EMBEDDED]['tags'])) {
+            $tagsCollection = new TagsCollection();
+            $tagsCollection = $tagsCollection->fromArray($lead[AmoCRMApiRequest::EMBEDDED]['tags']);
+            $leadModel->setTags($tagsCollection);
+        }
+
         $leadModel->setScore(isset($lead['score']) && $lead['score'] > 0 ? (int)$lead['score'] : null);
         if (!empty($lead['account_id'])) {
             $leadModel->setAccountId((int)$lead['account_id']);
-        }
-        if (!empty($lead['request_id'])) {
-            $leadModel->setRequestId($lead['request_id']);
         }
 
         if (isset($lead['is_price_modified_by_robot']) && !is_null($lead['is_price_modified_by_robot'])) {
@@ -778,48 +781,9 @@ class LeadModel extends BaseApiModel
     /**
      * @inheritDoc
      */
-    public function offsetExists($offset)
-    {
-        return property_exists($this, $offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset)
-    {
-        $value = null;
-
-        if ($this->offsetExists($offset)) {
-            $value = $this->$offset;
-        }
-
-        return $value;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value)
-    {
-        // will not be implemented
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset($offset)
-    {
-        // will not be implemented
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function toArray(): array
     {
         $result = [
-            'id' => $this->getId(),
             'name' => $this->getName(),
             'price' => $this->getPrice(),
             'responsible_user_id' => $this->getResponsibleUserId(),
@@ -835,11 +799,14 @@ class LeadModel extends BaseApiModel
             'closed_at' => $this->getClosedAt(),
             'closest_task_at' => $this->getClosestTaskAt(),
             'is_deleted' => $this->getIsDeleted(),
-//            'custom_fields_values' =>
-//                $this->getCustomFields() ? $this->getCustomFields()->toArray() : $this->getCustomFields(),
+            'custom_fields_values' => $this->getCustomFieldsValues(),
             'score' => $this->getScore(),
             'account_id' => $this->getAccountId(),
         ];
+
+        if (!is_null($this->getId())) {
+            $result['id'] = $this->getId();
+        }
 //
 //        $appends = $this->getAppends();
 //
@@ -856,6 +823,10 @@ class LeadModel extends BaseApiModel
 //        if (in_array(self::IS_PRICE_BY_ROBOT, $appends, true)) {
         if (!is_null($this->getIsPriceModifiedByRobot())) {
             $result['is_price_modified_by_robot'] = $this->getIsPriceModifiedByRobot();
+        }
+
+        if (!is_null($this->getTags())) {
+            $result['tags'] = $this->getTags();
         }
 //        }
 //
@@ -885,22 +856,70 @@ class LeadModel extends BaseApiModel
         return $result;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function toJson($options = 0): string
+    public function toApi(int $requestId = null): array
     {
-        return json_encode($this->toArray(), $options);
-    }
+        $result = [];
 
-    /**
-     * @return array
-     */
-    public function getArrayCopy(): array
-    {
-        return $this->toArray();
-    }
+        if (!is_null($this->getId())) {
+            $result['id'] = $this->getId();
+        }
 
+        if (!is_null($this->getName())) {
+            $result['name'] = $this->getName();
+        }
+
+        if (!is_null($this->getPrice())) {
+            $result['price'] = $this->getPrice();
+        }
+
+        if (!is_null($this->getResponsibleUserId())) {
+            $result['responsible_user_id'] = $this->getResponsibleUserId();
+        }
+
+        if (!is_null($this->getStatusId())) {
+            $result['status_id'] = $this->getStatusId();
+        }
+
+        if (!is_null($this->getPipelineId())) {
+            $result['pipeline_id'] = $this->getPipelineId();
+        }
+
+        if (!is_null($this->getLossReasonId())) {
+            $result['loss_reason_id'] = $this->getLossReasonId();
+        }
+
+        if (!is_null($this->getCreatedBy())) {
+            $result['created_by'] = $this->getCreatedBy();
+        }
+
+        if (!is_null($this->getUpdatedBy())) {
+            $result['updated_by'] = $this->getUpdatedBy();
+        }
+
+        if (!is_null($this->getCreatedAt())) {
+            $result['created_at'] = $this->getCreatedAt();
+        }
+
+        if (!is_null($this->getClosedAt())) {
+            $result['closed_at'] = $this->getClosedAt();
+        }
+
+        if (!is_null($this->getCustomFieldsValues())) {
+            $result['custom_fields_values'] = $this->getCustomFieldsValues();
+        }
+
+        if (!is_null($this->getTags())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags();
+        }
+
+        if (is_null($this->getRequestId()) && !is_null($requestId)) {
+            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+        }
+
+        $result['request_id'] = $this->getRequestId();
+
+        return $result;
+    }
     /**
      * @return int|null
      */

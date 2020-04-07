@@ -3,6 +3,7 @@
 namespace AmoCRM\Client;
 
 use AmoCRM\EntitiesServices\Account;
+use AmoCRM\EntitiesServices\EntityTags;
 use AmoCRM\EntitiesServices\Leads;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use League\OAuth2\Client\Token\AccessToken;
@@ -110,6 +111,18 @@ class AmoCRMApiClient
     public function getOAuthClient(): AmoCRMOAuth
     {
         return $this->oAuthClient;
+    }
+
+    /**
+     * Метод вернет объект сделок
+     * @TODO make static
+     * @return EntityTags
+     */
+    public function tags()
+    {
+        $request = $this->buildRequest();
+
+        return new EntityTags($request);
     }
 
     /**

@@ -6,24 +6,38 @@ use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Collections\LeadsCollection;
+use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Models\BaseApiModel;
-use AmoCRM\Models\LeadModel;
+use AmoCRM\Models\Tag;
 
-class Leads extends BaseEntity
+class EntityTags extends BaseEntityTypeEntity
 {
-    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/leads';
+    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/tags';
 
-    protected $collectionClass = LeadsCollection::class;
+    protected $collectionClass = TagsCollection::class;
 
-    protected $itemClass = LeadModel::class;
+    protected $itemClass = Tag::class;
+
+    protected function validateEntityType(string $entityType): void
+    {
+        $availableTypes = [
+            EntityTypesInterface::LEADS,
+            EntityTypesInterface::CONTACTS,
+            EntityTypesInterface::COMPANIES,
+            EntityTypesInterface::CUSTOMERS,
+        ];
+
+        if (!in_array($entityType, $availableTypes, true)) {
+            throw new \Exception('This method doesn\'t support given entity type');
+        }
+    }
 
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
 
-        if (isset($response[AmoCRMApiRequest::EMBEDDED]) && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS])) {
-            $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS];
+        if (isset($response[AmoCRMApiRequest::EMBEDDED]) && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::TAGS])) {
+            $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::TAGS];
         }
 
         return $entities;
@@ -61,6 +75,11 @@ class Leads extends BaseEntity
         return $this->processAction($collection, $response);
     }
 
+    public function getOne($id, array $with = []): ?BaseApiModel
+    {
+        throw new \Exception('No such method for this entity');
+    }
+
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -86,8 +105,8 @@ class Leads extends BaseEntity
             $apiModel->setId($entity['id']);
         }
 
-        if (isset($entity['updated_at'])) {
-            $apiModel->setUpdatedAt($entity['updated_at']);
+        if (isset($entity['name'])) {
+            $apiModel->setName($entity['name']);
         }
     }
 }

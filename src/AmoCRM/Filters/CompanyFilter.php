@@ -20,9 +20,9 @@ class CompanyFilter extends BaseEntityFilter
     private $query = null;
 
     /**
-     * @return array
+     * @return null|array
      */
-    public function getIds(): array
+    public function getIds(): ?array
     {
         return $this->ids;
     }

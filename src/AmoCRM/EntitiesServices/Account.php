@@ -9,6 +9,7 @@ use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\AccountModel;
 use AmoCRM\Models\BaseApiModel;
+use Exception;
 
 class Account extends BaseEntity
 {
@@ -50,44 +51,44 @@ class Account extends BaseEntity
 
     public function getOne($id, array $with = []): ?BaseApiModel
     {
-        throw new \Exception('Use getCurrent for this entity');
+        throw new Exception('Use getCurrent for this entity');
     }
 
     /**
      * @param BaseEntityFilter $filter
      * @param array $with
      * @return BaseApiCollection|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function get(BaseEntityFilter $filter, array $with = []): ?BaseApiCollection
     {
-        throw new \Exception('Use getCurrent for this entity');
+        throw new Exception('Use getCurrent for this entity');
     }
 
     /**
      * @param BaseApiCollection $collection
-     * @throws \Exception
+     * @throws Exception
      */
     public function add(BaseApiCollection $collection)
     {
-        throw new \Exception('Method not available for this entity');
+        throw new Exception('Method not available for this entity');
     }
 
     /**
      * @param BaseApiCollection $collection
-     * @throws \Exception
+     * @throws Exception
      */
     public function update(BaseApiCollection $collection)
     {
-        throw new \Exception('Method not available for this entity');
+        throw new Exception('Method not available for this entity');
     }
 
     /**
      * @param BaseApiModel $apiModel
-     * @throws \Exception
+     * @throws Exception
      */
     public function updateOne(BaseApiModel $apiModel)
     {
-        throw new \Exception('Method not available for this entity');
+        throw new Exception('Method not available for this entity');
     }
 }
