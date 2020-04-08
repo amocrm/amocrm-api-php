@@ -3,6 +3,7 @@
 namespace AmoCRM\Client;
 
 use AmoCRM\EntitiesServices\Account;
+use AmoCRM\EntitiesServices\CatalogElements;
 use AmoCRM\EntitiesServices\Catalogs;
 use AmoCRM\EntitiesServices\Contacts;
 use AmoCRM\EntitiesServices\EntityTags;
@@ -161,6 +162,18 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Catalogs($request);
+    }
+
+    /**
+     * Метод вернет объект элементов каталогов
+     * @TODO make static
+     * @return CatalogElements
+     */
+    public function catalogElements()
+    {
+        $request = $this->buildRequest();
+
+        return new CatalogElements($request);
     }
 
     /**

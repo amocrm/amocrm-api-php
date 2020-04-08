@@ -10,6 +10,7 @@ use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\CatalogElementModel;
 use AmoCRM\Models\ContactModel;
 use AmoCRM\Models\LeadModel;
 
@@ -109,6 +110,7 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface
     {
         return [
             LeadModel::class,
+            CatalogElementModel::class,
         ];
     }
 
@@ -118,15 +120,21 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface
 
         foreach ($linkedEntities as $linkedEntity) {
             if (
-                $linkedEntity instanceof TypeAwareInterface ||
-                !in_array(get_class($linkedEntity), $this->getAvailableLinkTypes(), true)
+                $linkedEntity instanceof TypeAwareInterface &&
+                in_array(get_class($linkedEntity), $this->getAvailableLinkTypes(), true)
             ) {
                 $link = [
                     'to_entity_type' => $linkedEntity->getType(),
                     'to_entity_id' => $linkedEntity->getId()
                     //, 'metadata': {'updated_by': 0}
                 ];
-                //todo support metadata
+                if ($linkedEntity instanceof CatalogElementModel) {
+                    $link['metadata']['to_catalog_id'] = $linkedEntity->getCatalogId();
+                    if (!is_null($linkedEntity->getQuantity())) {
+                        $link['metadata']['quantity'] = $linkedEntity->getQuantity();
+                    }
+                }
+                //todo support all metadata
                 $body[] = $link;
             }
         }

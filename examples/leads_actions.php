@@ -1,6 +1,7 @@
 <?php
 
 use AmoCRM\Collections\LeadsCollection;
+use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Filters\LeadFilter;
@@ -50,7 +51,7 @@ try {
     die;
 }
 
-$links = new \AmoCRM\Collections\LinksCollection();
+$links = new LinksCollection();
 $links->add($contact);
 try {
     $apiClient->leads()->link($lead, $links);
