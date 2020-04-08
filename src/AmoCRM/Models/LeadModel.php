@@ -2,12 +2,14 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\AmoCRM\Models\TypeAwareInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\TagsCollection;
 use InvalidArgumentException;
 
-class LeadModel extends BaseApiModel
+class LeadModel extends BaseApiModel implements TypeAwareInterface
 {
     const CATALOG_ELEMENTS_LINKS = 'catalog_elements_links';
     const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
@@ -148,6 +150,11 @@ class LeadModel extends BaseApiModel
      * @var null|int
      */
     protected $requestId = null;
+
+    public function getType(): string
+    {
+        return EntityTypesInterface::LEADS;
+    }
 
     /**
      * @return null|int
@@ -670,20 +677,6 @@ class LeadModel extends BaseApiModel
 //        return $this;
 //    }
 
-//    /**
-//     * @param string $group
-//     *
-//     * @return self
-//     */
-//    public static function fromJson(string $json): self
-//    {
-//        $jsonDecoded = json_decode($json, true);
-//        if (empty($jsonDecoded)) {
-//            throw new \ParseError('Invalid json string ' . $json);
-//        }
-//
-//        return self::fromArray($jsonDecoded);
-//    }
 
     /**
      * @param array $lead
@@ -728,10 +721,11 @@ class LeadModel extends BaseApiModel
         if (!empty($lead['main_contact_id'])) {
             $leadModel->setMainContactId($lead['main_contact_id'] > 0 ? (int)$lead['main_contact_id'] : null);
         }
-        if (!empty($lead['linked_company_id'])) {
-            $leadModel->setCompanyId($lead['linked_company_id'] > 0 ? (int)$lead['linked_company_id'] : null);
-        }
-//        $customFieldsValues = null;
+        //todo
+//        if (!empty($lead['linked_company_id'])) {
+//            $leadModel->setCompanyId($lead['linked_company_id'] > 0 ? (int)$lead['linked_company_id'] : null);
+//        }
+
         if (!empty($lead['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
             $customFieldsValues = $valuesCollection->fromArray($lead['custom_fields_values']);
@@ -750,11 +744,11 @@ class LeadModel extends BaseApiModel
         if (!empty($lead['updated_at'])) {
             $leadModel->setUpdatedAt($lead['updated_at']);
         }
-        if (!empty($lead['date_close'])) {
-            $leadModel->setClosedAt($lead['date_close'] > 0 ? (int)$lead['date_close'] : null);
-        }
         if (!empty($lead['closed_at'])) {
-            $leadModel->setClosestTaskAt($lead['closed_at'] > 0 ? (int)$lead['closed_at'] : null);
+            $leadModel->setClosedAt($lead['closed_at'] > 0 ? (int)$lead['closed_at'] : null);
+        }
+        if (!empty($lead['closest_task_at'])) {
+            $leadModel->setClosestTaskAt($lead['closest_task_at'] > 0 ? (int)$lead['closest_task_at'] : null);
         }
         if (!is_null($lead['is_deleted'])) {
             $leadModel->setIsDeleted((bool)$lead['is_deleted']);
@@ -807,20 +801,12 @@ class LeadModel extends BaseApiModel
         if (!is_null($this->getId())) {
             $result['id'] = $this->getId();
         }
-//
-//        $appends = $this->getAppends();
-//
-//        if ($this->getTags()) {
-//            $result['tags'] = $this->getTags();
-//        } else {
-//            $result['tags'] = new EntityTagsCollection();
-//        }
+
 //
 //        if (in_array(self::CATALOG_ELEMENTS_LINKS, $appends, true)) {
 //            $result['catalog_elements_links'] = $this->getCatalogElementsLinks();
 //        }
 //
-//        if (in_array(self::IS_PRICE_BY_ROBOT, $appends, true)) {
         if (!is_null($this->getIsPriceModifiedByRobot())) {
             $result['is_price_modified_by_robot'] = $this->getIsPriceModifiedByRobot();
         }

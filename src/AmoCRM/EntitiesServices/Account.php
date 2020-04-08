@@ -55,39 +55,42 @@ class Account extends BaseEntity
     }
 
     /**
-     * @param BaseEntityFilter $filter
+     * @param null|BaseEntityFilter $filter
      * @param array $with
      * @return BaseApiCollection|null
      * @throws Exception
      */
-    public function get(BaseEntityFilter $filter, array $with = []): ?BaseApiCollection
+    public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         throw new Exception('Use getCurrent for this entity');
     }
 
     /**
      * @param BaseApiCollection $collection
+     * @return BaseApiCollection
      * @throws Exception
      */
-    public function add(BaseApiCollection $collection)
+    public function add(BaseApiCollection $collection): BaseApiCollection
     {
         throw new Exception('Method not available for this entity');
     }
 
     /**
      * @param BaseApiCollection $collection
+     * @return BaseApiCollection
      * @throws Exception
      */
-    public function update(BaseApiCollection $collection)
+    public function update(BaseApiCollection $collection): BaseApiCollection
     {
         throw new Exception('Method not available for this entity');
     }
 
     /**
      * @param BaseApiModel $apiModel
+     * @return BaseApiModel
      * @throws Exception
      */
-    public function updateOne(BaseApiModel $apiModel)
+    public function updateOne(BaseApiModel $apiModel): BaseApiModel
     {
         throw new Exception('Method not available for this entity');
     }

@@ -8,25 +8,25 @@ use AmoCRM\AmoCRM\Models\TypeAwareInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Collections\LeadsCollection;
+use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\ContactModel;
 use AmoCRM\Models\LeadModel;
 
-class Leads extends BaseEntity implements HasLinkMethodInterface
+class Contacts extends BaseEntity implements HasLinkMethodInterface
 {
-    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/leads';
+    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CONTACTS;
 
-    protected $collectionClass = LeadsCollection::class;
+    protected $collectionClass = ContactsCollection::class;
 
-    protected $itemClass = LeadModel::class;
+    protected $itemClass = ContactModel::class;
 
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
 
-        if (isset($response[AmoCRMApiRequest::EMBEDDED]) && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS])) {
-            $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS];
+        if (isset($response[AmoCRMApiRequest::EMBEDDED]) && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CONTACTS])) {
+            $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CONTACTS];
         }
 
         return $entities;
@@ -108,7 +108,7 @@ class Leads extends BaseEntity implements HasLinkMethodInterface
     protected function getAvailableLinkTypes(): array
     {
         return [
-            ContactModel::class,
+            LeadModel::class,
         ];
     }
 

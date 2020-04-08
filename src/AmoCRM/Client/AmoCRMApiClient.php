@@ -3,6 +3,8 @@
 namespace AmoCRM\Client;
 
 use AmoCRM\EntitiesServices\Account;
+use AmoCRM\EntitiesServices\Catalogs;
+use AmoCRM\EntitiesServices\Contacts;
 use AmoCRM\EntitiesServices\EntityTags;
 use AmoCRM\EntitiesServices\Leads;
 use AmoCRM\OAuth\AmoCRMOAuth;
@@ -114,7 +116,7 @@ class AmoCRMApiClient
     }
 
     /**
-     * Метод вернет объект сделок
+     * Метод вернет объект тегов
      * @TODO make static
      * @return EntityTags
      */
@@ -138,7 +140,31 @@ class AmoCRMApiClient
     }
 
     /**
-     * Метод вернет объект сделок
+     * Метод вернет объект контактов
+     * @TODO make static
+     * @return Contacts
+     */
+    public function contacts()
+    {
+        $request = $this->buildRequest();
+
+        return new Contacts($request);
+    }
+
+    /**
+     * Метод вернет объект каталогов
+     * @TODO make static
+     * @return Catalogs
+     */
+    public function catalogs()
+    {
+        $request = $this->buildRequest();
+
+        return new Catalogs($request);
+    }
+
+    /**
+     * Метод вернет объект акааунта
      * @TODO make static
      * @return Account
      */

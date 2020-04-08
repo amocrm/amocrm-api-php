@@ -56,15 +56,18 @@ abstract class BaseEntity
 
     /**
      * Получение коллекции сущностей
-     * @param BaseEntityFilter $filter
+     * @param null|BaseEntityFilter $filter
      * @param array $with
      * @return BaseApiCollection|null
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function get(BaseEntityFilter $filter, array $with = []): ?BaseApiCollection
+    public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
-        $queryParams = $filter->buildFilter();
+        $queryParams = [];
+        if ($filter instanceof BaseEntityFilter) {
+            $queryParams = $filter->buildFilter();
+        }
         $with = array_intersect($with, $this->itemClass::getAvailableWith());
         if (!empty($with)) {
             $queryParams['with'] = implode(',', $with);
@@ -180,10 +183,10 @@ abstract class BaseEntity
     {
         $id = method_exists($apiModel, 'getId') ? $apiModel->getId() : null;
         if (is_null($id)) {
-            throw new AmoCRMApiException('Empty id in model ' . json_encode($apiModel->toApi()));
+            throw new AmoCRMApiException('Empty id in model ' . json_encode($apiModel->toApi(0)));
         }
 
-        $response = $this->request->patch($this->getMethod() . $apiModel->getId(), $apiModel->toApi());
+        $response = $this->request->patch($this->getMethod() . '/' . $apiModel->getId(), $apiModel->toApi(0));
         $apiModel = $this->processUpdateOne($apiModel, $response);
 
         return $apiModel;

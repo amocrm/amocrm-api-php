@@ -5,6 +5,7 @@ namespace AmoCRM\Client;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\OAuth\AmoCRMOAuth;
+use Exception;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
@@ -258,12 +259,19 @@ class AmoCRMApiRequest
      * @param ResponseInterface $response
      * @throws AmoCRMoAuthApiException
      * @throws AmoCRMApiException
+     * @throws Exception
      */
     protected function checkHttpStatus(ResponseInterface $response): void
     {
         if ((int)$response->getStatusCode() === self::UNAUTHORIZED) {
             throw new AmoCRMoAuthApiException("Unauthorized");
         }
+
+        if ((int)$response->getStatusCode() === self::NO_CONTENT) {
+            //todo own exception
+            throw new Exception("No content", self::NO_CONTENT);
+        }
+
 
         if (!in_array((int)$response->getStatusCode(), self::SUCCESS_STATUSES, true)) {
             //todo parse error
@@ -282,12 +290,13 @@ class AmoCRMApiRequest
      */
     private function parseResponse(ResponseInterface $response): array
     {
+        $decodedBody = [];
         $this->checkHttpStatus($response);
 
         $bodyContents = $response->getBody()->getContents();
 
-        if (!($decodedBody = json_decode($bodyContents, true))) {
-            $exception = new AmoCRMApiException("Body is not a json: {$bodyContents}");
+        if ($response->getStatusCode() !== self::ACCEPTED && !($decodedBody = json_decode($bodyContents, true))) {
+            $exception = new AmoCRMApiException("Response body is not a json: {$bodyContents}");
             //todo set detail and title
             throw $exception;
         }

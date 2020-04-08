@@ -2,20 +2,22 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use Exception;
+
 abstract class BaseEntityTypeEntity extends BaseEntity
 {
     protected $entityType = '';
 
     /**
      * @param string $entityType
-     * @throws \Exception
+     * @throws Exception
      */
-    protected abstract function validateEntityType(string $entityType): void;
+    abstract protected function validateEntityType(string $entityType): void;
 
     /**
      * @param string $entityType
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function setEntityType(string $entityType): self
     {
