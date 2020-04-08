@@ -478,9 +478,9 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @return TagsCollection
+     * @return null|TagsCollection
      */
-    public function getTags(): TagsCollection
+    public function getTags(): ?TagsCollection
     {
         return $this->tags;
     }
