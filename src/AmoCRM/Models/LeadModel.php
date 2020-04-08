@@ -92,6 +92,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     protected $lossReasonId;
 
     /**
+     * @var LossReasonModel|null
+     */
+    protected $lossReason;
+
+    /**
      * @var bool
      */
     protected $isDeleted;
@@ -136,15 +141,17 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
      */
     protected $isPriceModifiedByRobot = null;
 
-//    /**
-//     * @var LossReasonCollection
-//     */
-//    protected $lossReason = null;
-//
+    //
 //    /**
 //     * @var ContactsApiCollection
 //     */
 //    protected $contacts = null;
+
+
+//    /**
+//     * @var Company
+//     */
+//    protected $company = null;
 
     /**
      * @var null|int
@@ -458,6 +465,26 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
+     * @return LossReasonModel|null
+     */
+    public function getLossReason(): ?LossReasonModel
+    {
+        return $this->lossReason;
+    }
+
+    /**
+     * @param LossReasonModel $lossReason
+     *
+     * @return self
+     */
+    public function setLossReason(LossReasonModel $lossReason): self
+    {
+        $this->lossReason = $lossReason;
+
+        return $this;
+    }
+
+    /**
      * @return null|bool
      */
     public function getIsDeleted(): ?bool
@@ -760,6 +787,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             $leadModel->setTags($tagsCollection);
         }
 
+        if (!empty($lead[AmoCRMApiRequest::EMBEDDED]['loss_reason'][0])) {
+            $lossReason = LossReasonModel::fromArray($lead[AmoCRMApiRequest::EMBEDDED]['loss_reason'][0]);
+            $leadModel->setLossReason($lossReason);
+        }
+
         $leadModel->setScore(isset($lead['score']) && $lead['score'] > 0 ? (int)$lead['score'] : null);
         if (!empty($lead['account_id'])) {
             $leadModel->setAccountId((int)$lead['account_id']);
@@ -814,14 +846,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         if (!is_null($this->getTags())) {
             $result['tags'] = $this->getTags();
         }
-//        }
-//
-//        if (in_array(self::LOSS_REASON, $appends, true)) {
-//            $result['loss_reason'] = new HalResource();
-//            if (!empty($this->getLossReason())) {
-//                $result['loss_reason'] = $this->getLossReason();
-//            }
-//        }
+
+        if (!is_null($this->getLossReason())) {
+            $result['loss_reason'] = $this->getLossReason();
+        }
+
 //
 //        $companiesCollection = new CompaniesApiCollection();
 //        if (!empty($this->getCompanyId())) {
@@ -906,6 +935,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
 
         return $result;
     }
+
     /**
      * @return int|null
      */

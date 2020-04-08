@@ -62,12 +62,12 @@ try {
 
 //Создадим фильтр по id сделки и ответственному пользователю
 $filter = new LeadFilter();
-$filter->setIds([1])
+$filter->setIds([1, 5170965])
     ->setResponsibleUserIds([504141]);
 
-//Получим сделки по фильтру и с полем with=is_price_modified_by_robot
+//Получим сделки по фильтру и с полем with=is_price_modified_by_robot,loss_reason
 try {
-    $leads = $apiClient->leads()->get($filter, [LeadModel::IS_PRICE_BY_ROBOT]);
+    $leads = $apiClient->leads()->get($filter, [LeadModel::IS_PRICE_BY_ROBOT, LeadModel::LOSS_REASON]);
 } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
     echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
     die;

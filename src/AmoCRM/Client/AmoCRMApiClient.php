@@ -5,6 +5,7 @@ namespace AmoCRM\Client;
 use AmoCRM\EntitiesServices\Account;
 use AmoCRM\EntitiesServices\CatalogElements;
 use AmoCRM\EntitiesServices\Catalogs;
+use AmoCRM\EntitiesServices\Companies;
 use AmoCRM\EntitiesServices\Contacts;
 use AmoCRM\EntitiesServices\EntityTags;
 use AmoCRM\EntitiesServices\Leads;
@@ -150,6 +151,18 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Contacts($request);
+    }
+
+    /**
+     * Метод вернет объект компаний
+     * @TODO make static
+     * @return Companies
+     */
+    public function companies()
+    {
+        $request = $this->buildRequest();
+
+        return new Companies($request);
     }
 
     /**

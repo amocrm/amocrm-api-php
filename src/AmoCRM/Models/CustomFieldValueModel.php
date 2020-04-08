@@ -13,7 +13,7 @@ class CustomFieldValueModel extends BaseApiModel
     protected $fieldId;
 
     /**
-     * @var int
+     * @var string
      */
     protected $fieldName;
 

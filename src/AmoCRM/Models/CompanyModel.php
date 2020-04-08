@@ -9,10 +9,11 @@ use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\TagsCollection;
 use InvalidArgumentException;
 
-class ContactModel extends BaseApiModel implements TypeAwareInterface
+class CompanyModel extends BaseApiModel implements TypeAwareInterface
 {
     const LEADS = 'leads';
     const CUSTOMERS = 'customers';
+    const CONTACTS = 'contacts';
     const CATALOG_ELEMENTS_LINKS = 'catalog_elements_links';
 
     /**
@@ -24,16 +25,6 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
      * @var null|string
      */
     protected $name;
-
-    /**
-     * @var null|string
-     */
-    protected $firstName;
-
-    /**
-     * @var null|string
-     */
-    protected $lastName;
 
     /**
      * @var int
@@ -81,15 +72,30 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
     protected $tags;
 
     /**
-     * @var int
-     */
-    protected $companyId;
-
-    /**
      * @var CustomFieldsValuesCollection|null
      */
     protected $customFieldsValues;
 
+//    /**
+//     * @var LeadsApiCollection
+//     */
+//    protected $leads;
+//
+//    /**
+//     * @var CustomersApiCollection
+//     */
+//    protected $customers;
+//
+//    /**
+//     * @var ContactsApiCollection
+//     */
+//    protected $companys;
+//
+//    /**
+//     * @var CatalogElementsLinksCollection|null
+//     */
+//    protected $catalogElementsLinks;
+    
     /**
      * @var null|int
      */
@@ -136,46 +142,6 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
-    public function setFirstName(string $name): self
-    {
-        $this->firstName = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
-    public function setLastName(string $name): self
-    {
-        $this->lastName = $name;
 
         return $this;
     }
@@ -362,26 +328,6 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @return int|null
-     */
-    public function getCompanyId(): ?int
-    {
-        return $this->companyId;
-    }
-
-    /**
-     * @param int|null $id
-     *
-     * @return self
-     */
-    public function setCompanyId(?int $id): self
-    {
-        $this->companyId = $id;
-
-        return $this;
-    }
-
-    /**
      * @return CustomFieldsValuesCollection|null
      */
     public function getCustomFieldsValues(): ?CustomFieldsValuesCollection
@@ -400,77 +346,67 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
 
         return $this;
     }
-
-
+    
     /**
-     * @param array $contact
+     * @param array $company
      *
      * @return self
      */
-    public static function fromArray(array $contact): self
+    public static function fromArray(array $company): self
     {
-        if (empty($contact['id'])) {
+        if (empty($company['id'])) {
             //todo amocrm exception
-            throw new InvalidArgumentException('Contact id is empty in ' . json_encode($contact));
+            throw new InvalidArgumentException('Contact id is empty in ' . json_encode($company));
         }
 
-        $contactModel = new self();
+        $companyModel = new self();
 
-        $contactModel->setId((int)$contact['id']);
+        $companyModel->setId((int)$company['id']);
 
-        if (!empty($contact['name'])) {
-            $contactModel->setName($contact['name']);
+        if (!empty($company['name'])) {
+            $companyModel->setName($company['name']);
         }
-        if (!is_null($contact['first_name'])) {
-            $contactModel->setFirstName($contact['first_name']);
+        if (!is_null($company['responsible_user_id'])) {
+            $companyModel->setResponsibleUserId((int)$company['responsible_user_id']);
         }
-        if (!is_null($contact['last_name'])) {
-            $contactModel->setLastName($contact['last_name']);
+        if (!is_null($company['group_id'])) {
+            $companyModel->setGroupId((int)$company['group_id']);
         }
-        if (!is_null($contact['responsible_user_id'])) {
-            $contactModel->setResponsibleUserId((int)$contact['responsible_user_id']);
-        }
-        if (!is_null($contact['group_id'])) {
-            $contactModel->setGroupId((int)$contact['group_id']);
-        }
-        //todo
-//        if (!empty($contact['linked_company_id'])) {
-//            $contactModel->setCompanyId($contact['linked_company_id'] > 0 ? (int)$contact['linked_company_id'] : null);
-//        }
+        //todo with
 
-        if (!empty($contact['custom_fields_values'])) {
+        if (!empty($company['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
-            $customFieldsValues = $valuesCollection->fromArray($contact['custom_fields_values']);
-            $contactModel->setCustomFieldsValues($customFieldsValues);
+            $customFieldsValues = $valuesCollection->fromArray($company['custom_fields_values']);
+            $companyModel->setCustomFieldsValues($customFieldsValues);
         }
 
-        if (!is_null($contact['created_by'])) {
-            $contactModel->setCreatedBy((int)$contact['created_by']);
+        if (!is_null($company['created_by'])) {
+            $companyModel->setCreatedBy((int)$company['created_by']);
         }
-        if (!is_null($contact['updated_by'])) {
-            $contactModel->setUpdatedBy((int)$contact['updated_by']);
+        if (!is_null($company['updated_by'])) {
+            $companyModel->setUpdatedBy((int)$company['updated_by']);
         }
-        if (!empty($contact['created_at'])) {
-            $contactModel->setCreatedAt($contact['created_at']);
+        if (!empty($company['created_at'])) {
+            $companyModel->setCreatedAt($company['created_at']);
         }
-        if (!empty($contact['updated_at'])) {
-            $contactModel->setUpdatedAt($contact['updated_at']);
+        if (!empty($company['updated_at'])) {
+            $companyModel->setUpdatedAt($company['updated_at']);
         }
-        if (!empty($contact['closest_task_at'])) {
-            $contactModel->setClosestTaskAt($contact['closest_task_at'] > 0 ? (int)$contact['closest_task_at'] : null);
+        if (!empty($company['closest_task_at'])) {
+            $companyModel->setClosestTaskAt($company['closest_task_at'] > 0 ? (int)$company['closest_task_at'] : null);
         }
 
-        if (!empty($contact[AmoCRMApiRequest::EMBEDDED]['tags'])) {
+        if (!empty($company[AmoCRMApiRequest::EMBEDDED]['tags'])) {
             $tagsCollection = new TagsCollection();
-            $tagsCollection = $tagsCollection->fromArray($contact[AmoCRMApiRequest::EMBEDDED]['tags']);
-            $contactModel->setTags($tagsCollection);
+            $tagsCollection = $tagsCollection->fromArray($company[AmoCRMApiRequest::EMBEDDED]['tags']);
+            $companyModel->setTags($tagsCollection);
         }
 
-        if (!empty($contact['account_id'])) {
-            $contactModel->setAccountId((int)$contact['account_id']);
+        if (!empty($company['account_id'])) {
+            $companyModel->setAccountId((int)$company['account_id']);
         }
 
-        return $contactModel;
+        return $companyModel;
     }
 
     /**
@@ -480,8 +416,6 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
     {
         $result = [
             'name' => $this->getName(),
-            'first_name' => $this->getFirstName(),
-            'last_name' => $this->getLastName(),
             'responsible_user_id' => $this->getResponsibleUserId(),
             'group_id' => $this->getGroupId(),
             'created_by' => $this->getCreatedBy(),
@@ -501,14 +435,6 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
             $result['tags'] = $this->getTags();
         }
 
-//        $companiesCollection = new CompaniesApiCollection();
-//        if (!empty($this->getCompanyId())) {
-//            $company = new LeadCompanyApi();
-//            $company->setId($this->getCompanyId());
-//            $companiesCollection->add($company);
-//        }
-//        $result['companies'] = $companiesCollection;
-
         return $result;
     }
 
@@ -522,14 +448,6 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
 
         if (!is_null($this->getName())) {
             $result['name'] = $this->getName();
-        }
-
-        if (!is_null($this->getFirstName())) {
-            $result['first_name'] = $this->getFirstName();
-        }
-
-        if (!is_null($this->getLastName())) {
-            $result['first_name'] = $this->getLastName();
         }
 
         if (!is_null($this->getResponsibleUserId())) {
@@ -574,7 +492,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
 
     /**
      * @param int|null $requestId
-     * @return ContactModel
+     * @return CompanyModel
      */
     public function setRequestId(?int $requestId): self
     {
@@ -591,6 +509,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
         return [
             self::LEADS,
             self::CUSTOMERS,
+            self::CONTACTS,
             self::CATALOG_ELEMENTS_LINKS,
         ];
     }

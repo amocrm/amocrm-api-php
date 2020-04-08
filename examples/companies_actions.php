@@ -1,11 +1,11 @@
 <?php
 
-use AmoCRM\Collections\ContactsCollection;
+use AmoCRM\Collections\CompaniesCollection;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
-use AmoCRM\Filters\ContactFilter;
-use AmoCRM\Models\ContactModel;
+use AmoCRM\Filters\CompanyFilter;
+use AmoCRM\Models\CompanyModel;
 use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -30,19 +30,19 @@ $apiClient->setAccessToken($accessToken)
         });
 
 //Создадим контакт
-$contact = new ContactModel();
-$contact->setName('Example');
+$company = new CompanyModel();
+$company->setName('Example');
 
-$contactsCollection = new ContactsCollection();
-$contactsCollection->add($contact);
+$companiesCollection = new CompaniesCollection();
+$companiesCollection->add($company);
 try {
-    $apiClient->contacts()->add($contactsCollection);
+    $apiClient->companies()->add($companiesCollection);
 } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
     echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
     die;
 }
 
-//Получим сделку по ID, сделку и првяжем контакт к сделке
+//Получим сделку по ID, сделку и првяжем компанию к сделке
 try {
     $lead = $apiClient->leads()->getOne(3916883);
 } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
@@ -53,29 +53,30 @@ try {
 $links = new LinksCollection();
 $links->add($lead);
 try {
-    $apiClient->contacts()->link($contact, $links);
+    $apiClient->companies()->link($company, $links);
 } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
     echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
     die;
 }
 
-//Создадим фильтр по id контакта
-$filter = new ContactFilter();
-$filter->setIds([3]);
+//Создадим фильтр по id компании
+$filter = new CompanyFilter();
+$filter->setIds([1]);
 
-//Получим сделки по фильтру
+//Получим компании по фильтру
 try {
-    $contacts = $apiClient->contacts()->get($filter);
+    $companies = $apiClient->companies()->get($filter);
 } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
     echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
     die;
 }
 
-//Обновим все найденные сделки
-/** @var ContactModel $contact */
-foreach ($contacts as $contact) {
+var_dump($companies->toArray());
+////Обновим все найденные сделки
+///** @var LeadModel $lead */
+//foreach ($leads as $lead) {
 //    //Получим коллекцию значений полей сделки
-//    $customFields = $contact->getCustomFieldsValues();
+//    $customFields = $lead->getCustomFieldsValues();
 //    /** @var CustomFieldValueModel $textField */
 //    //Получем значение поля по его ID
 //    $textField = $customFields->getBy('fieldId', 231189);
@@ -93,16 +94,20 @@ foreach ($contacts as $contact) {
 //            ],
 //        ]
 //    );
-
-    //Установим название
-    $contact->setName('Example lead');
-}
-
-//Сохраним сделку
-try {
-    $apiClient->contacts()->update($contacts);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
-    die;
-}
+//
+//    //Установим название
+//    $lead->setName('Example lead');
+//    //Установим бюджет
+//    $lead->setPrice(12);
+//    //Установим нового ответственного пользователя
+//    $lead->setResponsibleUserId(0);
+//}
+//
+////Сохраним сделку
+//try {
+//    $apiClient->leads()->update($leads);
+//} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
+//    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+//    die;
+//}
 
