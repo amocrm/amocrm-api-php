@@ -54,7 +54,7 @@ class AmoMessenger implements Arrayable
     /**
      * @return bool
      */
-    public function isEnabled(): bool
+    public function getIsEnabled(): bool
     {
         return $this->enabled;
     }

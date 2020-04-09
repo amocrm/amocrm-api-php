@@ -319,7 +319,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
     {
         $result = null;
 
-        $key = Str::ucfirst($key);
+        $key = Str::ucfirst(Str::camel($key));
         $getter = (method_exists($this->itemClass, 'get' . $key) ? 'get' . $key : null);
 
         if ($getter) {

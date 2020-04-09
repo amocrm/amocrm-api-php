@@ -95,7 +95,7 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
 //     * @var CatalogElementsLinksCollection|null
 //     */
 //    protected $catalogElementsLinks;
-    
+
     /**
      * @var null|int
      */
@@ -346,7 +346,7 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
 
         return $this;
     }
-    
+
     /**
      * @param array $company
      *
@@ -366,10 +366,10 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($company['name'])) {
             $companyModel->setName($company['name']);
         }
-        if (!is_null($company['responsible_user_id'])) {
+        if (isset($company['responsible_user_id']) && !is_null($company['responsible_user_id'])) {
             $companyModel->setResponsibleUserId((int)$company['responsible_user_id']);
         }
-        if (!is_null($company['group_id'])) {
+        if (isset($company['group_id']) && !is_null($company['group_id'])) {
             $companyModel->setGroupId((int)$company['group_id']);
         }
         //todo with
@@ -380,10 +380,10 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
             $companyModel->setCustomFieldsValues($customFieldsValues);
         }
 
-        if (!is_null($company['created_by'])) {
+        if (isset($company['created_by']) && !is_null($company['created_by'])) {
             $companyModel->setCreatedBy((int)$company['created_by']);
         }
-        if (!is_null($company['updated_by'])) {
+        if (isset($company['updated_by']) && !is_null($company['updated_by'])) {
             $companyModel->setUpdatedBy((int)$company['updated_by']);
         }
         if (!empty($company['created_at'])) {

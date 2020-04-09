@@ -24,7 +24,8 @@ $apiClient->setAccessToken($accessToken)
                     'baseDomain' => $baseDomain,
                 ]
             );
-        });
+        }
+    );
 
 //Создадим каталог
 //$catalogsCollection = new CatalogsCollection();

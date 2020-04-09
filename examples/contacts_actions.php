@@ -27,7 +27,8 @@ $apiClient->setAccessToken($accessToken)
                     'baseDomain' => $baseDomain,
                 ]
             );
-        });
+        }
+    );
 
 //Создадим контакт
 $contact = new ContactModel();
@@ -105,4 +106,3 @@ try {
     echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
     die;
 }
-

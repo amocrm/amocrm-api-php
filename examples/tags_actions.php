@@ -28,7 +28,8 @@ $apiClient->setAccessToken($accessToken)
                     'baseDomain' => $baseDomain,
                 ]
             );
-        });
+        }
+    );
 
 //Создадим тег
 $tagsCollection = new TagsCollection();

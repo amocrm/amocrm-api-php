@@ -2,6 +2,8 @@
 
 namespace AmoCRM\Models;
 
+use Illuminate\Support\Str;
+
 abstract class BaseApiModel
 {
     /**
@@ -22,4 +24,22 @@ abstract class BaseApiModel
      * @return array
      */
     abstract public function toApi(int $requestId = null): array;
+
+    public function __get($name)
+    {
+        $methodName = 'get' . Str::camel(Str::ucfirst($name));
+        if (method_exists($this, $methodName)) {
+            return $this->$methodName();
+        } else {
+            return null;
+        }
+    }
+
+    public function __set($name, $value)
+    {
+        $methodName = 'set' . Str::camel(Str::ucfirst($name));
+        if (method_exists($this, $methodName)) {
+            $this->$methodName($value);
+        }
+    }
 }

@@ -5,6 +5,8 @@ namespace AmoCRM\Models;
 use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\AmoCRM\Models\TypeAwareInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
+use AmoCRM\Collections\CatalogElementsCollection;
+use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\TagsCollection;
 use InvalidArgumentException;
@@ -112,11 +114,6 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     protected $sourceId;
 
     /**
-     * @var int
-     */
-    protected $companyId;
-
-    /**
      * @var CustomFieldsValuesCollection|null
      */
     protected $customFieldsValues;
@@ -124,34 +121,27 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     /**
      * @var int|null
      */
-    protected $mainContactId;
-
-    /**
-     * @var int|null
-     */
     protected $score;
 
-//    /**
-//     * @var CatalogElementsLinksCollection|null
-//     */
-//    protected $catalogElementsLinks = null;
+    /**
+     * @var CatalogElementsCollection|null
+     */
+    protected $catalogElementsLinks = null;
 
     /**
      * @var null|bool
      */
     protected $isPriceModifiedByRobot = null;
 
-    //
-//    /**
-//     * @var ContactsApiCollection
-//     */
-//    protected $contacts = null;
+    /**
+     * @var ContactsCollection|null
+     */
+    protected $contacts = null;
 
-
-//    /**
-//     * @var Company
-//     */
-//    protected $company = null;
+    /**
+     * @var CompanyModel|null
+     */
+    protected $company = null;
 
     /**
      * @var null|int
@@ -545,21 +535,21 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @return int|null
+     * @return CompanyModel
      */
-    public function getCompanyId(): ?int
+    public function getCompany(): CompanyModel
     {
-        return $this->companyId;
+        return $this->company;
     }
 
     /**
-     * @param int|null $id
+     * @param CompanyModel $company
      *
      * @return self
      */
-    public function setCompanyId(?int $id): self
+    public function setCompany(CompanyModel $company): self
     {
-        $this->companyId = $id;
+        $this->company = $company;
 
         return $this;
     }
@@ -585,21 +575,21 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @return int|null
+     * @return ContactsCollection|null
      */
-    public function getMainContactId(): ?int
+    public function getContacts(): ?ContactsCollection
     {
-        return $this->mainContactId;
+        return $this->contacts;
     }
 
     /**
-     * @param int|null $id
+     * @param ContactsCollection $contacts
      *
      * @return self
      */
-    public function setMainContactId(?int $id): self
+    public function setContacts(ContactsCollection $contacts): self
     {
-        $this->mainContactId = $id;
+        $this->contacts = $contacts;
 
         return $this;
     }
@@ -724,13 +714,13 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($lead['name'])) {
             $leadModel->setName($lead['name']);
         }
-        if (!is_null($lead['price'])) {
+        if (array_key_exists('price', $lead) && !is_null($lead['price'])) {
             $leadModel->setPrice((int)$lead['price']);
         }
-        if (!is_null($lead['responsible_user_id'])) {
+        if (array_key_exists('responsible_user_id', $lead) && !is_null($lead['responsible_user_id'])) {
             $leadModel->setResponsibleUserId((int)$lead['responsible_user_id']);
         }
-        if (!is_null($lead['group_id'])) {
+        if (array_key_exists('group_id', $lead) && !is_null($lead['group_id'])) {
             $leadModel->setGroupId((int)$lead['group_id']);
         }
         if (!empty($lead['status_id'])) {
@@ -759,10 +749,10 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             $leadModel->setCustomFieldsValues($customFieldsValues);
         }
 
-        if (!is_null($lead['created_by'])) {
+        if (array_key_exists('created_by', $lead) && !is_null($lead['created_by'])) {
             $leadModel->setCreatedBy((int)$lead['created_by']);
         }
-        if (!is_null($lead['updated_by'])) {
+        if (array_key_exists('updated_by', $lead) && !is_null($lead['updated_by'])) {
             $leadModel->setUpdatedBy((int)$lead['updated_by']);
         }
         if (!empty($lead['created_at'])) {
@@ -777,7 +767,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($lead['closest_task_at'])) {
             $leadModel->setClosestTaskAt($lead['closest_task_at'] > 0 ? (int)$lead['closest_task_at'] : null);
         }
-        if (!is_null($lead['is_deleted'])) {
+        if (array_key_exists('is_deleted', $lead) && !is_null($lead['is_deleted'])) {
             $leadModel->setIsDeleted((bool)$lead['is_deleted']);
         }
 
@@ -787,9 +777,28 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             $leadModel->setTags($tagsCollection);
         }
 
-        if (!empty($lead[AmoCRMApiRequest::EMBEDDED]['loss_reason'][0])) {
-            $lossReason = LossReasonModel::fromArray($lead[AmoCRMApiRequest::EMBEDDED]['loss_reason'][0]);
+        if (!empty($lead[AmoCRMApiRequest::EMBEDDED][self::LOSS_REASON][0])) {
+            $lossReason = LossReasonModel::fromArray($lead[AmoCRMApiRequest::EMBEDDED][self::LOSS_REASON][0]);
             $leadModel->setLossReason($lossReason);
+        }
+
+        if (!empty($lead[AmoCRMApiRequest::EMBEDDED]['companies'][0])) {
+            $company = CompanyModel::fromArray($lead[AmoCRMApiRequest::EMBEDDED]['companies'][0]);
+            $leadModel->setCompany($company);
+        }
+
+        if (!empty($lead[AmoCRMApiRequest::EMBEDDED][self::CONTACTS])) {
+            $contactsCollection = new ContactsCollection();
+            $contactsCollection = $contactsCollection->fromArray($lead[AmoCRMApiRequest::EMBEDDED][self::CONTACTS]);
+            $leadModel->setContacts($contactsCollection);
+        }
+
+        if (!empty($lead[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS])) {
+            $catalogElementsCollection = new CatalogElementsCollection();
+            $catalogElementsCollection = $catalogElementsCollection->fromArray(
+                $lead[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS]
+            );
+            $leadModel->setCatalogElementsLinks($catalogElementsCollection);
         }
 
         $leadModel->setScore(isset($lead['score']) && $lead['score'] > 0 ? (int)$lead['score'] : null);
@@ -797,7 +806,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             $leadModel->setAccountId((int)$lead['account_id']);
         }
 
-        if (isset($lead['is_price_modified_by_robot']) && !is_null($lead['is_price_modified_by_robot'])) {
+        if (array_key_exists('is_price_modified_by_robot', $lead) && !is_null($lead['is_price_modified_by_robot'])) {
             $leadModel->setIsPriceModifiedByRobot((bool)$lead['is_price_modified_by_robot']);
         }
 
@@ -834,11 +843,10 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             $result['id'] = $this->getId();
         }
 
-//
-//        if (in_array(self::CATALOG_ELEMENTS_LINKS, $appends, true)) {
-//            $result['catalog_elements_links'] = $this->getCatalogElementsLinks();
-//        }
-//
+        if (!is_null($this->getCatalogElementsLinks())) {
+            $result['catalog_elements_links'] = $this->getCatalogElementsLinks();
+        }
+
         if (!is_null($this->getIsPriceModifiedByRobot())) {
             $result['is_price_modified_by_robot'] = $this->getIsPriceModifiedByRobot();
         }
@@ -851,26 +859,21 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             $result['loss_reason'] = $this->getLossReason();
         }
 
-//
-//        $companiesCollection = new CompaniesApiCollection();
-//        if (!empty($this->getCompanyId())) {
-//            $company = new LeadCompanyApi();
-//            $company->setId($this->getCompanyId());
-//            $companiesCollection->add($company);
-//        }
-//        $result['companies'] = $companiesCollection;
-//
-//        if (in_array(self::CONTACTS, $appends, true)) {
-//            $result['contacts'] = $this->getContacts();
-//        }
-//
-//        if (in_array(self::REQUEST_ID, $appends, true)) {
-//            $result['request_id'] = $this->getRequestId();
-//        }
+        if (!is_null($this->getCompany())) {
+            $result['company'] = $this->getCompany();
+        }
+
+        if (!is_null($this->getContacts())) {
+            $result['contacts'] = $this->getContacts();
+        }
 
         return $result;
     }
 
+    /**
+     * @param int|null $requestId
+     * @return array
+     */
     public function toApi(int $requestId = null): array
     {
         $result = [];
@@ -966,5 +969,24 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             self::CONTACTS,
             self::LOSS_REASON,
         ];
+    }
+
+    /**
+     * @return CatalogElementsCollection|null
+     */
+    public function getCatalogElementsLinks(): ?CatalogElementsCollection
+    {
+        return $this->catalogElementsLinks;
+    }
+
+    /**
+     * @param CatalogElementsCollection|null $catalogElementsLinks
+     * @return LeadModel
+     */
+    public function setCatalogElementsLinks(CatalogElementsCollection $catalogElementsLinks): self
+    {
+        $this->catalogElementsLinks = $catalogElementsLinks;
+
+        return $this;
     }
 }

@@ -24,7 +24,8 @@ $apiClient->setAccessToken($accessToken)
                     'baseDomain' => $baseDomain,
                 ]
             );
-        });
+        }
+    );
 
 
 //Получим свойства аккаунта со всеми доступными свойствами
@@ -35,4 +36,5 @@ try {
     die;
 }
 
-var_dump($account->toArray()); die;
+var_dump($account->toArray());
+die;

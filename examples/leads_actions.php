@@ -1,5 +1,7 @@
 <?php
 
+use AmoCRM\Collections\ContactsCollection;
+use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\LeadsCollection;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
@@ -28,7 +30,8 @@ $apiClient->setAccessToken($accessToken)
                     'baseDomain' => $baseDomain,
                 ]
             );
-        });
+        }
+    );
 
 //Создадим сделку
 $lead = new LeadModel();
@@ -65,9 +68,9 @@ $filter = new LeadFilter();
 $filter->setIds([1, 5170965])
     ->setResponsibleUserIds([504141]);
 
-//Получим сделки по фильтру и с полем with=is_price_modified_by_robot,loss_reason
+//Получим сделки по фильтру и с полем with=is_price_modified_by_robot,loss_reason,contacts
 try {
-    $leads = $apiClient->leads()->get($filter, [LeadModel::IS_PRICE_BY_ROBOT, LeadModel::LOSS_REASON]);
+    $leads = $apiClient->leads()->get($filter, [LeadModel::IS_PRICE_BY_ROBOT, LeadModel::LOSS_REASON, LeadModel::CONTACTS]);
 } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
     echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
     die;
@@ -80,7 +83,11 @@ foreach ($leads as $lead) {
     $customFields = $lead->getCustomFieldsValues();
     /** @var CustomFieldValueModel $textField */
     //Получем значение поля по его ID
-    $textField = $customFields->getBy('fieldId', 231189);
+    if (!empty($customFields)) {
+        $textField = $customFields->getBy('fieldId', 231189);
+    } else {
+        $customFields = new CustomFieldsValuesCollection();
+    }
     //Если значения нет, то создадим новый объект поля и добавим его в колекцию значенй
     if (empty($textField)) {
         $textField = (new CustomFieldValueModel())->setFieldId(231189);
@@ -112,3 +119,26 @@ try {
     die;
 }
 
+
+//Получим сделку
+try {
+    $lead = $apiClient->leads()->getOne(1, [LeadModel::CONTACTS, LeadModel::CATALOG_ELEMENTS_LINKS]);
+} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
+    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+    die;
+}
+
+//Получим основной контакт сделки
+/** @var ContactsCollection $leadContacts */
+$leadContacts = $lead->getContacts();
+if ($leadContacts) {
+    $leadMainContact = $leadContacts->getBy('isMain', true);
+}
+
+//Получим элемент, прикрепленный к сделке по его ID
+$element = $lead->getCatalogElementsLinks()->getBy('id', 425909);
+//Так как по-умолчанию в связи хранится минимум информации, то вызовем метод syncOne - чтобы засинхронить модель с amoCRM
+$syncedElement = $apiClient->catalogElements()->syncOne($element);
+
+var_dump($syncedElement);
+die;

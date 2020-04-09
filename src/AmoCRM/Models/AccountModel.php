@@ -617,7 +617,7 @@ class AccountModel extends BaseApiModel
     /**
      * @return bool
      */
-    public function isUnsortedOn(): bool
+    public function getIsUnsortedOn(): bool
     {
         return $this->unsortedOn;
     }
@@ -655,7 +655,7 @@ class AccountModel extends BaseApiModel
     /**
      * @return bool
      */
-    public function isCustomersEnabled(): bool
+    public function getIsCustomersEnabled(): bool
     {
         return $this->customersEnabled;
     }
@@ -674,7 +674,7 @@ class AccountModel extends BaseApiModel
     /**
      * @return bool
      */
-    public function isPeriodicityEnabled(): bool
+    public function getIsPeriodicityEnabled(): bool
     {
         return $this->periodicityEnabled;
     }
@@ -693,7 +693,7 @@ class AccountModel extends BaseApiModel
     /**
      * @return bool
      */
-    public function isLossReasonsEnabled(): bool
+    public function getIsLossReasonsEnabled(): bool
     {
         return $this->lossReasonsEnabled;
     }
@@ -712,7 +712,7 @@ class AccountModel extends BaseApiModel
     /**
      * @return bool
      */
-    public function isHelpbotEnabled(): bool
+    public function getIsHelpbotEnabled(): bool
     {
         return $this->helpbotEnabled;
     }

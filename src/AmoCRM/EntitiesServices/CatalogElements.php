@@ -7,8 +7,11 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\CatalogElementsCollection;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CatalogElementModel;
+use Exception;
 
 class CatalogElements extends BaseEntityTypeEntity
 {
@@ -21,7 +24,7 @@ class CatalogElements extends BaseEntityTypeEntity
     protected function validateEntityType(string $entityType): void
     {
         if ((int)$entityType < EntityTypesInterface::MIN_CATALOG_ID) {
-            throw new \Exception('Doesn\'t looks like catalog exists');
+            throw new Exception('Doesn\'t looks like catalog exists');
         }
     }
 
@@ -99,5 +102,23 @@ class CatalogElements extends BaseEntityTypeEntity
         if (isset($entity['name'])) {
             $apiModel->setName($entity['name']);
         }
+    }
+
+
+    /**
+     * @param BaseApiModel $apiModel
+     * @param array $with
+     * @return BaseApiModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     * @throws Exception
+     */
+    public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
+    {
+        $this->setEntityType($apiModel->getCatalogId());
+
+        $freshModel = $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
+
+        return $freshModel;
     }
 }

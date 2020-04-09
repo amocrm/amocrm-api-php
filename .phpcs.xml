@@ -3,6 +3,7 @@
     <description>The coding standard for amoCRM.</description>
 
     <file>src</file>
+    <file>examples</file>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>

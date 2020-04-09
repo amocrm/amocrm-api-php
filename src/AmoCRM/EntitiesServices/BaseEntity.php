@@ -8,6 +8,7 @@ use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\BaseApiModel;
+use Exception;
 
 abstract class BaseEntity
 {
@@ -190,5 +191,58 @@ abstract class BaseEntity
         $apiModel = $this->processUpdateOne($apiModel, $response);
 
         return $apiModel;
+    }
+
+    /**
+     * @param BaseApiModel $apiModel
+     * @param array $with
+     * @return BaseApiModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     * @throws Exception
+     */
+    public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
+    {
+        $freshModel = $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
+
+        return $freshModel;
+    }
+
+    /**
+     * @param BaseApiModel $objectA
+     * @param BaseApiModel $objectB
+     * @return BaseApiModel
+     * @throws Exception
+     */
+    protected function mergeModels(
+        BaseApiModel $objectA,
+        BaseApiModel $objectB
+    ): BaseApiModel {
+        if (get_class($objectA) !== get_class($objectB)) {
+            throw new Exception('Can not merge 2 different objects');
+        }
+
+        //Так как обе модели должны быть одного класса, нам без разницы у какой получить финальный класс
+        $finalClass = get_class($objectA);
+        $newObject = new $finalClass();
+
+        /**
+         * Свойства класса получим через отражение, а значения через магические метод
+         * @see \AmoCRM\Models\BaseApiModel::__get
+         * @see \AmoCRM\Models\BaseApiModel::__set
+         */
+        $reflection = new \ReflectionClass($objectA);
+        $reflectionProperties = $reflection->getProperties();
+        foreach ($reflectionProperties as $reflectionProperty) {
+            $propertyName = $reflectionProperty->getName();
+            $value = $objectB->$propertyName;
+            if (is_null($value)) {
+                $value = $objectA->$propertyName;
+            }
+
+            $newObject->$propertyName = $value;
+        }
+
+        return $newObject;
     }
 }

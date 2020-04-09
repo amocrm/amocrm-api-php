@@ -40,7 +40,7 @@ class AmojoRights implements Arrayable
     /**
      * @return bool
      */
-    public function isCanDirect(): bool
+    public function getIsCanDirect(): bool
     {
         return $this->canDirect;
     }
@@ -48,7 +48,7 @@ class AmojoRights implements Arrayable
     /**
      * @return bool
      */
-    public function isCanCreateGroups(): bool
+    public function getIsCanCreateGroups(): bool
     {
         return $this->canCreateGroups;
     }

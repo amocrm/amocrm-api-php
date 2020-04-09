@@ -269,10 +269,10 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($catalogElement['name'])) {
             $catalogElementModel->setName($catalogElement['name']);
         }
-        if (!is_null($catalogElement['created_by'])) {
+        if (array_key_exists('created_by', $catalogElement) && !is_null($catalogElement['created_by'])) {
             $catalogElementModel->setCreatedBy((int)$catalogElement['created_by']);
         }
-        if (!is_null($catalogElement['updated_by'])) {
+        if (array_key_exists('updated_by', $catalogElement) && !is_null($catalogElement['updated_by'])) {
             $catalogElementModel->setUpdatedBy((int)$catalogElement['updated_by']);
         }
         if (!empty($catalogElement['created_at'])) {
@@ -284,13 +284,24 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($catalogElement['catalog_id'])) {
             $catalogElementModel->setCatalogId($catalogElement['catalog_id']);
         }
-        if (!is_null($catalogElement['is_deleted'])) {
+        if (array_key_exists('is_deleted', $catalogElement) && !is_null($catalogElement['is_deleted'])) {
             $catalogElementModel->setIsDeleted($catalogElement['is_deleted']);
         }
         if (!empty($catalogElement['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
             $customFieldsValues = $valuesCollection->fromArray($catalogElement['custom_fields_values']);
             $catalogElementModel->setCustomFieldsValues($customFieldsValues);
+        }
+
+        //Костылик для связей
+        if (isset($catalogElement['to_element_id'])) {
+            $catalogElementModel->setId($catalogElement['to_element_id']);
+        }
+        if (isset($catalogElement['metadata']['quantity'])) {
+            $catalogElementModel->setQuantity($catalogElement['metadata']['quantity']);
+        }
+        if (isset($catalogElement['metadata']['catalog_id'])) {
+            $catalogElementModel->setCatalogId($catalogElement['metadata']['catalog_id']);
         }
 
         //todo

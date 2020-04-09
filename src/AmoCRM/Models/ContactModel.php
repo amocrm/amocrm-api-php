@@ -91,6 +91,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
     protected $customFieldsValues;
 
     /**
+     * @var bool|null
+     */
+    protected $isMain;
+
+    /**
      * @var null|int
      */
     protected $requestId = null;
@@ -421,22 +426,26 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($contact['name'])) {
             $contactModel->setName($contact['name']);
         }
-        if (!is_null($contact['first_name'])) {
+        if (array_key_exists('first_name', $contact) && !is_null($contact['first_name'])) {
             $contactModel->setFirstName($contact['first_name']);
         }
-        if (!is_null($contact['last_name'])) {
+        if (array_key_exists('last_name', $contact) && !is_null($contact['last_name'])) {
             $contactModel->setLastName($contact['last_name']);
         }
-        if (!is_null($contact['responsible_user_id'])) {
+        if (array_key_exists('responsible_user_id', $contact) && !is_null($contact['responsible_user_id'])) {
             $contactModel->setResponsibleUserId((int)$contact['responsible_user_id']);
         }
-        if (!is_null($contact['group_id'])) {
+        if (array_key_exists('group_id', $contact) && !is_null($contact['group_id'])) {
             $contactModel->setGroupId((int)$contact['group_id']);
+        }
+        if (array_key_exists('is_main', $contact) && is_bool($contact['is_main'])) {
+            $contactModel->setIsMain((bool)$contact['is_main']);
         }
         //todo
 //        if (!empty($contact['linked_company_id'])) {
 //            $contactModel->setCompanyId($contact['linked_company_id'] > 0 ? (int)$contact['linked_company_id'] : null);
 //        }
+
 
         if (!empty($contact['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
@@ -444,10 +453,10 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
             $contactModel->setCustomFieldsValues($customFieldsValues);
         }
 
-        if (!is_null($contact['created_by'])) {
+        if (array_key_exists('created_by', $contact) && !is_null($contact['created_by'])) {
             $contactModel->setCreatedBy((int)$contact['created_by']);
         }
-        if (!is_null($contact['updated_by'])) {
+        if (array_key_exists('updated_by', $contact) && !is_null($contact['updated_by'])) {
             $contactModel->setUpdatedBy((int)$contact['updated_by']);
         }
         if (!empty($contact['created_at'])) {
@@ -564,6 +573,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
 
         return $result;
     }
+
     /**
      * @return int|null
      */
@@ -593,5 +603,24 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
             self::CUSTOMERS,
             self::CATALOG_ELEMENTS_LINKS,
         ];
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsMain(): ?bool
+    {
+        return $this->isMain;
+    }
+
+    /**
+     * @param bool $isMain
+     * @return ContactModel
+     */
+    public function setIsMain(bool $isMain): self
+    {
+        $this->isMain = $isMain;
+
+        return $this;
     }
 }

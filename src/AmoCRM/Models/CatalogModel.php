@@ -387,10 +387,10 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($catalog['name'])) {
             $catalogModel->setName($catalog['name']);
         }
-        if (!is_null($catalog['created_by'])) {
+        if (array_key_exists('created_by', $catalog) && !is_null($catalog['created_by'])) {
             $catalogModel->setCreatedBy((int)$catalog['created_by']);
         }
-        if (!is_null($catalog['updated_by'])) {
+        if (array_key_exists('updated_by', $catalog) && !is_null($catalog['updated_by'])) {
             $catalogModel->setUpdatedBy((int)$catalog['updated_by']);
         }
         if (!empty($catalog['created_at'])) {
@@ -399,28 +399,28 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($catalog['updated_at'])) {
             $catalogModel->setUpdatedAt($catalog['updated_at']);
         }
-        if (!is_null($catalog['sort'])) {
+        if (array_key_exists('sort', $catalog) && !is_null($catalog['sort'])) {
             $catalogModel->setSort((int)$catalog['sort']);
         }
-        if (!is_null($catalog['type'])) {
+        if (array_key_exists('type', $catalog) && !is_null($catalog['type'])) {
             $catalogModel->setCatalogType((int)$catalog['type']);
         }
-        if (!is_null($catalog['can_add_elements'])) {
+        if (array_key_exists('can_add_elements', $catalog) && !is_null($catalog['can_add_elements'])) {
             $catalogModel->setCanAddElements((bool)$catalog['can_add_elements']);
         }
-        if (!is_null($catalog['can_link_multiple'])) {
+        if (array_key_exists('can_link_multiple', $catalog) && !is_null($catalog['can_link_multiple'])) {
             $catalogModel->setCanLinkMultiple((bool)$catalog['can_link_multiple']);
         }
-        if (!is_null($catalog['can_show_in_cards'])) {
+        if (array_key_exists('can_show_in_cards', $catalog) && !is_null($catalog['can_show_in_cards'])) {
             $catalogModel->setCanShowInCards((bool)$catalog['can_show_in_cards']);
         }
-        if (!is_null($catalog['sdk_widget_code'])) {
+        if (array_key_exists('sdk_widget_code', $catalog) && !is_null($catalog['sdk_widget_code'])) {
             $catalogModel->setSdkWidgetCode($catalog['sdk_widget_code']);
         }
-        if (!is_null($catalog['can_be_deleted'])) {
+        if (array_key_exists('can_be_deleted', $catalog) && !is_null($catalog['can_be_deleted'])) {
             $catalogModel->setCanBeDeleted((bool)$catalog['can_be_deleted']);
         }
-        if (!is_null($catalog['widgets'])) {
+        if (array_key_exists('widgets', $catalog) && !is_null($catalog['widgets'])) {
             $catalogModel->setWidgets($catalog['widgets']);
         }
 

@@ -27,7 +27,8 @@ $apiClient->setAccessToken($accessToken)
                     'baseDomain' => $baseDomain,
                 ]
             );
-        });
+        }
+    );
 
 //Создадим контакт
 $company = new CompanyModel();
@@ -110,4 +111,3 @@ var_dump($companies->toArray());
 //    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
 //    die;
 //}
-

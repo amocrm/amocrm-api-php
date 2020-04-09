@@ -123,7 +123,7 @@ class Bot extends BaseApiModel implements Arrayable
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }

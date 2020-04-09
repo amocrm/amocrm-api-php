@@ -28,7 +28,8 @@ $apiClient->setAccessToken($accessToken)
                     'baseDomain' => $baseDomain,
                 ]
             );
-        });
+        }
+    );
 
 //Получим все каталоги
 try {
@@ -49,7 +50,7 @@ $catalogElement = new CatalogElementModel();
 $catalogElement->setName('Новый товар');
 $catalogElement->setCatalogId($catalog->getId()); //TODO убрать после правки бага в API
 $catalogElementsCollection->add($catalogElement);
-$catalogElementsService =  $apiClient->catalogElements();
+$catalogElementsService = $apiClient->catalogElements();
 $catalogElementsService->setEntityType($catalog->getId());
 try {
     $catalogElementsService->add($catalogElementsCollection);
@@ -61,7 +62,7 @@ try {
 
 //Получим элементы из нужного нам катагола, где в названии или полях есть слово кросовки
 $catalogElementsCollection = new CatalogElementsCollection();
-$catalogElementsService =  $apiClient->catalogElements();
+$catalogElementsService = $apiClient->catalogElements();
 $catalogElementsService->setEntityType($catalog->getId());
 $catalogElementsFilter = new CatalogElementsFilter();
 $catalogElementsFilter->setQuery('Кросовки');
