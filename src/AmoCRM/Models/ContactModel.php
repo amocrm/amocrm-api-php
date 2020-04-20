@@ -5,7 +5,10 @@ namespace AmoCRM\Models;
 use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\AmoCRM\Models\TypeAwareInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
+use AmoCRM\Collections\CatalogElementsCollection;
+use AmoCRM\Collections\CustomersCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
+use AmoCRM\Collections\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
 use InvalidArgumentException;
 
@@ -81,11 +84,6 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
     protected $tags;
 
     /**
-     * @var int
-     */
-    protected $companyId;
-
-    /**
      * @var CustomFieldsValuesCollection|null
      */
     protected $customFieldsValues;
@@ -94,6 +92,26 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
      * @var bool|null
      */
     protected $isMain;
+
+    /**
+     * @var CompanyModel|null
+     */
+    protected $company = null;
+
+    /**
+     * @var LeadsCollection|null
+     */
+    protected $leads = null;
+
+    /**
+     * @var CustomersCollection|null
+     */
+    protected $customers = null;
+
+    /**
+     * @var CatalogElementsCollection|null
+     */
+    protected $catalogElementsLinks = null;
 
     /**
      * @var null|int
@@ -367,21 +385,78 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @return int|null
+     * @return CatalogElementsCollection|null
      */
-    public function getCompanyId(): ?int
+    public function getCatalogElementsLinks(): ?CatalogElementsCollection
     {
-        return $this->companyId;
+        return $this->catalogElementsLinks;
     }
 
     /**
-     * @param int|null $id
+     * @param CatalogElementsCollection|null $catalogElementsLinks
+     * @return ContactModel
+     */
+    public function setCatalogElementsLinks(CatalogElementsCollection $catalogElementsLinks): self
+    {
+        $this->catalogElementsLinks = $catalogElementsLinks;
+
+        return $this;
+    }
+
+    /**
+     * @return LeadsCollection|null
+     */
+    public function getLeads(): ?LeadsCollection
+    {
+        return $this->leads;
+    }
+
+    /**
+     * @param LeadsCollection $leads
+     * @return ContactModel
+     */
+    public function setLeads(LeadsCollection $leads): self
+    {
+        $this->leads = $leads;
+
+        return $this;
+    }
+
+    /**
+     * @return CompanyModel
+     */
+    public function getCompany(): CompanyModel
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param CompanyModel $company
      *
      * @return self
      */
-    public function setCompanyId(?int $id): self
+    public function setCompany(CompanyModel $company): self
     {
-        $this->companyId = $id;
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return CustomersCollection
+     */
+    public function getCustomers(): CustomersCollection
+    {
+        return $this->customers;
+    }
+
+    /**
+     * @param CustomersCollection $customersCollection
+     * @return self
+     */
+    public function setCustomers(CustomersCollection $customersCollection): self
+    {
+        $this->customers = $customersCollection;
 
         return $this;
     }
@@ -441,12 +516,6 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
         if (array_key_exists('is_main', $contact) && is_bool($contact['is_main'])) {
             $contactModel->setIsMain((bool)$contact['is_main']);
         }
-        //todo
-//        if (!empty($contact['linked_company_id'])) {
-//            $contactModel->setCompanyId($contact['linked_company_id'] > 0 ? (int)$contact['linked_company_id'] : null);
-//        }
-
-
         if (!empty($contact['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
             $customFieldsValues = $valuesCollection->fromArray($contact['custom_fields_values']);
@@ -474,6 +543,30 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
             $tagsCollection = $tagsCollection->fromArray($contact[AmoCRMApiRequest::EMBEDDED]['tags']);
             $contactModel->setTags($tagsCollection);
         }
+        if (!empty($contact[AmoCRMApiRequest::EMBEDDED]['companies'][0])) {
+            $company = CompanyModel::fromArray($contact[AmoCRMApiRequest::EMBEDDED]['companies'][0]);
+            $contactModel->setCompany($company);
+        }
+        if (!empty($contact[AmoCRMApiRequest::EMBEDDED][self::LEADS])) {
+            $leadsCollection = new LeadsCollection();
+            $leadsCollection = $leadsCollection->fromArray($contact[AmoCRMApiRequest::EMBEDDED][self::LEADS]);
+            $contactModel->setLeads($leadsCollection);
+        }
+        if (!empty($contact[AmoCRMApiRequest::EMBEDDED][self::CUSTOMERS])) {
+            $empty = null; //For style:check
+            //todo когда будут покупатели
+//            $customersCollection = new CustomersCollection();
+//            $customersCollection = $customersCollection->fromArray($contact[AmoCRMApiRequest::EMBEDDED][self::CUSTOMERS]);
+//            $contactModel->setCustomers($customersCollection);
+        }
+        if (!empty($contact[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS])) {
+            $catalogElementsCollection = new CatalogElementsCollection();
+            $catalogElementsCollection = $catalogElementsCollection->fromArray(
+                $contact[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS]
+            );
+            $contactModel->setCatalogElementsLinks($catalogElementsCollection);
+        }
+
 
         if (!empty($contact['account_id'])) {
             $contactModel->setAccountId((int)$contact['account_id']);
@@ -510,13 +603,17 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
             $result['tags'] = $this->getTags();
         }
 
-//        $companiesCollection = new CompaniesApiCollection();
-//        if (!empty($this->getCompanyId())) {
-//            $company = new LeadCompanyApi();
-//            $company->setId($this->getCompanyId());
-//            $companiesCollection->add($company);
-//        }
-//        $result['companies'] = $companiesCollection;
+        if (!is_null($this->getCatalogElementsLinks())) {
+            $result['catalog_elements_links'] = $this->getCatalogElementsLinks();
+        }
+
+        if (!is_null($this->getCompany())) {
+            $result['company'] = $this->getCompany();
+        }
+
+        if (!is_null($this->getLeads())) {
+            $result['leads'] = $this->getLeads();
+        }
 
         return $result;
     }

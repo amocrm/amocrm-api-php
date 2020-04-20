@@ -1,0 +1,23 @@
+language: php
+
+sudo: false
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+env: MINIMUM_VERSIONS=false
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4
+
+install:
+  - if [[ $MINIMUM_VERSIONS = false ]]; then composer install; fi
+  - if [[ $MINIMUM_VERSIONS = true ]]; then composer update --no-interaction --prefer-lowest; fi
+
+script:
+  - composer run style:check

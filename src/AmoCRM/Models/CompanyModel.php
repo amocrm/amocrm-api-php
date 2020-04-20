@@ -5,7 +5,11 @@ namespace AmoCRM\Models;
 use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\AmoCRM\Models\TypeAwareInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
+use AmoCRM\Collections\CatalogElementsCollection;
+use AmoCRM\Collections\ContactsCollection;
+use AmoCRM\Collections\CustomersCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
+use AmoCRM\Collections\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
 use InvalidArgumentException;
 
@@ -76,25 +80,25 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
      */
     protected $customFieldsValues;
 
-//    /**
-//     * @var LeadsApiCollection
-//     */
-//    protected $leads;
-//
-//    /**
-//     * @var CustomersApiCollection
-//     */
-//    protected $customers;
-//
-//    /**
-//     * @var ContactsApiCollection
-//     */
-//    protected $companys;
-//
-//    /**
-//     * @var CatalogElementsLinksCollection|null
-//     */
-//    protected $catalogElementsLinks;
+    /**
+     * @var ContactsCollection|null
+     */
+    protected $contacts = null;
+
+    /**
+     * @var LeadsCollection|null
+     */
+    protected $leads = null;
+
+    /**
+     * @var CustomersCollection|null
+     */
+    protected $customers = null;
+
+    /**
+     * @var CatalogElementsCollection|null
+     */
+    protected $catalogElementsLinks = null;
 
     /**
      * @var null|int
@@ -348,6 +352,83 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
+     * @return CatalogElementsCollection|null
+     */
+    public function getCatalogElementsLinks(): ?CatalogElementsCollection
+    {
+        return $this->catalogElementsLinks;
+    }
+
+    /**
+     * @param CatalogElementsCollection|null $catalogElementsLinks
+     * @return CompanyModel
+     */
+    public function setCatalogElementsLinks(CatalogElementsCollection $catalogElementsLinks): self
+    {
+        $this->catalogElementsLinks = $catalogElementsLinks;
+
+        return $this;
+    }
+
+    /**
+     * @return LeadsCollection|null
+     */
+    public function getLeads(): ?LeadsCollection
+    {
+        return $this->leads;
+    }
+
+    /**
+     * @param LeadsCollection $leads
+     * @return CompanyModel
+     */
+    public function setLeads(LeadsCollection $leads): self
+    {
+        $this->leads = $leads;
+
+        return $this;
+    }
+
+    /**
+     * @return null|ContactsCollection
+     */
+    public function getContacts(): ?ContactsCollection
+    {
+        return $this->contacts;
+    }
+
+    /**
+     * @param ContactsCollection $contacts
+     *
+     * @return self
+     */
+    public function setContacts(ContactsCollection $contacts): self
+    {
+        $this->contacts = $contacts;
+
+        return $this;
+    }
+
+    /**
+     * @return CustomersCollection
+     */
+    public function getCustomers(): CustomersCollection
+    {
+        return $this->customers;
+    }
+
+    /**
+     * @param CustomersCollection $customersCollection
+     * @return self
+     */
+    public function setCustomers(CustomersCollection $customersCollection): self
+    {
+        $this->customers = $customersCollection;
+
+        return $this;
+    }
+
+    /**
      * @param array $company
      *
      * @return self
@@ -402,6 +483,31 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
             $companyModel->setTags($tagsCollection);
         }
 
+        if (!empty($company[AmoCRMApiRequest::EMBEDDED][self::CONTACTS])) {
+            $contactsCollection = new ContactsCollection();
+            $contactsCollection = $contactsCollection->fromArray($company[AmoCRMApiRequest::EMBEDDED][self::CONTACTS]);
+            $companyModel->setContacts($contactsCollection);
+        }
+        if (!empty($company[AmoCRMApiRequest::EMBEDDED][self::LEADS])) {
+            $leadsCollection = new LeadsCollection();
+            $leadsCollection = $leadsCollection->fromArray($company[AmoCRMApiRequest::EMBEDDED][self::LEADS]);
+            $companyModel->setLeads($leadsCollection);
+        }
+        if (!empty($company[AmoCRMApiRequest::EMBEDDED][self::CUSTOMERS])) {
+            $empty = true; //For style:check
+            //todo когда будут покупатели
+//            $customersCollection = new CustomersCollection();
+//            $customersCollection = $customersCollection->fromArray($company[AmoCRMApiRequest::EMBEDDED][self::CUSTOMERS]);
+//            $companyModel->setCustomers($customersCollection);
+        }
+        if (!empty($company[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS])) {
+            $catalogElementsCollection = new CatalogElementsCollection();
+            $catalogElementsCollection = $catalogElementsCollection->fromArray(
+                $company[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS]
+            );
+            $companyModel->setCatalogElementsLinks($catalogElementsCollection);
+        }
+
         if (!empty($company['account_id'])) {
             $companyModel->setAccountId((int)$company['account_id']);
         }
@@ -433,6 +539,18 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
 
         if (!is_null($this->getTags())) {
             $result['tags'] = $this->getTags();
+        }
+
+        if (!is_null($this->getCatalogElementsLinks())) {
+            $result['catalog_elements_links'] = $this->getCatalogElementsLinks();
+        }
+
+        if (!is_null($this->getContacts())) {
+            $result['contacts'] = $this->getContacts();
+        }
+
+        if (!is_null($this->getLeads())) {
+            $result['leads'] = $this->getLeads();
         }
 
         return $result;

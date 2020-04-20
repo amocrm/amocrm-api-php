@@ -124,11 +124,6 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     protected $score;
 
     /**
-     * @var CatalogElementsCollection|null
-     */
-    protected $catalogElementsLinks = null;
-
-    /**
      * @var null|bool
      */
     protected $isPriceModifiedByRobot = null;
@@ -142,6 +137,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
      * @var CompanyModel|null
      */
     protected $company = null;
+
+    /**
+     * @var CatalogElementsCollection|null
+     */
+    protected $catalogElementsLinks = null;
 
     /**
      * @var null|int
@@ -614,26 +614,6 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         return $this;
     }
 
-//    /**
-//     * @return CatalogElementsLinksCollection|null
-//     */
-//    public function getCatalogElementsLinks(): ?CatalogElementsLinksCollection
-//    {
-//        return $this->catalogElementsLinks;
-//    }
-//
-//    /**
-//     * @param CatalogElementsLinksCollection $collection
-//     *
-//     * @return self
-//     */
-//    public function setCatalogElementsLinks(?CatalogElementsLinksCollection $collection): self
-//    {
-//        $this->catalogElementsLinks = $collection;
-//
-//        return $this;
-//    }
-
     /**
      * @return null|bool
      */
@@ -653,47 +633,6 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
 
         return $this;
     }
-
-//    /**
-//     * @return null|LossReasonCollection
-//     */
-//    public function getLossReason(): ?LossReasonCollection
-//    {
-//        return $this->lossReason;
-//    }
-//
-//    /**
-//     * @param null|LossReasonCollection $lossReason
-//     *
-//     * @return self
-//     */
-//    public function setLossReason(?LossReasonCollection $lossReason = null): self
-//    {
-//        $this->lossReason = $lossReason;
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * @return null|ContactsApiCollection
-//     */
-//    public function getContacts(): ?ContactsApiCollection
-//    {
-//        return $this->contacts;
-//    }
-//
-//    /**
-//     * @param null|ContactsApiCollection $contactsApiCollection
-//     *
-//     * @return self
-//     */
-//    public function setContacts(?ContactsApiCollection $contactsApiCollection = null): self
-//    {
-//        $this->contacts = $contactsApiCollection;
-//
-//        return $this;
-//    }
-
 
     /**
      * @param array $lead
@@ -738,11 +677,6 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($lead['main_contact_id'])) {
             $leadModel->setMainContactId($lead['main_contact_id'] > 0 ? (int)$lead['main_contact_id'] : null);
         }
-        //todo
-//        if (!empty($lead['linked_company_id'])) {
-//            $leadModel->setCompanyId($lead['linked_company_id'] > 0 ? (int)$lead['linked_company_id'] : null);
-//        }
-
         if (!empty($lead['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
             $customFieldsValues = $valuesCollection->fromArray($lead['custom_fields_values']);

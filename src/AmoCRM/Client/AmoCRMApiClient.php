@@ -7,9 +7,14 @@ use AmoCRM\EntitiesServices\CatalogElements;
 use AmoCRM\EntitiesServices\Catalogs;
 use AmoCRM\EntitiesServices\Companies;
 use AmoCRM\EntitiesServices\Contacts;
+use AmoCRM\EntitiesServices\CustomFieldGroups;
+use AmoCRM\EntitiesServices\CustomFields;
 use AmoCRM\EntitiesServices\EntityTags;
 use AmoCRM\EntitiesServices\Leads;
+use AmoCRM\EntitiesServices\Roles;
+use AmoCRM\EntitiesServices\Segments;
 use AmoCRM\OAuth\AmoCRMOAuth;
+use Exception;
 use League\OAuth2\Client\Token\AccessToken;
 
 class AmoCRMApiClient
@@ -120,13 +125,21 @@ class AmoCRMApiClient
     /**
      * Метод вернет объект тегов
      * @TODO make static
+     * @param string $entityType
      * @return EntityTags
+     * @throws Exception
      */
-    public function tags()
+    public function tags(string $entityType)
     {
         $request = $this->buildRequest();
 
-        return new EntityTags($request);
+        $service = new EntityTags($request);
+
+        if (!is_null($entityType)) {
+            $service->setEntityType($entityType);
+        }
+
+        return $service;
     }
 
     /**
@@ -190,7 +203,47 @@ class AmoCRMApiClient
     }
 
     /**
-     * Метод вернет объект акааунта
+     * Метод вернет объект кастом полей
+     * @TODO make static
+     * @param string $entityType
+     * @return CustomFields
+     * @throws Exception
+     */
+    public function customFields(string $entityType)
+    {
+        $request = $this->buildRequest();
+
+        $service = new CustomFields($request);
+
+        if (!is_null($entityType)) {
+            $service->setEntityType($entityType);
+        }
+
+        return $service;
+    }
+
+    /**
+     * Метод вернет объект групп кастом полей (табы в карточке)
+     * @TODO make static
+     * @param string|null $entityType
+     * @return CustomFieldGroups
+     * @throws Exception
+     */
+    public function customFieldGroups(string $entityType = null)
+    {
+        $request = $this->buildRequest();
+
+        $service = new CustomFieldGroups($request);
+
+        if (!is_null($entityType)) {
+            $service->setEntityType($entityType);
+        }
+
+        return $service;
+    }
+
+    /**
+     * Метод вернет объект аккаунта
      * @TODO make static
      * @return Account
      */
@@ -199,5 +252,30 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Account($request);
+    }
+
+    /**
+     * Метод вернет объект ролей пользователей
+     * @TODO make static
+     * @return Roles
+     */
+    public function roles()
+    {
+        $request = $this->buildRequest();
+
+        return new Roles($request);
+    }
+
+
+    /**
+     * Метод вернет объект сегментов покупателей
+     * @TODO make static
+     * @return Segments
+     */
+    public function customersSegments()
+    {
+        $request = $this->buildRequest();
+
+        return new Segments($request);
     }
 }

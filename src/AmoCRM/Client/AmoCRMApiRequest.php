@@ -198,6 +198,70 @@ class AmoCRMApiRequest
 
     /**
      * @param string $method
+     * @param array $body
+     * @param array $queryParams
+     * @param array $headers
+     * @param bool $needToRefresh
+     * @return array
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function delete(
+        string $method,
+        array $body = [],
+        array $queryParams = [],
+        array $headers = [],
+        bool $needToRefresh = false
+    ): array {
+        if ($this->accessToken->hasExpired()) {
+            $needToRefresh = true;
+        }
+
+        if ($needToRefresh) {
+            $this->refreshAccessToken();
+        }
+
+        $headers = array_merge($headers, $this->getBaseHeaders());
+
+        try {
+            $response = $this->httpClient->request(
+                self::DELETE_REQUEST,
+                $this->oAuthClient->getAccountUrl() . $method,
+                [
+                    RequestOptions::JSON => $body,
+                    RequestOptions::CONNECT_TIMEOUT => self::CONNECT_TIMEOUT,
+                    RequestOptions::HEADERS => $headers,
+                    RequestOptions::HTTP_ERRORS => false,
+                    RequestOptions::QUERY => $queryParams,
+                    RequestOptions::TIMEOUT => self::REQUEST_TIMEOUT,
+                ]
+            );
+        } catch (GuzzleException $e) {
+            throw new AmoCRMoAuthApiException("Request problem: {$e->getMessage()}");
+        }
+
+        /**
+         * В случае получения ошибки авторизации, пробуем обновить токен 1 раз,
+         * если не получилось, то тогда уже выкидываем Exception
+         */
+        try {
+            //todo errors
+            $response = $this->parseResponse($response);
+        } catch (AmoCRMoAuthApiException $e) {
+            if ($needToRefresh) {
+                throw $e;
+            }
+
+            return $this->delete($method, $body, $queryParams, $headers, true);
+        }
+        //todo validate response and exception
+
+        //todo return true or false
+        return $response;
+    }
+
+    /**
+     * @param string $method
      * @param array $queryParams
      * @param array $headers
      * @param bool $needToRefresh
@@ -269,7 +333,7 @@ class AmoCRMApiRequest
 
         if ((int)$response->getStatusCode() === self::NO_CONTENT) {
             //todo own exception
-            throw new Exception("No content", self::NO_CONTENT);
+            throw new AmoCRMApiException("No content", self::NO_CONTENT);
         }
 
 
@@ -295,7 +359,15 @@ class AmoCRMApiRequest
 
         $bodyContents = $response->getBody()->getContents();
 
-        if ($response->getStatusCode() !== self::ACCEPTED && !($decodedBody = json_decode($bodyContents, true))) {
+        if (json_decode($bodyContents, true)) {
+            $decodedBody = json_decode($bodyContents, true);
+        }
+
+        if (
+            $response->getStatusCode() !== self::ACCEPTED
+            && !$decodedBody
+            && !empty($bodyContents)
+        ) {
             $exception = new AmoCRMApiException("Response body is not a json: {$bodyContents}");
             //todo set detail and title
             throw $exception;

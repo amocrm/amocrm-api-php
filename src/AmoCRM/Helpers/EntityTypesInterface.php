@@ -11,6 +11,12 @@ interface EntityTypesInterface
     const CUSTOMERS = 'customers';
     const TAGS = 'tags';
     const CATALOG_ELEMENTS = 'elements';
+    const USER_ROLES = 'roles';
+    const CUSTOMERS_SEGMENTS = 'segments';
+
+
+    const CUSTOM_FIELDS = 'custom_fields';
+    const CUSTOM_FIELD_GROUPS = 'custom_field_groups';
 
     const DEFAULT_CATALOG_TYPE_STRING = 'regular';
     const INVOICES_CATALOG_TYPE_STRING = 'invoices';
