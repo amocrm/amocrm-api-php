@@ -246,7 +246,6 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface
 
     public function getType(): string
     {
-        //TODO fix in core
         return 'catalog_' . EntityTypesInterface::CATALOG_ELEMENTS;
     }
 

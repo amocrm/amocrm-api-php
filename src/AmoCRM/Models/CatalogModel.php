@@ -438,6 +438,7 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface
     public function toArray(): array
     {
         $result = [
+            'id' => $this->getId(),
             'name' => $this->getName(),
             'created_by' => $this->getCreatedBy(),
             'updated_by' => $this->getUpdatedBy(),

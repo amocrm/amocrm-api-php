@@ -10,6 +10,7 @@ interface EntityTypesInterface
     const COMPANIES = 'companies';
     const CUSTOMERS = 'customers';
     const TAGS = 'tags';
+    const TASKS = 'tasks';
     const CATALOG_ELEMENTS = 'elements';
     const USER_ROLES = 'roles';
     const CUSTOMERS_SEGMENTS = 'segments';

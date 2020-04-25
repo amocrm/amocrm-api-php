@@ -13,6 +13,7 @@ use AmoCRM\EntitiesServices\EntityTags;
 use AmoCRM\EntitiesServices\Leads;
 use AmoCRM\EntitiesServices\Roles;
 use AmoCRM\EntitiesServices\Segments;
+use AmoCRM\EntitiesServices\Tasks;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use Exception;
 use League\OAuth2\Client\Token\AccessToken;
@@ -138,6 +139,19 @@ class AmoCRMApiClient
         if (!is_null($entityType)) {
             $service->setEntityType($entityType);
         }
+
+        return $service;
+    }
+
+    /**
+     * Метод вернет объект задач
+     * @return Tasks
+     */
+    public function tasks()
+    {
+        $request = $this->buildRequest();
+
+        $service = new Tasks($request);
 
         return $service;
     }

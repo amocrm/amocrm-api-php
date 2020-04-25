@@ -133,7 +133,7 @@ class Leads extends BaseEntity implements HasLinkMethodInterface
                     //, 'metadata': {'updated_by': 0}
                 ];
                 if ($linkedEntity instanceof CatalogElementModel) {
-                    $link['metadata']['to_catalog_id'] = $linkedEntity->getCatalogId();
+                    $link['metadata']['catalog_id'] = $linkedEntity->getCatalogId();
                     if (!is_null($linkedEntity->getQuantity())) {
                         $link['metadata']['quantity'] = $linkedEntity->getQuantity();
                     }
