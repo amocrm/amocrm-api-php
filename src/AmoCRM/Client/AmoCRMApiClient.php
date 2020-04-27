@@ -9,6 +9,7 @@ use AmoCRM\EntitiesServices\Companies;
 use AmoCRM\EntitiesServices\Contacts;
 use AmoCRM\EntitiesServices\CustomFieldGroups;
 use AmoCRM\EntitiesServices\CustomFields;
+use AmoCRM\EntitiesServices\EntityNotes;
 use AmoCRM\EntitiesServices\EntityTags;
 use AmoCRM\EntitiesServices\Leads;
 use AmoCRM\EntitiesServices\Roles;
@@ -21,8 +22,6 @@ use League\OAuth2\Client\Token\AccessToken;
 class AmoCRMApiClient
 {
     public const API_VERSION = 4;
-
-    protected const HOST_PATTERN = '%s.amocrm.%s';
 
     /**
      * @var AmoCRMOAuth
@@ -124,8 +123,26 @@ class AmoCRMApiClient
     }
 
     /**
+     * Метод вернет объект примечаний сущности
+     * @param string $entityType
+     * @return EntityNotes
+     * @throws Exception
+     */
+    public function notes(string $entityType)
+    {
+        $request = $this->buildRequest();
+
+        $service = new EntityNotes($request);
+
+        if (!is_null($entityType)) {
+            $service->setEntityType($entityType);
+        }
+
+        return $service;
+    }
+
+    /**
      * Метод вернет объект тегов
-     * @TODO make static
      * @param string $entityType
      * @return EntityTags
      * @throws Exception
@@ -158,7 +175,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект сделок
-     * @TODO make static
      * @return Leads
      */
     public function leads()
@@ -170,7 +186,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект контактов
-     * @TODO make static
      * @return Contacts
      */
     public function contacts()
@@ -182,7 +197,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект компаний
-     * @TODO make static
      * @return Companies
      */
     public function companies()
@@ -194,7 +208,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект каталогов
-     * @TODO make static
      * @return Catalogs
      */
     public function catalogs()
@@ -206,7 +219,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект элементов каталогов
-     * @TODO make static
      * @return CatalogElements
      */
     public function catalogElements()
@@ -218,7 +230,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект кастом полей
-     * @TODO make static
      * @param string $entityType
      * @return CustomFields
      * @throws Exception
@@ -238,7 +249,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект групп кастом полей (табы в карточке)
-     * @TODO make static
      * @param string|null $entityType
      * @return CustomFieldGroups
      * @throws Exception
@@ -258,7 +268,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект аккаунта
-     * @TODO make static
      * @return Account
      */
     public function account()
@@ -270,7 +279,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект ролей пользователей
-     * @TODO make static
      * @return Roles
      */
     public function roles()
@@ -283,7 +291,6 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект сегментов покупателей
-     * @TODO make static
      * @return Segments
      */
     public function customersSegments()

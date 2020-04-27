@@ -2,8 +2,13 @@
 
 namespace AmoCRM\Filters;
 
-class TagFilter extends BaseEntityFilter
+use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\PagesFilterTrait;
+
+class TagFilter extends BaseEntityFilter implements HasPagesInterface
 {
+    use PagesFilterTrait;
+
     /**
      * @var array|null
      */
@@ -15,6 +20,11 @@ class TagFilter extends BaseEntityFilter
     private $search = null;
 
     /**
+     * @var string|null
+     */
+    private $name = null;
+
+    /**
      * @return null|array
      */
     public function getIds(): ?array
@@ -24,7 +34,7 @@ class TagFilter extends BaseEntityFilter
 
     /**
      * @param array $ids
-     * @return ContactFilter
+     * @return TagFilter
      */
     public function setIds(array $ids): self
     {
@@ -59,6 +69,27 @@ class TagFilter extends BaseEntityFilter
     }
 
     /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     * @return TagFilter
+     */
+    public function setName(?string $name): self
+    {
+        if (!empty($name)) {
+            $this->name = (string)$name;
+        }
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function buildFilter(): array
@@ -72,6 +103,12 @@ class TagFilter extends BaseEntityFilter
         if (!is_null($this->getSearch())) {
             $filter['search'] = $this->getSearch();
         }
+
+        if (!is_null($this->getName())) {
+            $filter['filter']['name'] = $this->getName();
+        }
+
+        $filter = $this->buildPagesFilter($filter);
 
         return $filter;
     }

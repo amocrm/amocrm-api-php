@@ -2,8 +2,13 @@
 
 namespace AmoCRM\Filters;
 
-class CompanyFilter extends BaseEntityFilter
+use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\PagesFilterTrait;
+
+class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
 {
+    use PagesFilterTrait;
+
     /**
      * @var array|null
      */
@@ -104,6 +109,8 @@ class CompanyFilter extends BaseEntityFilter
         if (!is_null($this->getResponsibleUserIds())) {
             $filter['responsible_user_id'] = $this->getResponsibleUserIds();
         }
+
+        $filter = $this->buildPagesFilter($filter);
 
         return $filter;
     }

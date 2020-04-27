@@ -5,7 +5,7 @@ namespace AmoCRM\Filters;
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
-class CatalogElementsFilter extends BaseEntityFilter implements HasPagesInterface
+class NoteFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use PagesFilterTrait;
 
@@ -15,9 +15,9 @@ class CatalogElementsFilter extends BaseEntityFilter implements HasPagesInterfac
     private $ids = null;
 
     /**
-     * @var string|null
+     * @var array
      */
-    private $query = null;
+    private $noteTypes = [];
 
     /**
      * @return null|array
@@ -29,7 +29,7 @@ class CatalogElementsFilter extends BaseEntityFilter implements HasPagesInterfac
 
     /**
      * @param array $ids
-     * @return CatalogElementsFilter
+     * @return NoteFilter
      */
     public function setIds(array $ids): self
     {
@@ -43,21 +43,22 @@ class CatalogElementsFilter extends BaseEntityFilter implements HasPagesInterfac
     }
 
     /**
-     * @return string|null
+     * @return array
      */
-    public function getQuery(): ?string
+    public function getNoteTypes(): array
     {
-        return $this->query;
+        return $this->noteTypes;
     }
 
     /**
-     * @param string|null $query
-     * @return CatalogElementsFilter
+     * @param array $types
+     * @return NoteFilter
      */
-    public function setQuery(?string $query): self
+    public function setNoteTypes(array $types): self
     {
-        if (!empty($query)) {
-            $this->query = (string)$query;
+        //todo validate only types
+        if (!empty($types)) {
+            $this->noteTypes = $types;
         }
 
         return $this;
@@ -71,11 +72,11 @@ class CatalogElementsFilter extends BaseEntityFilter implements HasPagesInterfac
         $filter = [];
 
         if (!is_null($this->getIds())) {
-            $filter['id'] = $this->getIds();
+            $filter['filter']['id'] = $this->getIds();
         }
 
-        if (!is_null($this->getQuery())) {
-            $filter['term'] = $this->getQuery();
+        if (!empty($this->getNoteTypes())) {
+            $filter['filter']['note_type'] = $this->getNoteTypes();
         }
 
         $filter = $this->buildPagesFilter($filter);

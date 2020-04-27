@@ -2,8 +2,13 @@
 
 namespace AmoCRM\Filters;
 
-class LeadFilter extends BaseEntityFilter
+use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\PagesFilterTrait;
+
+class LeadFilter extends BaseEntityFilter implements HasPagesInterface
 {
+    use PagesFilterTrait;
+
     /**
      * @var array|null
      */
@@ -147,6 +152,8 @@ class LeadFilter extends BaseEntityFilter
         if (!is_null($this->getQuery())) {
             $filter['query'] = $this->getQuery();
         }
+
+        $filter = $this->buildPagesFilter($filter);
 
         return $filter;
     }

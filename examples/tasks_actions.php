@@ -54,4 +54,3 @@ try {
     echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
     die;
 }
-
