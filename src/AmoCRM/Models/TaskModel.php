@@ -493,6 +493,7 @@ class TaskModel extends BaseApiModel
             'is_completed' => $this->getIsCompleted(),
             'task_type_id' => $this->getTaskTypeId(),
             'result' => $this->getResult(),
+            'account_id' => $this->getAccountId(),
         ];
 
         return $result;
@@ -544,6 +545,10 @@ class TaskModel extends BaseApiModel
 
         if (!is_null($this->getIsCompleted())) {
             $result['is_completed'] = $this->getIsCompleted();
+        }
+
+        if (!is_null($this->getCompleteTill())) {
+            $result['complete_till'] = $this->getCompleteTill();
         }
 
         if (!is_null($this->getTaskTypeId())) {

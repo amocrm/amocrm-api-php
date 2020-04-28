@@ -11,6 +11,7 @@ use AmoCRM\EntitiesServices\CustomFieldGroups;
 use AmoCRM\EntitiesServices\CustomFields;
 use AmoCRM\EntitiesServices\EntityNotes;
 use AmoCRM\EntitiesServices\EntityTags;
+use AmoCRM\EntitiesServices\Events;
 use AmoCRM\EntitiesServices\Leads;
 use AmoCRM\EntitiesServices\Roles;
 use AmoCRM\EntitiesServices\Segments;
@@ -298,5 +299,16 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Segments($request);
+    }
+
+    /**
+     * Метод вернет объект событий
+     * @return Events
+     */
+    public function events()
+    {
+        $request = $this->buildRequest();
+
+        return new Events($request);
     }
 }

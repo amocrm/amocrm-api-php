@@ -19,6 +19,46 @@ class NoteModel extends BaseApiModel implements Arrayable
     protected $entityId;
 
     /**
+     * @var null|int
+     */
+    protected $responsibleUserId;
+
+    /**
+     * @var null|int
+     */
+    protected $groupId;
+
+    /**
+     * @var null|int
+     */
+    protected $createdBy;
+
+    /**
+     * @var null|int
+     */
+    protected $updatedBy;
+
+    /**
+     * @var null|int
+     */
+    protected $createdAt;
+
+    /**
+     * @var null|int
+     */
+    protected $updatedAt;
+
+    /**
+     * @var null|int
+     */
+    protected $accountId;
+
+    /**
+     * @var null|int
+     */
+    protected $requestId = null;
+
+    /**
      * @param array $note
      *
      * @return self
@@ -30,7 +70,34 @@ class NoteModel extends BaseApiModel implements Arrayable
 
         $model->setId($note['id']);
         $model->setEntityId($note['entity_id']);
-        //todo all fields
+
+        if (array_key_exists('responsible_user_id', $note) && !is_null($note['responsible_user_id'])) {
+            $model->setResponsibleUserId((int)$note['responsible_user_id']);
+        }
+
+        if (array_key_exists('group_id', $note) && !is_null($note['group_id'])) {
+            $model->setGroupId((int)$note['group_id']);
+        }
+
+        if (array_key_exists('created_by', $note) && !is_null($note['created_by'])) {
+            $model->setCreatedBy((int)$note['created_by']);
+        }
+
+        if (array_key_exists('updated_by', $note) && !is_null($note['updated_by'])) {
+            $model->setUpdatedBy((int)$note['updated_by']);
+        }
+
+        if (!empty($note['created_at'])) {
+            $model->setCreatedAt($note['created_at']);
+        }
+
+        if (!empty($note['updated_at'])) {
+            $model->setUpdatedAt($note['updated_at']);
+        }
+
+        if (!empty($note['account_id'])) {
+            $model->setAccountId((int)$note['account_id']);
+        }
 
         return $model;
     }
@@ -52,7 +119,17 @@ class NoteModel extends BaseApiModel implements Arrayable
         $result = [
             'id' => $this->getId(),
             'entity_id' => $this->getEntityId(),
+            'note_type' => $this->getNoteType(),
+            'responsible_user_id' => $this->getResponsibleUserId(),
+            'group_id' => $this->getGroupId(),
+            'created_by' => $this->getCreatedBy(),
+            'updated_by' => $this->getUpdatedBy(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt(),
+            'account_id' => $this->getAccountId(),
         ];
+
+        //Параметы в child-классах
 
         return $result;
     }
@@ -93,6 +170,139 @@ class NoteModel extends BaseApiModel implements Arrayable
     }
 
     /**
+     * @return int|null
+     */
+    public function getResponsibleUserId(): ?int
+    {
+        return $this->responsibleUserId;
+    }
+
+    /**
+     * @param int|null $responsibleUserId
+     * @return NoteModel
+     */
+    public function setResponsibleUserId(?int $responsibleUserId): NoteModel
+    {
+        $this->responsibleUserId = $responsibleUserId;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getGroupId(): ?int
+    {
+        return $this->groupId;
+    }
+
+    /**
+     * @param int|null $groupId
+     * @return NoteModel
+     */
+    public function setGroupId(?int $groupId): NoteModel
+    {
+        $this->groupId = $groupId;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCreatedBy(): ?int
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param int|null $createdBy
+     * @return NoteModel
+     */
+    public function setCreatedBy(?int $createdBy): NoteModel
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUpdatedBy(): ?int
+    {
+        return $this->updatedBy;
+    }
+
+    /**
+     * @param int|null $updatedBy
+     * @return NoteModel
+     */
+    public function setUpdatedBy(?int $updatedBy): NoteModel
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCreatedAt(): ?int
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param int|null $createdAt
+     * @return NoteModel
+     */
+    public function setCreatedAt(?int $createdAt): NoteModel
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUpdatedAt(): ?int
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param int|null $updatedAt
+     * @return NoteModel
+     */
+    public function setUpdatedAt(?int $updatedAt): NoteModel
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAccountId(): ?int
+    {
+        return $this->accountId;
+    }
+
+    /**
+     * @param int|null $accountId
+     * @return NoteModel
+     */
+    public function setAccountId(?int $accountId): NoteModel
+    {
+        $this->accountId = $accountId;
+
+        return $this;
+    }
+
+    /**
      * @param int|null $requestId
      * @return array
      */
@@ -108,8 +318,62 @@ class NoteModel extends BaseApiModel implements Arrayable
             $result['id'] = $this->getId();
         }
 
+        if (!is_null($this->getResponsibleUserId())) {
+            $result['responsible_user_id'] = $this->getResponsibleUserId();
+        }
+
+        if (!is_null($this->getCreatedBy())) {
+            $result['created_by'] = $this->getCreatedBy();
+        }
+
+        if (!is_null($this->getUpdatedBy())) {
+            $result['updated_by'] = $this->getUpdatedBy();
+        }
+
+        if (!is_null($this->getCreatedAt())) {
+            $result['created_at'] = $this->getCreatedAt();
+        }
+
+        if (!is_null($this->getUpdatedAt())) {
+            $result['updated_at'] = $this->getUpdatedAt();
+        }
+
+        if (is_null($this->getRequestId()) && !is_null($requestId)) {
+            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+        }
+
+        $result['request_id'] = $this->getRequestId();
+
         $result['note_type'] = $this->getNoteType();
 
         return $result;
+    }
+
+
+    /**
+     * @return int|null
+     */
+    public function getRequestId(): ?int
+    {
+        return $this->requestId;
+    }
+
+    /**
+     * @param int|null $requestId
+     * @return NoteModel
+     */
+    public function setRequestId(?int $requestId): self
+    {
+        $this->requestId = $requestId;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAvailableWith(): array
+    {
+        return [];
     }
 }

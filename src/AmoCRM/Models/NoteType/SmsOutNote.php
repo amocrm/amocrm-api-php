@@ -4,7 +4,7 @@ namespace AmoCRM\Models\NoteType;
 
 use AmoCRM\AmoCRM\Models\Factories\NoteFactory;
 
-class SmsOutNote extends TargetingNote
+class SmsOutNote extends SmsNote
 {
     protected $modelClass = SmsOutNote::class;
 

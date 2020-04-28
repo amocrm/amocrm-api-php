@@ -1,5 +1,6 @@
 <?php
 
+use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\TasksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
@@ -34,23 +35,31 @@ $task = new TaskModel();
 $task->setTaskTypeId(TaskModel::TASK_TYPE_ID_CALL)
     ->setText('Новая задач')
     ->setCompleteTill(mktime(10, 0, 0, 10, 3, 2020))
-    ->setEntityType('lead') //todo check and constant
+    ->setEntityType(EntityTypesInterface::LEADS)
     ->setEntityId(1)
     ->setDuration(30 * 60 * 60) //30 минут
     ->setResponsibleUserId(123);
 $tasksCollection->add($task);
 
 try {
-    $apiClient->tasks()->add($tasksCollection);
+    $tasksCollection = $apiClient->tasks()->add($tasksCollection);
 } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
     echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
     die;
 }
 
-//Получим все задачи
+//Закроем задачу, что только создали (не делайте так в продакшене)
+/** @var TaskModel $taskToClose */
+$taskToClose = $tasksCollection->first();
+$taskToClose->setIsCompleted(true)
+    ->setResult('Выполнено');
+
 try {
-    $tasksCollection = $apiClient->tasks()->get();
+    //Получим актуальное состояние задачи и обновим её
+    $taskToClose = $apiClient->tasks()->syncOne($taskToClose);
+    $taskToClose = $apiClient->tasks()->updateOne($taskToClose);
 } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
     echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
     die;
 }
+var_dump($taskToClose->toArray());

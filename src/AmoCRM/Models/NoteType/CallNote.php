@@ -57,7 +57,7 @@ abstract class CallNote extends NoteModel
     protected $callResult;
 
     /**
-     * @var null|string
+     * @var null|int
      */
     protected $callStatus;
 
@@ -258,18 +258,18 @@ abstract class CallNote extends NoteModel
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getCallStatus(): ?string
+    public function getCallStatus(): ?int
     {
         return $this->callStatus;
     }
 
     /**
-     * @param string|null $callStatus
+     * @param int|null $callStatus
      * @return CallNote
      */
-    public function setCallStatus(?string $callStatus): CallNote
+    public function setCallStatus(?int $callStatus): CallNote
     {
         if (!in_array($callStatus, self::AVAILABLE_CALL_STATUSES, true)) {
             return $this;
