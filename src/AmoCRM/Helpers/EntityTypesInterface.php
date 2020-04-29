@@ -9,6 +9,8 @@ interface EntityTypesInterface
     const CATALOGS = 'catalogs';
     const COMPANIES = 'companies';
     const CUSTOMERS = 'customers';
+    const EVENTS = 'events';
+    const NOTES = 'notes';
     const TAGS = 'tags';
     const TASKS = 'tasks';
     const CATALOG_ELEMENTS = 'elements';

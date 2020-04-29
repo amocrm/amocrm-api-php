@@ -311,4 +311,13 @@ class AmoCRMApiClient
 
         return new Events($request);
     }
+
+    /**
+     * Метод вернет объект запроса для любых запросов в amoCRM с текущим Access Token
+     * @return AmoCRMApiRequest
+     */
+    public function getRequest(): AmoCRMApiRequest
+    {
+        return $this->buildRequest();
+    }
 }

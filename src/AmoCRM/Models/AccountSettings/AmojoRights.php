@@ -30,8 +30,8 @@ class AmojoRights implements Arrayable
     public function toArray(): array
     {
         $result = [
-            'can_direct' => $this->isCanDirect(),
-            'can_create_groups' => $this->isCanCreateGroups(),
+            'can_direct' => $this->getIsCanDirect(),
+            'can_create_groups' => $this->getIsCanCreateGroups(),
         ];
 
         return $result;

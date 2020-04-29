@@ -440,12 +440,12 @@ class AccountModel extends BaseApiModel
             'updated_by' => $this->getUpdatedBy(),
             'current_user_id' => $this->getCurrentUserId(),
             'country' => $this->getCountry(),
-            'is_unsorted_on' => $this->isUnsortedOn(),
+            'is_unsorted_on' => $this->getIsUnsortedOn(),
             'mobile_feature_version' => $this->getMobileFeatureVersion(),
-            'is_customers_enabled' => $this->isCustomersEnabled(),
-            'is_periodicity_enabled' => $this->isPeriodicityEnabled(),
-            'is_loss_reason_enabled' => $this->isLossReasonsEnabled(),
-            'is_helpbot_enabled' => $this->isHelpbotEnabled(),
+            'is_customers_enabled' => $this->getIsCustomersEnabled(),
+            'is_periodicity_enabled' => $this->getIsPeriodicityEnabled(),
+            'is_loss_reason_enabled' => $this->getIsLossReasonsEnabled(),
+            'is_helpbot_enabled' => $this->getIsHelpbotEnabled(),
             'contact_name_display_order' => $this->getContactNameDisplayOrder(),
         ];
 

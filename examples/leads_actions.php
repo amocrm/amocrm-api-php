@@ -33,6 +33,15 @@ $apiClient->setAccessToken($accessToken)
         }
     );
 
+
+//$q = $apiClient->leads()->get();
+//try {
+//    var_dump($apiClient->leads()->nextPage($q));
+//    die;
+//} catch (\Exception $e) {
+//    var_dump($e->getMessage(), $e->getCode()); die;
+//}
+
 //Создадим сделку
 $lead = new LeadModel();
 $lead->setName('Example');
@@ -41,16 +50,17 @@ $leadsCollection = new LeadsCollection();
 $leadsCollection->add($lead);
 try {
     $apiClient->leads()->add($leadsCollection);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
+
 
 //Получим контакт по ID, сделку и првяжем контакт к сделке
 try {
     $contact = $apiClient->contacts()->getOne(7143559);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
@@ -58,10 +68,11 @@ $links = new LinksCollection();
 $links->add($contact);
 try {
     $apiClient->leads()->link($lead, $links);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
+
 
 //Создадим фильтр по id сделки и ответственному пользователю
 $filter = new LeadFilter();
@@ -71,10 +82,11 @@ $filter->setIds([1, 5170965])
 //Получим сделки по фильтру и с полем with=is_price_modified_by_robot,loss_reason,contacts
 try {
     $leads = $apiClient->leads()->get($filter, [LeadModel::IS_PRICE_BY_ROBOT, LeadModel::LOSS_REASON, LeadModel::CONTACTS]);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
+
 
 //Обновим все найденные сделки
 /** @var LeadModel $lead */
@@ -114,8 +126,8 @@ foreach ($leads as $lead) {
 //Сохраним сделку
 try {
     $apiClient->leads()->update($leads);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
@@ -123,8 +135,8 @@ try {
 //Получим сделку
 try {
     $lead = $apiClient->leads()->getOne(1, [LeadModel::CONTACTS, LeadModel::CATALOG_ELEMENTS_LINKS]);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 

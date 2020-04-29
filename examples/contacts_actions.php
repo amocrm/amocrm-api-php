@@ -9,9 +9,7 @@ use AmoCRM\Models\ContactModel;
 use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . '/../vendor/autoload.php';
-include_once __DIR__ . '/token_actions.php';
-include_once __DIR__ . '/api_client.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
@@ -38,16 +36,16 @@ $contactsCollection = new ContactsCollection();
 $contactsCollection->add($contact);
 try {
     $apiClient->contacts()->add($contactsCollection);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
 //Получим сделку по ID, сделку и првяжем контакт к сделке
 try {
     $lead = $apiClient->leads()->getOne(3916883);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
@@ -55,8 +53,8 @@ $links = new LinksCollection();
 $links->add($lead);
 try {
     $apiClient->contacts()->link($contact, $links);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
@@ -67,8 +65,8 @@ $filter->setIds([3]);
 //Получим сделки по фильтру
 try {
     $contacts = $apiClient->contacts()->get($filter);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
@@ -96,13 +94,13 @@ foreach ($contacts as $contact) {
 //    );
 
     //Установим название
-    $contact->setName('Example lead');
+    $contact->setName('Example contact');
 }
 
 //Сохраним сделку
 try {
     $apiClient->contacts()->update($contacts);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }

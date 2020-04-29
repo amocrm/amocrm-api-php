@@ -8,9 +8,7 @@ use AmoCRM\Models\CustomFieldGroupModel;
 use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . '/../vendor/autoload.php';
-include_once __DIR__ . '/token_actions.php';
-include_once __DIR__ . '/api_client.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
@@ -49,8 +47,8 @@ try {
 
     //Получим группы (это же пример :) )
     $customFieldGroupsCollection = $customFieldGroupsService->get();
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 

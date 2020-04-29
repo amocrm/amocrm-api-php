@@ -3,17 +3,14 @@
 use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\NotesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\NoteType\CallInNote;
 use AmoCRM\Models\NoteType\CallNote;
 use AmoCRM\Models\NoteType\ServiceMessageNote;
 use AmoCRM\Models\NoteType\SmsOutNote;
-use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
+use Ramsey\Uuid\Uuid;
 
-include_once __DIR__ . '/../vendor/autoload.php';
-include_once __DIR__ . '/token_actions.php';
-include_once __DIR__ . '/api_client.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
@@ -46,7 +43,7 @@ $callInNote->setEntityId(1)
     ->setCallStatus(CallNote::CALL_STATUS_SUCCESS_CONVERSATION)
     ->setCallResult('Разговор состоялся')
     ->setDuration(148)
-    ->setUniq(\Ramsey\Uuid\Uuid::uuid4())
+    ->setUniq(Uuid::uuid4())
     ->setSource('integration name')
     ->setLink('https://example.test/test.mp3');
 
@@ -62,8 +59,9 @@ $notesCollection->add($callInNote);
 
 try {
     $notesCollection = $apiClient->notes(EntityTypesInterface::LEADS)->add($notesCollection);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
-var_dump($notesCollection->toArray()); die;
+
+var_dump($notesCollection->toArray());

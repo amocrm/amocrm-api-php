@@ -167,4 +167,13 @@ class Bot extends BaseApiModel implements Arrayable
     {
         $this->directChat = $directChat;
     }
+
+    /**
+     * @param int|null $requestId
+     * @return array
+     */
+    public function toApi(int $requestId = null): array
+    {
+        return [];
+    }
 }

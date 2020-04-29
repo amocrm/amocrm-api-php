@@ -13,3 +13,6 @@ $clientSecret = $_ENV['CLIENT_SECRET'];
 $redirectUri = $_ENV['CLIENT_REDIRECT_URI'];
 
 $apiClient = new AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+
+include_once __DIR__ . '/token_actions.php';
+include_once __DIR__ . '/error_printer.php';

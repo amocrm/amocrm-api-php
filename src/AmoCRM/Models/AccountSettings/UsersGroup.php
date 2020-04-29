@@ -130,4 +130,13 @@ class UsersGroup extends BaseApiModel implements Arrayable
 
         return $this;
     }
+
+    /**
+     * @param int|null $requestId
+     * @return array
+     */
+    public function toApi(int $requestId = null): array
+    {
+        return [];
+    }
 }

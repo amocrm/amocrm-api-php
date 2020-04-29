@@ -6,7 +6,6 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class NotificationsInfo implements Arrayable
 {
-
     /**
      * @var string
      */

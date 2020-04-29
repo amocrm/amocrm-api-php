@@ -145,4 +145,13 @@ class TaskType extends BaseApiModel implements Arrayable
     {
         $this->code = $code;
     }
+
+    /**
+     * @param int|null $requestId
+     * @return array
+     */
+    public function toApi(int $requestId = null): array
+    {
+        return [];
+    }
 }

@@ -6,7 +6,6 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class DateTimeSettings implements Arrayable
 {
-
     /**
      * @var string
      */

@@ -2,6 +2,6 @@
 
 namespace AmoCRM\Exceptions;
 
-class AmoCRMoAuthApiException extends \Exception
+class AmoCRMoAuthApiException extends AmoCRMApiException
 {
 }

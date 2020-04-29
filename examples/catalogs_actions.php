@@ -1,14 +1,10 @@
 <?php
 
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\CatalogModel;
-use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . '/../vendor/autoload.php';
-include_once __DIR__ . '/token_actions.php';
-include_once __DIR__ . '/api_client.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
@@ -35,8 +31,8 @@ $apiClient->setAccessToken($accessToken)
 //$catalogsCollection->add($catalog);
 //try {
 //    $apiClient->catalogs()->add($catalogsCollection);
-//} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-//    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
+//} catch (AmoCRMApiException $e) {
+//    printError($e);
 //    die;
 //}
 
@@ -48,16 +44,16 @@ $apiClient->setAccessToken($accessToken)
 //$catalogsCollection->add($catalog);
 //try {
 //    $apiClient->catalogs()->add($catalogsCollection);
-//} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-//    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
+//} catch (AmoCRMApiException $e) {
+//    printError($e);
 //    die;
 //}
 
 //Получим все каталоги
 try {
     $catalogsCollection = $apiClient->catalogs()->get();
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
@@ -69,7 +65,6 @@ if ($catalog instanceof CatalogModel) {
 }
 try {
     $apiClient->catalogs()->updateOne($catalog);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
-    die;
+} catch (AmoCRMApiException $e) {
+    printError($e);
 }

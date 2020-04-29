@@ -2,12 +2,18 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\Exceptions\AmoCRMApiConnectExceptionException;
+use AmoCRM\Exceptions\AmoCRMApiErrorResponseException;
 use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMApiHttpClientException;
+use AmoCRM\Exceptions\AmoCRMApiNoContentException;
+use AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\OAuth\AmoCRMOAuth;
-use Exception;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\TooManyRedirectsException;
 use GuzzleHttp\RequestOptions;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -28,6 +34,7 @@ class AmoCRMApiRequest
     const ACCEPTED = 202;
     const NO_CONTENT = 204;
 
+    const BAD_REQUEST = 400;
     const UNAUTHORIZED = 401;
 
     const SUCCESS_STATUSES = [
@@ -54,6 +61,41 @@ class AmoCRMApiRequest
      */
     private $httpClient;
 
+    /**
+     * @var string
+     */
+    private $lastMethod;
+
+    /**
+     * @var array
+     */
+    private $lastBody = [];
+
+    /**
+     * @var string|null
+     */
+    private $lastResponse;
+
+    /**
+     * @var int
+     */
+    private $lastResponseCode;
+
+    /**
+     * @var array|null
+     */
+    private $lastQueryParams;
+
+    /**
+     * @var string|null
+     */
+    private $lastRequestId;
+
+    /**
+     * AmoCRMApiRequest constructor.
+     * @param AccessTokenInterface $accessToken
+     * @param AmoCRMOAuth $oAuthClient
+     */
     public function __construct(AccessTokenInterface $accessToken, AmoCRMOAuth $oAuthClient)
     {
         $this->accessToken = $accessToken;
@@ -98,6 +140,10 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
+        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastBody = $body;
+        $this->lastQueryParams = $queryParams;
+
         try {
             $response = $this->httpClient->request(
                 self::POST_REQUEST,
@@ -111,8 +157,16 @@ class AmoCRMApiRequest
                     'timeout' => self::REQUEST_TIMEOUT,
                 ]
             );
+        } catch (ConnectException $e) {
+            throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        } catch (TooManyRedirectsException $e) {
+            throw new AmoCRMApiTooManyRedirectsException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
         } catch (GuzzleException $e) {
-            throw new AmoCRMoAuthApiException("Request problem: {$e->getMessage()}");
+            throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        }
+
+        if (!empty($response->getHeader('X-Request-Id'))) {
+            $this->lastRequestId = $response->getHeader('X-Request-Id');
         }
 
         /**
@@ -160,6 +214,10 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
+        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastBody = $body;
+        $this->lastQueryParams = $queryParams;
+
         try {
             $response = $this->httpClient->request(
                 self::PATCH_REQUEST,
@@ -173,8 +231,16 @@ class AmoCRMApiRequest
                     RequestOptions::TIMEOUT => self::REQUEST_TIMEOUT,
                 ]
             );
+        } catch (ConnectException $e) {
+            throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        } catch (TooManyRedirectsException $e) {
+            throw new AmoCRMApiTooManyRedirectsException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
         } catch (GuzzleException $e) {
-            throw new AmoCRMoAuthApiException("Request problem: {$e->getMessage()}");
+            throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        }
+
+        if (!empty($response->getHeader('X-Request-Id'))) {
+            $this->lastRequestId = $response->getHeader('X-Request-Id');
         }
 
         /**
@@ -182,7 +248,6 @@ class AmoCRMApiRequest
          * если не получилось, то тогда уже выкидываем Exception
          */
         try {
-            //todo errors
             $response = $this->parseResponse($response);
         } catch (AmoCRMoAuthApiException $e) {
             if ($needToRefresh) {
@@ -191,7 +256,6 @@ class AmoCRMApiRequest
 
             return $this->patch($method, $body, $queryParams, $headers, true);
         }
-        //todo validate response and exception
 
         return $response;
     }
@@ -223,6 +287,10 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
+        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastBody = $body;
+        $this->lastQueryParams = $queryParams;
+
         try {
             $response = $this->httpClient->request(
                 self::DELETE_REQUEST,
@@ -236,8 +304,16 @@ class AmoCRMApiRequest
                     RequestOptions::TIMEOUT => self::REQUEST_TIMEOUT,
                 ]
             );
+        } catch (ConnectException $e) {
+            throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        } catch (TooManyRedirectsException $e) {
+            throw new AmoCRMApiTooManyRedirectsException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
         } catch (GuzzleException $e) {
-            throw new AmoCRMoAuthApiException("Request problem: {$e->getMessage()}");
+            throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        }
+
+        if (!empty($response->getHeader('X-Request-Id'))) {
+            $this->lastRequestId = $response->getHeader('X-Request-Id');
         }
 
         /**
@@ -285,6 +361,10 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
+        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastBody = [];
+        $this->lastQueryParams = $queryParams;
+
         try {
             $response = $this->httpClient->request(
                 self::GET_REQUEST,
@@ -297,8 +377,16 @@ class AmoCRMApiRequest
                     'timeout' => self::REQUEST_TIMEOUT,
                 ]
             );
+        } catch (ConnectException $e) {
+            throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        } catch (TooManyRedirectsException $e) {
+            throw new AmoCRMApiTooManyRedirectsException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
         } catch (GuzzleException $e) {
-            throw new AmoCRMoAuthApiException("Request problem: {$e->getMessage()}");
+            throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        }
+
+        if (!empty($response->getHeader('X-Request-Id'))) {
+            $this->lastRequestId = $response->getHeader('X-Request-Id');
         }
 
         /**
@@ -314,39 +402,66 @@ class AmoCRMApiRequest
 
             return $this->get($method, $queryParams, $headers, true);
         }
-        //todo validate response and exception
 
         return $response;
     }
 
     /**
      * @param ResponseInterface $response
-     * @throws AmoCRMoAuthApiException
+     * @param array $decodedBody
+     * @throws AmoCRMApiErrorResponseException
      * @throws AmoCRMApiException
-     * @throws Exception
+     * @throws AmoCRMoAuthApiException
      */
-    protected function checkHttpStatus(ResponseInterface $response): void
+    protected function checkHttpStatus(ResponseInterface $response, $decodedBody = []): void
     {
+        $this->lastResponseCode = $response->getStatusCode();
         if ((int)$response->getStatusCode() === self::UNAUTHORIZED) {
-            throw new AmoCRMoAuthApiException("Unauthorized");
+            throw new AmoCRMoAuthApiException(
+                "Unauthorized",
+                $response->getStatusCode(),
+                $this->getLastRequestInfo(),
+                isset($decodedBody['detail']) ? $decodedBody['detail'] : ''
+            );
         }
 
         if ((int)$response->getStatusCode() === self::NO_CONTENT) {
-            //todo own exception
-            throw new AmoCRMApiException("No content", self::NO_CONTENT);
+            throw new AmoCRMApiNoContentException(
+                "No content",
+                $response->getStatusCode(),
+                $this->getLastRequestInfo()
+            );
         }
 
 
         if (!in_array((int)$response->getStatusCode(), self::SUCCESS_STATUSES, true)) {
-            //todo parse error
-            $exception = new AmoCRMApiException("Invalid http status", $response->getStatusCode());
-            $exception->setTitle($response->getBody()->getContents());
+            $exception = new AmoCRMApiException(
+                "Invalid http status",
+                $response->getStatusCode(),
+                $this->getLastRequestInfo(),
+                isset($decodedBody['detail']) ? $decodedBody['detail'] : ''
+            );
+
+            if (
+                $response->getStatusCode() === self::BAD_REQUEST
+                && !empty($decodedBody['validation-errors'])
+            ) {
+                $exception = new AmoCRMApiErrorResponseException(
+                    "Response has validation errors",
+                    $response->getStatusCode(),
+                    $this->getLastRequestInfo(),
+                    isset($decodedBody['detail']) ? $decodedBody['detail'] : ''
+                );
+                $exception->setValidationErrors($decodedBody['validation-errors']);
+            }
 
             throw $exception;
         }
     }
 
     /**
+     * Http status check and response check
+     *
      * @param ResponseInterface $response
      * @return array
      * @throws AmoCRMoAuthApiException
@@ -354,28 +469,33 @@ class AmoCRMApiRequest
      */
     private function parseResponse(ResponseInterface $response): array
     {
-        $decodedBody = [];
-        $this->checkHttpStatus($response);
-
         $bodyContents = $response->getBody()->getContents();
+        $this->lastResponse = $bodyContents;
 
-        if (json_decode($bodyContents, true)) {
-            $decodedBody = json_decode($bodyContents, true);
-        }
+        $decodedBody = json_decode($bodyContents, true);
 
         if (
             $response->getStatusCode() !== self::ACCEPTED
             && !$decodedBody
             && !empty($bodyContents)
         ) {
-            $exception = new AmoCRMApiException("Response body is not a json: {$bodyContents}");
-            //todo set detail and title
+            $exception = new AmoCRMApiException(
+                "Response body is not json",
+                $response->getStatusCode(),
+                $this->getLastRequestInfo()
+            );
+
             throw $exception;
         }
+
+        $this->checkHttpStatus($response, $decodedBody);
 
         return $decodedBody;
     }
 
+    /**
+     * @return array
+     */
     private function getBaseHeaders()
     {
         $headers = $this->oAuthClient->getAuthorizationHeaders($this->accessToken);
@@ -383,5 +503,21 @@ class AmoCRMApiRequest
         $headers['User-Agent'] = self::USER_AGENT;
 
         return $headers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLastRequestInfo(): array
+    {
+        return [
+            'last_method' => $this->lastMethod,
+            'last_body' => $this->lastBody,
+            'last_query_params' => $this->lastQueryParams,
+            'last_response' => $this->lastResponse,
+            'last_response_code' => $this->lastResponseCode,
+            'last_request_id' => $this->lastRequestId,
+            'timestamp' => time(),
+        ];
     }
 }

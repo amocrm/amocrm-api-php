@@ -6,9 +6,7 @@ use AmoCRM\Models\RoleModel;
 use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . '/../vendor/autoload.php';
-include_once __DIR__ . '/token_actions.php';
-include_once __DIR__ . '/api_client.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
@@ -33,15 +31,10 @@ $rolesService = $apiClient->roles();
 //Получим роли аккаунта
 try {
     $rolesCollection = $rolesService->get(null, [RoleModel::USERS]);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
-    if (method_exists($e, 'getTitle')) {
-        echo $e->getTitle();
-    }
-    die;
+} catch (AmoCRMApiException $e) {
+    printError($e);
 }
 
 var_dump($rolesCollection);
-die;
 
 //todo add roles/update

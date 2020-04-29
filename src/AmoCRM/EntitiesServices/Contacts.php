@@ -9,6 +9,8 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\ContactsCollection;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CatalogElementModel;
 use AmoCRM\Models\ContactModel;
@@ -142,6 +144,12 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface
         return $body;
     }
 
+    /**
+     * @param BaseApiModel $mainEntity
+     * @param BaseApiCollection $linkedEntities
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
     public function link(BaseApiModel $mainEntity, BaseApiCollection $linkedEntities)
     {
         $body = $this->prepareLinkBody($linkedEntities);
@@ -150,6 +158,12 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface
         //todo add link to base model
     }
 
+    /**
+     * @param BaseApiModel $mainEntity
+     * @param BaseApiCollection $linkedEntities
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
     public function unlink(BaseApiModel $mainEntity, BaseApiCollection $linkedEntities)
     {
         $body = $this->prepareLinkBody($linkedEntities);

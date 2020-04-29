@@ -32,6 +32,7 @@ class EntityNotes extends BaseEntityTypeEntity
         }
     }
 
+    //todo validate note types for update/create
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -75,6 +76,7 @@ class EntityNotes extends BaseEntityTypeEntity
         return $this->processAction($collection, $response);
     }
 
+    //todo
     public function getOne($id, array $with = []): ?BaseApiModel
     {
         throw new \Exception('No such method for this entity');

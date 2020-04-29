@@ -111,7 +111,6 @@ class CatalogElements extends BaseEntityTypeEntity
      * @return BaseApiModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
-     * @throws Exception
      */
     public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {

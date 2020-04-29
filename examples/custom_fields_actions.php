@@ -3,14 +3,10 @@
 use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\CustomFieldsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\CustomFieldModel;
-use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . '/../vendor/autoload.php';
-include_once __DIR__ . '/token_actions.php';
-include_once __DIR__ . '/api_client.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
@@ -95,11 +91,8 @@ try {
     ];
     $fieldToUpdate->setEnums($enums);
     $fieldToUpdate->setIsApiOnly(true);
-    $customFieldsService->updateOne($fieldToUpdate);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
-    if (method_exists($e, 'getTitle')) {
-        echo $e->getTitle();
-    }
-    die;
+    $fieldToUpdate = $customFieldsService->updateOne($fieldToUpdate);
+    var_dump($fieldToUpdate->toArray());
+} catch (AmoCRMApiException $e) {
+    printError($e);
 }

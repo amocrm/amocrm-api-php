@@ -10,9 +10,7 @@ use AmoCRM\Models\CatalogModel;
 use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . '/../vendor/autoload.php';
-include_once __DIR__ . '/token_actions.php';
-include_once __DIR__ . '/api_client.php';
+include_once __DIR__ . 'bootstrap.php';
 
 $accessToken = getToken();
 
@@ -54,8 +52,8 @@ $catalogElementsService = $apiClient->catalogElements();
 $catalogElementsService->setEntityType($catalog->getId());
 try {
     $catalogElementsService->add($catalogElementsCollection);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
@@ -68,8 +66,8 @@ $catalogElementsFilter = new CatalogElementsFilter();
 $catalogElementsFilter->setQuery('Кросовки');
 try {
     $catalogElementsCollection = $catalogElementsService->get($catalogElementsFilter);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
@@ -81,8 +79,8 @@ if ($nikeElement) {
     //Получим контакт по ID, сделку и првяжем контакт к сделке
     try {
         $contact = $apiClient->leads()->getOne(5170965);
-    } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-        echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+    } catch (AmoCRMApiException $e) {
+        printError($e);
         die;
     }
 
@@ -91,8 +89,8 @@ if ($nikeElement) {
     $links->add($nikeElement);
     try {
         $apiClient->leads()->link($contact, $links);
-    } catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-        echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode();
+    } catch (AmoCRMApiException $e) {
+        printError($e);
         die;
     }
 }

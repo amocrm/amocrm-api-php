@@ -3,14 +3,10 @@
 use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\TasksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\TaskModel;
-use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . '/../vendor/autoload.php';
-include_once __DIR__ . '/token_actions.php';
-include_once __DIR__ . '/api_client.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
@@ -43,8 +39,8 @@ $tasksCollection->add($task);
 
 try {
     $tasksCollection = $apiClient->tasks()->add($tasksCollection);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
 
@@ -58,8 +54,9 @@ try {
     //Получим актуальное состояние задачи и обновим её
     $taskToClose = $apiClient->tasks()->syncOne($taskToClose);
     $taskToClose = $apiClient->tasks()->updateOne($taskToClose);
-} catch (AmoCRMApiException | AmoCRMoAuthApiException | ConnectException $e) {
-    echo 'Error happen - ' . $e->getMessage() . ' ' . $e->getCode() . $e->getTitle();
+} catch (AmoCRMApiException $e) {
+    printError($e);
     die;
 }
+
 var_dump($taskToClose->toArray());
