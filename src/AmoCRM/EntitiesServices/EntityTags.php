@@ -7,11 +7,15 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\TagsCollection;
+use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
+use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Tag;
 
-class EntityTags extends BaseEntityTypeEntity
+class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
 {
+    use PageMethodsTrait;
+
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/tags';
 
     protected $collectionClass = TagsCollection::class;

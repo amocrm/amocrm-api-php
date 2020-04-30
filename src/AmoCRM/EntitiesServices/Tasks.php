@@ -7,11 +7,15 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\TasksCollection;
+use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
+use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\TaskModel;
 
-class Tasks extends BaseEntity
+class Tasks extends BaseEntity implements HasPageMethodsInterface
 {
+    use PageMethodsTrait;
+
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::TASKS;
 
     protected $collectionClass = TasksCollection::class;

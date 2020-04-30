@@ -9,6 +9,8 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\ContactsCollection;
+use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
+use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\BaseApiModel;
@@ -16,8 +18,10 @@ use AmoCRM\Models\CatalogElementModel;
 use AmoCRM\Models\ContactModel;
 use AmoCRM\Models\LeadModel;
 
-class Contacts extends BaseEntity implements HasLinkMethodInterface
+class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {
+    use PageMethodsTrait;
+
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CONTACTS;
 
     protected $collectionClass = ContactsCollection::class;

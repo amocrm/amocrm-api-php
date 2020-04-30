@@ -8,14 +8,18 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\CustomFieldsCollection;
+use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
+use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CustomFieldModel;
 use Exception;
 
-class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterface
+class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterface, HasPageMethodsInterface
 {
+    use PageMethodsTrait;
+
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/custom_fields';
 
     protected $collectionClass = CustomFieldsCollection::class;

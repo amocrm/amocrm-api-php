@@ -9,6 +9,7 @@ use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\BaseApiModel;
 use Exception;
+use ReflectionClass;
 
 abstract class BaseEntity
 {
@@ -76,11 +77,28 @@ abstract class BaseEntity
 
         $response = $this->request->get($this->getMethod(), $queryParams);
 
+        return $this->createCollection($response);
+    }
+
+    /**
+     * @param array $response
+     * @return BaseApiCollection|null
+     */
+    protected function createCollection(array $response): ?BaseApiCollection
+    {
         /** @var BaseApiCollection $collection */
         $collection = new $this->collectionClass();
         $entities = $this->getEntitiesFromResponse($response);
 
         $collection = !empty($entities) ? $collection->fromArray($entities) : null;
+
+        if (method_exists($collection, 'setNextPageLink') && isset($response['_links']['next']['href'])) {
+            $collection->setNextPageLink($response['_links']['next']['href']);
+        }
+
+        if (method_exists($collection, 'setPrevPageLink') && isset($response['_links']['prev']['href'])) {
+            $collection->setPrevPageLink($response['_links']['prev']['href']);
+        }
 
         return $collection;
     }
@@ -231,7 +249,7 @@ abstract class BaseEntity
          * @see \AmoCRM\Models\BaseApiModel::__get
          * @see \AmoCRM\Models\BaseApiModel::__set
          */
-        $reflection = new \ReflectionClass($objectA);
+        $reflection = new ReflectionClass($objectA);
         $reflectionProperties = $reflection->getProperties();
         foreach ($reflectionProperties as $reflectionProperty) {
             $propertyName = $reflectionProperty->getName();
@@ -244,5 +262,13 @@ abstract class BaseEntity
         }
 
         return $newObject;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLastRequestInfo(): array
+    {
+        return $this->request->getLastRequestInfo();
     }
 }

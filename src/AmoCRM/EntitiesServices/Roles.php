@@ -7,11 +7,15 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\RolesCollection;
+use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
+use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\RoleModel;
 
-class Roles extends BaseEntity
+class Roles extends BaseEntity implements HasPageMethodsInterface
 {
+    use PageMethodsTrait;
+
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::USER_ROLES;
 
     protected $collectionClass = RolesCollection::class;

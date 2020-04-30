@@ -360,15 +360,21 @@ class AmoCRMApiRequest
         }
 
         $headers = array_merge($headers, $this->getBaseHeaders());
+        $method = $this->oAuthClient->getAccountUrl() .
+            str_replace(
+                $this->oAuthClient->getAccountUrl(),
+                '',
+                str_replace('http', 'https', $method) //todo remove after fix
+            );
 
-        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastMethod = $method;
         $this->lastBody = [];
         $this->lastQueryParams = $queryParams;
 
         try {
             $response = $this->httpClient->request(
                 self::GET_REQUEST,
-                $this->oAuthClient->getAccountUrl() . $method,
+                $method,
                 [
                     'connect_timeout' => self::CONNECT_TIMEOUT,
                     'headers' => $headers,

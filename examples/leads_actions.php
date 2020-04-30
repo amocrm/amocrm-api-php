@@ -12,9 +12,7 @@ use AmoCRM\Models\LeadModel;
 use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . '/../vendor/autoload.php';
-include_once __DIR__ . '/token_actions.php';
-include_once __DIR__ . '/api_client.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
@@ -34,14 +32,16 @@ $apiClient->setAccessToken($accessToken)
     );
 
 
-//$q = $apiClient->leads()->get();
-//try {
-//    var_dump($apiClient->leads()->nextPage($q));
-//    die;
-//} catch (\Exception $e) {
-//    var_dump($e->getMessage(), $e->getCode()); die;
-//}
+try {
+    $service = $apiClient->leads();
+    $q = $service->get();
+    $q = $service->nextPage($q);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
 
+die;
 //Создадим сделку
 $lead = new LeadModel();
 $lead->setName('Example');

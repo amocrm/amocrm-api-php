@@ -9,13 +9,19 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\LeadsCollection;
+use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
+use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CatalogElementModel;
 use AmoCRM\Models\ContactModel;
 use AmoCRM\Models\LeadModel;
 
-class Leads extends BaseEntity implements HasLinkMethodInterface
+class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {
+    use PageMethodsTrait;
+
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/leads';
 
     protected $collectionClass = LeadsCollection::class;
@@ -146,6 +152,12 @@ class Leads extends BaseEntity implements HasLinkMethodInterface
         return $body;
     }
 
+    /**
+     * @param BaseApiModel $mainEntity
+     * @param BaseApiCollection $linkedEntities
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
     public function link(BaseApiModel $mainEntity, BaseApiCollection $linkedEntities)
     {
         $body = $this->prepareLinkBody($linkedEntities);
@@ -154,6 +166,12 @@ class Leads extends BaseEntity implements HasLinkMethodInterface
         //todo add link to base model
     }
 
+    /**
+     * @param BaseApiModel $mainEntity
+     * @param BaseApiCollection $linkedEntities
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
     public function unlink(BaseApiModel $mainEntity, BaseApiCollection $linkedEntities)
     {
         $body = $this->prepareLinkBody($linkedEntities);

@@ -2,9 +2,13 @@
 
 namespace AmoCRM\Collections;
 
+use AmoCRM\Collections\Interfaces\HasPagesInterface;
+use AmoCRM\Collections\Traits\PagesTrait;
 use AmoCRM\Models\TaskModel;
 
-class TasksCollection extends BaseApiCollection
+class TasksCollection extends BaseApiCollection implements HasPagesInterface
 {
+    use PagesTrait;
+
     protected $itemClass = TaskModel::class;
 }
