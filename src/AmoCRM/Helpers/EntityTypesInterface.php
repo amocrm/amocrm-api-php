@@ -13,6 +13,8 @@ interface EntityTypesInterface
     const NOTES = 'notes';
     const TAGS = 'tags';
     const TASKS = 'tasks';
+    const WEBHOOKS = 'webhooks';
+    const UNSORTED = 'unsorted';
     const CATALOG_ELEMENTS = 'elements';
     const USER_ROLES = 'roles';
     const CUSTOMERS_SEGMENTS = 'segments';

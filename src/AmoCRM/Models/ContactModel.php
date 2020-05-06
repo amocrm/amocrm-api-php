@@ -423,9 +423,9 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @return CompanyModel
+     * @return null|CompanyModel
      */
-    public function getCompany(): CompanyModel
+    public function getCompany(): ?CompanyModel
     {
         return $this->company;
     }

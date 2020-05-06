@@ -16,6 +16,8 @@ use AmoCRM\EntitiesServices\Leads;
 use AmoCRM\EntitiesServices\Roles;
 use AmoCRM\EntitiesServices\Segments;
 use AmoCRM\EntitiesServices\Tasks;
+use AmoCRM\EntitiesServices\Unsorted;
+use AmoCRM\EntitiesServices\Webhooks;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use Exception;
 use League\OAuth2\Client\Token\AccessToken;
@@ -178,7 +180,7 @@ class AmoCRMApiClient
      * Метод вернет объект сделок
      * @return Leads
      */
-    public function leads()
+    public function leads(): Leads
     {
         $request = $this->buildRequest();
 
@@ -189,7 +191,7 @@ class AmoCRMApiClient
      * Метод вернет объект контактов
      * @return Contacts
      */
-    public function contacts()
+    public function contacts(): Contacts
     {
         $request = $this->buildRequest();
 
@@ -282,7 +284,7 @@ class AmoCRMApiClient
      * Метод вернет объект ролей пользователей
      * @return Roles
      */
-    public function roles()
+    public function roles(): Roles
     {
         $request = $this->buildRequest();
 
@@ -294,7 +296,7 @@ class AmoCRMApiClient
      * Метод вернет объект сегментов покупателей
      * @return Segments
      */
-    public function customersSegments()
+    public function customersSegments(): Segments
     {
         $request = $this->buildRequest();
 
@@ -305,11 +307,33 @@ class AmoCRMApiClient
      * Метод вернет объект событий
      * @return Events
      */
-    public function events()
+    public function events(): Events
     {
         $request = $this->buildRequest();
 
         return new Events($request);
+    }
+
+    /**
+     * Метод вернет объект хуков
+     * @return Webhooks
+     */
+    public function webhooks(): Webhooks
+    {
+        $request = $this->buildRequest();
+
+        return new Webhooks($request);
+    }
+
+    /**
+     * Метод вернет объект неразобранного
+     * @return Unsorted
+     */
+    public function unsorted(): Unsorted
+    {
+        $request = $this->buildRequest();
+
+        return new Unsorted($request);
     }
 
     /**

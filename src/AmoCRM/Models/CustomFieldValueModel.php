@@ -8,7 +8,7 @@ use InvalidArgumentException;
 class CustomFieldValueModel extends BaseApiModel
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $fieldId;
 
@@ -23,7 +23,7 @@ class CustomFieldValueModel extends BaseApiModel
     protected $fieldType;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $fieldCode;
 
@@ -77,9 +77,9 @@ class CustomFieldValueModel extends BaseApiModel
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getFieldId(): int
+    public function getFieldId(): ?int
     {
         return $this->fieldId;
     }

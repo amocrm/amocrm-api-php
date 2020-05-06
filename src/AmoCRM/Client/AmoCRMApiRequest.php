@@ -166,7 +166,7 @@ class AmoCRMApiRequest
         }
 
         if (!empty($response->getHeader('X-Request-Id'))) {
-            $this->lastRequestId = $response->getHeader('X-Request-Id');
+            $this->lastRequestId = $response->getHeader('X-Request-Id')[0];
         }
 
         /**
@@ -240,7 +240,7 @@ class AmoCRMApiRequest
         }
 
         if (!empty($response->getHeader('X-Request-Id'))) {
-            $this->lastRequestId = $response->getHeader('X-Request-Id');
+            $this->lastRequestId = $response->getHeader('X-Request-Id')[0];
         }
 
         /**
@@ -313,7 +313,7 @@ class AmoCRMApiRequest
         }
 
         if (!empty($response->getHeader('X-Request-Id'))) {
-            $this->lastRequestId = $response->getHeader('X-Request-Id');
+            $this->lastRequestId = $response->getHeader('X-Request-Id')[0];
         }
 
         /**
@@ -321,7 +321,6 @@ class AmoCRMApiRequest
          * если не получилось, то тогда уже выкидываем Exception
          */
         try {
-            //todo errors
             $response = $this->parseResponse($response);
         } catch (AmoCRMoAuthApiException $e) {
             if ($needToRefresh) {
@@ -329,10 +328,10 @@ class AmoCRMApiRequest
             }
 
             return $this->delete($method, $body, $queryParams, $headers, true);
+        } catch (AmoCRMApiNoContentException $e) {
+            return $response = ['result' => true];
         }
-        //todo validate response and exception
 
-        //todo return true or false
         return $response;
     }
 
@@ -392,7 +391,7 @@ class AmoCRMApiRequest
         }
 
         if (!empty($response->getHeader('X-Request-Id'))) {
-            $this->lastRequestId = $response->getHeader('X-Request-Id');
+            $this->lastRequestId = $response->getHeader('X-Request-Id')[0];
         }
 
         /**
