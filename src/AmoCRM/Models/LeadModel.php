@@ -144,6 +144,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     protected $catalogElementsLinks = null;
 
     /**
+     * @var null|string
+     */
+    protected $visitorUid;
+
+    /**
      * @var null|int
      */
     protected $requestId = null;
@@ -674,9 +679,6 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($lead['source_id'])) {
             $leadModel->setSourceId($lead['source_id'] > 0 ? (int)$lead['source_id'] : null);
         }
-        if (!empty($lead['main_contact_id'])) {
-            $leadModel->setMainContactId($lead['main_contact_id'] > 0 ? (int)$lead['main_contact_id'] : null);
-        }
         if (!empty($lead['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
             $customFieldsValues = $valuesCollection->fromArray($lead['custom_fields_values']);
@@ -864,6 +866,10 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags();
         }
 
+        if (!is_null($this->getVisitorUid())) {
+            $result['visitor_uid'] = $this->getVisitorUid();
+        }
+
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
             $this->setRequestId($requestId + 1); //Бага в API не принимает 0
         }
@@ -920,6 +926,26 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     public function setCatalogElementsLinks(CatalogElementsCollection $catalogElementsLinks): self
     {
         $this->catalogElementsLinks = $catalogElementsLinks;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVisitorUid(): ?string
+    {
+        return $this->visitorUid;
+    }
+
+    /**
+     * @param string|null $visitorUid
+     *
+     * @return LeadModel
+     */
+    public function setVisitorUid(?string $visitorUid): LeadModel
+    {
+        $this->visitorUid = $visitorUid;
 
         return $this;
     }
