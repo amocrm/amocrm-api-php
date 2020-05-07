@@ -1,8 +1,7 @@
 <?php
 
-namespace AmoCRM\Collections\Unsorted;
+namespace AmoCRM\Collections\Leads\Unsorted;
 
-use AmoCRM\Collections\UnsortedCollection;
 use AmoCRM\Models\Unsorted\BaseUnsortedModel;
 use AmoCRM\Models\Unsorted\SipUnsortedModel;
 

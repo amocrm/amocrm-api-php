@@ -194,7 +194,7 @@ abstract class BaseEntity
     /**
      * Обновление одной конкретной сущности
      * @param BaseApiModel $apiModel
-     * @return BaseApiCollection|BaseApiModel
+     * @return BaseApiModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
@@ -221,9 +221,7 @@ abstract class BaseEntity
      */
     public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {
-        $freshModel = $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
-
-        return $freshModel;
+        return $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
     }
 
     /**

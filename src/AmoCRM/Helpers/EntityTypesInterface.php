@@ -5,6 +5,7 @@ namespace AmoCRM\AmoCRM\Helpers;
 interface EntityTypesInterface
 {
     const LEADS = 'leads';
+    const LEADS_PIPELINES = 'pipelines';
     const CONTACTS = 'contacts';
     const CATALOGS = 'catalogs';
     const COMPANIES = 'companies';

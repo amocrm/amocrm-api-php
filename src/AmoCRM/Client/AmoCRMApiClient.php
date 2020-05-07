@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\AmoCRM\EntitiesServices\Leads\Pipelines;
 use AmoCRM\EntitiesServices\Account;
 use AmoCRM\EntitiesServices\CatalogElements;
 use AmoCRM\EntitiesServices\Catalogs;
@@ -334,6 +335,17 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Unsorted($request);
+    }
+
+    /**
+     * Метод вернет объект воронок
+     * @return Pipelines
+     */
+    public function pipelines(): Pipelines
+    {
+        $request = $this->buildRequest();
+
+        return new Pipelines($request);
     }
 
     /**
