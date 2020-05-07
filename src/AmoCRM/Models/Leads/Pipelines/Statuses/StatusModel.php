@@ -1,12 +1,20 @@
 <?php
 
-namespace AmoCRM\Models\Leads\Pipelines;
+namespace AmoCRM\Models\Leads\Pipelines\Statuses;
 
 use AmoCRM\Models\BaseApiModel;
 use Illuminate\Contracts\Support\Arrayable;
 
-class PipelineModel extends BaseApiModel implements Arrayable
+class StatusModel extends BaseApiModel implements Arrayable
 {
+    public const COLORS = [
+        '#fffeb2','#fffd7f','#fff000','#ffeab2','#ffdc7f',
+        '#ffce5a','#ffdbdb','#ffc8c8','#ff8f92','#d6eaff',
+        '#c1e0ff','#98cbff','#ebffb1','#deff81','#87f2c0',
+        '#f9deff','#f3beff','#ccc8f9','#eb93ff','#f2f3f4',
+        '#e6e8ea',
+    ];
+
     /**
      * @var int|null
      */
@@ -30,12 +38,22 @@ class PipelineModel extends BaseApiModel implements Arrayable
     /**
      * @var bool|null
      */
-    protected $isMain;
+    protected $isEditable;
 
     /**
-     * @var bool|null
+     * @var string|null
      */
-    protected $isUnsortedOn;
+    protected $color;
+
+    /**
+     * @var int|null
+     */
+    protected $type;
+
+    /**
+     * @var int|null
+     */
+    protected $pipelineId;
 
     /**
      * @var null|int
@@ -55,8 +73,10 @@ class PipelineModel extends BaseApiModel implements Arrayable
         $model->setName($pipeline['name']);
         $model->setSort($pipeline['sort']);
         $model->setAccountId($pipeline['account_id']);
-        $model->setIsMain($pipeline['is_main']);
-        $model->setIsUnsortedOn($pipeline['is_unsorted_on']);
+        $model->setIsEditable($pipeline['is_editable']);
+        $model->setPipelineId($pipeline['pipeline_id']);
+        $model->setColor($pipeline['color']);
+        $model->setType($pipeline['type']);
 
         return $model;
     }
@@ -71,8 +91,10 @@ class PipelineModel extends BaseApiModel implements Arrayable
             'name' => $this->getName(),
             'sort' => $this->getSort(),
             'account_id' => $this->getAccountId(),
-            'is_main' => $this->getIsMain(),
-            'is_unsorted_on' => $this->getIsUnsortedOn(),
+            'type' => $this->getType(),
+            'color' => $this->getColor(),
+            'is_editable' => $this->getIsEditable(),
+            'pipeline_id' => $this->getPipelineId(),
         ];
 
         return $result;
@@ -89,7 +111,7 @@ class PipelineModel extends BaseApiModel implements Arrayable
     /**
      * @param int $id
      *
-     * @return PipelineModel
+     * @return StatusModel
      */
     public function setId(int $id): self
     {
@@ -109,7 +131,7 @@ class PipelineModel extends BaseApiModel implements Arrayable
     /**
      * @param string $name
      *
-     * @return PipelineModel
+     * @return StatusModel
      */
     public function setName(string $name): self
     {
@@ -129,9 +151,9 @@ class PipelineModel extends BaseApiModel implements Arrayable
     /**
      * @param int|null $sort
      *
-     * @return PipelineModel
+     * @return StatusModel
      */
-    public function setSort(?int $sort): PipelineModel
+    public function setSort(?int $sort): StatusModel
     {
         $this->sort = $sort;
 
@@ -149,9 +171,9 @@ class PipelineModel extends BaseApiModel implements Arrayable
     /**
      * @param int|null $accountId
      *
-     * @return PipelineModel
+     * @return StatusModel
      */
-    public function setAccountId(?int $accountId): PipelineModel
+    public function setAccountId(?int $accountId): StatusModel
     {
         $this->accountId = $accountId;
 
@@ -161,43 +183,82 @@ class PipelineModel extends BaseApiModel implements Arrayable
     /**
      * @return bool|null
      */
-    public function getIsMain(): ?bool
+    public function getIsEditable(): ?bool
     {
-        return $this->isMain;
+        return $this->isEditable;
     }
 
     /**
-     * @param bool|null $isMain
+     * @param bool|null $isEditable
      *
-     * @return PipelineModel
+     * @return StatusModel
      */
-    public function setIsMain(?bool $isMain): PipelineModel
+    public function setIsEditable(?bool $isEditable): StatusModel
     {
-        $this->isMain = $isMain;
+        $this->isEditable = $isEditable;
 
         return $this;
     }
 
     /**
-     * @return bool|null
+     * @return string|null
      */
-    public function getIsUnsortedOn(): ?bool
+    public function getColor(): ?string
     {
-        return $this->isUnsortedOn;
+        return $this->color;
     }
 
     /**
-     * @param bool|null $isUnsortedOn
+     * @param string|null $color
      *
-     * @return PipelineModel
+     * @return StatusModel
      */
-    public function setIsUnsortedOn(?bool $isUnsortedOn): PipelineModel
+    public function setColor(?string $color): StatusModel
     {
-        $this->isUnsortedOn = $isUnsortedOn;
+        $this->color = $color;
 
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int|null $type
+     *
+     * @return StatusModel
+     */
+    public function setType(?int $type): StatusModel
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPipelineId(): ?int
+    {
+        return $this->pipelineId;
+    }
+
+    /**
+     * @param int|null $pipelineId
+     *
+     * @return StatusModel
+     */
+    public function setPipelineId(?int $pipelineId): StatusModel
+    {
+        $this->pipelineId = $pipelineId;
+
+        return $this;
+    }
 
     /**
      * @param int|null $requestId
@@ -215,12 +276,8 @@ class PipelineModel extends BaseApiModel implements Arrayable
             $result['sort'] = $this->getSort();
         }
 
-        if (!is_null($this->getIsMain())) {
-            $result['is_main'] = $this->getIsMain();
-        }
-
-        if (!is_null($this->getIsUnsortedOn())) {
-            $result['is_unsorted_on'] = $this->getIsUnsortedOn();
+        if (!is_null($this->getColor())) {
+            $result['color'] = $this->getColor();
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
@@ -242,7 +299,7 @@ class PipelineModel extends BaseApiModel implements Arrayable
 
     /**
      * @param int|null $requestId
-     * @return PipelineModel
+     * @return StatusModel
      */
     public function setRequestId(?int $requestId): self
     {

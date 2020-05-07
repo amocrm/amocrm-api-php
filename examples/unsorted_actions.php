@@ -3,8 +3,8 @@
 use AmoCRM\AmoCRM\Models\Factories\UnsortedModelFactory;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
-use AmoCRM\Collections\Unsorted\FormsUnsortedCollection;
-use AmoCRM\Collections\Unsorted\SipUnsortedCollection;
+use AmoCRM\Collections\Leads\Unsorted\FormsUnsortedCollection;
+use AmoCRM\Collections\Leads\Unsorted\SipUnsortedCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Filters\UnsortedFilter;
 use AmoCRM\Filters\UnsortedSummaryFilter;

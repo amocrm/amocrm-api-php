@@ -600,6 +600,7 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
 
         return $result;
     }
+
     /**
      * @return int|null
      */

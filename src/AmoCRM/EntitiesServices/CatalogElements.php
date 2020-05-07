@@ -11,11 +11,12 @@ use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CatalogElementModel;
 use Exception;
 
-class CatalogElements extends BaseEntityTypeEntity implements HasPageMethodsInterface
+class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterface
 {
     use PageMethodsTrait;
 
@@ -25,10 +26,15 @@ class CatalogElements extends BaseEntityTypeEntity implements HasPageMethodsInte
 
     protected $itemClass = CatalogElementModel::class;
 
-    protected function validateEntityType(string $entityType): void
+    /**
+     * @param string $entityType
+     *
+     * @throws Exception
+     */
+    protected function validateEntityId(string $entityType): void
     {
         if ((int)$entityType < EntityTypesInterface::MIN_CATALOG_ID) {
-            throw new Exception('Doesn\'t looks like catalog exists');
+            throw new NotAvailableForActionException('Doesn\'t looks like catalog exists');
         }
     }
 
@@ -112,16 +118,16 @@ class CatalogElements extends BaseEntityTypeEntity implements HasPageMethodsInte
     /**
      * @param BaseApiModel $apiModel
      * @param array $with
+     *
      * @return BaseApiModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
+     * @throws Exception
      */
     public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {
-        $this->setEntityType($apiModel->getCatalogId());
+        $this->setEntityId($apiModel->getCatalogId());
 
-        $freshModel = $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
-
-        return $freshModel;
+        return $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
     }
 }

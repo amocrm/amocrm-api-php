@@ -3,6 +3,7 @@
 namespace AmoCRM\Client;
 
 use AmoCRM\AmoCRM\EntitiesServices\Leads\Pipelines;
+use AmoCRM\AmoCRM\EntitiesServices\Leads\Statuses;
 use AmoCRM\EntitiesServices\Account;
 use AmoCRM\EntitiesServices\CatalogElements;
 use AmoCRM\EntitiesServices\Catalogs;
@@ -223,13 +224,20 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект элементов каталогов
+     *
+     * @param int|null $catalogId
+     *
      * @return CatalogElements
      */
-    public function catalogElements()
+    public function catalogElements(int $catalogId = null)
     {
         $request = $this->buildRequest();
+        $service = new CatalogElements($request);
+        if (!is_null($catalogId)) {
+            $service->setEntityId($catalogId);
+        }
 
-        return new CatalogElements($request);
+        return $service;
     }
 
     /**
@@ -346,6 +354,24 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Pipelines($request);
+    }
+
+
+    /**
+     * Метод вернет объект статусов
+     *
+     * @param int|null $pipelineId
+     *
+     * @return Statuses
+     */
+    public function statuses(int $pipelineId = null): Statuses
+    {
+        $request = $this->buildRequest();
+        $service = new Statuses($request);
+        if (!is_null($pipelineId)) {
+            $service->setEntityId($pipelineId);
+        }
+        return $service;
     }
 
     /**

@@ -6,6 +6,7 @@ interface EntityTypesInterface
 {
     const LEADS = 'leads';
     const LEADS_PIPELINES = 'pipelines';
+    const LEADS_STATUSES = 'statuses';
     const CONTACTS = 'contacts';
     const CATALOGS = 'catalogs';
     const COMPANIES = 'companies';
