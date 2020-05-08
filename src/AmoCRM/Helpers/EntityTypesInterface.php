@@ -20,6 +20,7 @@ interface EntityTypesInterface
     const CATALOG_ELEMENTS = 'elements';
     const USER_ROLES = 'roles';
     const CUSTOMERS_SEGMENTS = 'segments';
+    const WIDGETS = 'widgets';
 
 
     const CUSTOM_FIELDS = 'custom_fields';

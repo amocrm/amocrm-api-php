@@ -141,8 +141,8 @@ class CustomFieldGroups extends BaseEntityTypeEntity implements HasDeleteMethodI
     {
         $method = $this->getMethod() . '/' . $model->getId();
         $response = $this->request->delete($method);
-        //todo
-        return true;
+
+        return $response['result'];
     }
 
     /**

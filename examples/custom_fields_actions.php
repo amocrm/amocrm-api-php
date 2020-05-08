@@ -31,22 +31,26 @@ $customFieldsService = $apiClient->customFields(EntityTypesInterface::LEADS);
 //Создадим несколько полей
 $customFieldsCollection = new CustomFieldsCollection();
 $cf = new CustomFieldModel();
-$cf->setName('Поле Текст');
-$cf->setType(CustomFieldModel::TYPE_TEXT);
-$cf->setSort(10);
+$cf
+    ->setName('Поле Текст')
+    ->setType(CustomFieldModel::TYPE_TEXT)
+    ->setSort(10);
 $customFieldsCollection->add($cf);
 
 $cf = new CustomFieldModel();
-$cf->setName('Поле Чекбокс');
-$cf->setType(CustomFieldModel::TYPE_CHECKBOX);
-$cf->setSort(20);
+$cf
+    ->setName('Поле Чекбокс')
+    ->setType(CustomFieldModel::TYPE_CHECKBOX)
+    ->setSort(20)
+    ->setCode('MYSUPERCHECKBOX');
 $customFieldsCollection->add($cf);
 
 $cf = new CustomFieldModel();
-$cf->setName('Поле Список');
-$cf->setType(CustomFieldModel::TYPE_SELECT);
-$cf->setSort(30);
-$cf->setEnums([
+$cf
+    ->setName('Поле Список')
+    ->setType(CustomFieldModel::TYPE_SELECT)
+    ->setSort(30)
+    ->setEnums([
     [
         'value' => 'Значение 1',
         'sort' => 10,

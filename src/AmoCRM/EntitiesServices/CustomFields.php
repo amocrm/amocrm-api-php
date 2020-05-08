@@ -57,27 +57,6 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     }
 
     /**
-     * Обновление одной конкретной сущности
-     * @param BaseApiModel $apiModel
-     * @return BaseApiCollection|BaseApiModel
-     * @throws AmoCRMApiException
-     * @throws AmoCRMoAuthApiException
-     */
-    public function updateOne(BaseApiModel $apiModel): BaseApiModel
-    {
-        $id = method_exists($apiModel, 'getId') ? $apiModel->getId() : null;
-        if (is_null($id)) {
-            throw new AmoCRMApiException('Empty id in model ' . json_encode($apiModel->toApi(0)));
-        }
-
-        $method = '/api/v4/custom_fields';
-        $response = $this->request->patch($method . '/' . $apiModel->getId(), $apiModel->toApi(0));
-        $apiModel = $this->processUpdateOne($apiModel, $response);
-
-        return $apiModel;
-    }
-
-    /**
      * @param BaseApiModel $model
      * @param array $response
      * @return BaseApiModel
@@ -155,12 +134,9 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
      */
     public function deleteOne(BaseApiModel $model): bool
     {
-        $method = $this->getMethod() . '/' . $model->getId();
-        //todo after core changes
-        $method = '/api/v4/custom_fields/' . $model->getId();
-        $response = $this->request->delete($method);
-        //todo
-        return true;
+        $result = $this->request->delete($this->getMethod() . '/' . $model->getId());
+
+        return $result['result'];
     }
 
     /**

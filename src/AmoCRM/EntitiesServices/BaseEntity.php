@@ -104,10 +104,10 @@ abstract class BaseEntity
     }
 
     /**
-     * Обновление одной конкретной сущности
+     * Получение одной конкретной сущности
      * @param int|string $id
      * @param array $with
-     * @return BaseApiCollection|null
+     * @return BaseApiModel|null
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */

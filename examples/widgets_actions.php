@@ -22,17 +22,36 @@ $apiClient->setAccessToken($accessToken)
         }
     );
 
-//Сервис сегментов
-$segmentsService = $apiClient->customersSegments();
-
-//Получим сегменты аккаунта
+$widgetsService = $apiClient->widgets();
+//Получим виджет
 try {
-    $segmentsCollection = $segmentsService->get();
+    $widget = $widgetsService->getOne('amo_asterisk');
 } catch (AmoCRMApiException $e) {
     printError($e);
+    die;
 }
 
-var_dump($segmentsCollection);
+$widget->setSettings([
+    'login' => 'example',
+    'password' => 'SuchAnEasyPassword',
+    'script_path' => 'https://example.com/amocrm_asterisk/',
+    'phones' => [
+        504141 => 459 //id пользователя => добавочный номер
+    ],
+]);
 
+//Установим виджет
+try {
+    $widget = $widgetsService->install($widget);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
 
-//todo add segments/update
+//Отключим виджет
+try {
+    $widget = $widgetsService->uninstall($widget);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}

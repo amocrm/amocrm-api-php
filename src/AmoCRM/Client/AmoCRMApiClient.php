@@ -20,6 +20,7 @@ use AmoCRM\EntitiesServices\Segments;
 use AmoCRM\EntitiesServices\Tasks;
 use AmoCRM\EntitiesServices\Unsorted;
 use AmoCRM\EntitiesServices\Webhooks;
+use AmoCRM\EntitiesServices\Widgets;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use Exception;
 use League\OAuth2\Client\Token\AccessToken;
@@ -373,6 +374,19 @@ class AmoCRMApiClient
         }
         return $service;
     }
+
+    /**
+     * Метод вернет объект виджетов
+     *
+     * @return Widgets
+     */
+    public function widgets(): Widgets
+    {
+        $request = $this->buildRequest();
+
+        return new Widgets($request);
+    }
+
 
     /**
      * Метод вернет объект запроса для любых запросов в amoCRM с текущим Access Token

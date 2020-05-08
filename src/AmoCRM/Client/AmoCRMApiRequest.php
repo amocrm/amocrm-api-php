@@ -182,7 +182,6 @@ class AmoCRMApiRequest
 
             return $this->post($method, $body, $queryParams, $headers, true);
         }
-        //todo validate response and exception
 
         return $response;
     }
@@ -363,7 +362,7 @@ class AmoCRMApiRequest
             str_replace(
                 $this->oAuthClient->getAccountUrl(),
                 '',
-                str_replace('http', 'https', $method) //todo remove after fix
+                $method
             );
 
         $this->lastMethod = $method;
