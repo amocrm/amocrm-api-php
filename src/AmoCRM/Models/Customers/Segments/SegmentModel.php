@@ -1,8 +1,9 @@
 <?php
 
-namespace AmoCRM\Models;
+namespace AmoCRM\Models\Customers\Segments;
 
 use AmoCRM\Collections\CustomFieldsValuesCollection;
+use AmoCRM\Models\BaseApiModel;
 use InvalidArgumentException;
 
 class SegmentModel extends BaseApiModel

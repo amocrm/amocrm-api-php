@@ -130,8 +130,8 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
                 in_array(get_class($linkedEntity), $this->getAvailableLinkTypes(), true)
             ) {
                 $link = [
-                    'to_entity_type' => $linkedEntity->getType(),
-                    'to_entity_id' => $linkedEntity->getId()
+                    'entity_type' => $linkedEntity->getType(),
+                    'entity_id' => $linkedEntity->getId()
                     //, 'metadata': {'updated_by': 0}
                 ];
                 if ($linkedEntity instanceof CatalogElementModel) {

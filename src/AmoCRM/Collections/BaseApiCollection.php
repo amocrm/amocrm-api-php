@@ -5,6 +5,7 @@ namespace AmoCRM\Collections;
 use AmoCRM\Models\BaseApiModel;
 use ArrayAccess;
 use ArrayIterator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use IteratorAggregate;
@@ -33,7 +34,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
 
     /**
      * @param array $array
-     *
+     * //todo make static
      * @return self
      */
     public function fromArray(array $array): self
@@ -57,7 +58,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
      * @param array $items
      * @return static
      */
-    public function make(array $items): BaseApiCollection
+    public static function make(array $items): BaseApiCollection
     {
         $collection = new static();
         foreach ($items as $item) {
@@ -334,5 +335,11 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
         }
 
         return $result;
+    }
+
+    public function pluck($value, $key = null)
+    {
+        //TODO implement pluck()
+//        return Arr::pluck($this->data, $value, $key);
     }
 }

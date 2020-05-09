@@ -48,8 +48,7 @@ $catalogElement = new CatalogElementModel();
 $catalogElement->setName('Новый товар');
 $catalogElement->setCatalogId($catalog->getId()); //TODO убрать после правки бага в API
 $catalogElementsCollection->add($catalogElement);
-$catalogElementsService = $apiClient->catalogElements();
-$catalogElementsService->setEntityType($catalog->getId());
+$catalogElementsService = $apiClient->catalogElements($catalog->getId());
 try {
     $catalogElementsService->add($catalogElementsCollection);
 } catch (AmoCRMApiException $e) {

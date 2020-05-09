@@ -213,7 +213,7 @@ class LossReasonModel extends BaseApiModel
 
         $result['request_id'] = $this->getRequestId();
 
-        if (is_null($this->getRequestId())) {
+        if (!is_null($this->getSort())) {
             $result['sort'] = $this->getSort();
         }
 

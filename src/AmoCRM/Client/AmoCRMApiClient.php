@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\AmoCRM\EntitiesServices\Customers\Transactions;
 use AmoCRM\AmoCRM\EntitiesServices\Leads\LossReasons;
 use AmoCRM\AmoCRM\EntitiesServices\Leads\Pipelines;
 use AmoCRM\AmoCRM\EntitiesServices\Leads\Statuses;
@@ -10,6 +11,7 @@ use AmoCRM\EntitiesServices\CatalogElements;
 use AmoCRM\EntitiesServices\Catalogs;
 use AmoCRM\EntitiesServices\Companies;
 use AmoCRM\EntitiesServices\Contacts;
+use AmoCRM\EntitiesServices\Customers\Customers;
 use AmoCRM\EntitiesServices\CustomFieldGroups;
 use AmoCRM\EntitiesServices\CustomFields;
 use AmoCRM\EntitiesServices\EntityNotes;
@@ -396,6 +398,36 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new LossReasons($request);
+    }
+
+    /**
+     * Метод вернет объект транзакций
+     *
+     * @param int|null $customerId
+     *
+     * @return Transactions
+     */
+    public function transactions(?int $customerId = null): Transactions
+    {
+        $request = $this->buildRequest();
+        $service = new Transactions($request);
+        if (!is_null($customerId)) {
+            $service->setEntityId($customerId);
+        }
+
+        return $service;
+    }
+
+    /**
+     * Метод вернет объект покупателей
+     *
+     * @return Customers
+     */
+    public function customers(): Customers
+    {
+        $request = $this->buildRequest();
+
+        return new Customers($request);
     }
 
     /**

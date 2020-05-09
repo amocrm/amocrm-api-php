@@ -1,6 +1,6 @@
 <?php
 
-namespace AmoCRM\EntitiesServices;
+namespace AmoCRM\EntitiesServices\Customers;
 
 use AmoCRM\AmoCRM\EntitiesServices\HasLinkMethodInterface;
 use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
@@ -8,7 +8,8 @@ use AmoCRM\AmoCRM\Models\TypeAwareInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Collections\Leads\LeadsCollection;
+use AmoCRM\Collections\Customers\CustomersCollection;
+use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Exceptions\AmoCRMApiException;
@@ -16,24 +17,24 @@ use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CatalogElementModel;
 use AmoCRM\Models\ContactModel;
-use AmoCRM\Models\LeadModel;
+use AmoCRM\Models\Customers\CustomerModel;
 
-class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
+class Customers extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {
     use PageMethodsTrait;
 
-    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/leads';
+    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CUSTOMERS;
 
-    protected $collectionClass = LeadsCollection::class;
+    protected $collectionClass = CustomersCollection::class;
 
-    protected $itemClass = LeadModel::class;
+    protected $itemClass = CustomerModel::class;
 
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
 
-        if (isset($response[AmoCRMApiRequest::EMBEDDED]) && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS])) {
-            $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS];
+        if (isset($response[AmoCRMApiRequest::EMBEDDED]) && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CUSTOMERS])) {
+            $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CUSTOMERS];
         }
 
         return $entities;
@@ -117,6 +118,7 @@ class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethods
         return [
             ContactModel::class,
             CatalogElementModel::class,
+            //todo company
         ];
     }
 

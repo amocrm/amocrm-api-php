@@ -88,7 +88,7 @@ $filter->setIds([1]);
 
 //Получим компании по фильтру
 try {
-    $companies = $apiClient->companies()->get($filter, [CompanyModel::CONTACTS, CompanyModel::LEADS, CompanyModel::CATALOG_ELEMENTS_LINKS]);
+    $companies = $apiClient->companies()->get($filter, [CompanyModel::CONTACTS, CompanyModel::LEADS, CompanyModel::CATALOG_ELEMENTS]);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;

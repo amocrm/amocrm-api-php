@@ -88,6 +88,11 @@ class CustomFieldModel extends BaseApiModel
     protected $requestId;
 
     /**
+     * @var string|null
+     */
+    protected $code;
+
+    /**
      * @param array $customField
      *
      * @return self
@@ -105,7 +110,8 @@ class CustomFieldModel extends BaseApiModel
             ->setName($customField['name'])
             ->setType($customField['type'])
             ->setSort($customField['sort'])
-            ->setIsApiOnly($customField['is_api_only']);
+            ->setIsApiOnly($customField['is_api_only'])
+            ->setCode($customField['code']);
 
         if (!empty($customField['group_id'])) {
             $customFieldModel->setGroupId($customField['group_id']);
@@ -219,6 +225,10 @@ class CustomFieldModel extends BaseApiModel
             $result['name'] = $this->getName();
         }
 
+        if (!is_null($this->getCode())) {
+            $result['code'] = $this->getCode();
+        }
+
         if (!is_null($this->getSort())) {
             $result['sort'] = $this->getSort();
         }
@@ -255,7 +265,7 @@ class CustomFieldModel extends BaseApiModel
             $this->setRequestId($requestId + 1); //Бага в API не принимает 0
         }
 
-        $result['request_id'] = $this->getRequestId();
+//        $result['request_id'] = $this->getRequestId();
 
         return $result;
     }
@@ -413,6 +423,26 @@ class CustomFieldModel extends BaseApiModel
     public function setSettings(array $settings): CustomFieldModel
     {
         $this->settings = $settings;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string|null $code
+     *
+     * @return CustomFieldModel
+     */
+    public function setCode(?string $code): CustomFieldModel
+    {
+        $this->code = $code;
 
         return $this;
     }

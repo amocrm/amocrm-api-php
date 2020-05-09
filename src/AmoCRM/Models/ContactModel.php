@@ -6,9 +6,9 @@ use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\AmoCRM\Models\TypeAwareInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CatalogElementsCollection;
-use AmoCRM\Collections\CustomersCollection;
+use AmoCRM\Collections\Customers\CustomersCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
-use AmoCRM\Collections\LeadsCollection;
+use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
 use InvalidArgumentException;
 
@@ -16,7 +16,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
 {
     const LEADS = 'leads';
     const CUSTOMERS = 'customers';
-    const CATALOG_ELEMENTS_LINKS = 'catalog_elements_links';
+    const CATALOG_ELEMENTS = 'catalog_elements';
 
     /**
      * @var int
@@ -553,16 +553,14 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
             $contactModel->setLeads($leadsCollection);
         }
         if (!empty($contact[AmoCRMApiRequest::EMBEDDED][self::CUSTOMERS])) {
-            $empty = null; //For style:check
-            //todo когда будут покупатели
-//            $customersCollection = new CustomersCollection();
-//            $customersCollection = $customersCollection->fromArray($contact[AmoCRMApiRequest::EMBEDDED][self::CUSTOMERS]);
-//            $contactModel->setCustomers($customersCollection);
+            $customersCollection = new CustomersCollection();
+            $customersCollection = $customersCollection->fromArray($contact[AmoCRMApiRequest::EMBEDDED][self::CUSTOMERS]);
+            $contactModel->setCustomers($customersCollection);
         }
-        if (!empty($contact[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS])) {
+        if (!empty($contact[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS])) {
             $catalogElementsCollection = new CatalogElementsCollection();
             $catalogElementsCollection = $catalogElementsCollection->fromArray(
-                $contact[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS]
+                $contact[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS]
             );
             $contactModel->setCatalogElementsLinks($catalogElementsCollection);
         }
@@ -604,7 +602,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
         }
 
         if (!is_null($this->getCatalogElementsLinks())) {
-            $result['catalog_elements_links'] = $this->getCatalogElementsLinks();
+            $result['catalog_elements'] = $this->getCatalogElementsLinks();
         }
 
         if (!is_null($this->getCompany())) {
@@ -613,6 +611,10 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
 
         if (!is_null($this->getLeads())) {
             $result['leads'] = $this->getLeads();
+        }
+
+        if (!is_null($this->getCustomers())) {
+            $result['customers'] = $this->getCustomers();
         }
 
         return $result;
@@ -698,7 +700,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
         return [
             self::LEADS,
             self::CUSTOMERS,
-            self::CATALOG_ELEMENTS_LINKS,
+            self::CATALOG_ELEMENTS,
         ];
     }
 

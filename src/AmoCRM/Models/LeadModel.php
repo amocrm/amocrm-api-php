@@ -14,7 +14,7 @@ use InvalidArgumentException;
 
 class LeadModel extends BaseApiModel implements TypeAwareInterface
 {
-    const CATALOG_ELEMENTS_LINKS = 'catalog_elements_links';
+    const CATALOG_ELEMENTS = 'catalog_elements';
     const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
     const LOSS_REASON = 'loss_reason';
     const CONTACTS = 'contacts';
@@ -730,10 +730,10 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             $leadModel->setContacts($contactsCollection);
         }
 
-        if (!empty($lead[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS])) {
+        if (!empty($lead[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS])) {
             $catalogElementsCollection = new CatalogElementsCollection();
             $catalogElementsCollection = $catalogElementsCollection->fromArray(
-                $lead[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS_LINKS]
+                $lead[AmoCRMApiRequest::EMBEDDED][self::CATALOG_ELEMENTS]
             );
             $leadModel->setCatalogElementsLinks($catalogElementsCollection);
         }
@@ -781,7 +781,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         }
 
         if (!is_null($this->getCatalogElementsLinks())) {
-            $result['catalog_elements_links'] = $this->getCatalogElementsLinks();
+            $result['catalog_elements'] = $this->getCatalogElementsLinks();
         }
 
         if (!is_null($this->getIsPriceModifiedByRobot())) {
@@ -905,7 +905,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     public static function getAvailableWith(): array
     {
         return [
-            self::CATALOG_ELEMENTS_LINKS,
+            self::CATALOG_ELEMENTS,
             self::IS_PRICE_BY_ROBOT,
             self::CONTACTS,
             self::LOSS_REASON,

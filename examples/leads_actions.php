@@ -2,14 +2,12 @@
 
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
-use AmoCRM\Collections\LeadsCollection;
+use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Filters\LeadFilter;
 use AmoCRM\Models\CustomFieldValueModel;
 use AmoCRM\Models\LeadModel;
-use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 include_once __DIR__ . '/bootstrap.php';
@@ -32,16 +30,16 @@ $apiClient->setAccessToken($accessToken)
     );
 
 
-try {
-    $service = $apiClient->leads();
-    $q = $service->get();
-    $q = $service->nextPage($q);
-} catch (AmoCRMApiException $e) {
-    printError($e);
-    die;
-}
-
-die;
+//try {
+//    $service = $apiClient->leads();
+//    $q = $service->get();
+//    $q = $service->nextPage($q);
+//} catch (AmoCRMApiException $e) {
+//    printError($e);
+//    die;
+//}
+//
+//die;
 //Создадим сделку
 $lead = new LeadModel();
 $lead->setName('Example');
@@ -134,7 +132,7 @@ try {
 
 //Получим сделку
 try {
-    $lead = $apiClient->leads()->getOne(1, [LeadModel::CONTACTS, LeadModel::CATALOG_ELEMENTS_LINKS]);
+    $lead = $apiClient->leads()->getOne(1, [LeadModel::CONTACTS, LeadModel::CATALOG_ELEMENTS]);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;

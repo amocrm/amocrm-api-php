@@ -1,7 +1,7 @@
 <?php
 
 use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\Collections\LeadsCollection;
+use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\LeadModel;

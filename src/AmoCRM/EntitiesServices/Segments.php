@@ -6,11 +6,11 @@ use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Collections\SegmentsCollection;
+use AmoCRM\Collections\Customers\Segments\SegmentsCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
-use AmoCRM\Models\SegmentModel;
+use AmoCRM\Models\Customers\Segments\SegmentModel;
 
 class Segments extends BaseEntity implements HasPageMethodsInterface
 {

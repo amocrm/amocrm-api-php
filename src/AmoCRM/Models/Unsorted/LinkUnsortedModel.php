@@ -5,7 +5,7 @@ namespace AmoCRM\Models\Unsorted;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CompaniesCollection;
 use AmoCRM\Collections\ContactsCollection;
-use AmoCRM\Collections\LeadsCollection;
+use AmoCRM\Collections\Leads\LeadsCollection;
 use Illuminate\Contracts\Support\Arrayable;
 
 class LinkUnsortedModel implements Arrayable

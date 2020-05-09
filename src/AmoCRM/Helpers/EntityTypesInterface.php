@@ -12,6 +12,7 @@ interface EntityTypesInterface
     const CATALOGS = 'catalogs';
     const COMPANIES = 'companies';
     const CUSTOMERS = 'customers';
+    const CUSTOMERS_TRANSACTIONS = 'transactions';
     const EVENTS = 'events';
     const NOTES = 'notes';
     const TAGS = 'tags';
