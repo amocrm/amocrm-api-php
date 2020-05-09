@@ -25,7 +25,10 @@ if (!isset($_GET['code'])) {
         );
         die;
     } else {
-        $authorizationUrl = $apiClient->getOAuthClient()->getAuthorizeUrl($state);
+        $authorizationUrl = $apiClient->getOAuthClient()->getAuthorizeUrl([
+            'state' => $state,
+            'mode' => 'post_message',
+        ]);
         header('Location: ' . $authorizationUrl);
         die;
     }

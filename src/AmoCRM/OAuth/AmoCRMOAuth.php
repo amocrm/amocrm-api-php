@@ -3,12 +3,15 @@
 namespace AmoCRM\OAuth;
 
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\OAuth2\Client\Provider\AmoCRM;
+use Exception;
 use GuzzleHttp\ClientInterface;
 use League\OAuth2\Client\Grant\AuthorizationCode;
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 /**
@@ -17,6 +20,18 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
  */
 class AmoCRMOAuth
 {
+    /**
+     * Доступные цвета для кнопки авторизации
+     */
+    public const BUTTON_COLORS = [
+        'default' => '#339DC7',
+        'blue' => '#1976D2',
+        'violet' => '#6A1B9A',
+        'green' => '#388E3C',
+        'orange' => '#F57F17',
+        'red' => '#D84315',
+    ];
+
     protected const REQUEST_TIMEOUT = 15;
 
     /**
@@ -49,21 +64,14 @@ class AmoCRMOAuth
 
     /**
      * Получение ссылки на окно предоставление доступа
-     * @param string|null $state
+     *
+     * @param array $options
+     *
      * @return string
      */
-    public function getAuthorizeUrl(?string $state = null): string
+    public function getAuthorizeUrl(array $options = []): string
     {
-        $params = [];
-
-        if (!is_null($state)) {
-            $params['state'] = $state;
-        }
-
-        //todo popup type and params
-        $authorizationUrl = $this->oauthProvider->getAuthorizationUrl($params);
-
-        return $authorizationUrl;
+        return $this->oauthProvider->getAuthorizationUrl($options);
     }
 
     /**
@@ -169,6 +177,7 @@ class AmoCRMOAuth
      */
     public function getResourceOwner(AccessTokenInterface $accessToken): ResourceOwnerInterface
     {
+        /** @var AccessToken $accessToken */
         return $this->oauthProvider->getResourceOwner($accessToken);
     }
 
@@ -182,23 +191,31 @@ class AmoCRMOAuth
      * string error_callback
      *
      * @param array $options
+     *
      * @return string
+     * @throws BadTypeException
      */
     public function getOAuthButton(array $options = []): string
     {
+        if (isset($options['color']) && !in_array($options['color'], self::BUTTON_COLORS, true)) {
+            throw new BadTypeException('Invalid color selected');
+        }
+
         $title = $options['title'] ?? 'Установить интеграцию';
         $compact = isset($options['compact']) && $options['compact'] ? 'true' : 'false';
         $className = $options['class_name'] ?? 'className';
-        $color = $options['color'] ?? 'default'; //todo validate colors
+        $color = $options['color'] ?? 'default';
         $errorCallback = $options['error_callback'] ?? 'handleOauthError';
+        $mode = isset($options['mode']) && in_array($options['mode'], ['popup', 'post_message'])
+            ? $options['mode']
+            : 'post_message';
         try {
             $state = $options['state'] ?? bin2hex(random_bytes(10));
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $state = rand(1, 100);
         }
 
-        $button =
-        '<div>
+        return '<div>
                 <script
                     class="amocrm_oauth"
                     charset="utf-8"
@@ -209,10 +226,9 @@ class AmoCRMOAuth
                     data-color="' . $color . '"
                     data-state="' . $state . '"
                     data-error-callback="' . $errorCallback . '"
+                    data-mode="' . $mode . '"
                     src="https://www.amocrm.ru/auth/button.min.js"
                 ></script>
         </div>';
-
-        return $button;
     }
 }
