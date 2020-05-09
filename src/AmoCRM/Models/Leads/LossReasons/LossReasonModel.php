@@ -1,7 +1,8 @@
 <?php
 
-namespace AmoCRM\Models;
+namespace AmoCRM\Models\Leads\LossReasons;
 
+use AmoCRM\Models\BaseApiModel;
 use InvalidArgumentException;
 
 class LossReasonModel extends BaseApiModel
@@ -30,6 +31,11 @@ class LossReasonModel extends BaseApiModel
      * @var int
      */
     protected $updatedAt;
+
+    /**
+     * @var null|int
+     */
+    protected $requestId = null;
 
     /**
      * @param array $lossReason
@@ -80,6 +86,7 @@ class LossReasonModel extends BaseApiModel
 
     /**
      * @param int $id
+     *
      * @return LossReasonModel
      */
     public function setId(int $id): self
@@ -99,6 +106,7 @@ class LossReasonModel extends BaseApiModel
 
     /**
      * @param string $name
+     *
      * @return LossReasonModel
      */
     public function setName(string $name): self
@@ -118,6 +126,7 @@ class LossReasonModel extends BaseApiModel
 
     /**
      * @param int $sort
+     *
      * @return LossReasonModel
      */
     public function setSort(int $sort): self
@@ -137,6 +146,7 @@ class LossReasonModel extends BaseApiModel
 
     /**
      * @param int $timestamp
+     *
      * @return LossReasonModel
      */
     public function setCreatedAt(int $timestamp): self
@@ -156,6 +166,7 @@ class LossReasonModel extends BaseApiModel
 
     /**
      * @param int $timestamp
+     *
      * @return LossReasonModel
      */
     public function setUpdatedAt(int $timestamp): self
@@ -166,11 +177,46 @@ class LossReasonModel extends BaseApiModel
     }
 
     /**
+     * @return int|null
+     */
+    public function getRequestId(): ?int
+    {
+        return $this->requestId;
+    }
+
+    /**
      * @param int|null $requestId
+     *
+     * @return LossReasonModel
+     */
+    public function setRequestId(?int $requestId): LossReasonModel
+    {
+        $this->requestId = $requestId;
+
+        return $this;
+    }
+
+    /**
+     * @param int|null $requestId
+     *
      * @return array
      */
     public function toApi(int $requestId = null): array
     {
-        return $this->toArray();
+        $result = [
+            'name' => $this->getName(),
+        ];
+
+        if (is_null($this->getRequestId()) && !is_null($requestId)) {
+            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+        }
+
+        $result['request_id'] = $this->getRequestId();
+
+        if (is_null($this->getRequestId())) {
+            $result['sort'] = $this->getSort();
+        }
+
+        return $result;
     }
 }

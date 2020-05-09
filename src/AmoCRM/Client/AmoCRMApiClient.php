@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\AmoCRM\EntitiesServices\Leads\LossReasons;
 use AmoCRM\AmoCRM\EntitiesServices\Leads\Pipelines;
 use AmoCRM\AmoCRM\EntitiesServices\Leads\Statuses;
 use AmoCRM\EntitiesServices\Account;
@@ -114,9 +115,7 @@ class AmoCRMApiClient
         $oAuthClient = $this->getOAuthClient();
         $oAuthClient->setAccessTokenRefreshCallback($this->accessTokenRefreshCallback);
 
-        $request = new AmoCRMApiRequest($this->accessToken, $oAuthClient);
-
-        return $request;
+        return new AmoCRMApiRequest($this->accessToken, $oAuthClient);
     }
 
     /**
@@ -387,6 +386,17 @@ class AmoCRMApiClient
         return new Widgets($request);
     }
 
+    /**
+     * Метод вернет объект причин отказа
+     *
+     * @return LossReasons
+     */
+    public function lossReasons(): LossReasons
+    {
+        $request = $this->buildRequest();
+
+        return new LossReasons($request);
+    }
 
     /**
      * Метод вернет объект запроса для любых запросов в amoCRM с текущим Access Token

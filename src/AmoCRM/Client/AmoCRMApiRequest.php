@@ -140,7 +140,7 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
-        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastMethod = self::POST_REQUEST . ' ' . $this->oAuthClient->getAccountUrl() . $method;
         $this->lastBody = $body;
         $this->lastQueryParams = $queryParams;
 
@@ -213,7 +213,7 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
-        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastMethod = self::PATCH_REQUEST . ' ' . $this->oAuthClient->getAccountUrl() . $method;
         $this->lastBody = $body;
         $this->lastQueryParams = $queryParams;
 
@@ -286,7 +286,7 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
-        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastMethod = self::DELETE_REQUEST . ' ' . $this->oAuthClient->getAccountUrl() . $method;
         $this->lastBody = $body;
         $this->lastQueryParams = $queryParams;
 
@@ -365,7 +365,7 @@ class AmoCRMApiRequest
                 $method
             );
 
-        $this->lastMethod = $method;
+        $this->lastMethod = self::GET_REQUEST . ' ' . $method;
         $this->lastBody = [];
         $this->lastQueryParams = $queryParams;
 

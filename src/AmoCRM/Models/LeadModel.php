@@ -9,6 +9,7 @@ use AmoCRM\Collections\CatalogElementsCollection;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\TagsCollection;
+use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
 use InvalidArgumentException;
 
 class LeadModel extends BaseApiModel implements TypeAwareInterface
