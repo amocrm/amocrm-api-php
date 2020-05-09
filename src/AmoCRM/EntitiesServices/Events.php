@@ -12,7 +12,6 @@ use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\EventModel;
-use Exception;
 
 class Events extends BaseEntity implements HasPageMethodsInterface
 {
@@ -49,7 +48,7 @@ class Events extends BaseEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiCollection $collection
      * @return BaseApiCollection
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function add(BaseApiCollection $collection): BaseApiCollection
     {
@@ -59,7 +58,7 @@ class Events extends BaseEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiCollection $collection
      * @return BaseApiCollection
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function update(BaseApiCollection $collection): BaseApiCollection
     {
@@ -69,7 +68,7 @@ class Events extends BaseEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiModel $apiModel
      * @return BaseApiModel
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
     {

@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models;
 
-use InvalidArgumentException;
+use AmoCRM\Exceptions\InvalidArgumentException;
 
 class EventModel extends BaseApiModel
 {
@@ -233,11 +233,11 @@ class EventModel extends BaseApiModel
      * @param array $event
      *
      * @return self
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $event): self
     {
         if (empty($event['id'])) {
-            //todo amocrm exception
             throw new InvalidArgumentException('Event id is empty in ' . json_encode($event));
         }
 

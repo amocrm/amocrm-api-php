@@ -11,6 +11,7 @@ use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\WidgetModel;
 use Exception;
@@ -43,13 +44,25 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
     }
 
     /**
+     * @param BaseApiModel $model
+     *
+     * @return BaseApiModel
+     * @throws NotAvailableForActionException
+     */
+    public function addOne(BaseApiModel $model): BaseApiModel
+    {
+        throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+    /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function add(BaseApiCollection $collection): BaseApiCollection
     {
-        throw new Exception('Method not available for this entity');
+        throw new NotAvailableForActionException('Method not available for this entity');
     }
 
     /**
@@ -59,17 +72,18 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
      */
     public function update(BaseApiCollection $collection): BaseApiCollection
     {
-        throw new Exception('Method not available for this entity');
+        throw new NotAvailableForActionException('Method not available for this entity');
     }
 
     /**
      * @param BaseApiModel $apiModel
+     *
      * @return BaseApiModel
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
     {
-        throw new Exception('Method not available for this entity');
+        throw new NotAvailableForActionException('Method not available for this entity');
     }
 
     /**

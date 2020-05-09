@@ -6,6 +6,8 @@ use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
+use AmoCRM\Collections\Leads\Unsorted\FormsUnsortedCollection;
+use AmoCRM\Collections\Leads\Unsorted\SipUnsortedCollection;
 use AmoCRM\Collections\Leads\Unsorted\UnsortedCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
@@ -76,6 +78,7 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
      */
     public function accept(BaseApiModel $unsortedModel, $body = []): AcceptUnsortedModel
     {
+        /** @var $unsortedModel BaseUnsortedModel */
         $response = $this->request->post($this->getMethod() . '/' . $unsortedModel->getUid() . '/accept', $body);
 
         return AcceptUnsortedModel::fromArray($response);
@@ -91,6 +94,7 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
      */
     public function decline(BaseApiModel $unsortedModel, $body = []): DeclineUnsortedModel
     {
+        /** @var $unsortedModel BaseUnsortedModel */
         $response = $this->request->delete($this->getMethod() . '/' . $unsortedModel->getUid() . '/decline', $body);
 
         return DeclineUnsortedModel::fromArray($response);
@@ -106,6 +110,7 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
      */
     public function link(BaseApiModel $unsortedModel, $body = []): LinkUnsortedModel
     {
+        /** @var $unsortedModel BaseUnsortedModel */
         if (
             !in_array(
                 $unsortedModel->getCategory(),
@@ -145,6 +150,7 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
     {
+        /** @var $apiModel BaseUnsortedModel */
         //todo get more data from response
         if (isset($entity['uid'])) {
             $apiModel->setUid($entity['uid']);
@@ -161,8 +167,15 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
     public function add(BaseApiCollection $collection): BaseApiCollection
     {
         /** @var UnsortedCollection $collection */
-        if (!$collection->getCategory()) {
-            throw new NotAvailableForActionException('Only chats and mail');
+        if (
+            !$collection->getCategory() ||
+            !in_array(
+                $collection->getCategory(),
+                [BaseUnsortedModel::CATEGORY_CODE_SIP, BaseUnsortedModel::CATEGORY_CODE_FORMS],
+                true
+            )
+        ) {
+            throw new NotAvailableForActionException('Only forms and sip');
         }
 
         $response = $this->request->post($this->getMethod() . '/' . $collection->getCategory(), $collection->toApi());
@@ -170,6 +183,46 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
 
         return $collection;
     }
+
+    /**
+     * Добавление сщуности
+     * @param BaseApiModel $model
+     * @return BaseApiModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function addOne(BaseApiModel $model): BaseApiModel
+    {
+        /** @var BaseUnsortedModel $model */
+        if (
+            !$model->getCategory() ||
+            !in_array(
+                $model->getCategory(),
+                [BaseUnsortedModel::CATEGORY_CODE_SIP, BaseUnsortedModel::CATEGORY_CODE_FORMS],
+                true
+            )
+        ) {
+            throw new NotAvailableForActionException('Only forms and sip');
+        }
+
+        switch ($model->getCategory()) {
+            case BaseUnsortedModel::CATEGORY_CODE_SIP:
+                $collection = new SipUnsortedCollection();
+                break;
+            case BaseUnsortedModel::CATEGORY_CODE_FORMS:
+                $collection = new FormsUnsortedCollection();
+                break;
+            default:
+                throw new NotAvailableForActionException('Only forms and sip');
+        }
+
+        $collection->add($model);
+        $response = $this->request->post($this->getMethod(), $collection->toApi());
+        $collection = $this->processAdd($collection, $response);
+
+        return $collection->first();
+    }
+
 
     /**
      * @param BaseApiCollection $collection
