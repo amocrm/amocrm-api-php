@@ -82,6 +82,16 @@ class TransactionModel extends BaseApiModel
     protected $requestId = null;
 
     /**
+     * @var int|null
+     */
+    protected $nextDate;
+
+    /**
+     * @var int|null
+     */
+    protected $nextPrice;
+
+    /**
      * @param array $transaction
      *
      * @return self
@@ -143,12 +153,12 @@ class TransactionModel extends BaseApiModel
         if (!empty($transaction[AmoCRMApiRequest::EMBEDDED]['catalog_elements'])) {
             $catalogElementsCollection = new CatalogElementsCollection();
             foreach ($transaction[AmoCRMApiRequest::EMBEDDED]['catalog_elements'] as $catalogElement) {
-                $catalogElement = new CatalogElementModel();
-                $catalogElement
+                $catalogElementModel = new CatalogElementModel();
+                $catalogElementModel
                     ->setId($catalogElement['id'])
                     ->setCatalogId($catalogElement['metadata']['catalog_id'])
                     ->setQuantity($catalogElement['metadata']['quantity'] ?? 1);
-                $catalogElementsCollection->add($catalogElement);
+                $catalogElementsCollection->add($catalogElementModel);
             }
 
             $model->setCatalogElements($catalogElementsCollection);
@@ -162,7 +172,7 @@ class TransactionModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'price' => $this->getPrice(),
             'completed_at' => $this->getCompletedAt(),
@@ -175,10 +185,8 @@ class TransactionModel extends BaseApiModel
             'account_id' => $this->getAccountId(),
             'catalog_elements' => $this->getCatalogElements() ? $this->getCatalogElements()->toArray() : null,
             'customer_id' => $this->getCustomerId(),
-//            'customer' =>  $this->getCustomer()->toArray(),
+            'customer' =>  $this->getCustomer()->toArray(),
         ];
-
-        return $result;
     }
 
     /**
@@ -462,6 +470,46 @@ class TransactionModel extends BaseApiModel
     }
 
     /**
+     * @return int|null
+     */
+    public function getNextDate(): ?int
+    {
+        return $this->nextDate;
+    }
+
+    /**
+     * @param int|null $nextDate
+     *
+     * @return TransactionModel
+     */
+    public function setNextDate(?int $nextDate): TransactionModel
+    {
+        $this->nextDate = $nextDate;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getNextPrice(): ?int
+    {
+        return $this->nextPrice;
+    }
+
+    /**
+     * @param int|null $nextPrice
+     *
+     * @return TransactionModel
+     */
+    public function setNextPrice(?int $nextPrice): TransactionModel
+    {
+        $this->nextPrice = $nextPrice;
+
+        return $this;
+    }
+
+    /**
      * @param int|null $requestId
      *
      * @return array
@@ -496,8 +544,13 @@ class TransactionModel extends BaseApiModel
             $result[AmoCRMApiRequest::EMBEDDED]['catalog_elements'] = $catalogElements;
         }
 
-        //todo next_date and next_price support
-        //todo elements support
+        if (!is_null($this->getNextDate())) {
+            $result['next_date'] = $this->getNextDate();
+        }
+
+        if (!is_null($this->getNextPrice())) {
+            $result['next_price'] = $this->getNextPrice();
+        }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
             $this->setRequestId($requestId + 1); //Бага в API не принимает 0

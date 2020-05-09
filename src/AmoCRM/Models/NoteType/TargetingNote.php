@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\NoteType;
 
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\NoteModel;
 
 abstract class TargetingNote extends NoteModel
@@ -37,6 +38,7 @@ abstract class TargetingNote extends NoteModel
      * @param array $note
      *
      * @return self
+     * @throws InvalidArgumentException
      */
     public function fromArray(array $note): NoteModel
     {
@@ -138,13 +140,14 @@ abstract class TargetingNote extends NoteModel
 
     /**
      * @param string|null $service
+     *
      * @return TargetingNote
+     * @throws InvalidArgumentException
      */
     public function setService(?string $service): TargetingNote
     {
         if (!in_array($service, self::AVAILABLE_SERVICES, true)) {
-            //todo exception
-            return $this;
+            throw new InvalidArgumentException('Invalid value given:' . $service);
         }
 
         $this->service = $service;

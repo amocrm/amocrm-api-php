@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\AmoCRM\Models\Factories\NoteFactory;
 use Illuminate\Contracts\Support\Arrayable;
 
 class NoteModel extends BaseApiModel implements Arrayable
@@ -107,8 +108,7 @@ class NoteModel extends BaseApiModel implements Arrayable
      */
     public function getNoteType(): string
     {
-        //todo exception
-        return 'common_note';
+        return NoteFactory::NOTE_TYPE_CODE_COMMON;
     }
 
     /**
@@ -116,7 +116,9 @@ class NoteModel extends BaseApiModel implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        //Параметы в child-классах
+
+        return [
             'id' => $this->getId(),
             'entity_id' => $this->getEntityId(),
             'note_type' => $this->getNoteType(),
@@ -128,10 +130,6 @@ class NoteModel extends BaseApiModel implements Arrayable
             'updated_at' => $this->getUpdatedAt(),
             'account_id' => $this->getAccountId(),
         ];
-
-        //Параметы в child-классах
-
-        return $result;
     }
 
     /**

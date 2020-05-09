@@ -8,9 +8,9 @@ use AmoCRM\AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CompaniesCollection;
 use AmoCRM\Collections\ContactsCollection;
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\LeadModel;
-use InvalidArgumentException;
 
 class BaseUnsortedModel extends BaseApiModel
 {
@@ -265,12 +265,13 @@ class BaseUnsortedModel extends BaseApiModel
 
     /**
      * @param array $unsorted
+     *
      * @return self
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $unsorted): self
     {
         if (empty($unsorted['uid'])) {
-            //todo amocrm exception
             throw new InvalidArgumentException('Unsorted uid is empty in ' . json_encode($unsorted));
         }
 

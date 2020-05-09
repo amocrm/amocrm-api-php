@@ -3,6 +3,7 @@
 namespace AmoCRM\Models\NoteType;
 
 use AmoCRM\AmoCRM\Models\Factories\NoteFactory;
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\NoteModel;
 
 class MessageCashierNote extends NoteModel
@@ -38,6 +39,7 @@ class MessageCashierNote extends NoteModel
      * @param array $note
      *
      * @return self
+     * @throws InvalidArgumentException
      */
     public function fromArray(array $note): NoteModel
     {
@@ -91,13 +93,14 @@ class MessageCashierNote extends NoteModel
 
     /**
      * @param string|null $status
+     *
      * @return MessageCashierNote
+     * @throws InvalidArgumentException
      */
     public function setStatus(?string $status): MessageCashierNote
     {
         if (!in_array($status, self::AVAILABLE_STATUSES, true)) {
-            //todo exception
-            return $this;
+            throw new InvalidArgumentException('Invalid value given:' . $status);
         }
 
         $this->status = $status;

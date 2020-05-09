@@ -62,9 +62,9 @@ class WidgetModel extends BaseApiModel
     protected $pipelineId;
 
     /**
+     * Данные свойство доступно только в случае установки виджета
+     * и в случае запроса от связанного с виджетом oAuth клиента
      * @var array|null
-     * //todo model
-     * API возвращает только в случае их установки и если сделан запрос от связанного с виджетом oauth клиента
      */
     protected $settings;
 
@@ -103,7 +103,7 @@ class WidgetModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'code' => $this->getCode(),
             'version' => $this->getVersion(),
@@ -117,8 +117,6 @@ class WidgetModel extends BaseApiModel
             'client_uuid' => $this->getClientUuid(),
             'settings' => $this->getSettings(),
         ];
-
-        return $result;
     }
 
     /**

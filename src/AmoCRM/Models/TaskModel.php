@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models;
 
-use InvalidArgumentException;
+use AmoCRM\Exceptions\InvalidArgumentException;
 
 class TaskModel extends BaseApiModel
 {
@@ -401,12 +401,13 @@ class TaskModel extends BaseApiModel
 
     /**
      * @param array $task
+     *
      * @return self
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $task): self
     {
         if (empty($task['id'])) {
-            //todo amocrm exception
             throw new InvalidArgumentException('Task id is empty in ' . json_encode($task));
         }
 
@@ -478,7 +479,7 @@ class TaskModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'text' => $this->getText(),
             'responsible_user_id' => $this->getResponsibleUserId(),
@@ -495,8 +496,6 @@ class TaskModel extends BaseApiModel
             'result' => $this->getResult(),
             'account_id' => $this->getAccountId(),
         ];
-
-        return $result;
     }
 
     public function toApi(int $requestId = null): array
