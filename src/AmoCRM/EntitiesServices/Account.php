@@ -6,11 +6,16 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\AccountModel;
 use AmoCRM\Models\BaseApiModel;
-use Exception;
 
+/**
+ * Class Account
+ *
+ * @package AmoCRM\EntitiesServices
+ */
 class Account extends BaseEntity
 {
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/account';
@@ -49,49 +54,67 @@ class Account extends BaseEntity
         return $entity;
     }
 
+    /**
+     * @param int|string $id
+     * @param array $with
+     *
+     * @return BaseApiModel|null
+     * @throws NotAvailableForActionException
+     */
     public function getOne($id, array $with = []): ?BaseApiModel
     {
-        throw new Exception('Use getCurrent for this entity');
+        throw new NotAvailableForActionException('Use getCurrent for this entity');
     }
 
     /**
      * @param null|BaseEntityFilter $filter
      * @param array $with
      * @return BaseApiCollection|null
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
-        throw new Exception('Use getCurrent for this entity');
+        throw new NotAvailableForActionException('Use getCurrent for this entity');
     }
 
     /**
      * @param BaseApiCollection $collection
      * @return BaseApiCollection
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function add(BaseApiCollection $collection): BaseApiCollection
     {
-        throw new Exception('Method not available for this entity');
+        throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+    /**
+     * @param BaseApiModel $model
+     *
+     * @return BaseApiModel
+     * @throws NotAvailableForActionException
+     */
+    public function addOne(BaseApiModel $model): BaseApiModel
+    {
+        throw new NotAvailableForActionException('Method not available for this entity');
     }
 
     /**
      * @param BaseApiCollection $collection
      * @return BaseApiCollection
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function update(BaseApiCollection $collection): BaseApiCollection
     {
-        throw new Exception('Method not available for this entity');
+        throw new NotAvailableForActionException('Method not available for this entity');
     }
 
     /**
      * @param BaseApiModel $apiModel
      * @return BaseApiModel
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
     {
-        throw new Exception('Method not available for this entity');
+        throw new NotAvailableForActionException('Method not available for this entity');
     }
 }

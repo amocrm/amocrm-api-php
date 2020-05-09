@@ -177,6 +177,24 @@ abstract class BaseEntity
     }
 
     /**
+     * Добавление сщуности
+     * @param BaseApiModel $model
+     * @return BaseApiModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function addOne(BaseApiModel $model): BaseApiModel
+    {
+        /** @var BaseApiCollection $collection */
+        $collection = new $this->collectionClass;
+        $collection->add($model);
+        $response = $this->request->post($this->getMethod(), $collection->toApi());
+        $collection = $this->processAdd($collection, $response);
+
+        return $collection->first();
+    }
+
+    /**
      * Обновление коллекции сущностей
      * @param BaseApiCollection $collection
      * @return BaseApiCollection

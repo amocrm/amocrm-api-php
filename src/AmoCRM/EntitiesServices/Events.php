@@ -9,6 +9,7 @@ use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\EventsCollections;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
+use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\EventModel;
 use Exception;
@@ -35,13 +36,24 @@ class Events extends BaseEntity implements HasPageMethodsInterface
     }
 
     /**
+     * @param BaseApiModel $model
+     *
+     * @return BaseApiModel
+     * @throws NotAvailableForActionException
+     */
+    public function addOne(BaseApiModel $model): BaseApiModel
+    {
+        throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+    /**
      * @param BaseApiCollection $collection
      * @return BaseApiCollection
      * @throws Exception
      */
     public function add(BaseApiCollection $collection): BaseApiCollection
     {
-        throw new Exception('Method not available for this entity');
+        throw new NotAvailableForActionException('Method not available for this entity');
     }
 
     /**
@@ -51,7 +63,7 @@ class Events extends BaseEntity implements HasPageMethodsInterface
      */
     public function update(BaseApiCollection $collection): BaseApiCollection
     {
-        throw new Exception('Method not available for this entity');
+        throw new NotAvailableForActionException('Method not available for this entity');
     }
 
     /**
@@ -61,6 +73,6 @@ class Events extends BaseEntity implements HasPageMethodsInterface
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
     {
-        throw new Exception('Method not available for this entity');
+        throw new NotAvailableForActionException('Method not available for this entity');
     }
 }
