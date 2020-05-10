@@ -1,9 +1,10 @@
 <?php
 
-namespace AmoCRM\AmoCRM\EntitiesServices\Leads;
+namespace AmoCRM\EntitiesServices\Leads;
 
-use AmoCRM\AmoCRM\EntitiesServices\HasDeleteMethodInterface;
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -15,14 +16,40 @@ use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Leads\Pipelines\PipelineModel;
 
+/**
+ * Class Pipelines
+ *
+ * @package AmoCRM\EntitiesServices\Leads
+ *
+ * @method PipelineModel getOne($id, array $with = []) : ?ContactModel
+ * @method PipelinesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?PipelinesCollection
+ * @method PipelineModel addOne(BaseApiModel $model) : ContactModel
+ * @method PipelinesCollection add(BaseApiCollection $collection) : PipelinesCollection
+ * @method PipelineModel updateOne(BaseApiModel $apiModel) : ContactModel
+ * @method PipelineModel syncOne(BaseApiModel $apiModel, $with = []) : ContactModel
+ */
 class Pipelines extends BaseEntity implements HasDeleteMethodInterface
 {
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::LEADS . '/' . EntityTypesInterface::LEADS_PIPELINES;
 
+    /**
+     * @var string
+     */
     protected $collectionClass = PipelinesCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = PipelineModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -36,6 +63,7 @@ class Pipelines extends BaseEntity implements HasDeleteMethodInterface
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -47,6 +75,7 @@ class Pipelines extends BaseEntity implements HasDeleteMethodInterface
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -59,6 +88,7 @@ class Pipelines extends BaseEntity implements HasDeleteMethodInterface
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -66,6 +96,12 @@ class Pipelines extends BaseEntity implements HasDeleteMethodInterface
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -82,7 +118,7 @@ class Pipelines extends BaseEntity implements HasDeleteMethodInterface
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|PipelineModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
@@ -97,7 +133,8 @@ class Pipelines extends BaseEntity implements HasDeleteMethodInterface
     }
 
     /**
-     * @param BaseApiModel $model
+     * @param BaseApiModel|PipelineModel $model
+     *
      * @return bool
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -111,6 +148,7 @@ class Pipelines extends BaseEntity implements HasDeleteMethodInterface
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return bool
      * @throws NotAvailableForActionException
      */

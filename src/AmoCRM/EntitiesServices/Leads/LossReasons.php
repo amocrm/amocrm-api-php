@@ -1,9 +1,10 @@
 <?php
 
-namespace AmoCRM\AmoCRM\EntitiesServices\Leads;
+namespace AmoCRM\EntitiesServices\Leads;
 
-use AmoCRM\AmoCRM\EntitiesServices\HasDeleteMethodInterface;
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -15,14 +16,40 @@ use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
 
+/**
+ * Class LossReasons
+ *
+ * @package AmoCRM\EntitiesServices\Leads
+ *
+ * @method LossReasonModel getOne($id, array $with = []) : ?LossReasonModel
+ * @method LossReasonsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?LossReasonsCollection
+ * @method LossReasonModel addOne(LossReasonModel $model) : LossReasonModel
+ * @method LossReasonsCollection add(BaseApiCollection $collection) : LossReasonsCollection
+ * @method LossReasonModel updateOne(LossReasonModel $apiModel) : LossReasonModel
+ * @method LossReasonModel syncOne(LossReasonModel $apiModel, $with = []) : LossReasonModel
+ */
 class LossReasons extends BaseEntity implements HasDeleteMethodInterface
 {
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::LEADS . '/' . EntityTypesInterface::LEADS_LOSS_REASONS;
 
+    /**
+     * @var string
+     */
     protected $collectionClass = LossReasonsCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = LossReasonModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -37,6 +64,7 @@ class LossReasons extends BaseEntity implements HasDeleteMethodInterface
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -49,6 +77,7 @@ class LossReasons extends BaseEntity implements HasDeleteMethodInterface
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -56,6 +85,12 @@ class LossReasons extends BaseEntity implements HasDeleteMethodInterface
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -72,7 +107,7 @@ class LossReasons extends BaseEntity implements HasDeleteMethodInterface
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|LossReasonModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
@@ -91,7 +126,8 @@ class LossReasons extends BaseEntity implements HasDeleteMethodInterface
     }
 
     /**
-     * @param BaseApiModel $model
+     * @param BaseApiModel|LossReasonModel $model
+     *
      * @return bool
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -105,6 +141,7 @@ class LossReasons extends BaseEntity implements HasDeleteMethodInterface
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -115,6 +152,7 @@ class LossReasons extends BaseEntity implements HasDeleteMethodInterface
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return bool
      * @throws NotAvailableForActionException
      */

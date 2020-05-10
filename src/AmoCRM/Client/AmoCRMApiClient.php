@@ -2,10 +2,10 @@
 
 namespace AmoCRM\Client;
 
-use AmoCRM\AmoCRM\EntitiesServices\Customers\Transactions;
-use AmoCRM\AmoCRM\EntitiesServices\Leads\LossReasons;
-use AmoCRM\AmoCRM\EntitiesServices\Leads\Pipelines;
-use AmoCRM\AmoCRM\EntitiesServices\Leads\Statuses;
+use AmoCRM\EntitiesServices\Customers\Transactions;
+use AmoCRM\EntitiesServices\Leads\LossReasons;
+use AmoCRM\EntitiesServices\Leads\Pipelines;
+use AmoCRM\EntitiesServices\Leads\Statuses;
 use AmoCRM\EntitiesServices\Account;
 use AmoCRM\EntitiesServices\CatalogElements;
 use AmoCRM\EntitiesServices\Catalogs;
@@ -24,6 +24,7 @@ use AmoCRM\EntitiesServices\Tasks;
 use AmoCRM\EntitiesServices\Unsorted;
 use AmoCRM\EntitiesServices\Webhooks;
 use AmoCRM\EntitiesServices\Widgets;
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use Exception;
 use League\OAuth2\Client\Token\AccessToken;
@@ -263,9 +264,11 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект групп кастом полей (табы в карточке)
+     *
      * @param string|null $entityType
+     *
      * @return CustomFieldGroups
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function customFieldGroups(string $entityType = null)
     {

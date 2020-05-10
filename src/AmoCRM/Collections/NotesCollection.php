@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Collections;
 
-use AmoCRM\AmoCRM\Models\Factories\NoteFactory;
+use AmoCRM\Models\Factories\NoteFactory;
 use AmoCRM\Collections\Interfaces\HasPagesInterface;
 use AmoCRM\Collections\Traits\PagesTrait;
 use AmoCRM\Models\NoteModel;

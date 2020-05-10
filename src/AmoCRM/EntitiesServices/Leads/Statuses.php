@@ -1,9 +1,10 @@
 <?php
 
-namespace AmoCRM\AmoCRM\EntitiesServices\Leads;
+namespace AmoCRM\EntitiesServices\Leads;
 
-use AmoCRM\AmoCRM\EntitiesServices\HasDeleteMethodInterface;
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -16,14 +17,39 @@ use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Leads\Pipelines\Statuses\StatusModel;
 use Exception;
 
+/**
+ * Class Statuses
+ *
+ * @package AmoCRM\EntitiesServices\Leads
+ *
+ * @method StatusModel getOne($id, array $with = []) : ?ContactModel
+ * @method StatusesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?StatusesCollection
+ * @method StatusModel addOne(BaseApiModel $model) : ContactModel
+ * @method StatusesCollection add(BaseApiCollection $collection) : StatusesCollection
+ * @method StatusModel updateOne(BaseApiModel $apiModel) : ContactModel
+ */
 class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
 {
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::LEADS . '/' . EntityTypesInterface::LEADS_PIPELINES . '/%s/' . EntityTypesInterface::LEADS_STATUSES;
 
+    /**
+     * @var string
+     */
     protected $collectionClass = StatusesCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = StatusModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -37,6 +63,7 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -48,6 +75,7 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -60,6 +88,7 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -67,18 +96,16 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
         foreach ($entities as $entity) {
-            //todo remove this after request_id fix
-            if (!empty($entity['name'])) {
-                $initialEntity = $collection->getBy('name', $entity['name']);
-                if (!empty($initialEntity)) {
-                    $this->processModelAction($initialEntity, $entity);
-                }
-            }
-            //todo support request_id
             if (!empty($entity['request_id'])) {
                 $initialEntity = $collection->getBy('requestId', $entity['request_id']);
                 if (!empty($initialEntity)) {
@@ -91,7 +118,7 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|StatusModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
@@ -110,7 +137,8 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
     }
 
     /**
-     * @param BaseApiModel $model
+     * @param BaseApiModel|StatusModel $model
+     *
      * @return bool
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -124,6 +152,7 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return bool
      * @throws NotAvailableForActionException
      */
@@ -133,7 +162,7 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|StatusModel $apiModel
      * @param array $with
      *
      * @return BaseApiModel

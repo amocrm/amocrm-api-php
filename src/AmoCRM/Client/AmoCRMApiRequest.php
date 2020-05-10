@@ -119,9 +119,11 @@ class AmoCRMApiRequest
      * @param array $queryParams
      * @param array $headers
      * @param bool $needToRefresh
+     *
      * @return array
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiNoContentException
      */
     public function post(
         string $method,
@@ -195,6 +197,7 @@ class AmoCRMApiRequest
      * @return array
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiNoContentException
      */
     public function patch(
         string $method,
@@ -268,6 +271,7 @@ class AmoCRMApiRequest
      * @return array
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiNoContentException
      */
     public function delete(
         string $method,
@@ -437,6 +441,15 @@ class AmoCRMApiRequest
             );
         }
 
+        //TODO удалить после правка баги в апи links
+        if ((int)$response->getStatusCode() === 202) {
+            throw new AmoCRMApiNoContentException(
+                "No content",
+                $response->getStatusCode(),
+                $this->getLastRequestInfo()
+            );
+        }
+
 
         if (!in_array((int)$response->getStatusCode(), self::SUCCESS_STATUSES, true)) {
             $exception = new AmoCRMApiException(
@@ -483,13 +496,11 @@ class AmoCRMApiRequest
             && !$decodedBody
             && !empty($bodyContents)
         ) {
-            $exception = new AmoCRMApiException(
+            throw new AmoCRMApiException(
                 "Response body is not json",
                 $response->getStatusCode(),
                 $this->getLastRequestInfo()
             );
-
-            throw $exception;
         }
 
         $this->checkHttpStatus($response, $decodedBody);

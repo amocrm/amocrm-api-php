@@ -3,8 +3,8 @@
 namespace AmoCRM\Collections;
 
 use AmoCRM\Models\BaseApiModel;
-use Exception;
-use InvalidArgumentException;
+use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
+use AmoCRM\Models\LinkModel;
 
 class LinksCollection extends BaseApiCollection
 {
@@ -12,30 +12,19 @@ class LinksCollection extends BaseApiCollection
      * Класс модели
      * @var string
      */
-    protected $itemClass = BaseApiModel::class;
+    protected $itemClass = LinkModel::class;
 
     /**
      * @param mixed $item
+     *
      * @return BaseApiModel
      */
     protected function checkItem($item): BaseApiModel
     {
-        if (!is_object($item) || !($item instanceof $this->itemClass)) {
-            throw new InvalidArgumentException('Item must be an instance of ' . ($this->itemClass));
+        if ($item instanceof CanBeLinkedInterface) {
+            $item = $item->getLink();
         }
 
-        return $item;
-    }
-
-    /**
-     * @param array $array
-     *
-     * @return self
-     * @throws Exception
-     */
-    public function fromArray(array $array): BaseApiCollection
-    {
-        //todo
-        throw new Exception('Not implemented');
+        return parent::checkItem($item);
     }
 }
