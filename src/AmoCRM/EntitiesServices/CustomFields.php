@@ -2,8 +2,10 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\EntitiesServices\HasDeleteMethodInterface;
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Exceptions\InvalidArgumentException;
+use AmoCRM\Exceptions\NotAvailableForActionException;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -14,18 +16,42 @@ use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CustomFieldModel;
-use Exception;
 
+/**
+ * Class CustomFields
+ *
+ * @package AmoCRM\EntitiesServices
+ *
+ * @method CustomFieldModel getOne($id, array $with = []) : ?CustomFieldModel
+ * @method CustomFieldsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CustomFieldsCollection
+ * @method CustomFieldModel addOne(BaseApiModel $model) : CustomFieldModel
+ * @method CustomFieldsCollection add(BaseApiCollection $collection) : CustomFieldsCollection
+ * @method CustomFieldModel updateOne(BaseApiModel $apiModel) : CustomFieldModel
+ */
 class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterface, HasPageMethodsInterface
 {
     use PageMethodsTrait;
 
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/custom_fields';
 
+    /**
+     * @var string
+     */
     protected $collectionClass = CustomFieldsCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = CustomFieldModel::class;
 
+    /**
+     * @param string $entityType
+     *
+     * @throws InvalidArgumentException
+     */
     protected function validateEntityType(string $entityType): void
     {
         //todo segments
@@ -37,11 +63,16 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
             EntityTypesInterface::COMPANIES,
         ];
 
-        if (!in_array($entityType, $availableEntities)) {
-            throw new Exception('Entity is not supported by this method');
+        if (!in_array($entityType, $availableEntities, true)) {
+            throw new InvalidArgumentException('Entity is not supported by this method');
         }
     }
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -59,6 +90,7 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -71,6 +103,7 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processUpdate(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -81,6 +114,7 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -88,35 +122,33 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
         foreach ($entities as $entity) {
-            if (!empty($entity['name'])) {
-                $initialEntity = $collection->getBy('name', $entity['name']);
+            if (!empty($entity['request_id'])) {
+                $initialEntity = $collection->getBy('requestId', $entity['request_id']);
                 if (!empty($initialEntity)) {
                     $this->processModelAction($initialEntity, $entity);
                 }
             }
-            //todo add request_id
-//            if (!empty($entity['request_id'])) {
-//                $initialEntity = $collection->getBy('requestId', $entity['request_id']);
-//                if (!empty($initialEntity)) {
-//                    $this->processModelAction($initialEntity, $entity);
-//                }
-//            }
         }
 
         return $collection;
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|CustomFieldModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
     {
-        //todo
         if (isset($entity['id'])) {
             $apiModel->setId($entity['id']);
         }
@@ -127,7 +159,8 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     }
 
     /**
-     * @param BaseApiModel $model
+     * @param BaseApiModel|CustomFieldModel $model
+     *
      * @return bool
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -141,38 +174,36 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return bool
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function delete(BaseApiCollection $collection): bool
     {
-        throw new Exception('This entity supports only deleteOne method');
+        throw new NotAvailableForActionException('This entity supports only deleteOne method');
     }
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function update(BaseApiCollection $collection): BaseApiCollection
     {
-        throw new Exception('This entity supports only updateOne method');
+        throw new NotAvailableForActionException('This entity supports only updateOne method');
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|CustomFieldModel $apiModel
      * @param array $with
+     *
      * @return BaseApiModel
      * @throws AmoCRMApiException
-     * @throws AmoCRMoAuthApiException
-     * @throws Exception
      */
     public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {
-        $this->setEntityType($apiModel->getCatalogId());
-
-        $freshModel = $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
-
-        return $freshModel;
+        //todo add support
+        throw new NotAvailableForActionException('This entity does not support this method');
     }
 }
