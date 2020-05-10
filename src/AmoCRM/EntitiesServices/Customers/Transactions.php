@@ -1,9 +1,10 @@
 <?php
 
-namespace AmoCRM\AmoCRM\EntitiesServices\Customers;
+namespace AmoCRM\EntitiesServices\Customers;
 
-use AmoCRM\AmoCRM\EntitiesServices\HasDeleteMethodInterface;
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -15,15 +16,40 @@ use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Customers\Transactions\TransactionModel;
 
+/**
+ * Class Transactions
+ *
+ * @package AmoCRM\EntitiesServices\Customers
+ *
+ * @method TransactionModel getOne($id, array $with = []) : ?TransactionModel
+ * @method TransactionsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?TransactionsCollection
+ * @method TransactionModel addOne(BaseApiModel $model) : TransactionModel
+ * @method TransactionsCollection add(BaseApiCollection $collection) : TransactionsCollection
+ * @method TransactionModel syncOne(BaseApiModel $apiModel, $with = []) : TransactionModel
+ */
 class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterface
 {
     //todo support common list
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CUSTOMERS . '/%s/' . EntityTypesInterface::CUSTOMERS_TRANSACTIONS;
 
+    /**
+     * @var string
+     */
     protected $collectionClass = TransactionsCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = TransactionModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -38,6 +64,7 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -45,6 +72,12 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -61,7 +94,7 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|TransactionModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
@@ -87,7 +120,8 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
     }
 
     /**
-     * @param BaseApiModel $model
+     * @param BaseApiModel|TransactionModel $model
+     *
      * @return bool
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -101,6 +135,7 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -122,6 +157,7 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return bool
      * @throws NotAvailableForActionException
      */
