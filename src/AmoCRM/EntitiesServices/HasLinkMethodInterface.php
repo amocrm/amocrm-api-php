@@ -1,19 +1,30 @@
 <?php
 
-namespace AmoCRM\AmoCRM\EntitiesServices;
+namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\Collections\BaseApiCollection;
+use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Models\BaseApiModel;
 
 /**
  * Interface HasLinkMethodInterface
  * Нужен в тех сервисах, где есть методы link/unlink у сущностей
- * @package AmoCRM\AmoCRM\EntitiesServices
+ * @package AmoCRM\EntitiesServices
  */
 interface HasLinkMethodInterface
 {
-    //TODO Отдельная коллекция для связей
-    public function link(BaseApiModel $mainEntity, BaseApiCollection $linkedEntities);
+    /**
+     * @param BaseApiModel $mainEntity
+     * @param $linkedEntities
+     *
+     * @return LinksCollection
+     */
+    public function link(BaseApiModel $mainEntity, $linkedEntities): LinksCollection;
 
-    public function unlink(BaseApiModel $mainEntity, BaseApiCollection $linkedEntities);
+    /**
+     * @param BaseApiModel $mainEntity
+     * @param $linkedEntities
+     *
+     * @return bool
+     */
+    public function unlink(BaseApiModel $mainEntity, $linkedEntities): bool;
 }

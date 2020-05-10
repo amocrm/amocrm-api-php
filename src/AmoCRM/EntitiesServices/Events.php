@@ -2,7 +2,8 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -13,16 +14,38 @@ use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\EventModel;
 
+/**
+ * Class Events
+ *
+ * @package AmoCRM\EntitiesServices
+ *
+ * @method EventModel getOne($id, array $with = []) : ?EventModel
+ * @method EventsCollections get(BaseEntityFilter $filter = null, array $with = []) : ?EventsCollections
+ */
 class Events extends BaseEntity implements HasPageMethodsInterface
 {
     use PageMethodsTrait;
 
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::EVENTS;
 
+    /**
+     * @var string
+     */
     protected $collectionClass = EventsCollections::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = EventModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -47,6 +70,7 @@ class Events extends BaseEntity implements HasPageMethodsInterface
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -57,6 +81,7 @@ class Events extends BaseEntity implements HasPageMethodsInterface
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -67,10 +92,23 @@ class Events extends BaseEntity implements HasPageMethodsInterface
 
     /**
      * @param BaseApiModel $apiModel
+     *
      * @return BaseApiModel
      * @throws NotAvailableForActionException
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
+    {
+        throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+    /**
+     * @param BaseApiModel $apiModel
+     * @param array $with
+     *
+     * @return BaseApiModel
+     * @throws NotAvailableForActionException
+     */
+    public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {
         throw new NotAvailableForActionException('Method not available for this entity');
     }
