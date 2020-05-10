@@ -2,7 +2,8 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -14,30 +15,55 @@ use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CatalogElementModel;
-use Exception;
 
+/**
+ * Class CatalogElements
+ *
+ * @package AmoCRM\EntitiesServices
+ *
+ * @method CatalogElementModel getOne($id, array $with = []) : ?CatalogElementModel
+ * @method CatalogElementsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CatalogElementsCollection
+ * @method CatalogElementModel addOne(BaseApiModel $model) : CatalogElementModel
+ * @method CatalogElementsCollection add(BaseApiCollection $collection) : CatalogElementsCollection
+ * @method CatalogElementModel updateOne(BaseApiModel $apiModel) : CatalogElementModel
+ * @method CatalogElementsCollection update(BaseApiCollection $collection) : CatalogElementsCollection
+ */
 class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterface
 {
     use PageMethodsTrait;
 
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/catalogs/%s/elements';
 
+    /**
+     * @var string
+     */
     protected $collectionClass = CatalogElementsCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = CatalogElementModel::class;
 
     /**
-     * @param string $entityType
+     * @param int $entityId
      *
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
-    protected function validateEntityId(string $entityType): void
+    protected function validateEntityId(int $entityId): void
     {
-        if ((int)$entityType < EntityTypesInterface::MIN_CATALOG_ID) {
+        if ($entityId < EntityTypesInterface::MIN_CATALOG_ID) {
             throw new NotAvailableForActionException('Doesn\'t looks like catalog exists');
         }
     }
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -55,6 +81,7 @@ class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterf
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -67,6 +94,7 @@ class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterf
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processUpdate(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -77,6 +105,7 @@ class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterf
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -84,6 +113,12 @@ class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterf
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -100,7 +135,7 @@ class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterf
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|CatalogElementModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
@@ -116,18 +151,17 @@ class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterf
 
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|CatalogElementModel $apiModel
      * @param array $with
      *
-     * @return BaseApiModel
+     * @return BaseApiModel|CatalogElementModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
-     * @throws Exception
      */
     public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {
         $this->setEntityId($apiModel->getCatalogId());
 
-        return $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
+        return parent::syncOne($apiModel, $with);
     }
 }

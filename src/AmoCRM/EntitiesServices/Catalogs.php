@@ -2,7 +2,8 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -12,16 +13,43 @@ use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CatalogModel;
 
+/**
+ * Class Catalogs
+ *
+ * @package AmoCRM\EntitiesServices
+ *
+ * @method CatalogModel getOne($id, array $with = []) : ?CatalogModel
+ * @method CatalogsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CatalogsCollection
+ * @method CatalogModel addOne(BaseApiModel $model) : CatalogModel
+ * @method CatalogsCollection add(BaseApiCollection $collection) : CatalogsCollection
+ * @method CatalogModel updateOne(BaseApiModel $apiModel) : CatalogModel
+ * @method CatalogsCollection update(BaseApiCollection $collection) : CatalogsCollection
+ * @method CatalogModel syncOne(BaseApiModel $apiModel, $with = []) : CatalogModel
+ */
 class Catalogs extends BaseEntity implements HasPageMethodsInterface
 {
     use PageMethodsTrait;
 
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CATALOGS;
 
+    /**
+     * @var string
+     */
     protected $collectionClass = CatalogsCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = CatalogModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -36,6 +64,7 @@ class Catalogs extends BaseEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -48,6 +77,7 @@ class Catalogs extends BaseEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processUpdate(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -58,6 +88,7 @@ class Catalogs extends BaseEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -65,6 +96,12 @@ class Catalogs extends BaseEntity implements HasPageMethodsInterface
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -81,7 +118,7 @@ class Catalogs extends BaseEntity implements HasPageMethodsInterface
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|CatalogModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void

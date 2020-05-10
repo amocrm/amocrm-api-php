@@ -2,32 +2,56 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\EntitiesServices\HasLinkMethodInterface;
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\AmoCRM\Models\TypeAwareInterface;
+use AmoCRM\EntitiesServices\Traits\LinkMethodsTrait;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
-use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\BaseApiModel;
-use AmoCRM\Models\CatalogElementModel;
 use AmoCRM\Models\ContactModel;
-use AmoCRM\Models\LeadModel;
 
+/**
+ * Class Contacts
+ *
+ * @package AmoCRM\EntitiesServices
+ *
+ * @method ContactModel getOne($id, array $with = []) : ?ContactModel
+ * @method ContactsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?ContactsCollection
+ * @method ContactModel addOne(BaseApiModel $model) : ContactModel
+ * @method ContactsCollection add(BaseApiCollection $collection) : ContactsCollection
+ * @method ContactModel updateOne(BaseApiModel $apiModel) : ContactModel
+ * @method ContactsCollection update(BaseApiCollection $collection) : ContactsCollection
+ * @method ContactModel syncOne(BaseApiModel $apiModel, $with = []) : ContactModel
+ */
 class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {
     use PageMethodsTrait;
+    use LinkMethodsTrait;
 
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CONTACTS;
 
+    /**
+     * @var string
+     */
     protected $collectionClass = ContactsCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = ContactModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -42,6 +66,7 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -54,6 +79,7 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processUpdate(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -64,6 +90,7 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -71,6 +98,12 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -92,6 +125,7 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
     {
+        /** @var ContactModel $apiModel */
         if (isset($entity['id'])) {
             $apiModel->setId($entity['id']);
         }
@@ -102,77 +136,15 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
     }
 
     /**
-     * @param int $id
-     * @param bool $isLink
-     * @return string
+     * @return array|string[]
      */
-    protected function getLinkMethod(int $id, bool $isLink = true): string
-    {
-        $action = $isLink ? 'link' : 'unlink';
-        return $this->getMethod() . '/' . $id . '/' . $action;
-    }
-
     protected function getAvailableLinkTypes(): array
     {
         return [
-            LeadModel::class,
-            CatalogElementModel::class,
+            EntityTypesInterface::CATALOGS . EntityTypesInterface::CATALOG_ELEMENTS,
+            EntityTypesInterface::LEADS,
+            EntityTypesInterface::CUSTOMERS,
+            //todo company
         ];
-    }
-
-    protected function prepareLinkBody(BaseApiCollection $linkedEntities): array
-    {
-        $body = [];
-
-        foreach ($linkedEntities as $linkedEntity) {
-            if (
-                $linkedEntity instanceof TypeAwareInterface &&
-                in_array(get_class($linkedEntity), $this->getAvailableLinkTypes(), true)
-            ) {
-                $link = [
-                    'entity_type' => $linkedEntity->getType(),
-                    'entity_id' => $linkedEntity->getId()
-                    //, 'metadata': {'updated_by': 0}
-                ];
-                if ($linkedEntity instanceof CatalogElementModel) {
-                    $link['metadata']['to_catalog_id'] = $linkedEntity->getCatalogId();
-                    if (!is_null($linkedEntity->getQuantity())) {
-                        $link['metadata']['quantity'] = $linkedEntity->getQuantity();
-                    }
-                }
-                //todo support all metadata
-                $body[] = $link;
-            }
-        }
-
-        return $body;
-    }
-
-    /**
-     * @param BaseApiModel $mainEntity
-     * @param BaseApiCollection $linkedEntities
-     * @throws AmoCRMApiException
-     * @throws AmoCRMoAuthApiException
-     */
-    public function link(BaseApiModel $mainEntity, BaseApiCollection $linkedEntities)
-    {
-        $body = $this->prepareLinkBody($linkedEntities);
-
-        $response = $this->request->post($this->getLinkMethod($mainEntity->getId(), true), $body);
-        //todo add link to base model
-    }
-
-    /**
-     * @param BaseApiModel $mainEntity
-     * @param BaseApiCollection $linkedEntities
-     * @throws AmoCRMApiException
-     * @throws AmoCRMoAuthApiException
-     */
-    public function unlink(BaseApiModel $mainEntity, BaseApiCollection $linkedEntities)
-    {
-        $body = $this->prepareLinkBody($linkedEntities);
-
-        $response = $this->request->post($this->getLinkMethod($mainEntity->getId(), false), $body);
-        //todo remove link from base model
     }
 }
