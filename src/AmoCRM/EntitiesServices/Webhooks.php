@@ -2,7 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -13,14 +13,35 @@ use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\WebhookModel;
 use AmoCRM\Models\BaseApiModel;
 
+/**
+ * Class Webhooks
+ *
+ * @package AmoCRM\EntitiesServices
+ *
+ * @method WebhooksCollection get(WebhookModel $filter = null, array $with = []) : ?TasksCollection
+ */
 class Webhooks extends BaseEntity
 {
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::WEBHOOKS;
 
+    /**
+     * @var string
+     */
     protected $collectionClass = WebhooksCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = WebhookModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -35,6 +56,7 @@ class Webhooks extends BaseEntity
     /**
      * @param int|string $id
      * @param array $with
+     *
      * @return BaseApiModel|null
      * @throws NotAvailableForActionException
      */
@@ -56,6 +78,7 @@ class Webhooks extends BaseEntity
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -66,6 +89,7 @@ class Webhooks extends BaseEntity
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -76,6 +100,7 @@ class Webhooks extends BaseEntity
 
     /**
      * @param BaseApiModel $apiModel
+     *
      * @return BaseApiModel
      * @throws NotAvailableForActionException
      */
@@ -85,8 +110,22 @@ class Webhooks extends BaseEntity
     }
 
     /**
+     * @param BaseApiModel $apiModel
+     * @param array $with
+     *
+     * @return BaseApiModel
+     * @throws NotAvailableForActionException
+     */
+    public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
+    {
+        throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+
+    /**
      * Подписка на хук
      * @param WebhookModel $webhookModel
+     *
      * @return WebhookModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -104,6 +143,7 @@ class Webhooks extends BaseEntity
     /**
      * Отписка от хука
      * @param WebhookModel $webhookModel
+     *
      * @return bool
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
