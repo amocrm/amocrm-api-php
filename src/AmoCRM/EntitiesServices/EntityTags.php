@@ -2,7 +2,10 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Exceptions\InvalidArgumentException;
+use AmoCRM\Exceptions\NotAvailableForActionException;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -12,16 +15,39 @@ use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Tag;
 
+/**
+ * Class EntityTags
+ *
+ * @package AmoCRM\EntitiesServices
+ *
+ * @method TagsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?TagsCollection
+ * @method Tag addOne(BaseApiModel $model) : Tag
+ * @method TagsCollection add(BaseApiCollection $collection) : TagsCollection
+ */
 class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
 {
     use PageMethodsTrait;
 
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/tags';
 
+    /**
+     * @var string
+     */
     protected $collectionClass = TagsCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = Tag::class;
 
+    /**
+     * @param string $entityType
+     *
+     * @throws InvalidArgumentException
+     */
     protected function validateEntityType(string $entityType): void
     {
         $availableTypes = [
@@ -32,10 +58,15 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
         ];
 
         if (!in_array($entityType, $availableTypes, true)) {
-            throw new \Exception('This method doesn\'t support given entity type');
+            throw new InvalidArgumentException('This method doesn\'t support given entity type');
         }
     }
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -50,6 +81,7 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -62,6 +94,7 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processUpdate(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -72,6 +105,7 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -79,11 +113,59 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param int|string $id
+     * @param array $with
+     *
+     * @return BaseApiModel|null
+     * @throws NotAvailableForActionException
+     */
     public function getOne($id, array $with = []): ?BaseApiModel
     {
-        throw new \Exception('No such method for this entity');
+        throw new NotAvailableForActionException('No such method for this entity');
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     *
+     * @return BaseApiCollection
+     * @throws NotAvailableForActionException
+     */
+    public function update(BaseApiCollection $collection): BaseApiCollection
+    {
+        throw new NotAvailableForActionException('This entity supports only updateOne method');
+    }
+
+
+    /**
+     * @param BaseApiModel $apiModel
+     *
+     * @return BaseApiModel
+     * @throws NotAvailableForActionException
+     */
+    public function updateOne(BaseApiModel $apiModel): BaseApiModel
+    {
+        throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+    /**
+     * @param BaseApiModel $apiModel
+     * @param array $with
+     *
+     * @return BaseApiModel
+     * @throws NotAvailableForActionException
+     */
+    public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
+    {
+        throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -100,7 +182,7 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|Tag $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
