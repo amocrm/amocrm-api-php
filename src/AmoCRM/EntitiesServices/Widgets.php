@@ -2,7 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -14,24 +14,38 @@ use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\WidgetModel;
-use Exception;
 
 /**
  * Class Widgets
  *
  * @package AmoCRM\EntitiesServices
- * @method WidgetModel getOne($id, array $with = []) : ?BaseApiModel
+ *
+ * @method WidgetModel getOne($id, array $with = []) : ?WidgetModel
  */
 class Widgets extends BaseEntity implements HasPageMethodsInterface
 {
     use PageMethodsTrait;
 
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::WIDGETS;
 
+    /**
+     * @var string
+     */
     protected $collectionClass = WidgetsCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = WidgetModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -67,8 +81,9 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
-     * @throws Exception
+     * @throws NotAvailableForActionException
      */
     public function update(BaseApiCollection $collection): BaseApiCollection
     {
@@ -82,6 +97,18 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
      * @throws NotAvailableForActionException
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
+    {
+        throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+    /**
+     * @param BaseApiModel $apiModel
+     * @param array $with
+     *
+     * @return BaseApiModel
+     * @throws NotAvailableForActionException
+     */
+    public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {
         throw new NotAvailableForActionException('Method not available for this entity');
     }
@@ -101,6 +128,7 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
             $this->getMethod() . '/' . $widgetModel->getCode(),
             $widgetModel->toApi()
         );
+
         foreach ($response as $key => $value) {
             $widgetModel->$key = $value;
         }
@@ -122,6 +150,7 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
         $response = $this->request->delete(
             $this->getMethod() . '/' . $widgetModel->getCode()
         );
+
         foreach ($response as $key => $value) {
             $widgetModel->$key = $value;
         }
