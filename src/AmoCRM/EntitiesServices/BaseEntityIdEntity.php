@@ -4,6 +4,11 @@ namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\Exceptions\NotAvailableForActionException;
 
+/**
+ * Class BaseEntityIdEntity
+ *
+ * @package AmoCRM\EntitiesServices
+ */
 abstract class BaseEntityIdEntity extends BaseEntity
 {
     /**
@@ -18,7 +23,7 @@ abstract class BaseEntityIdEntity extends BaseEntity
      */
     protected function validateEntityId(int $entityId): void
     {
-        if ((int)$entityId < 0) {
+        if ($entityId < 0) {
             throw new NotAvailableForActionException('Invalid entity id');
         }
     }

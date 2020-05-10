@@ -18,12 +18,26 @@ use AmoCRM\Models\BaseApiModel;
  */
 class Account extends BaseEntity
 {
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/account';
 
+    /**
+     * @var string
+     */
     protected $collectionClass = BaseApiCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = AccountModel::class;
 
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         return $response;
@@ -32,6 +46,7 @@ class Account extends BaseEntity
     /**
      * Обновление одной конкретной сущности
      * @param array $with
+     *
      * @return BaseApiCollection|null
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -69,6 +84,7 @@ class Account extends BaseEntity
     /**
      * @param null|BaseEntityFilter $filter
      * @param array $with
+     *
      * @return BaseApiCollection|null
      * @throws NotAvailableForActionException
      */
@@ -79,6 +95,7 @@ class Account extends BaseEntity
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -100,6 +117,7 @@ class Account extends BaseEntity
 
     /**
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws NotAvailableForActionException
      */
@@ -110,10 +128,23 @@ class Account extends BaseEntity
 
     /**
      * @param BaseApiModel $apiModel
+     *
      * @return BaseApiModel
      * @throws NotAvailableForActionException
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
+    {
+        throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+    /**
+     * @param BaseApiModel $apiModel
+     * @param array $with
+     *
+     * @return BaseApiModel
+     * @throws NotAvailableForActionException
+     */
+    public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {
         throw new NotAvailableForActionException('Method not available for this entity');
     }

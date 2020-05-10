@@ -6,10 +6,12 @@ use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\BaseApiModel;
 use Exception;
 use ReflectionClass;
+use ReflectionException;
 
 abstract class BaseEntity
 {
@@ -36,6 +38,11 @@ abstract class BaseEntity
      */
     protected $request;
 
+    /**
+     * BaseEntity constructor.
+     *
+     * @param AmoCRMApiRequest $request
+     */
     public function __construct(AmoCRMApiRequest $request)
     {
         $this->request = $request;
@@ -52,6 +59,7 @@ abstract class BaseEntity
     /**
      * Метод для получения сущностей из ответа сервера
      * @param array $response
+     *
      * @return array
      */
     abstract protected function getEntitiesFromResponse(array $response): array;
@@ -60,6 +68,7 @@ abstract class BaseEntity
      * Получение коллекции сущностей
      * @param null|BaseEntityFilter $filter
      * @param array $with
+     *
      * @return BaseApiCollection|null
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -82,6 +91,7 @@ abstract class BaseEntity
 
     /**
      * @param array $response
+     *
      * @return BaseApiCollection|null
      */
     protected function createCollection(array $response): ?BaseApiCollection
@@ -107,6 +117,7 @@ abstract class BaseEntity
      * Получение одной конкретной сущности
      * @param int|string $id
      * @param array $with
+     *
      * @return BaseApiModel|null
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -131,6 +142,7 @@ abstract class BaseEntity
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processUpdate(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -142,6 +154,7 @@ abstract class BaseEntity
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -153,6 +166,7 @@ abstract class BaseEntity
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -164,6 +178,7 @@ abstract class BaseEntity
     /**
      * Добавление коллекции сущностей
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -179,6 +194,7 @@ abstract class BaseEntity
     /**
      * Добавление сщуности
      * @param BaseApiModel $model
+     *
      * @return BaseApiModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -186,7 +202,7 @@ abstract class BaseEntity
     public function addOne(BaseApiModel $model): BaseApiModel
     {
         /** @var BaseApiCollection $collection */
-        $collection = new $this->collectionClass;
+        $collection = new $this->collectionClass();
         $collection->add($model);
         $response = $this->request->post($this->getMethod(), $collection->toApi());
         $collection = $this->processAdd($collection, $response);
@@ -197,6 +213,7 @@ abstract class BaseEntity
     /**
      * Обновление коллекции сущностей
      * @param BaseApiCollection $collection
+     *
      * @return BaseApiCollection
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -212,6 +229,7 @@ abstract class BaseEntity
     /**
      * Обновление одной конкретной сущности
      * @param BaseApiModel $apiModel
+     *
      * @return BaseApiModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -223,6 +241,7 @@ abstract class BaseEntity
             throw new AmoCRMApiException('Empty id in model ' . json_encode($apiModel->toApi(0)));
         }
 
+        //todo add HasIdInterface
         $response = $this->request->patch($this->getMethod() . '/' . $apiModel->getId(), $apiModel->toApi(0));
         $apiModel = $this->processUpdateOne($apiModel, $response);
 
@@ -232,6 +251,7 @@ abstract class BaseEntity
     /**
      * @param BaseApiModel $apiModel
      * @param array $with
+     *
      * @return BaseApiModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
@@ -242,18 +262,33 @@ abstract class BaseEntity
         return $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
     }
 
+//    /**
+//     * @param BaseApiCollection $collection
+//     * @param array $with
+//     * @return BaseApiCollection
+//     */
+//    public function sync(BaseApiCollection $collection, $with = []): BaseApiCollection
+//    {
+//        //TODO implement sync()
+//
+////        $freshModel = $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
+////
+////        return $freshModel;
+//    }
+
     /**
      * @param BaseApiModel $objectA
      * @param BaseApiModel $objectB
+     *
      * @return BaseApiModel
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     protected function mergeModels(
         BaseApiModel $objectA,
         BaseApiModel $objectB
     ): BaseApiModel {
         if (get_class($objectA) !== get_class($objectB)) {
-            throw new Exception('Can not merge 2 different objects');
+            throw new InvalidArgumentException('Can not merge 2 different objects');
         }
 
         //Так как обе модели должны быть одного класса, нам без разницы у какой получить финальный класс
@@ -265,7 +300,12 @@ abstract class BaseEntity
          * @see \AmoCRM\Models\BaseApiModel::__get
          * @see \AmoCRM\Models\BaseApiModel::__set
          */
-        $reflection = new ReflectionClass($objectA);
+        try {
+            $reflection = new ReflectionClass($objectA);
+        } catch (ReflectionException $e) {
+            throw new InvalidArgumentException($e->getMessage());
+        }
+
         $reflectionProperties = $reflection->getProperties();
         foreach ($reflectionProperties as $reflectionProperty) {
             $propertyName = $reflectionProperty->getName();
