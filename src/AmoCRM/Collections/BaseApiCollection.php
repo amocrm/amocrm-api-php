@@ -40,7 +40,8 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
     public function fromArray(array $array): self
     {
         $itemClass = $this->itemClass;
-        $result = $this->make(
+
+        return $this->make(
             array_map(
                 function (array $item) use ($itemClass) {
                     /** @var BaseApiModel $itemObj */
@@ -50,8 +51,6 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
                 $array
             )
         );
-
-        return $result;
     }
 
     /**

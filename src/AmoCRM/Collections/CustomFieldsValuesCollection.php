@@ -2,9 +2,9 @@
 
 namespace AmoCRM\Collections;
 
-use AmoCRM\Models\CustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\BaseCustomFieldValuesModel;
 
 class CustomFieldsValuesCollection extends BaseApiCollection
 {
-    protected $itemClass = CustomFieldValueModel::class;
+    protected $itemClass = BaseCustomFieldValuesModel::class;
 }
