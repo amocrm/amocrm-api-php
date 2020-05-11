@@ -22,6 +22,7 @@ use AmoCRM\EntitiesServices\Roles;
 use AmoCRM\EntitiesServices\Segments;
 use AmoCRM\EntitiesServices\Tasks;
 use AmoCRM\EntitiesServices\Unsorted;
+use AmoCRM\EntitiesServices\Users;
 use AmoCRM\EntitiesServices\Webhooks;
 use AmoCRM\EntitiesServices\Widgets;
 use AmoCRM\Exceptions\InvalidArgumentException;
@@ -300,6 +301,7 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект ролей пользователей
+     *
      * @return Roles
      */
     public function roles(): Roles
@@ -307,6 +309,18 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Roles($request);
+    }
+
+    /**
+     * Метод вернет объект пользователей
+     *
+     * @return Users
+     */
+    public function users(): Users
+    {
+        $request = $this->buildRequest();
+
+        return new Users($request);
     }
 
 

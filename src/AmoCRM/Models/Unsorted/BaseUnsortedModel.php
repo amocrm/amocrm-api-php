@@ -70,11 +70,6 @@ class BaseUnsortedModel extends BaseApiModel
     protected $metadata;
 
     /**
-     * @var null|int
-     */
-    protected $requestId = null;
-
-    /**
      * @return string
      */
     public function getUid(): string

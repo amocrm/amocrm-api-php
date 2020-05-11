@@ -21,8 +21,10 @@ interface EntityTypesInterface
     const UNSORTED = 'unsorted';
     const CATALOG_ELEMENTS = 'elements';
     const USER_ROLES = 'roles';
+    const USERS = 'users';
     const CUSTOMERS_SEGMENTS = 'segments';
     const WIDGETS = 'widgets';
+    const STATUS_RIGHTS = 'status_rights';
 
 
     const CUSTOM_FIELDS = 'custom_fields';

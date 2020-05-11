@@ -118,11 +118,6 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
      */
     protected $catalogElementsLinks = null;
 
-    /**
-     * @var null|int
-     */
-    protected $requestId = null;
-
     public function getType(): string
     {
         return EntityTypesInterface::CONTACTS;

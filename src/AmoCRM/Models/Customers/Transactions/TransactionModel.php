@@ -86,11 +86,6 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
     protected $catalogElements;
 
     /**
-     * @var null|int
-     */
-    protected $requestId = null;
-
-    /**
      * @var int|null
      */
     protected $nextDate;
@@ -199,9 +194,9 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

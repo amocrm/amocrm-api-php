@@ -9,6 +9,7 @@ use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Interfaces\HasIdInterface;
 use Exception;
 use ReflectionClass;
 use ReflectionException;
@@ -236,12 +237,16 @@ abstract class BaseEntity
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
     {
-        $id = method_exists($apiModel, 'getId') ? $apiModel->getId() : null;
+        if (!$apiModel instanceof HasIdInterface) {
+            throw new InvalidArgumentException('Entity should have getId method');
+        }
+
+        $id = $apiModel->getId();
+
         if (is_null($id)) {
             throw new AmoCRMApiException('Empty id in model ' . json_encode($apiModel->toApi(0)));
         }
 
-        //todo add HasIdInterface
         $response = $this->request->patch($this->getMethod() . '/' . $apiModel->getId(), $apiModel->toApi(0));
         $apiModel = $this->processUpdateOne($apiModel, $response);
 

@@ -42,11 +42,6 @@ class LossReasonModel extends BaseApiModel implements HasIdInterface
     protected $updatedAt;
 
     /**
-     * @var null|int
-     */
-    protected $requestId = null;
-
-    /**
      * @param array $lossReason
      *
      * @return self
@@ -84,9 +79,9 @@ class LossReasonModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -60,11 +60,6 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
     protected $pipelineId;
 
     /**
-     * @var null|int
-     */
-    protected $requestId;
-
-    /**
      * @param array $pipeline
      *
      * @return self

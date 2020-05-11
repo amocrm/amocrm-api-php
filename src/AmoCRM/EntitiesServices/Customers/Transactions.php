@@ -110,13 +110,6 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
         if (array_key_exists('price', $entity)) {
             $apiModel->setPrice($entity['price']);
         }
-
-        //todo elements
-
-//todo
-//        if (array_key_exists('customer_id', $entity)) {
-//            $apiModel->setCustomer($entity['customer_id']);
-//        }
     }
 
     /**

@@ -64,11 +64,6 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
     protected $accountId;
 
     /**
-     * @var null|int
-     */
-    protected $requestId = null;
-
-    /**
      * @param array $note
      *
      * @return self
@@ -142,9 +137,9 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

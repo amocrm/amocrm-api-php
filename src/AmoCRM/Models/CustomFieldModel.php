@@ -87,11 +87,6 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     protected $enums;
 
     /**
-     * @var int
-     */
-    protected $requestId;
-
-    /**
      * @var string|null
      */
     protected $code;
@@ -154,9 +149,9 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

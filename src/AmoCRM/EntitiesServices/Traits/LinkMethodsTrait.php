@@ -9,6 +9,7 @@ use AmoCRM\Exceptions\AmoCRMApiNoContentException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\LinkModel;
 
 trait LinkMethodsTrait
@@ -69,7 +70,10 @@ trait LinkMethodsTrait
             }
         }
 
-        //todo add HasIdInterface
+        if (!$mainEntity instanceof HasIdInterface) {
+            throw new InvalidArgumentException('Main entity should have getId method');
+        }
+
         $response = $this->request->post($this->getLinkMethod($mainEntity->getId(), true), $body);
 
         return $this->getLinksCollectionFromResponse($response);
@@ -103,8 +107,11 @@ trait LinkMethodsTrait
             }
         }
 
+        if (!$mainEntity instanceof HasIdInterface) {
+            throw new InvalidArgumentException('Main entity should have getId method');
+        }
+
         try {
-            //todo add HasIdInterface
             $this->request->post($this->getLinkMethod($mainEntity->getId(), false), $body);
         } catch (AmoCRMApiNoContentException $e) {
             $result = true;

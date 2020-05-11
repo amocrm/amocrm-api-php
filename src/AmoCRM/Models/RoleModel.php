@@ -2,7 +2,11 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Client\AmoCRMApiRequest;
+use AmoCRM\Collections\UsersCollection;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Rights\RightModel;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
@@ -23,21 +27,14 @@ class RoleModel extends BaseApiModel implements HasIdInterface
     protected $name;
 
     /**
-     * @var array
-     * //TODO collection when users api will be available
+     * @var UsersCollection
      */
     protected $users;
 
     /**
-     * @var array
-     * //TODO rights model
+     * @var RightModel
      */
     protected $rights;
-
-    /**
-     * @var null|int
-     */
-    protected $requestId;
 
     /**
      * @param array $role
@@ -55,11 +52,14 @@ class RoleModel extends BaseApiModel implements HasIdInterface
         $roleModel
             ->setId($role['id'])
             ->setName($role['name'])
-            ->setRights($role['rights']);
+            ->setRights(RightModel::fromArray($role['rights']));
 
-        if (!empty($role['users'])) {
-            $roleModel->setUsers($role['users']);
+        $usersCollection = new UsersCollection();
+        if (!empty($role[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::USERS])) {
+            $usersCollection = $usersCollection->fromArray($role[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::USERS]);
         }
+        $roleModel->setUsers($usersCollection);
+
 
         return $roleModel;
     }
@@ -72,15 +72,15 @@ class RoleModel extends BaseApiModel implements HasIdInterface
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
-            'right' => $this->getRights(),
-            'users' => $this->getUsers(),
+            'right' => $this->getRights()->toArray(),
+            'users' => $this->getUsers()->toArray(),
         ];
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -116,18 +116,18 @@ class RoleModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return null|array
+     * @return null|UsersCollection
      */
-    public function getUsers(): ?array
+    public function getUsers(): ?UsersCollection
     {
         return $this->users;
     }
 
     /**
-     * @param array $users
+     * @param UsersCollection $users
      * @return RoleModel
      */
-    public function setUsers(array $users): self
+    public function setUsers(UsersCollection $users): self
     {
         $this->users = $users;
 
@@ -135,18 +135,18 @@ class RoleModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return array
+     * @return RightModel
      */
-    public function getRights(): array
+    public function getRights(): RightModel
     {
         return $this->rights;
     }
 
     /**
-     * @param array $rights
+     * @param RightModel $rights
      * @return RoleModel
      */
-    public function setRights(array $rights): self
+    public function setRights(RightModel $rights): self
     {
         $this->rights = $rights;
 
@@ -161,16 +161,12 @@ class RoleModel extends BaseApiModel implements HasIdInterface
     {
         $result = [];
 
-        if (!is_null($this->getId())) {
-            $result['id'] = $this->getId();
-        }
-
         if (!is_null($this->getName())) {
             $result['name'] = $this->getName();
         }
 
         if (!is_null($this->getRights())) {
-            $result['rights'] = $this->getRights();
+            $result['rights'] = $this->getRights()->toApi();
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {

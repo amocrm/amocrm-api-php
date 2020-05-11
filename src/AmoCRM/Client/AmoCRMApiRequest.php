@@ -25,7 +25,7 @@ class AmoCRMApiRequest
     const PATCH_REQUEST = 'PATCH';
     const DELETE_REQUEST = 'DELETE';
 
-    const CONNECT_TIMEOUT = 3;
+    const CONNECT_TIMEOUT = 5;
     const REQUEST_TIMEOUT = 20;
     const USER_AGENT = 'amoCRM-API-Library/1.0';
 

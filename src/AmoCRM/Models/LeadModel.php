@@ -156,11 +156,6 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
      */
     protected $visitorUid;
 
-    /**
-     * @var null|int
-     */
-    protected $requestId = null;
-
     public function getType(): string
     {
         return EntityTypesInterface::LEADS;
@@ -169,7 +164,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     /**
      * @return null|int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

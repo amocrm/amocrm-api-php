@@ -13,7 +13,7 @@ use AmoCRM\Collections\TagsCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
-use AmoCRM\Models\Tag;
+use AmoCRM\Models\TagModel;
 
 /**
  * Class EntityTags
@@ -21,7 +21,7 @@ use AmoCRM\Models\Tag;
  * @package AmoCRM\EntitiesServices
  *
  * @method TagsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?TagsCollection
- * @method Tag addOne(BaseApiModel $model) : Tag
+ * @method TagModel addOne(BaseApiModel $model) : Tag
  * @method TagsCollection add(BaseApiCollection $collection) : TagsCollection
  */
 class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
@@ -41,7 +41,7 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
     /**
      * @var string
      */
-    protected $itemClass = Tag::class;
+    protected $itemClass = TagModel::class;
 
     /**
      * @param string $entityType
@@ -185,7 +185,7 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
     }
 
     /**
-     * @param BaseApiModel|Tag $apiModel
+     * @param BaseApiModel|TagModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void

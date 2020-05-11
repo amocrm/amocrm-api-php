@@ -11,7 +11,7 @@ namespace AmoCRM\Models\Interfaces;
 interface HasIdInterface
 {
     /**
-     * @return int
+     * @return null|int
      */
-    public function getId(): int;
+    public function getId(): ?int;
 }

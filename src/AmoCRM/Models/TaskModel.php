@@ -99,14 +99,9 @@ class TaskModel extends BaseApiModel implements HasIdInterface
     protected $completeTill;
 
     /**
-     * @var null|int
+     * @return null|int
      */
-    protected $requestId = null;
-
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

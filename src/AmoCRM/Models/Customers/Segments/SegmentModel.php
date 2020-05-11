@@ -58,11 +58,6 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
     protected $availableProductsPriceTypes;
 
     /**
-     * @var null|int
-     */
-    protected $requestId;
-
-    /**
      * @param array $segment
      *
      * @return self
@@ -123,9 +118,9 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

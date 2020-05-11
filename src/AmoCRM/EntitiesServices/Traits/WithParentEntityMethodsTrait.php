@@ -6,7 +6,9 @@ use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\EntitiesServices\Interfaces\HasParentEntity;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Interfaces\HasIdInterface;
 
 trait WithParentEntityMethodsTrait
 {
@@ -25,7 +27,11 @@ trait WithParentEntityMethodsTrait
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
     {
-        $id = method_exists($apiModel, 'getId') ? $apiModel->getId() : null;
+        if (!$apiModel instanceof HasIdInterface) {
+            throw new InvalidArgumentException('Entity should have getId method');
+        }
+
+        $id = $apiModel->getId();
         if (is_null($id)) {
             throw new AmoCRMApiException('Empty id in model ' . json_encode($apiModel->toArray()));
         }
@@ -35,7 +41,6 @@ trait WithParentEntityMethodsTrait
             throw new AmoCRMApiException('Parent id in model ' . json_encode($apiModel->toArray()));
         }
 
-        //todo add HasIdInterface
         $response = $this->request->patch($this->getMethodWithParent($parentId, $id), $apiModel->toApi());
         $apiModel = $this->processUpdateOne($apiModel, $response);
 

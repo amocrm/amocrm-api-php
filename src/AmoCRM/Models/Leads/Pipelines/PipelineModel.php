@@ -42,11 +42,6 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
     protected $isUnsortedOn;
 
     /**
-     * @var null|int
-     */
-    protected $requestId;
-
-    /**
      * @param array $pipeline
      *
      * @return self

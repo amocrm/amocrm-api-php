@@ -80,11 +80,6 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
     protected $widgets;
 
     /**
-     * @var null|int
-     */
-    protected $requestId = null;
-
-    /**
      * @return null|int
      */
     public function getId(): ?int

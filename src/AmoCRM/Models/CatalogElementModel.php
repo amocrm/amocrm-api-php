@@ -60,11 +60,6 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     protected $isDeleted;
 
     /**
-     * @var null|int
-     */
-    protected $requestId = null;
-
-    /**
      * @var int|null
      */
     protected $quantity;

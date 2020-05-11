@@ -147,11 +147,6 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
      */
     protected $catalogElementsLinks = null;
 
-    /**
-     * @var null|int
-     */
-    protected $requestId = null;
-
     public function getType(): string
     {
         return EntityTypesInterface::CUSTOMERS;
