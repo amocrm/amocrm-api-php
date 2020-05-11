@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CatalogElementsCollection;
@@ -14,7 +15,6 @@ use AmoCRM\Models\Interfaces\TypeAwareInterface;
 use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
 use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use InvalidArgumentException;
 
 class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
@@ -646,11 +646,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
      * @param array $lead
      *
      * @return self
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $lead): self
     {
         if (empty($lead['id'])) {
-            //todo amocrm exception
             throw new InvalidArgumentException('Lead id is empty in ' . json_encode($lead));
         }
 

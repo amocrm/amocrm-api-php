@@ -78,9 +78,14 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
     protected $sdkWidgetCode;
 
     /**
-     * @var array|Null
+     * @var array|null
      */
     protected $widgets;
+
+    /**
+     * @var int|null
+     */
+    protected $accountId;
 
     /**
      * @return null|int
@@ -362,6 +367,29 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getAccountId(): ?int
+    {
+        return $this->accountId;
+    }
+
+    /**
+     * @param int|null $accountId
+     *
+     * @return CatalogModel
+     */
+    public function setAccountId(?int $accountId): CatalogModel
+    {
+        $this->accountId = $accountId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getType(): string
     {
         return EntityTypesInterface::CATALOGS;
@@ -422,11 +450,9 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
         if (array_key_exists('widgets', $catalog) && !is_null($catalog['widgets'])) {
             $catalogModel->setWidgets($catalog['widgets']);
         }
-
-        //todo
-//        if (!empty($catalog['account_id'])) {
-//            $catalogModel->setAccountId((int)$catalog['account_id']);
-//        }
+        if (!empty($catalog['account_id'])) {
+            $catalogModel->setAccountId((int)$catalog['account_id']);
+        }
 
         return $catalogModel;
     }
@@ -436,7 +462,7 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'created_by' => $this->getCreatedBy(),
@@ -451,9 +477,8 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
             'can_be_deleted' => $this->getCanBeDeleted(),
             'sdk_widget_code' => $this->getSdkWidgetCode(),
             'widgets' => $this->getWidgets(),
+            'account_id' => $this->getAccountId(),
         ];
-
-        return $result;
     }
 
     public function toApi(?string $requestId = null): array

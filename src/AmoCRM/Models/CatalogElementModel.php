@@ -67,6 +67,11 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     protected $quantity;
 
     /**
+     * @var int|null
+     */
+    protected $accountId;
+
+    /**
      * @return null|int
      */
     public function getId(): ?int
@@ -246,6 +251,26 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getAccountId(): ?int
+    {
+        return $this->accountId;
+    }
+
+    /**
+     * @param int|null $accountId
+     *
+     * @return CatalogElementModel
+     */
+    public function setAccountId(?int $accountId): CatalogElementModel
+    {
+        $this->accountId = $accountId;
+
+        return $this;
+    }
+
     public function getType(): string
     {
         return EntityTypesInterface::CATALOG_ELEMENTS_FULL;
@@ -305,10 +330,9 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
             $catalogElementModel->setCatalogId($catalogElement['metadata']['catalog_id']);
         }
 
-        //todo
-//        if (!empty($catalog['account_id'])) {
-//            $catalogModel->setAccountId((int)$catalog['account_id']);
-//        }
+        if (!empty($catalog['account_id'])) {
+            $catalogElementModel->setAccountId((int)$catalog['account_id']);
+        }
 
         return $catalogElementModel;
     }
@@ -318,7 +342,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'name' => $this->getName(),
             'created_by' => $this->getCreatedBy(),
             'updated_by' => $this->getUpdatedBy(),
@@ -329,9 +353,8 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
             'custom_fields_values' => $this->getCustomFieldsValues()
                 ? $this->getCustomFieldsValues()->toArray()
                 : null,
+            'account_id' => $this->getAccountId(),
         ];
-
-        return $result;
     }
 
     public function toApi(?string $requestId = null): array
@@ -374,14 +397,6 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getAvailableWith(): array
-    {
-        return [];
     }
 
     /**

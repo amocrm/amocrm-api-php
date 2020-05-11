@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
@@ -14,7 +15,6 @@ use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use InvalidArgumentException;
 
 class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
@@ -488,11 +488,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
      * @param array $contact
      *
      * @return self
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $contact): self
     {
         if (empty($contact['id'])) {
-            //todo amocrm exception
             throw new InvalidArgumentException('Contact id is empty in ' . json_encode($contact));
         }
 

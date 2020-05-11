@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\Customers;
 
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
@@ -16,7 +17,6 @@ use AmoCRM\Collections\Customers\Segments\SegmentsCollection;
 use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CompanyModel;
-use InvalidArgumentException;
 
 /**
  * Class CustomerModel
@@ -597,11 +597,11 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
      * @param array $customer
      *
      * @return self
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $customer): self
     {
         if (empty($customer['id'])) {
-            //todo amocrm exception
             throw new InvalidArgumentException('Customer id is empty in ' . json_encode($customer));
         }
 
