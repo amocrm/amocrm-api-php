@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AmoCRM\Models\CustomFieldsValues\ValueCollections;
 
 use AmoCRM\Collections\BaseApiCollection;

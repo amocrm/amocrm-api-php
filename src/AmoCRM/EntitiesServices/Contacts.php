@@ -141,10 +141,10 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
     protected function getAvailableLinkTypes(): array
     {
         return [
-            EntityTypesInterface::CATALOGS . EntityTypesInterface::CATALOG_ELEMENTS,
+            EntityTypesInterface::CATALOG_ELEMENTS_FULL,
             EntityTypesInterface::LEADS,
             EntityTypesInterface::CUSTOMERS,
-            //todo company
+            EntityTypesInterface::COMPANIES,
         ];
     }
 }

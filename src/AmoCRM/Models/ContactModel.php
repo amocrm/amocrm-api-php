@@ -13,10 +13,12 @@ use AmoCRM\Collections\Customers\CustomersCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
 class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
+    use RequestIdTrait;
     use GetLinkTrait;
 
     const LEADS = 'leads';
@@ -665,31 +667,12 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param string|null $requestId
-     * @return ContactModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
     /**

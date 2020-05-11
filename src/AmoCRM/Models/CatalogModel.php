@@ -5,10 +5,13 @@ namespace AmoCRM\Models;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Interfaces\TypeAwareInterface;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
 class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInterface
 {
+    use RequestIdTrait;
+
     /**
      * @var int
      */
@@ -504,31 +507,12 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param string|null $requestId
-     * @return CatalogModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
     /**

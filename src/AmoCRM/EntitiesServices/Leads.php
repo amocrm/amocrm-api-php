@@ -141,8 +141,8 @@ class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethods
     {
         return [
             EntityTypesInterface::CONTACTS,
-            EntityTypesInterface::CATALOGS . EntityTypesInterface::CATALOG_ELEMENTS,
-            //todo company
+            EntityTypesInterface::CATALOG_ELEMENTS_FULL,
+            EntityTypesInterface::COMPANIES,
         ];
     }
 }

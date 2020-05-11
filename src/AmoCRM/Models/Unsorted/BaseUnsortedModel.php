@@ -4,6 +4,7 @@ namespace AmoCRM\Models\Unsorted;
 
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Factories\UnsortedMetadataFactory;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CompaniesCollection;
@@ -14,6 +15,8 @@ use AmoCRM\Models\LeadModel;
 
 class BaseUnsortedModel extends BaseApiModel
 {
+    use RequestIdTrait;
+
     public const CATEGORY_CODE_SIP = 'sip';
     public const CATEGORY_CODE_MAIL = 'mail';
     public const CATEGORY_CODE_FORMS = 'forms';
@@ -398,7 +401,7 @@ class BaseUnsortedModel extends BaseApiModel
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $requestId = $this->getRequestId();
@@ -419,25 +422,6 @@ class BaseUnsortedModel extends BaseApiModel
         $result['request_id'] = $requestId;
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param string|null $requestId
-     * @return BaseUnsortedModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
     /**

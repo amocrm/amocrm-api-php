@@ -48,7 +48,8 @@ $sipMetadata
     ->setCalledAt(mktime(date('h'), date('i'), date('s'), 10, 04, 2019))
     ->setPhone('135')
     ->setFrom('+79123456789')
-    ->setUniq(Uuid::uuid4());
+    ->setUniq(Uuid::uuid4())
+    ->setIsCallEventNeeded(true); // нужно ли примечание о звонке
 
 $unsortedLead = new LeadModel();
 $unsortedLead->setName('Сделка')

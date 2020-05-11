@@ -143,8 +143,8 @@ class Customers extends BaseEntity implements HasLinkMethodInterface, HasPageMet
     {
         return [
             EntityTypesInterface::CONTACTS,
-            EntityTypesInterface::CATALOGS . EntityTypesInterface::CATALOG_ELEMENTS,
-            //todo company
+            EntityTypesInterface::CATALOG_ELEMENTS_FULL,
+            EntityTypesInterface::COMPANIES,
         ];
     }
 }

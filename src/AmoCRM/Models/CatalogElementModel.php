@@ -2,16 +2,18 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Interfaces\TypeAwareInterface;
 use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
-use InvalidArgumentException;
+use AmoCRM\Models\Traits\RequestIdTrait;
 
 class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
+    use RequestIdTrait;
     use GetLinkTrait;
 
     /**
@@ -246,18 +248,18 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
 
     public function getType(): string
     {
-        return 'catalog_' . EntityTypesInterface::CATALOG_ELEMENTS;
+        return EntityTypesInterface::CATALOG_ELEMENTS_FULL;
     }
 
     /**
      * @param array $catalogElement
      *
      * @return self
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $catalogElement): self
     {
         if (empty($catalogElement['id'])) {
-            //todo amocrm exception
             throw new InvalidArgumentException('Catalog id is empty in ' . json_encode($catalogElement));
         }
 
@@ -361,7 +363,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         //TODO убрать после правки бага в API
@@ -372,25 +374,6 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param string|null $requestId
-     * @return CatalogElementModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
     /**

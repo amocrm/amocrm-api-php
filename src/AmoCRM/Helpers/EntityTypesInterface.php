@@ -20,6 +20,7 @@ interface EntityTypesInterface
     const WEBHOOKS = 'webhooks';
     const UNSORTED = 'unsorted';
     const CATALOG_ELEMENTS = 'elements';
+    const CATALOG_ELEMENTS_FULL = 'catalog_elements';
     const USER_ROLES = 'roles';
     const USERS = 'users';
     const CUSTOMERS_SEGMENTS = 'segments';

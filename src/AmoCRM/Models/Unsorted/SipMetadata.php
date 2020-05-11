@@ -44,6 +44,11 @@ class SipMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInt
     protected $uniq;
 
     /**
+     * @var bool|null
+     */
+    protected $isCallEventNeeded;
+
+    /**
      * @param array $metadata
      *
      * @return self
@@ -213,6 +218,26 @@ class SipMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInt
     }
 
     /**
+     * @return bool|null
+     */
+    public function getIsCallEventNeeded(): ?bool
+    {
+        return $this->isCallEventNeeded;
+    }
+
+    /**
+     * @param bool|null $isCallEventNeeded
+     *
+     * @return SipMetadata
+     */
+    public function setIsCallEventNeeded(?bool $isCallEventNeeded): SipMetadata
+    {
+        $this->isCallEventNeeded = $isCallEventNeeded;
+
+        return $this;
+    }
+
+    /**
      * @param string|null $requestId
      * @return array
      */
@@ -226,7 +251,7 @@ class SipMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInt
             'link' => $this->getLink(),
             'service_code' => $this->getServiceCode(),
             'uniq' => $this->getUniq(),
-            'is_call_event_needed' => true, //todo support as attribute
+            'is_call_event_needed' => $this->getIsCallEventNeeded() ?? true,
         ];
     }
 }
