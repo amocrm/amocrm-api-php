@@ -3,10 +3,13 @@
 namespace AmoCRM\Models\Leads\Pipelines\Statuses;
 
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use Illuminate\Contracts\Support\Arrayable;
 
 class StatusModel extends BaseApiModel implements Arrayable
 {
+    use RequestIdTrait;
+
     public const COLORS = [
         '#fffeb2','#fffd7f','#fff000','#ffeab2','#ffdc7f',
         '#ffce5a','#ffdbdb','#ffc8c8','#ff8f92','#d6eaff',
@@ -86,7 +89,7 @@ class StatusModel extends BaseApiModel implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'sort' => $this->getSort(),
@@ -96,8 +99,6 @@ class StatusModel extends BaseApiModel implements Arrayable
             'is_editable' => $this->getIsEditable(),
             'pipeline_id' => $this->getPipelineId(),
         ];
-
-        return $result;
     }
 
     /**
@@ -261,10 +262,10 @@ class StatusModel extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -281,30 +282,11 @@ class StatusModel extends BaseApiModel implements Arrayable
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return StatusModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 }

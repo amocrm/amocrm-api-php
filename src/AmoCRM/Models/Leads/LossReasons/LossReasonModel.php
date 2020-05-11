@@ -3,10 +3,18 @@
 namespace AmoCRM\Models\Leads\LossReasons;
 
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
+/**
+ * Class LossReasonModel
+ *
+ * @package AmoCRM\Models\Leads\LossReasons
+ */
 class LossReasonModel extends BaseApiModel
 {
+    use RequestIdTrait;
+
     /**
      * @var int
      */
@@ -65,15 +73,13 @@ class LossReasonModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'sort' => $this->getSort(),
             'created_at' => $this->getCreatedAt(),
             'updated_at' => $this->getUpdatedAt(),
         ];
-
-        return $result;
     }
 
     /**
@@ -177,38 +183,18 @@ class LossReasonModel extends BaseApiModel
     }
 
     /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     *
-     * @return LossReasonModel
-     */
-    public function setRequestId(?int $requestId): LossReasonModel
-    {
-        $this->requestId = $requestId;
-
-        return $this;
-    }
-
-    /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      *
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [
             'name' => $this->getName(),
         ];
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();

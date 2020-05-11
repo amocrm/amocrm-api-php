@@ -3,10 +3,13 @@
 namespace AmoCRM\Models\Leads\Pipelines;
 
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use Illuminate\Contracts\Support\Arrayable;
 
 class PipelineModel extends BaseApiModel implements Arrayable
 {
+    use RequestIdTrait;
+
     /**
      * @var int|null
      */
@@ -66,7 +69,7 @@ class PipelineModel extends BaseApiModel implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'sort' => $this->getSort(),
@@ -74,8 +77,6 @@ class PipelineModel extends BaseApiModel implements Arrayable
             'is_main' => $this->getIsMain(),
             'is_unsorted_on' => $this->getIsUnsortedOn(),
         ];
-
-        return $result;
     }
 
     /**
@@ -200,10 +201,10 @@ class PipelineModel extends BaseApiModel implements Arrayable
 
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -224,30 +225,11 @@ class PipelineModel extends BaseApiModel implements Arrayable
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return PipelineModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 }
