@@ -2,8 +2,11 @@
 
 namespace AmoCRM\Models\Customers;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\AmoCRM\Models\TypeAwareInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
+use AmoCRM\Models\Traits\GetLinkTrait;
+use AmoCRM\Models\Traits\RequestIdTrait;
+use AmoCRM\Models\TypeAwareInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CatalogElementsCollection;
 use AmoCRM\Collections\ContactsCollection;
@@ -14,8 +17,16 @@ use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CompanyModel;
 use InvalidArgumentException;
 
-class CustomerModel extends BaseApiModel implements TypeAwareInterface
+/**
+ * Class CustomerModel
+ *
+ * @package AmoCRM\Models\Customers
+ */
+class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface
 {
+    use GetLinkTrait;
+    use RequestIdTrait;
+
     const CATALOG_ELEMENTS = 'catalog_elements';
     const CONTACTS = 'contacts';
     const COMPANIES = 'companies';
@@ -652,6 +663,15 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface
         if (array_key_exists('is_deleted', $customer) && !is_null($customer['is_deleted'])) {
             $customerModel->setIsDeleted((bool)$customer['is_deleted']);
         }
+
+        if (array_key_exists('average_check', $customer) && !is_null($customer['average_check'])) {
+            $customerModel->setAverageCheck((int)$customer['average_check']);
+        }
+
+        if (array_key_exists('purchases_count', $customer) && !is_null($customer['purchases_count'])) {
+            $customerModel->setPurchasesCount((int)$customer['purchases_count']);
+        }
+
         if (!empty($customer[AmoCRMApiRequest::EMBEDDED]['tags'])) {
             $tagsCollection = new TagsCollection();
             $tagsCollection = $tagsCollection->fromArray($customer[AmoCRMApiRequest::EMBEDDED]['tags']);
@@ -719,19 +739,19 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface
         ];
 
         if (!is_null($this->getCatalogElementsLinks())) {
-            $result['catalog_elements'] = $this->getCatalogElementsLinks();
+            $result['catalog_elements'] = $this->getCatalogElementsLinks()->toArray();
         }
 
         if (!is_null($this->getTags())) {
-            $result['tags'] = $this->getTags();
+            $result['tags'] = $this->getTags()->toArray();
         }
 
         if (!is_null($this->getCompany())) {
-            $result['company'] = $this->getCompany();
+            $result['company'] = $this->getCompany()->toArray();
         }
 
         if (!is_null($this->getContacts())) {
-            $result['contacts'] = $this->getContacts();
+            $result['contacts'] = $this->getContacts()->toArray();
         }
 
         //todo segments
@@ -740,10 +760,10 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -788,45 +808,26 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface
         }
 
         if (!is_null($this->getCustomFieldsValues())) {
-            $result['custom_fields_values'] = $this->getCustomFieldsValues();
+            $result['custom_fields_values'] = $this->getCustomFieldsValues()->toApi();
         }
 
         if (!is_null($this->getTags())) {
-            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags();
+            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags()->toApi();
         }
 
         //todo
 //        if (!is_null($this->getTags())) {
-//            $result[AmoCRMApiRequest::EMBEDDED]['segments'] = $this->getTags();
+//            $result[AmoCRMApiRequest::EMBEDDED]['segments'] = $this->getSegments();
 //        }
 
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId); //Бага в API не принимает 0
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return CustomerModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
     /**
@@ -858,5 +859,19 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface
         $this->catalogElementsLinks = $catalogElementsLinks;
 
         return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getMetadataForLink(): ?array
+    {
+        $result = null;
+
+        if (!is_null($this->getUpdatedBy())) {
+            $result['updated_by'] = $this->getUpdatedBy();
+        }
+
+        return $result;
     }
 }

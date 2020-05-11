@@ -4,10 +4,18 @@ namespace AmoCRM\Models\Customers\Segments;
 
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
+/**
+ * Class SegmentModel
+ *
+ * @package AmoCRM\Models\Customers\Segments
+ */
 class SegmentModel extends BaseApiModel
 {
+    use RequestIdTrait;
+
     /**
      * @var int
      */
@@ -101,7 +109,7 @@ class SegmentModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'color' => $this->getColor(),
@@ -109,10 +117,8 @@ class SegmentModel extends BaseApiModel
             'updated_at' => $this->getUpdatedAt(),
             'customers_count' => $this->getCustomersCount(),
             'available_products_price_types' => $this->getAvailableProductsPriceTypes(),
-            'custom_fields_values' => $this->getCustomFieldsValues(),
+            'custom_fields_values' => $this->getCustomFieldsValues()->toArray(),
         ];
-
-        return $result;
     }
 
     /**
@@ -154,10 +160,10 @@ class SegmentModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -178,35 +184,16 @@ class SegmentModel extends BaseApiModel
         }
 
         if (!is_null($this->getCustomFieldsValues())) {
-            $result['custom_fields_values'] = $this->getCustomFieldsValues();
+            $result['custom_fields_values'] = $this->getCustomFieldsValues()->toApi();
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return SegmentModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
 

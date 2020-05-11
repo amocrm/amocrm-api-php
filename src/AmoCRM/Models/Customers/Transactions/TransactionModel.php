@@ -7,10 +7,18 @@ use AmoCRM\Collections\CatalogElementsCollection;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CatalogElementModel;
 use AmoCRM\Models\Customers\CustomerModel;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
+/**
+ * Class TransactionModel
+ *
+ * @package AmoCRM\Models\Customers\Transactions
+ */
 class TransactionModel extends BaseApiModel
 {
+    use RequestIdTrait;
+
     /**
      * @var int
      */
@@ -180,7 +188,7 @@ class TransactionModel extends BaseApiModel
             'created_at' => $this->getCreatedAt(),
             'updated_at' => $this->getUpdatedAt(),
             'created_by' => $this->getCreatedBy(),
-            'updated_by' => $this->getCreatedAt(),
+            'updated_by' => $this->getUpdatedBy(),
             'is_deleted' => $this->getIdDeleted(),
             'account_id' => $this->getAccountId(),
             'catalog_elements' => $this->getCatalogElements() ? $this->getCatalogElements()->toArray() : null,
@@ -430,26 +438,6 @@ class TransactionModel extends BaseApiModel
     }
 
     /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     *
-     * @return TransactionModel
-     */
-    public function setRequestId(?int $requestId): TransactionModel
-    {
-        $this->requestId = $requestId;
-
-        return $this;
-    }
-
-    /**
      * @return CatalogElementsCollection|null
      */
     public function getCatalogElements(): ?CatalogElementsCollection
@@ -510,11 +498,11 @@ class TransactionModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      *
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [
             'price' => $this->getPrice(),
@@ -553,7 +541,7 @@ class TransactionModel extends BaseApiModel
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = (string)$this->getRequestId();
