@@ -76,10 +76,10 @@ abstract class TargetingNote extends NoteModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = parent::toApi($requestId);
 

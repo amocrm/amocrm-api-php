@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\NoteType;
 
-use AmoCRM\AmoCRM\Models\Factories\NoteFactory;
+use AmoCRM\Models\Factories\NoteFactory;
 use AmoCRM\Models\NoteModel;
 
 class GeolocationNote extends NoteModel
@@ -78,10 +78,10 @@ class GeolocationNote extends NoteModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = parent::toApi($requestId);
 

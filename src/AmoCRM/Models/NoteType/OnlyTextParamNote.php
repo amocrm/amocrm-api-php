@@ -41,11 +41,11 @@ abstract class OnlyTextParamNote extends NoteModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      * @throws NotAvailableForActionException
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         throw new NotAvailableForActionException();
     }

@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\NoteType;
 
-use AmoCRM\AmoCRM\Models\Factories\NoteFactory;
+use AmoCRM\Models\Factories\NoteFactory;
 
 class CallInNote extends CallNote
 {

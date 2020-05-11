@@ -5,9 +5,9 @@ namespace AmoCRM\Models\NoteType;
 use AmoCRM\Models\Factories\NoteFactory;
 use AmoCRM\Models\NoteModel;
 
-class InvoicePaidNote extends NoteModel
+class BillPaidNote extends NoteModel
 {
-    protected $modelClass = InvoicePaidNote::class;
+    protected $modelClass = BillPaidNote::class;
 
     /**
      * @var null|string
@@ -26,7 +26,7 @@ class InvoicePaidNote extends NoteModel
 
     public function getNoteType(): string
     {
-        return NoteFactory::NOTE_TYPE_CODE_INVOICE_PAID;
+        return NoteFactory::NOTE_TYPE_CODE_BILL_PAID;
     }
 
     /**
@@ -92,9 +92,9 @@ class InvoicePaidNote extends NoteModel
 
     /**
      * @param string|null $service
-     * @return InvoicePaidNote
+     * @return BillPaidNote
      */
-    public function setService(?string $service): InvoicePaidNote
+    public function setService(?string $service): BillPaidNote
     {
         $this->service = $service;
 
@@ -111,9 +111,9 @@ class InvoicePaidNote extends NoteModel
 
     /**
      * @param string|null $iconUrl
-     * @return InvoicePaidNote
+     * @return BillPaidNote
      */
-    public function setIconUrl(?string $iconUrl): InvoicePaidNote
+    public function setIconUrl(?string $iconUrl): BillPaidNote
     {
         $this->iconUrl = $iconUrl;
 
@@ -130,9 +130,9 @@ class InvoicePaidNote extends NoteModel
 
     /**
      * @param string|null $text
-     * @return InvoicePaidNote
+     * @return BillPaidNote
      */
-    public function setText(?string $text): InvoicePaidNote
+    public function setText(?string $text): BillPaidNote
     {
         $this->text = $text;
 

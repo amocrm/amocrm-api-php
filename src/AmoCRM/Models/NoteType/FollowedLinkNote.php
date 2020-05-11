@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\NoteType;
 
-use AmoCRM\AmoCRM\Models\Factories\NoteFactory;
+use AmoCRM\Models\Factories\NoteFactory;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\NoteModel;
 
@@ -17,7 +17,7 @@ class FollowedLinkNote extends NoteModel
 
     public function getNoteType(): string
     {
-        return NoteFactory::NOTE_TYPE_LINK_FOLLOWED;
+        return NoteFactory::NOTE_TYPE_CODE_LINK_FOLLOWED;
     }
 
     /**
@@ -49,11 +49,11 @@ class FollowedLinkNote extends NoteModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      * @throws NotAvailableForActionException
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         throw new NotAvailableForActionException();
     }
