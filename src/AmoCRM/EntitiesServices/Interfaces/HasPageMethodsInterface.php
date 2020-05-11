@@ -10,7 +10,17 @@ use AmoCRM\Collections\Interfaces\HasPagesInterface;
  */
 interface HasPageMethodsInterface
 {
+    /**
+     * @param HasPagesInterface $collection
+     *
+     * @return HasPagesInterface
+     */
     public function nextPage(HasPagesInterface $collection): HasPagesInterface;
 
+    /**
+     * @param HasPagesInterface $collection
+     *
+     * @return HasPagesInterface
+     */
     public function prevPage(HasPagesInterface $collection): HasPagesInterface;
 }

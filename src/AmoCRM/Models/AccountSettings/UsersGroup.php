@@ -59,22 +59,6 @@ class UsersGroup extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @inheritDoc
-     */
-    public function toJson($options = 0): string
-    {
-        return json_encode($this->toArray(), $options);
-    }
-
-    /**
-     * @return array
-     */
-    public function getArrayCopy(): array
-    {
-        return $this->toArray();
-    }
-
-    /**
      * @return int
      */
     public function getId(): int
@@ -132,10 +116,10 @@ class UsersGroup extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [];
     }

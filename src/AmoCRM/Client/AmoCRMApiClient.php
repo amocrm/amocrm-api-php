@@ -132,9 +132,11 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект примечаний сущности
+     *
      * @param string $entityType
+     *
      * @return EntityNotes
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function notes(string $entityType)
     {

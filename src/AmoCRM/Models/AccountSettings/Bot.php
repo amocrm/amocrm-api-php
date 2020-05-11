@@ -60,7 +60,7 @@ class Bot extends BaseApiModel implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'login' => $this->getLogin(),
@@ -68,8 +68,6 @@ class Bot extends BaseApiModel implements Arrayable
             'photo_url' => $this->getPhotoUrl(),
             'direct_chat' => $this->getDirectChat()
         ];
-
-        return $result;
     }
 
     /**
@@ -169,10 +167,11 @@ class Bot extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
+     *
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [];
     }

@@ -23,11 +23,9 @@ class AmojoUrl implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'base_url' => $this->baseUrl,
         ];
-
-        return $result;
     }
 
     /**

@@ -2,7 +2,11 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\EntitiesServices\Interfaces\HasParentEntity;
+use AmoCRM\EntitiesServices\Traits\WithParentEntityMethodsTrait;
+use AmoCRM\Exceptions\InvalidArgumentException;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -12,16 +16,50 @@ use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\NoteModel;
 
-class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterface
+/**
+ * Class EntityNotes
+ *
+ * @package AmoCRM\EntitiesServices
+ *
+ * @method NoteModel getOne(array $id, array $with = []) : ?NoteModel
+ * @method NotesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?NotesCollection
+ * @method NoteModel addOne(BaseApiModel $model) : NoteModel
+ * @method NotesCollection add(BaseApiCollection $collection) : NotesCollection
+ * @method NoteModel updateOne(BaseApiModel $apiModel) : NoteModel
+ * @method NotesCollection update(BaseApiCollection $collection) : NotesCollection
+ * @method NoteModel syncOne(BaseApiModel $apiModel, $with = []) : NoteModel
+ */
+class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterface, HasParentEntity
 {
     use PageMethodsTrait;
+    use WithParentEntityMethodsTrait;
 
+    /**
+     * @var string
+     */
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/notes';
 
+    /**
+     * @var string
+     */
+    //todo delete this after deploy method without entityId
+    protected $methodWithParent = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/%s/notes/%s';
+
+    /**
+     * @var string
+     */
     protected $collectionClass = NotesCollection::class;
 
+    /**
+     * @var string
+     */
     protected $itemClass = NoteModel::class;
 
+    /**
+     * @param string $entityType
+     *
+     * @throws InvalidArgumentException
+     */
     protected function validateEntityType(string $entityType): void
     {
         $availableTypes = [
@@ -32,11 +70,15 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
         ];
 
         if (!in_array($entityType, $availableTypes, true)) {
-            throw new \Exception('This method doesn\'t support given entity type');
+            throw new InvalidArgumentException('This method doesn\'t support given entity type');
         }
     }
 
-    //todo validate note types for update/create
+    /**
+     * @param array $response
+     *
+     * @return array
+     */
     protected function getEntitiesFromResponse(array $response): array
     {
         $entities = [];
@@ -51,6 +93,7 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
     /**
      * @param BaseApiModel $model
      * @param array $response
+     *
      * @return BaseApiModel
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
@@ -63,6 +106,7 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processUpdate(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -73,6 +117,7 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
     /**
      * @param BaseApiCollection $collection
      * @param array $response
+     *
      * @return BaseApiCollection
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
@@ -80,12 +125,12 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
         return $this->processAction($collection, $response);
     }
 
-    //todo
-    public function getOne($id, array $with = []): ?BaseApiModel
-    {
-        throw new \Exception('No such method for this entity');
-    }
-
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -107,7 +152,7 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|NoteModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void

@@ -64,7 +64,7 @@ class DateTimeSettings implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'date_pattern' => $this->datePattern,
             'short_date_pattern' => $this->shortDatePattern,
             'short_time_pattern' => $this->shortTimePattern,
@@ -73,8 +73,6 @@ class DateTimeSettings implements Arrayable
             'timezone' => $this->timezone,
             'timezone_offset' => $this->timezoneOffset,
         ];
-
-        return $result;
     }
 
     /**

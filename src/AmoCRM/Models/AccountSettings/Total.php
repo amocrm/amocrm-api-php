@@ -57,7 +57,7 @@ class Total implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'contacts' => $this->contacts,
             'companies' => $this->companies,
             'leads' => $this->leads,
@@ -65,8 +65,6 @@ class Total implements Arrayable
             'notes' => $this->notes,
             'tasks' => $this->tasks,
         ];
-
-        return $result;
     }
 
     /**

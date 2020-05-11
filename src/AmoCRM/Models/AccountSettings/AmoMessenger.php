@@ -42,13 +42,11 @@ class AmoMessenger implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'enabled' => $this->enabled,
             'wss_url' => $this->wssUrl,
             'api_url' => $this->apiUrl,
         ];
-
-        return $result;
     }
 
     /**

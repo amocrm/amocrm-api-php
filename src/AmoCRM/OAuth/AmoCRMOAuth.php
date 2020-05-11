@@ -77,6 +77,7 @@ class AmoCRMOAuth
     /**
      * Получение Access токена по коду авторизации
      * @param string $code
+     *
      * @return AccessTokenInterface
      * @throws AmoCRMoAuthApiException
      */
@@ -96,6 +97,7 @@ class AmoCRMOAuth
     /**
      * Получение нового Access токена по Refresh токену
      * @param AccessTokenInterface $accessToken
+     *
      * @return AccessTokenInterface
      * @throws AmoCRMoAuthApiException
      */
@@ -120,6 +122,7 @@ class AmoCRMOAuth
 
     /**
      * Получить Http клиент, который используется для работы с oAuth
+     *
      * @return ClientInterface
      */
     public function getHttpClient(): ClientInterface
@@ -130,6 +133,7 @@ class AmoCRMOAuth
     /**
      * Установка базового домена, куда будут отправляться запросы необходимые для работы с токенами
      * @param string $domain
+     *
      * @return $this
      */
     public function setBaseDomain(string $domain): self
@@ -142,6 +146,7 @@ class AmoCRMOAuth
     /**
      * Получение авторизационных заголовков для переданного Access токена
      * @param AccessTokenInterface $accessToken
+     *
      * @return array
      */
     public function getAuthorizationHeaders(AccessTokenInterface $accessToken): array
@@ -151,6 +156,7 @@ class AmoCRMOAuth
 
     /**
      * Получаем URL аккаунта
+     *
      * @return string
      */
     public function getAccountUrl(): string
@@ -161,6 +167,7 @@ class AmoCRMOAuth
     /**
      * Установка Callback при обновлении Access токена по
      * @param callable $function
+     *
      * @return AmoCRMOAuth
      */
     public function setAccessTokenRefreshCallback(callable $function): self
@@ -173,6 +180,7 @@ class AmoCRMOAuth
     /**
      * Получение данных о том, кому принадлежит токен
      * @param AccessTokenInterface $accessToken
+     *
      * @return ResourceOwnerInterface
      */
     public function getResourceOwner(AccessTokenInterface $accessToken): ResourceOwnerInterface

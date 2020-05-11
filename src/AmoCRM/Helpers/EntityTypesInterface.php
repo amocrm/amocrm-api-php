@@ -1,6 +1,6 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Helpers;
+namespace AmoCRM\Helpers;
 
 interface EntityTypesInterface
 {

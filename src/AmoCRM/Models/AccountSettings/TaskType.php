@@ -55,15 +55,13 @@ class TaskType extends BaseApiModel implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'color' => $this->getColor(),
             'icon_id' => $this->getIconId(),
             'code' => $this->getCode(),
         ];
-
-        return $result;
     }
 
     /**
@@ -147,10 +145,10 @@ class TaskType extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [];
     }

@@ -29,12 +29,10 @@ class AmojoRights implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'can_direct' => $this->getIsCanDirect(),
             'can_create_groups' => $this->getIsCanCreateGroups(),
         ];
-
-        return $result;
     }
 
     /**

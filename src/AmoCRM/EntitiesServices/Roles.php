@@ -2,7 +2,11 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Exceptions\NotAvailableForActionException;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -12,7 +16,19 @@ use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\RoleModel;
 
-class Roles extends BaseEntity implements HasPageMethodsInterface
+/**
+ * Class Roles
+ *
+ * @package AmoCRM\EntitiesServices
+ * @method RoleModel getOne($id, array $with = []) : ?RoleModel
+ * @method RolesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?RolesCollection
+ * @method RoleModel addOne(BaseApiModel $model) : RoleModel
+ * @method RolesCollection add(BaseApiCollection $collection) : RolesCollection
+ * @method RoleModel updateOne(BaseApiModel $apiModel) : RoleModel
+ * @method RolesCollection update(BaseApiCollection $collection) : RolesCollection
+ * @method RoleModel syncOne(BaseApiModel $apiModel, $with = []) : RoleModel
+ */
+class Roles extends BaseEntity implements HasPageMethodsInterface, HasDeleteMethodInterface
 {
     use PageMethodsTrait;
 
@@ -65,6 +81,12 @@ class Roles extends BaseEntity implements HasPageMethodsInterface
         return $this->processAction($collection, $response);
     }
 
+    /**
+     * @param BaseApiCollection $collection
+     * @param array $response
+     *
+     * @return BaseApiCollection
+     */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
@@ -81,7 +103,32 @@ class Roles extends BaseEntity implements HasPageMethodsInterface
     }
 
     /**
-     * @param BaseApiModel $apiModel
+     * @param BaseApiModel|RoleModel $model
+     *
+     * @return bool
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function deleteOne(BaseApiModel $model): bool
+    {
+        $result = $this->request->delete($this->getMethod() . '/' . $model->getId());
+
+        return $result['result'];
+    }
+
+    /**
+     * @param BaseApiCollection $collection
+     *
+     * @return bool
+     * @throws NotAvailableForActionException
+     */
+    public function delete(BaseApiCollection $collection): bool
+    {
+        throw new NotAvailableForActionException('This entity supports only deleteOne method');
+    }
+
+    /**
+     * @param BaseApiModel|RoleModel $apiModel
      * @param array $entity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
@@ -89,10 +136,6 @@ class Roles extends BaseEntity implements HasPageMethodsInterface
         //todo
         if (isset($entity['id'])) {
             $apiModel->setId($entity['id']);
-        }
-
-        if (isset($entity['updated_at'])) {
-            $apiModel->setUpdatedAt($entity['updated_at']);
         }
     }
 }

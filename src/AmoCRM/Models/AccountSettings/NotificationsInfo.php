@@ -36,13 +36,11 @@ class NotificationsInfo implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'base_url' => $this->baseUrl,
             'ws_url' => $this->wsUrl,
             'ws_url_v2' => $this->wsUrlV2,
         ];
-
-        return $result;
     }
 
     /**
