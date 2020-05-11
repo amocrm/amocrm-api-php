@@ -2,10 +2,14 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
-class CustomFieldModel extends BaseApiModel
+class CustomFieldModel extends BaseApiModel implements HasIdInterface
 {
+    use RequestIdTrait;
+
     const GROUP_ID = 'group_id';
     const ENUMS = 'enums';
     const REQUIRED_STATUSES = 'required_statuses';
@@ -15,11 +19,12 @@ class CustomFieldModel extends BaseApiModel
     const TYPE_CHECKBOX = 'checkbox';
     const TYPE_SELECT = 'select';
     const TYPE_MULTISELECT = 'multiselect';
+    const TYPE_MULTITEXT = 'multitext';
     const TYPE_DATE = 'date';
     const TYPE_URL = 'url';
     const TYPE_TEXTAREA = 'textarea';
     const TYPE_RADIOBUTTON = 'radiobutton';
-    const TYPE_SHORT_ADDRESS = 'streetaddress';
+    const TYPE_STREET_ADDRESS = 'streetaddress';
     const TYPE_SMART_ADDRESS = 'smart_address';
     const TYPE_BIRTHDAY = 'birthday';
     const TYPE_LEGAL_ENTITY = 'legal_entity';
@@ -37,7 +42,6 @@ class CustomFieldModel extends BaseApiModel
 
     /**
      * @var string
-     * //TODO validate
      */
     protected $type;
 
@@ -142,19 +146,17 @@ class CustomFieldModel extends BaseApiModel
     public function toArray(): array
     {
         //todo
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'sort' => $this->getSort(),
         ];
-
-        return $result;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -209,12 +211,11 @@ class CustomFieldModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
-        //todo
         $result = [];
 
         if (!is_null($this->getId())) {
@@ -262,32 +263,12 @@ class CustomFieldModel extends BaseApiModel
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
-//        $result['request_id'] = $this->getRequestId();
+        $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return CustomFieldModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
     /**

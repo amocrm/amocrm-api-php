@@ -4,6 +4,11 @@ namespace AmoCRM\Models;
 
 use AmoCRM\Exceptions\InvalidArgumentException;
 
+/**
+ * Class EventModel
+ *
+ * @package AmoCRM\Models
+ */
 class EventModel extends BaseApiModel
 {
     const CONTACT_NAME = 'contact_name';
@@ -261,7 +266,7 @@ class EventModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'type' => $this->getType(),
             'entity_id' => $this->getEntityId(),
@@ -272,11 +277,9 @@ class EventModel extends BaseApiModel
             'value_before' => $this->getValueBefore(),
             'account_id' => $this->getAccountId(),
         ];
-
-        return $result;
     }
 
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [];
     }

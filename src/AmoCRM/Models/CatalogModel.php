@@ -2,11 +2,12 @@
 
 namespace AmoCRM\Models;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\AmoCRM\Models\TypeAwareInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Interfaces\TypeAwareInterface;
 use InvalidArgumentException;
 
-class CatalogModel extends BaseApiModel implements TypeAwareInterface
+class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInterface
 {
     /**
      * @var int
@@ -457,7 +458,7 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface
         return $result;
     }
 
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -525,7 +526,7 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return CatalogModel
      */
     public function setRequestId(?int $requestId): self

@@ -1,6 +1,6 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Models\Unsorted\Interfaces;
+namespace AmoCRM\Models\Unsorted\Interfaces;
 
 interface UnsortedMetadataInterface
 {

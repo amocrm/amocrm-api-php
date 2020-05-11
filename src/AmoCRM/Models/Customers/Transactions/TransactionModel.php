@@ -7,6 +7,7 @@ use AmoCRM\Collections\CatalogElementsCollection;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CatalogElementModel;
 use AmoCRM\Models\Customers\CustomerModel;
+use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
@@ -15,7 +16,7 @@ use InvalidArgumentException;
  *
  * @package AmoCRM\Models\Customers\Transactions
  */
-class TransactionModel extends BaseApiModel
+class TransactionModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 

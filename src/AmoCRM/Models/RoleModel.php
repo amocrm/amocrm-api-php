@@ -2,10 +2,14 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
-class RoleModel extends BaseApiModel
+class RoleModel extends BaseApiModel implements HasIdInterface
 {
+    use RequestIdTrait;
+
     const USERS = 'users';
 
     /**
@@ -65,14 +69,12 @@ class RoleModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'right' => $this->getRights(),
             'users' => $this->getUsers(),
         ];
-
-        return $result;
     }
 
     /**
@@ -152,10 +154,10 @@ class RoleModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -172,31 +174,12 @@ class RoleModel extends BaseApiModel
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return RoleModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
     public static function getAvailableWith(): array

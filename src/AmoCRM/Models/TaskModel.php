@@ -3,9 +3,18 @@
 namespace AmoCRM\Models;
 
 use AmoCRM\Exceptions\InvalidArgumentException;
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Traits\RequestIdTrait;
 
-class TaskModel extends BaseApiModel
+/**
+ * Class TaskModel
+ *
+ * @package AmoCRM\Models
+ */
+class TaskModel extends BaseApiModel implements HasIdInterface
 {
+    use RequestIdTrait;
+
     const TASK_TYPE_ID_CALL = 1;
     const TASK_TYPE_ID_MEETING = 2;
 
@@ -95,9 +104,9 @@ class TaskModel extends BaseApiModel
     protected $requestId = null;
 
     /**
-     * @return null|int
+     * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -498,7 +507,7 @@ class TaskModel extends BaseApiModel
         ];
     }
 
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -559,38 +568,11 @@ class TaskModel extends BaseApiModel
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return TaskModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getAvailableWith(): array
-    {
-        return [];
     }
 }

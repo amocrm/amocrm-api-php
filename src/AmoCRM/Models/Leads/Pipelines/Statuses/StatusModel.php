@@ -3,10 +3,11 @@
 namespace AmoCRM\Models\Leads\Pipelines\Statuses;
 
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use Illuminate\Contracts\Support\Arrayable;
 
-class StatusModel extends BaseApiModel implements Arrayable
+class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
 {
     use RequestIdTrait;
 

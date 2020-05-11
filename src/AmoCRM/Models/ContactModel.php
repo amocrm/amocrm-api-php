@@ -2,8 +2,11 @@
 
 namespace AmoCRM\Models;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\AmoCRM\Models\TypeAwareInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Interfaces\TypeAwareInterface;
+use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CatalogElementsCollection;
 use AmoCRM\Collections\Customers\CustomersCollection;
@@ -12,8 +15,10 @@ use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
 use InvalidArgumentException;
 
-class ContactModel extends BaseApiModel implements TypeAwareInterface
+class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
+    use GetLinkTrait;
+
     const LEADS = 'leads';
     const CUSTOMERS = 'customers';
     const CATALOG_ELEMENTS = 'catalog_elements';
@@ -620,7 +625,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
         return $result;
     }
 
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -682,7 +687,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return ContactModel
      */
     public function setRequestId(?int $requestId): self
@@ -721,5 +726,23 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface
         $this->isMain = $isMain;
 
         return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getMetadataForLink(): ?array
+    {
+        $result = null;
+
+        if (!is_null($this->getUpdatedBy())) {
+            $result['updated_by'] = $this->getUpdatedBy();
+        }
+
+        if (!is_null($this->getIsMain())) {
+            $result['is_main'] = $this->getIsMain();
+        }
+
+        return $result;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\Unsorted;
 
-use AmoCRM\AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
+use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Models\BaseApiModel;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -213,10 +213,10 @@ class SipMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInt
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [
             'from' => $this->getFrom(),

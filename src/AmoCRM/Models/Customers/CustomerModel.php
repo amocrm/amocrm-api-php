@@ -4,9 +4,10 @@ namespace AmoCRM\Models\Customers;
 
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
+use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use AmoCRM\Models\TypeAwareInterface;
+use AmoCRM\Models\Interfaces\TypeAwareInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CatalogElementsCollection;
 use AmoCRM\Collections\ContactsCollection;
@@ -22,7 +23,7 @@ use InvalidArgumentException;
  *
  * @package AmoCRM\Models\Customers
  */
-class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface
+class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
     use GetLinkTrait;
     use RequestIdTrait;

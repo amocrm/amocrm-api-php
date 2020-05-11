@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\Unsorted;
 
-use AmoCRM\AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
+use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Models\BaseApiModel;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -196,10 +196,10 @@ class MailMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataIn
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [];
     }

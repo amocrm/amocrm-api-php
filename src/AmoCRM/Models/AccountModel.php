@@ -18,14 +18,14 @@ class AccountModel extends BaseApiModel
 {
     const AMOJO_ID = 'amojo_id';
     const UUID = 'uuid';
-    const NOTIFICATIONS_INFO = 'notifications_info';
-    const AMOJO_URL = 'amojo_url';
+    const NOTIFICATIONS_INFO = 'notifications_info'; //todo remove
+    const AMOJO_URL = 'amojo_url'; //todo remove
     const AMOJO_RIGHTS = 'amojo_rights';
-    const AMO_MESSENGER = 'amo_messenger';
+    const AMO_MESSENGER = 'amo_messenger'; //todo remove
     const USER_GROUPS = 'users_groups';
-    const BOTS = 'bots';
+    const BOTS = 'bots'; //todo remove
     const TASK_TYPES = 'task_types';
-    const TOTAL = 'total';
+    const TOTAL = 'total'; //todo remove
     const VERSION = 'version';
     const DATETIME_SETTINGS = 'datetime_settings';
 
@@ -35,10 +35,10 @@ class AccountModel extends BaseApiModel
     /** @var string */
     protected $name;
 
-    /** @var Carbon */
+    /** @var int */
     protected $createdAt;
 
-    /** @var Carbon */
+    /** @var int */
     protected $updatedAt;
 
     /** @var int */
@@ -195,9 +195,9 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @return Carbon
+     * @return int
      */
-    public function getCreatedAt(): Carbon
+    public function getCreatedAt(): int
     {
         return $this->createdAt;
     }
@@ -215,9 +215,9 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @return Carbon
+     * @return int
      */
-    public function getUpdatedAt(): Carbon
+    public function getUpdatedAt(): int
     {
         return $this->updatedAt;
     }
@@ -314,7 +314,6 @@ class AccountModel extends BaseApiModel
     /**
      * @param array $account
      * @return static
-     * @throws \Exception
      */
     public static function fromArray(array $account): self
     {
@@ -323,9 +322,9 @@ class AccountModel extends BaseApiModel
             ->setName($account['name'])
             ->setSubdomain($account['subdomain'])
             ->setCreatedBy((int)$account['created_by'])
-            ->setCreatedAt(new Carbon($account['created_at']))
+            ->setCreatedAt($account['created_at'])
             ->setUpdatedBy((int)$account['updated_by'])
-            ->setUpdatedAt(new Carbon($account['updated_at']))
+            ->setUpdatedAt($account['updated_at'])
             ->setCurrentUserId((int)$account['current_user_id'])
             ->setCountry((string)$account['country'])
             ->setUnsortedOn((bool)$account['is_unsorted_on'])
@@ -434,9 +433,9 @@ class AccountModel extends BaseApiModel
             'id' => $this->getId(),
             'name' => $this->getName(),
             'subdomain' => $this->getSubdomain(),
-            'created_at' => $this->getCreatedAt()->timestamp,
+            'created_at' => $this->getCreatedAt(),
             'created_by' => $this->getCreatedBy(),
-            'updated_at' => $this->getUpdatedAt()->timestamp,
+            'updated_at' => $this->getUpdatedAt(),
             'updated_by' => $this->getUpdatedBy(),
             'current_user_id' => $this->getCurrentUserId(),
             'country' => $this->getCountry(),
@@ -864,10 +863,10 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return $this->toArray();
     }

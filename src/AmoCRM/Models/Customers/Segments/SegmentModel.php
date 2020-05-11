@@ -4,6 +4,7 @@ namespace AmoCRM\Models\Customers\Segments;
 
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
@@ -12,7 +13,7 @@ use InvalidArgumentException;
  *
  * @package AmoCRM\Models\Customers\Segments
  */
-class SegmentModel extends BaseApiModel
+class SegmentModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 

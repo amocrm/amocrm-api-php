@@ -2,8 +2,11 @@
 
 namespace AmoCRM\Models;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\AmoCRM\Models\TypeAwareInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Interfaces\TypeAwareInterface;
+use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CatalogElementsCollection;
 use AmoCRM\Collections\ContactsCollection;
@@ -13,8 +16,10 @@ use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
 use InvalidArgumentException;
 
-class CompanyModel extends BaseApiModel implements TypeAwareInterface
+class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
+    use GetLinkTrait;
+
     const LEADS = 'leads';
     const CUSTOMERS = 'customers';
     const CONTACTS = 'contacts';
@@ -558,7 +563,7 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
         return $result;
     }
 
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -612,7 +617,7 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return CompanyModel
      */
     public function setRequestId(?int $requestId): self
@@ -633,5 +638,19 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface
             self::CONTACTS,
             self::CATALOG_ELEMENTS,
         ];
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getMetadataForLink(): ?array
+    {
+        $result = null;
+
+        if (!is_null($this->getUpdatedBy())) {
+            $result['updated_by'] = $this->getUpdatedBy();
+        }
+
+        return $result;
     }
 }

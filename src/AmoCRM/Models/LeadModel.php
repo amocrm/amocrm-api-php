@@ -2,18 +2,25 @@
 
 namespace AmoCRM\Models;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\AmoCRM\Models\TypeAwareInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CatalogElementsCollection;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\TagsCollection;
+use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Interfaces\TypeAwareInterface;
 use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
+use AmoCRM\Models\Traits\GetLinkTrait;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
-class LeadModel extends BaseApiModel implements TypeAwareInterface
+class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
+    use RequestIdTrait;
+    use GetLinkTrait;
+
     const CATALOG_ELEMENTS = 'catalog_elements';
     const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
     const LOSS_REASON = 'loss_reason';
@@ -162,7 +169,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     /**
      * @return null|int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -659,27 +666,35 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         if (!empty($lead['name'])) {
             $leadModel->setName($lead['name']);
         }
+
         if (array_key_exists('price', $lead) && !is_null($lead['price'])) {
             $leadModel->setPrice((int)$lead['price']);
         }
+
         if (array_key_exists('responsible_user_id', $lead) && !is_null($lead['responsible_user_id'])) {
             $leadModel->setResponsibleUserId((int)$lead['responsible_user_id']);
         }
+
         if (array_key_exists('group_id', $lead) && !is_null($lead['group_id'])) {
             $leadModel->setGroupId((int)$lead['group_id']);
         }
+
         if (!empty($lead['status_id'])) {
             $leadModel->setStatusId((int)$lead['status_id']);
         }
+
         if (!empty($lead['pipeline_id'])) {
             $leadModel->setPipelineId((int)$lead['pipeline_id']);
         }
+
         if (!empty($lead['loss_reason_id'])) {
             $leadModel->setLossReasonId($lead['loss_reason_id'] > 0 ? (int)$lead['loss_reason_id'] : null);
         }
+
         if (!empty($lead['source_id'])) {
             $leadModel->setSourceId($lead['source_id'] > 0 ? (int)$lead['source_id'] : null);
         }
+
         if (!empty($lead['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
             $customFieldsValues = $valuesCollection->fromArray($lead['custom_fields_values']);
@@ -689,21 +704,27 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         if (array_key_exists('created_by', $lead) && !is_null($lead['created_by'])) {
             $leadModel->setCreatedBy((int)$lead['created_by']);
         }
+
         if (array_key_exists('updated_by', $lead) && !is_null($lead['updated_by'])) {
             $leadModel->setUpdatedBy((int)$lead['updated_by']);
         }
+
         if (!empty($lead['created_at'])) {
             $leadModel->setCreatedAt($lead['created_at']);
         }
+
         if (!empty($lead['updated_at'])) {
             $leadModel->setUpdatedAt($lead['updated_at']);
         }
+
         if (!empty($lead['closed_at'])) {
             $leadModel->setClosedAt($lead['closed_at'] > 0 ? (int)$lead['closed_at'] : null);
         }
+
         if (!empty($lead['closest_task_at'])) {
             $leadModel->setClosestTaskAt($lead['closest_task_at'] > 0 ? (int)$lead['closest_task_at'] : null);
         }
+
         if (array_key_exists('is_deleted', $lead) && !is_null($lead['is_deleted'])) {
             $leadModel->setIsDeleted((bool)$lead['is_deleted']);
         }
@@ -719,8 +740,8 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
             $leadModel->setLossReason($lossReason);
         }
 
-        if (!empty($lead[AmoCRMApiRequest::EMBEDDED]['companies'][0])) {
-            $company = CompanyModel::fromArray($lead[AmoCRMApiRequest::EMBEDDED]['companies'][0]);
+        if (!empty($lead[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::COMPANIES][0])) {
+            $company = CompanyModel::fromArray($lead[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::COMPANIES][0]);
             $leadModel->setCompany($company);
         }
 
@@ -739,6 +760,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         }
 
         $leadModel->setScore(isset($lead['score']) && $lead['score'] > 0 ? (int)$lead['score'] : null);
+
         if (!empty($lead['account_id'])) {
             $leadModel->setAccountId((int)$lead['account_id']);
         }
@@ -808,10 +830,10 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -872,31 +894,12 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return LeadModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
     /**
@@ -949,5 +952,19 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface
         $this->visitorUid = $visitorUid;
 
         return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getMetadataForLink(): ?array
+    {
+        $result = null;
+
+        if (!is_null($this->getUpdatedBy())) {
+            $result['updated_by'] = $this->getUpdatedBy();
+        }
+
+        return $result;
     }
 }

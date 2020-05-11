@@ -2,6 +2,11 @@
 
 namespace AmoCRM\Models;
 
+/**
+ * Class WebhookModel
+ *
+ * @package AmoCRM\Models
+ */
 class WebhookModel extends BaseApiModel
 {
     /**
@@ -75,11 +80,9 @@ class WebhookModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
         ];
-
-        return $result;
     }
 
     /**
@@ -254,10 +257,10 @@ class WebhookModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 

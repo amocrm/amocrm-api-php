@@ -3,6 +3,7 @@
 namespace AmoCRM\Models\Leads\LossReasons;
 
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
@@ -11,7 +12,7 @@ use InvalidArgumentException;
  *
  * @package AmoCRM\Models\Leads\LossReasons
  */
-class LossReasonModel extends BaseApiModel
+class LossReasonModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 

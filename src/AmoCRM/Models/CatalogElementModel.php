@@ -2,13 +2,18 @@
 
 namespace AmoCRM\Models;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\AmoCRM\Models\TypeAwareInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Interfaces\TypeAwareInterface;
+use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use InvalidArgumentException;
 
-class CatalogElementModel extends BaseApiModel implements TypeAwareInterface
+class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
+    use GetLinkTrait;
+
     /**
      * @var int|null
      */
@@ -332,7 +337,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface
         return $result;
     }
 
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -383,7 +388,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return CatalogElementModel
      */
     public function setRequestId(?int $requestId): self
@@ -418,5 +423,27 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface
         $this->quantity = $quantity;
 
         return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getMetadataForLink(): ?array
+    {
+        $result = null;
+
+        if (!is_null($this->getUpdatedBy())) {
+            $result['updated_by'] = $this->getUpdatedBy();
+        }
+
+        if (!is_null($this->getQuantity())) {
+            $result['quantity'] = $this->getQuantity();
+        }
+
+        if (!is_null($this->getCatalogId())) {
+            $result['catalog_id'] = $this->getCatalogId();
+        }
+
+        return $result;
     }
 }

@@ -4,6 +4,11 @@ namespace AmoCRM\Models;
 
 use InvalidArgumentException;
 
+/**
+ * Class WidgetModel
+ *
+ * @package AmoCRM\Models
+ */
 class WidgetModel extends BaseApiModel
 {
     /**
@@ -359,10 +364,10 @@ class WidgetModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return $this->getSettings();
     }

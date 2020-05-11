@@ -2,10 +2,14 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use Illuminate\Contracts\Support\Arrayable;
 
-class Tag extends BaseApiModel implements Arrayable
+class TagModel extends BaseApiModel implements Arrayable, HasIdInterface
 {
+    use RequestIdTrait;
+
     /**
      * @var int
      */
@@ -36,18 +40,16 @@ class Tag extends BaseApiModel implements Arrayable
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
         ];
-
-        return $result;
     }
 
     /**
-     * @return null|int
+     * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -77,10 +79,10 @@ class Tag extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -91,6 +93,12 @@ class Tag extends BaseApiModel implements Arrayable
         if (!is_null($this->getId())) {
             $result['id'] = $this->getId();
         }
+
+        if (is_null($this->getRequestId()) && !is_null($requestId)) {
+            $this->setRequestId($requestId);
+        }
+
+        $result['request_id'] = $this->getRequestId();
 
         return $result;
     }

@@ -2,11 +2,20 @@
 
 namespace AmoCRM\Models;
 
-use AmoCRM\AmoCRM\Models\Factories\NoteFactory;
+use AmoCRM\Models\Factories\NoteFactory;
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\Traits\RequestIdTrait;
 use Illuminate\Contracts\Support\Arrayable;
 
-class NoteModel extends BaseApiModel implements Arrayable
+/**
+ * Class NoteModel
+ *
+ * @package AmoCRM\Models
+ */
+class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
 {
+    use RequestIdTrait;
+
     protected $modelClass = NoteModel::class;
 
     /**
@@ -133,9 +142,9 @@ class NoteModel extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @return null|int
+     * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -301,10 +310,10 @@ class NoteModel extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -337,7 +346,7 @@ class NoteModel extends BaseApiModel implements Arrayable
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
@@ -345,26 +354,6 @@ class NoteModel extends BaseApiModel implements Arrayable
         $result['note_type'] = $this->getNoteType();
 
         return $result;
-    }
-
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return NoteModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 
     /**

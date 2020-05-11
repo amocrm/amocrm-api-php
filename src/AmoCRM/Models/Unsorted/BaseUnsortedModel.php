@@ -2,9 +2,9 @@
 
 namespace AmoCRM\Models\Unsorted;
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\AmoCRM\Models\Factories\UnsortedMetadataFactory;
-use AmoCRM\AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Models\Factories\UnsortedMetadataFactory;
+use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CompaniesCollection;
 use AmoCRM\Collections\ContactsCollection;
@@ -375,10 +375,10 @@ class BaseUnsortedModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [];
 
@@ -435,7 +435,7 @@ class BaseUnsortedModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return BaseUnsortedModel
      */
     public function setRequestId(?int $requestId): self

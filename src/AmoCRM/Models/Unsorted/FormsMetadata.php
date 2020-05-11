@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\Unsorted;
 
-use AmoCRM\AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
+use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Models\BaseApiModel;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -213,10 +213,10 @@ class FormsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataI
     }
 
     /**
-     * @param int|null $requestId
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [
             'form_id' => $this->getFormId(),

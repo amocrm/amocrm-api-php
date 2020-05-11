@@ -1,10 +1,10 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Models;
+namespace AmoCRM\Models\Interfaces;
 
 /**
  * Interface TypeAwareInterface
- * @package AmoCRM\AmoCRM\Models
+ * @package AmoCRM\Models
  */
 interface TypeAwareInterface
 {

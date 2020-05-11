@@ -2,10 +2,13 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
 class CustomFieldGroupModel extends BaseApiModel
 {
+    use RequestIdTrait;
+
     /**
      * @var string
      */
@@ -27,9 +30,9 @@ class CustomFieldGroupModel extends BaseApiModel
     protected $sort;
 
     /**
-     * @var int
+     * @var string|null
      */
-    protected $requestId;
+    protected $entityType;
 
     /**
      * @param array $customFieldGroup
@@ -48,7 +51,8 @@ class CustomFieldGroupModel extends BaseApiModel
             ->setId($customFieldGroup['id'])
             ->setName($customFieldGroup['name'])
             ->setSort($customFieldGroup['sort'])
-            ->setIsPredefined($customFieldGroup['is_predefined']);
+            ->setIsPredefined($customFieldGroup['is_predefined'])
+            ->setEntityType($customFieldGroupModel['entity_type']);
 
         return $customFieldGroupModel;
     }
@@ -58,14 +62,13 @@ class CustomFieldGroupModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $result = [
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'sort' => $this->getSort(),
             'is_predefined' => $this->getIsPredefined(),
+            'entity_type' => $this->getEntityType(),
         ];
-
-        return $result;
     }
 
     /**
@@ -145,10 +148,30 @@ class CustomFieldGroupModel extends BaseApiModel
     }
 
     /**
-     * @param int|null $requestId
+     * @return string|null
+     */
+    public function getEntityType(): ?string
+    {
+        return $this->entityType;
+    }
+
+    /**
+     * @param string|null $entityType
+     *
+     * @return CustomFieldGroupModel
+     */
+    public function setEntityType(?string $entityType): CustomFieldGroupModel
+    {
+        $this->entityType = $entityType;
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $requestId
      * @return array
      */
-    public function toApi(int $requestId = null): array
+    public function toApi(string $requestId = null): array
     {
         $result = [];
 
@@ -165,31 +188,11 @@ class CustomFieldGroupModel extends BaseApiModel
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
-            $this->setRequestId($requestId + 1); //Бага в API не принимает 0
+            $this->setRequestId($requestId);
         }
 
         $result['request_id'] = $this->getRequestId();
 
         return $result;
-    }
-
-
-    /**
-     * @return int|null
-     */
-    public function getRequestId(): ?int
-    {
-        return $this->requestId;
-    }
-
-    /**
-     * @param int|null $requestId
-     * @return CustomFieldGroupModel
-     */
-    public function setRequestId(?int $requestId): self
-    {
-        $this->requestId = $requestId;
-
-        return $this;
     }
 }

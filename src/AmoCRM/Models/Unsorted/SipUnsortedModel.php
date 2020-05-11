@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\Unsorted;
 
-use AmoCRM\AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
+use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Exceptions\BadTypeException;
 
 class SipUnsortedModel extends BaseUnsortedModel
