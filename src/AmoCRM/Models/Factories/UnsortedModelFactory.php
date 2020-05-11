@@ -2,15 +2,23 @@
 
 namespace AmoCRM\Models\Factories;
 
+use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Models\Unsorted\BaseUnsortedModel;
 use AmoCRM\Models\Unsorted\FormUnsortedModel;
 use AmoCRM\Models\Unsorted\SipUnsortedModel;
 
+/**
+ * Class UnsortedModelFactory
+ *
+ * @package AmoCRM\Models\Factories
+ */
 class UnsortedModelFactory
 {
     /**
      * @param string $category
+     *
      * @return BaseUnsortedModel
+     * @throws BadTypeException
      */
     public static function createForCategory(string $category): BaseUnsortedModel
     {
@@ -26,5 +34,7 @@ class UnsortedModelFactory
                 return new SipUnsortedModel();
                 break;
         }
+
+        throw new BadTypeException('Given category is not supported - ' . $category);
     }
 }
