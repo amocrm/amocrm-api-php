@@ -247,9 +247,11 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект кастом полей
+     *
      * @param string $entityType
+     *
      * @return CustomFields
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function customFields(string $entityType)
     {

@@ -46,9 +46,10 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
     /**
      * @param string $entityType
      *
+     * @return string
      * @throws InvalidArgumentException
      */
-    protected function validateEntityType(string $entityType): void
+    protected function validateEntityType(string $entityType): string
     {
         $availableTypes = [
             EntityTypesInterface::LEADS,
@@ -60,6 +61,8 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
         if (!in_array($entityType, $availableTypes, true)) {
             throw new InvalidArgumentException('This method doesn\'t support given entity type');
         }
+
+        return $entityType;
     }
 
     /**
@@ -170,7 +173,7 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
     {
         $entities = $this->getEntitiesFromResponse($response);
         foreach ($entities as $entity) {
-            if (!empty($entity['request_id'])) {
+            if (array_key_exists('request_id', $entity)) {
                 $initialEntity = $collection->getBy('requestId', $entity['request_id']);
                 if (!empty($initialEntity)) {
                     $this->processModelAction($initialEntity, $entity);

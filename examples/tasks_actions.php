@@ -1,6 +1,6 @@
 <?php
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\TasksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\TaskModel;

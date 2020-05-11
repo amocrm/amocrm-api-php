@@ -12,7 +12,7 @@ class CustomFieldHelper
     const FIELD_TYPE_CODE_DATE = 'date';
     const FIELD_TYPE_CODE_DATE_TIME = 'date_time';
     const FIELD_TYPE_CODE_URL = 'url';
-//    const FIELD_TYPE_CODE_MULTITEXT = 'multitext';
+    const FIELD_TYPE_CODE_MULTITEXT = 'multitext';
     const FIELD_TYPE_CODE_TEXTAREA = 'textarea';
     const FIELD_TYPE_CODE_RADIOBUTTON = 'radiobutton';
     const FIELD_TYPE_CODE_STREETADDRESS = 'streetaddress';
@@ -50,7 +50,7 @@ class CustomFieldHelper
         self::FIELD_TYPE_MULTISELECT    => self::FIELD_TYPE_CODE_MULTISELECT,
         self::FIELD_TYPE_DATE           => self::FIELD_TYPE_CODE_DATE,
         self::FIELD_TYPE_URL            => self::FIELD_TYPE_CODE_URL,
-//        self::FIELD_TYPE_MULTITEXT      => self::FIELD_TYPE_CODE_MULTITEXT,
+        self::FIELD_TYPE_MULTITEXT      => self::FIELD_TYPE_CODE_MULTITEXT,
         self::FIELD_TYPE_TEXTAREA       => self::FIELD_TYPE_CODE_TEXTAREA,
         self::FIELD_TYPE_RADIOBUTTON    => self::FIELD_TYPE_CODE_RADIOBUTTON,
         self::FIELD_TYPE_STREETADDRESS  => self::FIELD_TYPE_CODE_STREETADDRESS,

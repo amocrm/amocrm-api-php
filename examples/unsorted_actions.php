@@ -1,6 +1,6 @@
 <?php
 
-use AmoCRM\AmoCRM\Models\Factories\UnsortedModelFactory;
+use AmoCRM\Models\Factories\UnsortedModelFactory;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\Leads\Unsorted\FormsUnsortedCollection;
@@ -181,7 +181,7 @@ try {
 
     $body = [
         'link' => [
-            'entity_type' => \AmoCRM\AmoCRM\Helpers\EntityTypesInterface::LEADS,
+            'entity_type' => \AmoCRM\Helpers\EntityTypesInterface::LEADS,
             'entity_id' => 3921175,
         ],
         'user_id' => 0,

@@ -42,14 +42,7 @@ class BaseCustomFieldValuesModel extends BaseApiModel
      */
     public static function fromArray(array $value): BaseCustomFieldValuesModel
     {
-        $model = CustomFieldValuesModelFactory::createModel($value);
-
-        $model
-            ->setFieldCode($value['field_code'] ?? null)
-            ->setFieldId($value['field_id'] ?? null)
-            ->setFieldName($value['field_name'] ?? null);
-
-        return $model;
+        return CustomFieldValuesModelFactory::createModel($value);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\CustomFieldsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\CustomFieldModel;
@@ -28,6 +28,12 @@ $apiClient->setAccessToken($accessToken)
 //Сервис кастом полей для сделок
 $customFieldsService = $apiClient->customFields(EntityTypesInterface::LEADS);
 
+//Сервис кастом полей для сегментов
+//$customFieldsService = $apiClient->customFields(EntityTypesInterface::CUSTOMERS_SEGMENTS);
+
+//Сервис кастом полей для каталога (id каталога указывается через :)
+//$customFieldsService = $apiClient->customFields(EntityTypesInterface::CATALOGS . ':' . 4255);
+
 //Создадим несколько полей
 $customFieldsCollection = new CustomFieldsCollection();
 $cf = new CustomFieldModel();
@@ -42,7 +48,7 @@ $cf
     ->setName('Поле Чекбокс')
     ->setType(CustomFieldModel::TYPE_CHECKBOX)
     ->setSort(20)
-    ->setCode('MYSUPERCHECKBOX');
+    ->setCode('MYSUPERCHECKBOX4');
 $customFieldsCollection->add($cf);
 
 $cf = new CustomFieldModel();
@@ -83,7 +89,6 @@ try {
     //Получим объект поля и удалим его
     $fieldToDelete = $customFieldsCollection->getBy('name', 'Поле Чекбокс');
     $customFieldsService->deleteOne($fieldToDelete);
-    //TODO оповестить объект об удалении (событийка)
 
     //Получим объект группы и обновим, добавим enum и сделаем поле доступным для редактирования только через API
     /** @var CustomFieldModel $fieldToUpdate */

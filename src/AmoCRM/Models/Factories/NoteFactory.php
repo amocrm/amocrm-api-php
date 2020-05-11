@@ -1,6 +1,6 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Models\Factories;
+namespace AmoCRM\Models\Factories;
 
 use AmoCRM\Models\NoteModel;
 use AmoCRM\Models\NoteType\AmoMailMessageNote;
@@ -38,6 +38,11 @@ use AmoCRM\Models\NoteType\TargetingOutNote;
 use AmoCRM\Models\NoteType\TransactionNote;
 use AmoCRM\Models\NoteType\ZoomMeetingNote;
 
+/**
+ * Class NoteFactory
+ *
+ * @package AmoCRM\Models\Factories
+ */
 class NoteFactory
 {
     const NOTE_TYPE_CODE_LEAD_CREATED = 'lead_created';

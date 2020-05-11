@@ -1,8 +1,8 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Models\Factories;
+namespace AmoCRM\Models\Factories;
 
-use AmoCRM\AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
+use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Models\Unsorted\BaseUnsortedModel;
 use AmoCRM\Models\Unsorted\ChatsMetadata;
 use AmoCRM\Models\Unsorted\FormsMetadata;

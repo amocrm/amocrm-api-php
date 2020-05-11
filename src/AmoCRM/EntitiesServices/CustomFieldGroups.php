@@ -46,9 +46,10 @@ class CustomFieldGroups extends BaseEntityTypeEntity implements HasDeleteMethodI
     /**
      * @param string $entityType
      *
+     * @return string
      * @throws InvalidArgumentException
      */
-    protected function validateEntityType(string $entityType): void
+    protected function validateEntityType(string $entityType): string
     {
         $availableEntities = [
             EntityTypesInterface::CONTACTS,
@@ -60,6 +61,8 @@ class CustomFieldGroups extends BaseEntityTypeEntity implements HasDeleteMethodI
         if (!in_array($entityType, $availableEntities, true)) {
             throw new InvalidArgumentException('Entity is not supported by this method');
         }
+
+        return $entityType;
     }
 
     /**

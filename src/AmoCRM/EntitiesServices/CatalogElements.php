@@ -123,7 +123,7 @@ class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterf
     {
         $entities = $this->getEntitiesFromResponse($response);
         foreach ($entities as $entity) {
-            if (!empty($entity['request_id'])) {
+            if (array_key_exists('request_id', $entity)) {
                 $initialEntity = $collection->getBy('requestId', $entity['request_id']);
                 if (!empty($initialEntity)) {
                     $this->processModelAction($initialEntity, $entity);

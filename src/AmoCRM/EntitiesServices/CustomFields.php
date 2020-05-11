@@ -50,22 +50,32 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     /**
      * @param string $entityType
      *
+     * @return string
      * @throws InvalidArgumentException
      */
-    protected function validateEntityType(string $entityType): void
+    protected function validateEntityType(string $entityType): string
     {
-        //todo segments
-        //todo catalog elements with catalog_id
         $availableEntities = [
             EntityTypesInterface::CONTACTS,
             EntityTypesInterface::LEADS,
             EntityTypesInterface::CUSTOMERS,
             EntityTypesInterface::COMPANIES,
+            EntityTypesInterface::CUSTOMERS . '/' . EntityTypesInterface::CUSTOMERS_SEGMENTS,
         ];
 
-        if (!in_array($entityType, $availableEntities, true)) {
-            throw new InvalidArgumentException('Entity is not supported by this method');
+        if ($entityType === EntityTypesInterface::CUSTOMERS_SEGMENTS) {
+            $entityType = EntityTypesInterface::CUSTOMERS . '/' . EntityTypesInterface::CUSTOMERS_SEGMENTS;
         }
+        if (!in_array($entityType, $availableEntities, true)) {
+            preg_match("/" . EntityTypesInterface::CATALOGS . ":(\d+)/", $entityType, $matches);
+            if (isset($matches[1]) && (int)$matches[1] > EntityTypesInterface::MIN_CATALOG_ID) {
+                $entityType = EntityTypesInterface::CATALOGS . '/' . (int)$matches[1];
+            } else {
+                throw new InvalidArgumentException('Entity is not supported by this method');
+            }
+        }
+
+        return $entityType;
     }
 
     /**
@@ -132,7 +142,7 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     {
         $entities = $this->getEntitiesFromResponse($response);
         foreach ($entities as $entity) {
-            if (!empty($entity['request_id'])) {
+            if (array_key_exists('request_id', $entity)) {
                 $initialEntity = $collection->getBy('requestId', $entity['request_id']);
                 if (!empty($initialEntity)) {
                     $this->processModelAction($initialEntity, $entity);

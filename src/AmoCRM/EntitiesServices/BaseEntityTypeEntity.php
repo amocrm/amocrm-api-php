@@ -15,9 +15,11 @@ abstract class BaseEntityTypeEntity extends BaseEntity
 
     /**
      * @param string $entityType
+     *
+     * @return string
      * @throws InvalidArgumentException
      */
-    abstract protected function validateEntityType(string $entityType): void;
+    abstract protected function validateEntityType(string $entityType): string;
 
     /**
      * @param string $entityType
@@ -26,7 +28,7 @@ abstract class BaseEntityTypeEntity extends BaseEntity
      */
     public function setEntityType(string $entityType): self
     {
-        $this->validateEntityType($entityType);
+        $entityType = $this->validateEntityType($entityType);
         $this->entityType = $entityType;
 
         return $this;

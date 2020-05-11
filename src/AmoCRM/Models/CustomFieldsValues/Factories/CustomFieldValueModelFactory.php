@@ -11,6 +11,7 @@ use AmoCRM\Models\CustomFieldsValues\ValueModels\DateCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\DateTimeCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\LegalEntityCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\MultiselectCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\MultitextCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\NumericCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\RadiobuttonCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\SelectCustomFieldValueModel;
@@ -56,6 +57,9 @@ class CustomFieldValueModelFactory
             case CustomFieldHelper::FIELD_TYPE_CODE_MULTISELECT:
                 $model = new MultiselectCustomFieldValueModel();
                 break;
+            case CustomFieldHelper::FIELD_TYPE_CODE_MULTITEXT:
+                $model = new MultitextCustomFieldValueModel();
+                break;
             case CustomFieldHelper::FIELD_TYPE_CODE_NUMERIC:
                 $model = new NumericCustomFieldValueModel();
                 break;
@@ -86,9 +90,6 @@ class CustomFieldValueModelFactory
 
 
                 //todo
-//            case CustomFieldHelper::FIELD_TYPE_CODE_MULTITEXT:
-//                $model = new MultiTextCustomFieldsValue();
-//                break;
 //            case CustomFieldHelper::FIELD_TYPE_CODE_ITEMS:
 //                $model = new ItemsCustomFieldsValue();
 //                break;
