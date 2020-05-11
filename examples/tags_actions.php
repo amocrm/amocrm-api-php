@@ -5,7 +5,7 @@ use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\LeadModel;
-use AmoCRM\Models\Tag;
+use AmoCRM\Models\TagModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 include_once __DIR__ . '/bootstrap.php';
@@ -29,7 +29,7 @@ $apiClient->setAccessToken($accessToken)
 
 //Создадим тег
 $tagsCollection = new TagsCollection();
-$tag = new Tag();
+$tag = new TagModel();
 $tag->setName('новый тег');
 $tagsCollection->add($tag);
 $tagsService = $apiClient->tags(EntityTypesInterface::LEADS);

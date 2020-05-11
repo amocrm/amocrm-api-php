@@ -32,14 +32,29 @@ $apiClient->setAccessToken($accessToken)
 $contact = new ContactModel();
 $contact->setName('Example');
 
-$contactsCollection = new ContactsCollection();
-$contactsCollection->add($contact);
 try {
-    $apiClient->contacts()->add($contactsCollection);
+    $contactModel = $apiClient->contacts()->addOne($contact);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
 }
+
+$contactsCollection = new ContactsCollection();
+//Создадим несколько контактов
+foreach (['Example 1', 'Example 2'] as $name) {
+    //Создадим контакт
+    $contact = new ContactModel();
+    $contact->setName($name);
+
+    $contactsCollection->add($contact);
+}
+try {
+    $contactsCollection = $apiClient->contacts()->add($contactsCollection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
 
 //Получим сделку по ID, сделку и првяжем контакт к сделке
 try {
@@ -52,7 +67,7 @@ try {
 $links = new LinksCollection();
 $links->add($lead);
 try {
-    $apiClient->contacts()->link($contact, $links);
+    $apiClient->contacts()->unlink($contactModel, $links);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
