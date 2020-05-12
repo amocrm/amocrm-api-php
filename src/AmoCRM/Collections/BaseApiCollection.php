@@ -219,9 +219,9 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
     }
 
     /**
-     * @return array
+     * @return null|array
      */
-    public function toApi(): array
+    public function toApi(): ?array
     {
         $result = [];
         /** @var BaseApiModel $item */

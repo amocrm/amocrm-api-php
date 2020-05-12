@@ -877,11 +877,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
         }
 
         if (!is_null($this->getCustomFieldsValues())) {
-            $result['custom_fields_values'] = $this->getCustomFieldsValues();
+            $result['custom_fields_values'] = $this->getCustomFieldsValues()->toApi();
         }
 
         if (!is_null($this->getTags())) {
-            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags();
+            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags()->toApi();
         }
 
         if (!is_null($this->getVisitorUid())) {

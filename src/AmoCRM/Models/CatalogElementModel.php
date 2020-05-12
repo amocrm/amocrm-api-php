@@ -382,7 +382,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         }
 
         if (!is_null($this->getCustomFieldsValues())) {
-            $result['custom_fields_values'] = $this->getCustomFieldsValues();
+            $result['custom_fields_values'] = $this->getCustomFieldsValues()->toApi();
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
