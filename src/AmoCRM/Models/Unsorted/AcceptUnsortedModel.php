@@ -8,6 +8,11 @@ use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\Leads\LeadsCollection;
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * Class AcceptUnsortedModel
+ *
+ * @package AmoCRM\Models\Unsorted
+ */
 class AcceptUnsortedModel implements Arrayable
 {
     /**

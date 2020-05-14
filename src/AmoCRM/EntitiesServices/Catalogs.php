@@ -43,7 +43,7 @@ class Catalogs extends BaseEntity implements HasPageMethodsInterface
     /**
      * @var string
      */
-    protected $itemClass = CatalogModel::class;
+    public const ITEM_CLASS = CatalogModel::class;
 
     /**
      * @param array $response

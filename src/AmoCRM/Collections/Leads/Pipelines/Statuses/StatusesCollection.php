@@ -7,5 +7,5 @@ use AmoCRM\Models\Leads\Pipelines\Statuses\StatusModel;
 
 class StatusesCollection extends BaseApiCollection
 {
-    protected $itemClass = StatusModel::class;
+    public const ITEM_CLASS = StatusModel::class;
 }

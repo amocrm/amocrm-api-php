@@ -10,7 +10,6 @@ use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
-use Exception;
 use ReflectionClass;
 use ReflectionException;
 
@@ -32,7 +31,7 @@ abstract class BaseEntity
      * @var BaseApiModel
      * override in child
      */
-    protected $itemClass = '';
+    public const ITEM_CLASS = '';
 
     /**
      * @var AmoCRMApiRequest
@@ -80,7 +79,7 @@ abstract class BaseEntity
         if ($filter instanceof BaseEntityFilter) {
             $queryParams = $filter->buildFilter();
         }
-        $with = array_intersect($with, $this->itemClass::getAvailableWith());
+        $with = array_intersect($with, (static::ITEM_CLASS)::getAvailableWith());
         if (!empty($with)) {
             $queryParams['with'] = implode(',', $with);
         }
@@ -126,14 +125,15 @@ abstract class BaseEntity
     public function getOne($id, array $with = []): ?BaseApiModel
     {
         $queryParams = [];
-        $with = array_intersect($with, $this->itemClass::getAvailableWith());
+        $with = array_intersect($with, (static::ITEM_CLASS)::getAvailableWith());
         if (!empty($with)) {
             $queryParams['with'] = implode(',', $with);
         }
         $response = $this->request->get($this->getMethod() . '/' . $id, $queryParams);
 
+        $class = static::ITEM_CLASS;
         /** @var BaseApiModel $entity */
-        $entity = new $this->itemClass();
+        $entity = new $class();
 
         $entity = !empty($response) ? $entity->fromArray($response) : null;
 
@@ -205,8 +205,7 @@ abstract class BaseEntity
         /** @var BaseApiCollection $collection */
         $collection = new $this->collectionClass();
         $collection->add($model);
-        $response = $this->request->post($this->getMethod(), $collection->toApi());
-        $collection = $this->processAdd($collection, $response);
+        $collection = $this->add($collection);
 
         return $collection->first();
     }
@@ -260,7 +259,6 @@ abstract class BaseEntity
      * @return BaseApiModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
-     * @throws Exception
      */
     public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {
@@ -270,16 +268,36 @@ abstract class BaseEntity
 //    /**
 //     * @param BaseApiCollection $collection
 //     * @param array $with
+//     *
 //     * @return BaseApiCollection
+//     * @throws AmoCRMApiException
+//     * @throws AmoCRMoAuthApiException
+//     * @throws InvalidArgumentException
 //     */
 //    public function sync(BaseApiCollection $collection, $with = []): BaseApiCollection
 //    {
+//        $ids = $collection->pluck('id');
 //        //TODO implement sync()
 //
-////        $freshModel = $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
-////
-////        return $freshModel;
+//        $freshModel = $this->mergeModels($this->get($collection, $with), $apiModel);
+//
+//        return $freshModel;
 //    }
+
+    /**
+     * @param BaseApiModel $objectA
+     * @param BaseApiModel $objectB
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkModelsClasses(
+        BaseApiModel $objectA,
+        BaseApiModel $objectB
+    ) {
+        if (get_class($objectA) !== get_class($objectB)) {
+            throw new InvalidArgumentException('Can not merge 2 different objects');
+        }
+    }
 
     /**
      * @param BaseApiModel $objectA
@@ -292,9 +310,7 @@ abstract class BaseEntity
         BaseApiModel $objectA,
         BaseApiModel $objectB
     ): BaseApiModel {
-        if (get_class($objectA) !== get_class($objectB)) {
-            throw new InvalidArgumentException('Can not merge 2 different objects');
-        }
+        $this->checkModelsClasses($objectA, $objectB);
 
         //Так как обе модели должны быть одного класса, нам без разницы у какой получить финальный класс
         $finalClass = get_class($objectA);

@@ -48,7 +48,7 @@ $lossReasonModel
     ->setName('Новое название причины отказа');
 
 try {
-    $lossReasonModel = $lossReasonService->updateOne($pipelineModel);
+    $lossReasonModel = $lossReasonService->updateOne($lossReasonModel);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;

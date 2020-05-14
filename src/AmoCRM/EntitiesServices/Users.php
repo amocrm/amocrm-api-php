@@ -34,7 +34,7 @@ class Users extends BaseEntity implements HasPageMethodsInterface
 
     protected $collectionClass = UsersCollection::class;
 
-    protected $itemClass = UserModel::class;
+    public const ITEM_CLASS = UserModel::class;
 
     protected function getEntitiesFromResponse(array $response): array
     {

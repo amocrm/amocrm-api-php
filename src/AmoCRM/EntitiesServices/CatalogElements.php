@@ -45,7 +45,7 @@ class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterf
     /**
      * @var string
      */
-    protected $itemClass = CatalogElementModel::class;
+    public const ITEM_CLASS = CatalogElementModel::class;
 
     /**
      * @param int $entityId

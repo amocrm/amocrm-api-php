@@ -45,7 +45,6 @@ try {
 }
 
 //Закроем задачу, что только создали (не делайте так в продакшене)
-/** @var TaskModel $taskToClose */
 $taskToClose = $tasksCollection->first();
 $taskToClose->setIsCompleted(true)
     ->setResult('Выполнено');

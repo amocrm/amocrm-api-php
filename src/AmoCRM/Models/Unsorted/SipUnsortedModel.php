@@ -24,9 +24,9 @@ class SipUnsortedModel extends BaseUnsortedModel
     }
 
     /**
-     * @return UnsortedMetadataInterface
+     * @return UnsortedMetadataInterface|null
      */
-    public function getMetadata(): UnsortedMetadataInterface
+    public function getMetadata(): ?UnsortedMetadataInterface
     {
         return $this->metadata;
     }

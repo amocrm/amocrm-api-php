@@ -7,5 +7,5 @@ use AmoCRM\Models\Leads\Pipelines\PipelineModel;
 
 class PipelinesCollection extends BaseApiCollection
 {
-    protected $itemClass = PipelineModel::class;
+    public const ITEM_CLASS = PipelineModel::class;
 }

@@ -18,6 +18,11 @@ use GuzzleHttp\RequestOptions;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class AmoCRMApiRequest
+ *
+ * @package AmoCRM\Client
+ */
 class AmoCRMApiRequest
 {
     const POST_REQUEST = 'POST';
@@ -440,16 +445,6 @@ class AmoCRMApiRequest
                 $this->getLastRequestInfo()
             );
         }
-
-        //TODO удалить после правка баги в апи links
-        if ((int)$response->getStatusCode() === 202) {
-            throw new AmoCRMApiNoContentException(
-                "No content",
-                $response->getStatusCode(),
-                $this->getLastRequestInfo()
-            );
-        }
-
 
         if (!in_array((int)$response->getStatusCode(), self::SUCCESS_STATUSES, true)) {
             $exception = new AmoCRMApiException(

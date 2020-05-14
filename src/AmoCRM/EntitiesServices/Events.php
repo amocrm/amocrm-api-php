@@ -39,7 +39,7 @@ class Events extends BaseEntity implements HasPageMethodsInterface
     /**
      * @var string
      */
-    protected $itemClass = EventModel::class;
+    public const ITEM_CLASS = EventModel::class;
 
     /**
      * @param array $response

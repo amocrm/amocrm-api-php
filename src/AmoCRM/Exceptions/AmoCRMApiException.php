@@ -5,6 +5,11 @@ namespace AmoCRM\Exceptions;
 use Exception;
 use Throwable;
 
+/**
+ * Class AmoCRMApiException
+ *
+ * @package AmoCRM\Exceptions
+ */
 class AmoCRMApiException extends Exception
 {
     /**

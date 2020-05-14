@@ -43,7 +43,7 @@ class LossReasons extends BaseEntity implements HasDeleteMethodInterface
     /**
      * @var string
      */
-    protected $itemClass = LossReasonModel::class;
+    public const ITEM_CLASS = LossReasonModel::class;
 
     /**
      * @param array $response

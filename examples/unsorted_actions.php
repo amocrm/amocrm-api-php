@@ -1,5 +1,9 @@
 <?php
 
+use AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Models\CustomFieldsValues\MultitextCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\MultitextCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\MultitextCustomFieldValueModel;
 use AmoCRM\Models\Factories\UnsortedModelFactory;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
@@ -9,7 +13,6 @@ use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Filters\UnsortedFilter;
 use AmoCRM\Filters\UnsortedSummaryFilter;
 use AmoCRM\Models\ContactModel;
-use AmoCRM\Models\CustomFieldValueModel;
 use AmoCRM\Models\LeadModel;
 use AmoCRM\Models\Unsorted\BaseUnsortedModel;
 use AmoCRM\Models\Unsorted\FormsMetadata;
@@ -99,15 +102,13 @@ $unsortedContactsCollection = new ContactsCollection();
 $unsortedContact = new ContactModel();
 $unsortedContact->setName('Контакт');
 $contactCustomFields = new CustomFieldsValuesCollection();
-$phoneFieldVal = (new CustomFieldValueModel())->setFieldCode('PHONE');
-$phoneFieldVal->setValues(
-    [
-        [
-            'value' => '+79166706413'
-        ],
-    ]
+$phoneFieldValueModel = new MultitextCustomFieldValuesModel();
+$phoneFieldValueModel->setFieldCode('PHONE');
+$phoneFieldValueModel->setValues(
+    (new MultitextCustomFieldValueCollection())
+        ->add((new MultitextCustomFieldValueModel())->setValue('+79123456789'))
 );
-$unsortedContact->setCustomFieldsValues($contactCustomFields->add($phoneFieldVal));
+$unsortedContact->setCustomFieldsValues($contactCustomFields->add($phoneFieldValueModel));
 $unsortedContactsCollection->add($unsortedContact);
 
 $formUnsorted
@@ -182,7 +183,7 @@ try {
 
     $body = [
         'link' => [
-            'entity_type' => \AmoCRM\Helpers\EntityTypesInterface::LEADS,
+            'entity_type' => EntityTypesInterface::LEADS,
             'entity_id' => 3921175,
         ],
         'user_id' => 0,

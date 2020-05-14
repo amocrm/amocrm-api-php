@@ -47,7 +47,7 @@ class Customers extends BaseEntity implements HasLinkMethodInterface, HasPageMet
     /**
      * @var string
      */
-    protected $itemClass = CustomerModel::class;
+    public const ITEM_CLASS = CustomerModel::class;
 
     /**
      * @param array $response

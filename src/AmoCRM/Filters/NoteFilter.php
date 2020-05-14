@@ -56,7 +56,6 @@ class NoteFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setNoteTypes(array $types): self
     {
-        //todo validate only types
         if (!empty($types)) {
             $this->noteTypes = $types;
         }

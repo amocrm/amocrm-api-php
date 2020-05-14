@@ -35,7 +35,7 @@ class Webhooks extends BaseEntity
     /**
      * @var string
      */
-    protected $itemClass = WebhookModel::class;
+    public const ITEM_CLASS = WebhookModel::class;
 
     /**
      * @param array $response

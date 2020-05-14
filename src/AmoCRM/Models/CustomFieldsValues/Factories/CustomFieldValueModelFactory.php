@@ -4,15 +4,19 @@ namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
 use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Helpers\CustomFieldHelper;
+use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\BaseCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\BirthdayCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\CategoryCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\CheckboxCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\DateCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\DateTimeCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\ItemsCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\LegalEntityCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\MultiselectCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\MultitextCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\NumericCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\PriceCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\RadiobuttonCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\SelectCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\SmartAddressCustomFieldValueModel;
@@ -84,19 +88,18 @@ class CustomFieldValueModelFactory
             case CustomFieldHelper::FIELD_TYPE_CODE_URL:
                 $model = new UrlCustomFieldValueModel();
                 break;
+            case CustomFieldModel::TYPE_ITEMS:
+                $model = new ItemsCustomFieldValueModel();
+                break;
+            case CustomFieldModel::TYPE_CATEGORY:
+                $model = new CategoryCustomFieldValueModel();
+                break;
+            case CustomFieldModel::TYPE_PRICE:
+                $model = new PriceCustomFieldValueModel();
+                break;
             default:
                 $model = new BaseCustomFieldValueModel();
                 break;
-
-
-                //todo
-//            case CustomFieldHelper::FIELD_TYPE_CODE_ITEMS:
-//                $model = new ItemsCustomFieldsValue();
-//                break;
-//            case CustomFieldHelper::FIELD_TYPE_CODE_CATEGORY:
-//                $model = new CategoryCustomFieldsValue();
-//                break;
-//        }
         }
 
         if (!isset($model)) {

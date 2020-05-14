@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices\Customers;
 
+use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -9,7 +10,6 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\Customers\Transactions\TransactionsCollection;
-use AmoCRM\EntitiesServices\BaseEntityIdEntity;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
@@ -23,17 +23,24 @@ use AmoCRM\Models\Customers\Transactions\TransactionModel;
  *
  * @method TransactionModel getOne($id, array $with = []) : ?TransactionModel
  * @method TransactionsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?TransactionsCollection
- * @method TransactionModel addOne(BaseApiModel $model) : TransactionModel
- * @method TransactionsCollection add(BaseApiCollection $collection) : TransactionsCollection
  * @method TransactionModel syncOne(BaseApiModel $apiModel, $with = []) : TransactionModel
  */
-class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterface
+class Transactions extends BaseEntity implements HasDeleteMethodInterface
 {
-    //todo support common list
     /**
      * @var string
      */
-    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CUSTOMERS . '/%s/' . EntityTypesInterface::CUSTOMERS_TRANSACTIONS;
+    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CUSTOMERS . '/' . EntityTypesInterface::CUSTOMERS_TRANSACTIONS;
+
+    /**
+     * @var string
+     */
+    protected $methodWithId = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CUSTOMERS . '/%s/' . EntityTypesInterface::CUSTOMERS_TRANSACTIONS;
+
+    /**
+     * @var int
+     */
+    protected $customerId;
 
     /**
      * @var string
@@ -43,7 +50,19 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
     /**
      * @var string
      */
-    protected $itemClass = TransactionModel::class;
+    public const ITEM_CLASS = TransactionModel::class;
+
+    /**
+     * @param int $customerId
+     *
+     * @return Transactions
+     */
+    public function setCustomerId(int $customerId): Transactions
+    {
+        $this->customerId = $customerId;
+
+        return $this;
+    }
 
     /**
      * @param array $response
@@ -113,6 +132,58 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
     }
 
     /**
+     * @return string
+     * @throws NotAvailableForActionException
+     */
+    protected function getMethodWithId(): string
+    {
+        $id = $this->customerId;
+
+        if (!$id) {
+            throw new NotAvailableForActionException('You must call setCustomerId before this action');
+        }
+
+        return sprintf($this->methodWithId, $id);
+    }
+
+    /**
+     * Добавление сщуности
+     * @param BaseApiModel|TransactionModel $model
+     *
+     * @return BaseApiModel|TransactionModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function addOne(BaseApiModel $model): BaseApiModel
+    {
+        $this->setCustomerId($model->getCustomerId());
+
+        /** @var BaseApiCollection $collection */
+        $collection = new $this->collectionClass();
+        $collection->add($model);
+        $collection = $this->add($collection);
+
+        return $collection->first();
+    }
+
+
+    /**
+     * Добавление коллекции сущностей
+     * @param BaseApiCollection|TransactionsCollection $collection
+     *
+     * @return BaseApiCollection|TransactionsCollection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function add(BaseApiCollection $collection): BaseApiCollection
+    {
+        $response = $this->request->post($this->getMethodWithId(), $collection->toApi());
+        $collection = $this->processAdd($collection, $response);
+
+        return $collection;
+    }
+
+    /**
      * @param BaseApiModel|TransactionModel $model
      *
      * @return bool
@@ -121,7 +192,9 @@ class Transactions extends BaseEntityIdEntity implements HasDeleteMethodInterfac
      */
     public function deleteOne(BaseApiModel $model): bool
     {
-        $result = $this->request->delete($this->getMethod() . '/' . $model->getId());
+        $this->setCustomerId($model->getCustomerId());
+
+        $result = $this->request->delete($this->getMethodWithId() . '/' . $model->getId());
 
         return $result['result'];
     }

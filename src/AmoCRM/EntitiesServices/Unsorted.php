@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
@@ -47,7 +48,7 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
     /**
      * @var string
      */
-    protected $itemClass = BaseUnsortedModel::class;
+    public const ITEM_CLASS = BaseUnsortedModel::class;
 
     /**
      * @param array $response
@@ -284,8 +285,22 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
      */
     public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
     {
-        //todo check
         /** @var BaseUnsortedModel $apiModel */
         return $this->mergeModels($this->getOne($apiModel->getUid(), $with), $apiModel);
+    }
+
+    /**
+     * @param BaseApiModel $objectA
+     * @param BaseApiModel $objectB
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkModelsClasses(
+        BaseApiModel $objectA,
+        BaseApiModel $objectB
+    ) {
+        if (!$objectB instanceof $objectA) {
+            throw new InvalidArgumentException('Can not merge 2 different objects');
+        }
     }
 }

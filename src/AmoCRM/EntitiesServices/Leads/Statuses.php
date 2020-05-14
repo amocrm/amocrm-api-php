@@ -43,7 +43,7 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
     /**
      * @var string
      */
-    protected $itemClass = StatusModel::class;
+    public const ITEM_CLASS = StatusModel::class;
 
     /**
      * @param array $response

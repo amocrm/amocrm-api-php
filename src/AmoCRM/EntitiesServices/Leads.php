@@ -45,7 +45,7 @@ class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethods
     /**
      * @var string
      */
-    protected $itemClass = LeadModel::class;
+    public const ITEM_CLASS = LeadModel::class;
 
     /**
      * @param array $response

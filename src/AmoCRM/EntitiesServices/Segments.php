@@ -43,7 +43,7 @@ class Segments extends BaseEntity implements HasPageMethodsInterface
     /**
      * @var string
      */
-    protected $itemClass = SegmentModel::class;
+    public const ITEM_CLASS = SegmentModel::class;
 
     /**
      * @param array $response

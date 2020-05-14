@@ -46,7 +46,6 @@ $tagsCollection->first()->setId(69079); //убрать, когда будет re
 $tagsFilter = new \AmoCRM\Filters\TagFilter();
 $tagsFilter->setSearch('новый тег');
 try {
-    /** @var TagsCollection $tagsCollection */
     $tagsCollection = $apiClient->tags(EntityTypesInterface::LEADS)->get($tagsFilter);
 } catch (AmoCRMApiException $e) {
     printError($e);

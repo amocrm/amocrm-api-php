@@ -38,7 +38,6 @@ try {
 }
 
 //Получим каталог по названию
-/** @var CatalogModel $catalog */
 $catalog = $catalogsCollection->getBy('name', 'Каталог');
 
 
@@ -46,7 +45,6 @@ $catalog = $catalogsCollection->getBy('name', 'Каталог');
 $catalogElementsCollection = new CatalogElementsCollection();
 $catalogElement = new CatalogElementModel();
 $catalogElement->setName('Новый товар');
-$catalogElement->setCatalogId($catalog->getId()); //TODO убрать после правки бага в API
 $catalogElementsCollection->add($catalogElement);
 $catalogElementsService = $apiClient->catalogElements($catalog->getId());
 try {
@@ -59,8 +57,7 @@ try {
 
 //Получим элементы из нужного нам катагола, где в названии или полях есть слово кросовки
 $catalogElementsCollection = new CatalogElementsCollection();
-$catalogElementsService = $apiClient->catalogElements();
-$catalogElementsService->setEntityType($catalog->getId());
+$catalogElementsService = $apiClient->catalogElements($catalog->getId());
 $catalogElementsFilter = new CatalogElementsFilter();
 $catalogElementsFilter->setQuery('Кросовки');
 try {
@@ -70,7 +67,6 @@ try {
     die;
 }
 
-/** @var CatalogElementModel $nikeElement */
 $nikeElement = $catalogElementsCollection->getBy('name', 'Кросовки Nike');
 if ($nikeElement) {
     //Установим кол-во, так как эта модель будет привязана, данное свойство используется только при привязке к сущности

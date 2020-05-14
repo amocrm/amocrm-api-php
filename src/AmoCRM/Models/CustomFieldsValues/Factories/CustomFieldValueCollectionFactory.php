@@ -4,15 +4,19 @@ namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
 use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Helpers\CustomFieldHelper;
+use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\BaseCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\BirthdayCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\CategoryCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\CheckboxCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\DateCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\DateTimeCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\ItemsCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\LegalEntityCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\MultiselectCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\MultitextCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\NumericCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\PriceCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\RadiobuttonCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\SelectCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\SmartAddressCustomFieldValueCollection;
@@ -84,16 +88,15 @@ class CustomFieldValueCollectionFactory
             case CustomFieldHelper::FIELD_TYPE_CODE_URL:
                 $collection = new UrlCustomFieldValueCollection();
                 break;
-
-
-                //todo
-//            case CustomFieldHelper::FIELD_TYPE_CODE_ITEMS:
-//                $model = new ItemsCustomFieldsValue();
-//                break;
-//            case CustomFieldHelper::FIELD_TYPE_CODE_CATEGORY:
-//                $model = new CategoryCustomFieldsValue();
-//                break;
-//        }
+            case CustomFieldModel::TYPE_ITEMS:
+                $collection = new ItemsCustomFieldValueCollection();
+                break;
+            case CustomFieldModel::TYPE_CATEGORY:
+                $collection = new CategoryCustomFieldValueCollection();
+                break;
+            case CustomFieldModel::TYPE_PRICE:
+                $collection = new PriceCustomFieldValueCollection();
+                break;
         }
 
         if (!isset($collection)) {

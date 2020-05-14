@@ -6,14 +6,14 @@ use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Collections\WidgetsCollection;
+use AmoCRM\Collections\Widgets\WidgetsCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
-use AmoCRM\Models\WidgetModel;
+use AmoCRM\Models\Widgets\WidgetModel;
 
 /**
  * Class Widgets
@@ -39,7 +39,7 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
     /**
      * @var string
      */
-    protected $itemClass = WidgetModel::class;
+    public const ITEM_CLASS = WidgetModel::class;
 
     /**
      * @param array $response

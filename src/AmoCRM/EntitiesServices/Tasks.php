@@ -42,7 +42,7 @@ class Tasks extends BaseEntity implements HasPageMethodsInterface
     /**
      * @var string
      */
-    protected $itemClass = TaskModel::class;
+    public const ITEM_CLASS = TaskModel::class;
 
     /**
      * @param array $response

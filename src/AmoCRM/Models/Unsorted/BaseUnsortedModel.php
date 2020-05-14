@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\Unsorted;
 
+use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Factories\UnsortedMetadataFactory;
 use AmoCRM\Models\Traits\RequestIdTrait;
@@ -33,7 +34,7 @@ class BaseUnsortedModel extends BaseApiModel
     protected $category;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $createdAt;
 
@@ -43,12 +44,12 @@ class BaseUnsortedModel extends BaseApiModel
     protected $pipelineId;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $sourceName;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $sourceUid;
 
@@ -111,9 +112,9 @@ class BaseUnsortedModel extends BaseApiModel
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCreatedAt(): int
+    public function getCreatedAt(): ?int
     {
         return $this->createdAt;
     }
@@ -149,9 +150,9 @@ class BaseUnsortedModel extends BaseApiModel
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSourceName(): string
+    public function getSourceName(): ?string
     {
         return $this->sourceName;
     }
@@ -168,9 +169,9 @@ class BaseUnsortedModel extends BaseApiModel
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSourceUid(): string
+    public function getSourceUid(): ?string
     {
         return $this->sourceUid;
     }
@@ -243,9 +244,9 @@ class BaseUnsortedModel extends BaseApiModel
     }
 
     /**
-     * @return UnsortedMetadataInterface
+     * @return UnsortedMetadataInterface|null
      */
-    public function getMetadata(): UnsortedMetadataInterface
+    public function getMetadata(): ?UnsortedMetadataInterface
     {
         return $this->metadata;
     }
@@ -265,7 +266,7 @@ class BaseUnsortedModel extends BaseApiModel
      * @param array $unsorted
      *
      * @return self
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|BadTypeException
      */
     public static function fromArray(array $unsorted): self
     {
@@ -303,8 +304,8 @@ class BaseUnsortedModel extends BaseApiModel
         }
 
         $leadModel = new LeadModel();
-        if (!empty($unsorted[AmoCRMApiRequest::EMBEDDED]['lead'])) {
-            $leadModel = LeadModel::fromArray($unsorted[AmoCRMApiRequest::EMBEDDED]['lead']);
+        if (!empty($unsorted[AmoCRMApiRequest::EMBEDDED]['leads'])) {
+            $leadModel = LeadModel::fromArray(reset($unsorted[AmoCRMApiRequest::EMBEDDED]['leads']));
         }
         $unsortedModel->setLead($leadModel);
 
@@ -407,7 +408,6 @@ class BaseUnsortedModel extends BaseApiModel
         $requestId = $this->getRequestId();
 
         if (!is_null($this->getLead())) {
-            //todo make to unsorted api
             $result[AmoCRMApiRequest::EMBEDDED]['lead'] = $this->getLead()->toApi($requestId);
         }
 

@@ -389,11 +389,6 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
             $this->setRequestId($requestId);
         }
 
-        //TODO убрать после правки бага в API
-        if (!is_null($this->getCatalogId())) {
-            $result['catalog_id'] = $this->getCatalogId();
-        }
-
         $result['request_id'] = $this->getRequestId();
 
         return $result;

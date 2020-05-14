@@ -2,6 +2,7 @@
 
 use AmoCRM\Collections\Leads\Pipelines\Statuses\StatusesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Models\Leads\Pipelines\PipelineModel;
 use AmoCRM\Models\Leads\Pipelines\Statuses\StatusModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 

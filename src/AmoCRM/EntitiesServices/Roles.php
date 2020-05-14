@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Collections\UsersCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
@@ -37,7 +38,7 @@ class Roles extends BaseEntity implements HasPageMethodsInterface, HasDeleteMeth
 
     protected $collectionClass = RolesCollection::class;
 
-    protected $itemClass = RoleModel::class;
+    public const ITEM_CLASS = RoleModel::class;
 
     protected function getEntitiesFromResponse(array $response): array
     {
@@ -146,9 +147,10 @@ class Roles extends BaseEntity implements HasPageMethodsInterface, HasDeleteMeth
             $apiModel->setRights(RightModel::fromArray($entity['rights']));
         }
 
-        //todo users
+        $usersCollection = new UsersCollection();
         if (isset($entity['users'])) {
-            $apiModel->setRights(RightModel::fromArray($entity['users']));
+            $usersCollection = $usersCollection->fromArray($entity['users']);
         }
+        $apiModel->setUsers($usersCollection);
     }
 }

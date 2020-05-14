@@ -24,9 +24,9 @@ class FormUnsortedModel extends BaseUnsortedModel
     }
 
     /**
-     * @return UnsortedMetadataInterface
+     * @return null|UnsortedMetadataInterface
      */
-    public function getMetadata(): UnsortedMetadataInterface
+    public function getMetadata(): ?UnsortedMetadataInterface
     {
         return $this->metadata;
     }

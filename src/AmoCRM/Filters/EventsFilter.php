@@ -82,7 +82,6 @@ class EventsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setTypes(?array $types): EventsFilter
     {
-        //todo only valid types
         $this->types = $types;
 
         return $this;
@@ -102,7 +101,6 @@ class EventsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setEntity(?array $entity): EventsFilter
     {
-        //todo only valid types
         $this->entity = $entity;
 
         return $this;

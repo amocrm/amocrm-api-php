@@ -3,29 +3,19 @@
 namespace AmoCRM\Models;
 
 use AmoCRM\Client\AmoCRMApiRequest;
-use AmoCRM\Collections\BotsCollection;
 use AmoCRM\Collections\TaskTypesCollection;
 use AmoCRM\Collections\UsersGroupsCollection;
 use AmoCRM\Models\AccountSettings\AmojoRights;
-use AmoCRM\Models\AccountSettings\AmoMessenger;
 use AmoCRM\Models\AccountSettings\DateTimeSettings;
-use AmoCRM\Models\AccountSettings\NotificationsInfo;
-use AmoCRM\Models\AccountSettings\Total;
-use AmoCRM\Models\AccountSettings\AmojoUrl;
 use Carbon\Carbon;
 
 class AccountModel extends BaseApiModel
 {
     const AMOJO_ID = 'amojo_id';
     const UUID = 'uuid';
-    const NOTIFICATIONS_INFO = 'notifications_info'; //todo remove
-    const AMOJO_URL = 'amojo_url'; //todo remove
     const AMOJO_RIGHTS = 'amojo_rights';
-    const AMO_MESSENGER = 'amo_messenger'; //todo remove
     const USER_GROUPS = 'users_groups';
-    const BOTS = 'bots'; //todo remove
     const TASK_TYPES = 'task_types';
-    const TOTAL = 'total'; //todo remove
     const VERSION = 'version';
     const DATETIME_SETTINGS = 'datetime_settings';
 
@@ -56,17 +46,8 @@ class AccountModel extends BaseApiModel
     /** @var string|null */
     protected $uuid;
 
-    /** @var NotificationsInfo */
-    protected $notificationInfo;
-
     /** @var AmojoRights */
     protected $amojoRights;
-
-    /** @var AmojoUrl */
-    protected $amojoUrl;
-
-    /** @var AmoMessenger */
-    protected $amoMessenger;
 
     /** @var UsersGroupsCollection */
     protected $usersGroups;
@@ -106,12 +87,6 @@ class AccountModel extends BaseApiModel
 
     /** @var string|null */
     protected $country;
-
-    /** @var Total|null */
-    protected $total;
-
-    /** @var BotsCollection */
-    protected $bots;
 
     /**
      * @return int
@@ -292,26 +267,6 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @return null|NotificationsInfo
-     */
-    public function getNotificationsInfo(): ?NotificationsInfo
-    {
-        return $this->notificationInfo;
-    }
-
-    /**
-     * @param null|NotificationsInfo $settings
-     *
-     * @return self
-     */
-    public function setNotificationsInfo(?NotificationsInfo $settings): self
-    {
-        $this->notificationInfo = $settings;
-
-        return $this;
-    }
-
-    /**
      * @param array $account
      * @return static
      */
@@ -339,38 +294,18 @@ class AccountModel extends BaseApiModel
             $accountModel->setAmojoId($account[self::AMOJO_ID]);
         }
 
+        if (isset($account[self::VERSION])) {
+            $accountModel->setVersion($account[self::VERSION]);
+        }
+
         if (isset($account[self::UUID])) {
             $accountModel->setUuid($account[self::UUID]);
-        }
-
-        if (isset($account[AmoCRMApiRequest::EMBEDDED][self::NOTIFICATIONS_INFO])) {
-            $notificationsInfo = $account[AmoCRMApiRequest::EMBEDDED][self::NOTIFICATIONS_INFO];
-
-            $accountModel->setNotificationsInfo(new NotificationsInfo(
-                $notificationsInfo['base_url'],
-                $notificationsInfo['ws_url'],
-                $notificationsInfo['ws_url_v2']
-            ));
-        }
-
-        if (isset($account[AmoCRMApiRequest::EMBEDDED][self::AMOJO_URL])) {
-            $accountModel->setAmojoUrl(new AmojoUrl(
-                $account[AmoCRMApiRequest::EMBEDDED][self::AMOJO_URL]['base_url']
-            ));
         }
 
         if (isset($account[AmoCRMApiRequest::EMBEDDED][self::AMOJO_RIGHTS])) {
             $accountModel->setAmojoRights(new AmojoRights(
                 $account[AmoCRMApiRequest::EMBEDDED][self::AMOJO_RIGHTS]['can_direct'],
                 $account[AmoCRMApiRequest::EMBEDDED][self::AMOJO_RIGHTS]['can_create_groups']
-            ));
-        }
-
-        if (isset($account[AmoCRMApiRequest::EMBEDDED][self::AMO_MESSENGER])) {
-            $accountModel->setAmoMessenger(new AmoMessenger(
-                $account[AmoCRMApiRequest::EMBEDDED][self::AMO_MESSENGER]['enabled'],
-                $account[AmoCRMApiRequest::EMBEDDED][self::AMO_MESSENGER]['wss_url'],
-                $account[AmoCRMApiRequest::EMBEDDED][self::AMO_MESSENGER]['api_url']
             ));
         }
 
@@ -395,30 +330,11 @@ class AccountModel extends BaseApiModel
             $accountModel->setUsersGroups($collection);
         }
 
-        if (isset($account[AmoCRMApiRequest::EMBEDDED][self::BOTS])) {
-            $bots = $account[AmoCRMApiRequest::EMBEDDED][self::BOTS];
-            $collection = new BotsCollection();
-            $collection = $collection->fromArray($bots);
-            $accountModel->setBots($collection);
-        }
-
         if (isset($account[AmoCRMApiRequest::EMBEDDED][self::TASK_TYPES])) {
             $taskTypes = $account[AmoCRMApiRequest::EMBEDDED][self::TASK_TYPES];
             $collection = new TaskTypesCollection();
             $collection = $collection->fromArray($taskTypes);
             $accountModel->setTaskTypes($collection);
-        }
-
-        if (isset($account[AmoCRMApiRequest::EMBEDDED][self::TOTAL])) {
-            $total = $account[AmoCRMApiRequest::EMBEDDED][self::TOTAL];
-            $accountModel->setTotal(new Total(
-                $total['contacts'],
-                $total['companies'],
-                $total['leads'],
-                $total['active_leads'],
-                $total['notes'],
-                $total['tasks']
-            ));
         }
 
         return $accountModel;
@@ -456,20 +372,8 @@ class AccountModel extends BaseApiModel
             $result['uuid'] = $this->getUuid();
         }
 
-        if (!is_null($this->getNotificationsInfo())) {
-            $result['notifications_info'] = $this->getNotificationsInfo();
-        }
-
-        if (!is_null($this->getAmojoUrl())) {
-            $result['amojo_url'] = $this->getAmojoUrl();
-        }
-
         if (!is_null($this->getAmojoRights())) {
-            $result['amojo_rights'] = $this->getAmojoRights();
-        }
-
-        if (!is_null($this->getAmoMessenger())) {
-            $result['amo_messenger'] = $this->getAmoMessenger();
+            $result['amojo_rights'] = $this->getAmojoRights()->toArray();
         }
 
         if ($this->getUsersGroups() && !$this->getUsersGroups()->isEmpty()) {
@@ -488,34 +392,7 @@ class AccountModel extends BaseApiModel
             $result['datetime_settings'] = $this->getDatetimeSettings();
         }
 
-        if (!is_null($this->getTotal())) {
-            $result['total'] = $this->getTotal()->toArray();
-        }
-
-        if ($this->getBots() && !$this->getBots()->isEmpty()) {
-            $result['bots'] = $this->getBots();
-        }
-
         return $result;
-    }
-
-    /**
-     * @return AmojoUrl|null
-     */
-    public function getAmojoUrl(): ?AmojoUrl
-    {
-        return $this->amojoUrl;
-    }
-
-    /**
-     * @param AmojoUrl $amojoUrl
-     * @return $this
-     */
-    public function setAmojoUrl(AmojoUrl $amojoUrl): self
-    {
-        $this->amojoUrl = $amojoUrl;
-
-        return $this;
     }
 
     /**
@@ -533,25 +410,6 @@ class AccountModel extends BaseApiModel
     public function setAmojoRights(AmojoRights $amojoRights): self
     {
         $this->amojoRights = $amojoRights;
-
-        return $this;
-    }
-
-    /**
-     * @return AmoMessenger|null
-     */
-    public function getAmoMessenger(): ?AmoMessenger
-    {
-        return $this->amoMessenger;
-    }
-
-    /**
-     * @param AmoMessenger $amoMessenger
-     * @return AccountModel
-     */
-    public function setAmoMessenger(AmoMessenger $amoMessenger): self
-    {
-        $this->amoMessenger = $amoMessenger;
 
         return $this;
     }
@@ -804,44 +662,6 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @return Total|null
-     */
-    public function getTotal(): ?Total
-    {
-        return $this->total;
-    }
-
-    /**
-     * @param Total $total
-     * @return AccountModel
-     */
-    public function setTotal(Total $total): self
-    {
-        $this->total = $total;
-
-        return $this;
-    }
-
-    /**
-     * @return BotsCollection
-     */
-    public function getBots(): BotsCollection
-    {
-        return $this->bots;
-    }
-
-    /**
-     * @param BotsCollection $bots
-     * @return AccountModel
-     */
-    public function setBots(BotsCollection $bots): self
-    {
-        $this->bots = $bots;
-
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public static function getAvailableWith(): array
@@ -849,14 +669,9 @@ class AccountModel extends BaseApiModel
         return [
             self::AMOJO_ID,
             self::UUID,
-            self::NOTIFICATIONS_INFO,
-            self::AMOJO_URL,
             self::AMOJO_RIGHTS,
-            self::AMO_MESSENGER,
             self::USER_GROUPS,
-            self::BOTS,
             self::TASK_TYPES,
-            self::TOTAL,
             self::VERSION,
             self::DATETIME_SETTINGS,
         ];

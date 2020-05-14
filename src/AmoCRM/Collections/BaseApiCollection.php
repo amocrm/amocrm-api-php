@@ -5,19 +5,23 @@ namespace AmoCRM\Collections;
 use AmoCRM\Models\BaseApiModel;
 use ArrayAccess;
 use ArrayIterator;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use IteratorAggregate;
 use JsonSerializable;
 
+/**
+ * Class BaseApiCollection
+ *
+ * @package AmoCRM\Collections
+ */
 abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, IteratorAggregate
 {
     /**
      * Класс модели
      * @var string
      */
-    protected $itemClass = '';
+    const ITEM_CLASS = '';
 
     /**
      * @param mixed $item
@@ -25,8 +29,9 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
      */
     protected function checkItem($item): BaseApiModel
     {
-        if (!is_object($item) || !($item instanceof $this->itemClass)) {
-            throw new InvalidArgumentException('Item must be an instance of ' . ($this->itemClass));
+        $class = static::ITEM_CLASS;
+        if (!is_object($item) || !($item instanceof $class)) {
+            throw new InvalidArgumentException('Item must be an instance of ' . $class);
         }
 
         return $item;
@@ -34,14 +39,13 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
 
     /**
      * @param array $array
-     * //todo make static
      * @return self
      */
-    public function fromArray(array $array): self
+    public static function fromArray(array $array): self
     {
-        $itemClass = $this->itemClass;
+        $itemClass = static::ITEM_CLASS;
 
-        return $this->make(
+        return self::make(
             array_map(
                 function (array $item) use ($itemClass) {
                     /** @var BaseApiModel $itemObj */
@@ -320,7 +324,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
         $result = null;
 
         $key = Str::ucfirst(Str::camel($key));
-        $getter = (method_exists($this->itemClass, 'get' . $key) ? 'get' . $key : null);
+        $getter = (method_exists(static::ITEM_CLASS, 'get' . $key) ? 'get' . $key : null);
 
         if ($getter) {
             foreach ($this->data as $object) {
@@ -334,11 +338,5 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
         }
 
         return $result;
-    }
-
-    public function pluck($value, $key = null)
-    {
-        //TODO implement pluck()
-//        return Arr::pluck($this->data, $value, $key);
     }
 }

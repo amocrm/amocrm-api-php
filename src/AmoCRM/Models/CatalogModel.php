@@ -2,11 +2,11 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Interfaces\TypeAwareInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use InvalidArgumentException;
 
 class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInterface
 {
@@ -76,11 +76,6 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
      * @var string|null
      */
     protected $sdkWidgetCode;
-
-    /**
-     * @var array|null
-     */
-    protected $widgets;
 
     /**
      * @var int|null
@@ -348,26 +343,6 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
     }
 
     /**
-     * @return null|array
-     */
-    public function getWidgets(): ?array
-    {
-        return $this->widgets;
-    }
-
-    /**
-     * @param null|array $widgets
-     *
-     * @return self
-     */
-    public function setWidgets(?array $widgets = []): self
-    {
-        $this->widgets = $widgets;
-
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getAccountId(): ?int
@@ -399,11 +374,11 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
      * @param array $catalog
      *
      * @return self
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $catalog): self
     {
         if (empty($catalog['id'])) {
-            //todo amocrm exception
             throw new InvalidArgumentException('Catalog id is empty in ' . json_encode($catalog));
         }
 
@@ -447,9 +422,6 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
         if (array_key_exists('can_be_deleted', $catalog) && !is_null($catalog['can_be_deleted'])) {
             $catalogModel->setCanBeDeleted((bool)$catalog['can_be_deleted']);
         }
-        if (array_key_exists('widgets', $catalog) && !is_null($catalog['widgets'])) {
-            $catalogModel->setWidgets($catalog['widgets']);
-        }
         if (!empty($catalog['account_id'])) {
             $catalogModel->setAccountId((int)$catalog['account_id']);
         }
@@ -476,7 +448,6 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
             'can_link_multiple' => $this->getCanLinkMultiple(),
             'can_be_deleted' => $this->getCanBeDeleted(),
             'sdk_widget_code' => $this->getSdkWidgetCode(),
-            'widgets' => $this->getWidgets(),
             'account_id' => $this->getAccountId(),
         ];
     }
@@ -521,13 +492,7 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
             $result['sort'] = $this->getSort();
         }
 
-        //todo check
-        if (!is_null($this->getCanBeDeleted())) {
-            $result['can_be_deleted'] = $this->getCanBeDeleted();
-        }
-
-        //todo check can you change or not
-        if (!is_null($this->getCatalogType())) {
+        if (is_null($this->getId()) && !is_null($this->getCatalogType())) {
             $result['type'] = $this->getCatalogType();
         }
 

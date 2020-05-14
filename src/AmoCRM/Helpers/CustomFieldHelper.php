@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Helpers;
 
-use AmoCRM\Models\CustomFieldModel;
+use AmoCRM\Models\CustomFields\CustomFieldModel;
 
 /**
  * Class CustomFieldHelper
@@ -26,7 +26,7 @@ class CustomFieldHelper
     const FIELD_TYPE_CODE_STREETADDRESS = CustomFieldModel::TYPE_STREET_ADDRESS;
     const FIELD_TYPE_CODE_SMART_ADDRESS = CustomFieldModel::TYPE_SMART_ADDRESS;
     const FIELD_TYPE_CODE_BIRTHDAY = CustomFieldModel::TYPE_BIRTHDAY;
-//    const FIELD_TYPE_CODE_ITEMS = 'ITEMS';
-//    const FIELD_TYPE_CODE_CATEGORY = 'CATEGORY';
+    const FIELD_TYPE_CODE_ITEMS = CustomFieldModel::TYPE_ITEMS;
+    const FIELD_TYPE_CODE_CATEGORY = CustomFieldModel::TYPE_CATEGORY;
     const FIELD_TYPE_CODE_LEGAL_ENTITY = CustomFieldModel::TYPE_LEGAL_ENTITY;
 }

@@ -31,7 +31,7 @@ class Account extends BaseEntity
     /**
      * @var string
      */
-    protected $itemClass = AccountModel::class;
+    public const ITEM_CLASS = AccountModel::class;
 
     /**
      * @param array $response
@@ -62,7 +62,8 @@ class Account extends BaseEntity
         $response = $this->request->get($this->method, $queryParams);
 
         /** @var AccountModel $entity */
-        $entity = new $this->itemClass();
+        $class = static::ITEM_CLASS;
+        $entity = new $class();
 
         $entity = !empty($response) ? $entity->fromArray($response) : null;
 

@@ -30,6 +30,11 @@ use AmoCRM\OAuth\AmoCRMOAuth;
 use Exception;
 use League\OAuth2\Client\Token\AccessToken;
 
+/**
+ * Class AmoCRMApiClient
+ *
+ * @package AmoCRM\Client
+ */
 class AmoCRMApiClient
 {
     public const API_VERSION = 4;

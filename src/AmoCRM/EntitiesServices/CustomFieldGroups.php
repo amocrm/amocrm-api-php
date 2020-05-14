@@ -41,7 +41,7 @@ class CustomFieldGroups extends BaseEntityTypeEntity implements HasDeleteMethodI
     /**
      * @var string
      */
-    protected $itemClass = CustomFieldGroupModel::class;
+    public const ITEM_CLASS = CustomFieldGroupModel::class;
 
     /**
      * @param string $entityType

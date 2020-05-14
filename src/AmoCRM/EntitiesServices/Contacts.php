@@ -45,7 +45,7 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
     /**
      * @var string
      */
-    protected $itemClass = ContactModel::class;
+    public const ITEM_CLASS = ContactModel::class;
 
     /**
      * @param array $response

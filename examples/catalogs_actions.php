@@ -37,13 +37,13 @@ $apiClient->setAccessToken($accessToken)
 //}
 
 //Создадим каталог счетов
-//$catalogsCollection = new CatalogsCollection();
 //$catalog = new CatalogModel();
 //$catalog->setName('Новый список');
 //$catalog->setCatalogType(EntityTypesInterface::INVOICES_CATALOG_TYPE_STRING);
-//$catalogsCollection->add($catalog);
+//$catalog->setCanBeDeleted(false);
+//
 //try {
-//    $apiClient->catalogs()->add($catalogsCollection);
+//    $catalog = $apiClient->catalogs()->addOne($catalog);
 //} catch (AmoCRMApiException $e) {
 //    printError($e);
 //    die;

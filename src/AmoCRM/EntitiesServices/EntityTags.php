@@ -41,7 +41,7 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
     /**
      * @var string
      */
-    protected $itemClass = TagModel::class;
+    public const ITEM_CLASS = TagModel::class;
 
     /**
      * @param string $entityType

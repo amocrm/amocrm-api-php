@@ -225,7 +225,7 @@ class FormsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataI
             'ip' => $this->getIp(),
             'form_sent_at' => $this->getFormSentAt() ?? time(),
             'referer' => $this->getReferer(),
-//            'visitor_uid' => $this->getVisitorUid(), //todo support
+            'visitor_uid' => $this->getVisitorUid(),
         ];
     }
 }

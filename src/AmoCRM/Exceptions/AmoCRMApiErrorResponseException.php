@@ -2,6 +2,13 @@
 
 namespace AmoCRM\Exceptions;
 
+/**
+ * Class AmoCRMApiErrorResponseException
+ *
+ * Выбрасывается в случае ошибки запроса
+ *
+ * @package AmoCRM\Exceptions
+ */
 class AmoCRMApiErrorResponseException extends AmoCRMApiException
 {
     /**

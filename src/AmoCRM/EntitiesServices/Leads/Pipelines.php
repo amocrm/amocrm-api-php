@@ -43,7 +43,7 @@ class Pipelines extends BaseEntity implements HasDeleteMethodInterface
     /**
      * @var string
      */
-    protected $itemClass = PipelineModel::class;
+    public const ITEM_CLASS = PipelineModel::class;
 
     /**
      * @param array $response

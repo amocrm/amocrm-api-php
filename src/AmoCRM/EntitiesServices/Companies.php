@@ -45,7 +45,7 @@ class Companies extends BaseEntity implements HasLinkMethodInterface, HasPageMet
     /**
      * @var string
      */
-    protected $itemClass = CompanyModel::class;
+    public const ITEM_CLASS = CompanyModel::class;
 
     /**
      * @param array $response

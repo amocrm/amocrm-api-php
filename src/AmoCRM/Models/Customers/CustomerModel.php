@@ -674,11 +674,13 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
             $customerModel->setTags($tagsCollection);
         }
 
-        //todo segments
-//        if (!empty($customer[AmoCRMApiRequest::EMBEDDED][self::LOSS_REASON][0])) {
-//            $lossReason = LossReasonModel::fromArray($customer[AmoCRMApiRequest::EMBEDDED][self::LOSS_REASON][0]);
-//            $customerModel->setLossReason($lossReason);
-//        }
+        $segmentsCollection = new SegmentsCollection();
+        if (!empty($customer[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CUSTOMERS_SEGMENTS])) {
+            $segmentsCollection = $segmentsCollection->fromArray(
+                $customer[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CUSTOMERS_SEGMENTS]
+            );
+        }
+        $customerModel->setSegments($segmentsCollection);
 
         if (!empty($customer[AmoCRMApiRequest::EMBEDDED]['companies'][0])) {
             $company = CompanyModel::fromArray($customer[AmoCRMApiRequest::EMBEDDED]['companies'][0]);
@@ -750,7 +752,9 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
             $result['contacts'] = $this->getContacts()->toArray();
         }
 
-        //todo segments
+        if (!is_null($this->getSegments())) {
+            $result['segments'] = $this->getSegments()->toArray();
+        }
 
         return $result;
     }
@@ -811,11 +815,9 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
             $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags()->toApi();
         }
 
-        //todo
-//        if (!is_null($this->getTags())) {
-//            $result[AmoCRMApiRequest::EMBEDDED]['segments'] = $this->getSegments();
-//        }
-
+        if (!is_null($this->getSegments())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['segments'] = $this->getSegments()->toApi();
+        }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
             $this->setRequestId($requestId); //Бага в API не принимает 0

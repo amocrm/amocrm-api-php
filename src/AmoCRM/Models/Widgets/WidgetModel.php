@@ -1,7 +1,9 @@
 <?php
 
-namespace AmoCRM\Models;
+namespace AmoCRM\Models\Widgets;
 
+use AmoCRM\Collections\Widgets\SettingsTemplatesCollection;
+use AmoCRM\Models\BaseApiModel;
 use InvalidArgumentException;
 
 /**
@@ -32,7 +34,7 @@ class WidgetModel extends BaseApiModel
     protected $rating;
 
     /**
-     * @var array //todo model
+     * @var SettingsTemplatesCollection|null
      */
     protected $settingsTemplate;
 
@@ -91,7 +93,7 @@ class WidgetModel extends BaseApiModel
             ->setCode($widget['code'])
             ->setVersion($widget['version'])
             ->setRating($widget['rating'])
-            ->setSettingsTemplate($widget['settings_template'])
+            ->setSettingsTemplate(SettingsTemplatesCollection::fromArray($widget['settings_template']))
             ->setIsLeadSource($widget['is_lead_source'])
             ->setIsWorkWithDp($widget['is_work_with_dp'])
             ->setIsCrmTemplate($widget['is_crm_template'])
@@ -204,19 +206,19 @@ class WidgetModel extends BaseApiModel
     }
 
     /**
-     * @return array
+     * @return SettingsTemplatesCollection
      */
-    public function getSettingsTemplate(): array
+    public function getSettingsTemplate(): ?SettingsTemplatesCollection
     {
         return $this->settingsTemplate;
     }
 
     /**
-     * @param array $settingsTemplate
+     * @param null|SettingsTemplatesCollection $settingsTemplate
      *
      * @return WidgetModel
      */
-    public function setSettingsTemplate(array $settingsTemplate): WidgetModel
+    public function setSettingsTemplate(?SettingsTemplatesCollection $settingsTemplate): WidgetModel
     {
         $this->settingsTemplate = $settingsTemplate;
 

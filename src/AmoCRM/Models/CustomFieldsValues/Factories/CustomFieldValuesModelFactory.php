@@ -2,15 +2,19 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
+use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFieldsValues\BaseCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\BirthdayCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\CategoryCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\CheckboxCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\DateCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\DateTimeCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\ItemsCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\LegalEntityCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\MultiselectCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\MultitextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\NumericCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\PriceCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\RadiobuttonCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\SelectCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\SmartAddressCustomFieldValuesModel;
@@ -84,16 +88,15 @@ class CustomFieldValuesModelFactory
             case CustomFieldHelper::FIELD_TYPE_CODE_URL:
                 $model = new UrlCustomFieldValuesModel();
                 break;
-
-
-                //todo
-//            case CustomFieldHelper::FIELD_TYPE_CODE_ITEMS:
-//                $model = new ItemsCustomFieldsValue();
-//                break;
-//            case CustomFieldHelper::FIELD_TYPE_CODE_CATEGORY:
-//                $model = new CategoryCustomFieldsValue();
-//                break;
-//        }
+            case CustomFieldModel::TYPE_ITEMS:
+                $model = new ItemsCustomFieldValuesModel();
+                break;
+            case CustomFieldModel::TYPE_CATEGORY:
+                $model = new CategoryCustomFieldValuesModel();
+                break;
+            case CustomFieldModel::TYPE_PRICE:
+                $model = new PriceCustomFieldValuesModel();
+                break;
         }
 
         if (!isset($model)) {
