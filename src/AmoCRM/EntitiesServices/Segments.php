@@ -2,6 +2,9 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
+use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
@@ -20,10 +23,7 @@ use AmoCRM\Models\Customers\Segments\SegmentModel;
  *
  * @method SegmentModel getOne($id, array $with = []) : ?SegmentModel
  * @method SegmentsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?SegmentsCollection
- * @method SegmentModel addOne(BaseApiModel $model) : SegmentModel
- * @method SegmentsCollection add(BaseApiCollection $collection) : SegmentsCollection
  * @method SegmentModel updateOne(BaseApiModel $apiModel) : SegmentModel
- * @method SegmentsCollection update(BaseApiCollection $collection) : SegmentsCollection
  * @method SegmentModel syncOne(BaseApiModel $apiModel, $with = []) : SegmentModel
  */
 class Segments extends BaseEntity implements HasPageMethodsInterface
@@ -118,6 +118,45 @@ class Segments extends BaseEntity implements HasPageMethodsInterface
     }
 
     /**
+     * Добавление коллекции сущностей
+     * @param BaseApiCollection|SegmentsCollection $collection
+     *
+     * @return BaseApiCollection|SegmentsCollection
+     * @throws AmoCRMApiException
+     */
+    public function add(BaseApiCollection $collection): BaseApiCollection
+    {
+        throw new NotAvailableForActionException('This entity supports only addOne method');
+    }
+
+    /**
+     * Добавление сщуности
+     * @param BaseApiModel $model
+     *
+     * @return BaseApiModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function addOne(BaseApiModel $model): BaseApiModel
+    {
+        $response = $this->request->post($this->getMethod(), $model->toApi());
+        $this->processModelAction($model, $response);
+
+        return $model;
+    }
+
+    /**
+     * @param BaseApiCollection|SegmentsCollection $collection
+     *
+     * @return BaseApiCollection|SegmentsCollection
+     * @throws NotAvailableForActionException
+     */
+    public function update(BaseApiCollection $collection): BaseApiCollection
+    {
+        throw new NotAvailableForActionException('This entity supports only updateOne method');
+    }
+
+    /**
      * @param BaseApiModel|SegmentModel $apiModel
      * @param array $entity
      */
@@ -134,5 +173,7 @@ class Segments extends BaseEntity implements HasPageMethodsInterface
         if (isset($entity['color'])) {
             $apiModel->setColor($entity['color']);
         }
+
+        //todo other свойства
     }
 }

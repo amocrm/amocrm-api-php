@@ -502,7 +502,7 @@ class TaskModel extends BaseApiModel implements HasIdInterface
         ];
     }
 
-    public function toApi(?string $requestId = null): array
+    public function toApi(?string $requestId = "0"): array
     {
         $result = [];
 

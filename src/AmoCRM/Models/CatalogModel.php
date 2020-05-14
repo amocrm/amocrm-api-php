@@ -452,7 +452,7 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
         ];
     }
 
-    public function toApi(?string $requestId = null): array
+    public function toApi(?string $requestId = "0"): array
     {
         $result = [];
 

@@ -560,7 +560,7 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
         return $result;
     }
 
-    public function toApi(?string $requestId = null): array
+    public function toApi(?string $requestId = "0"): array
     {
         $result = [];
 

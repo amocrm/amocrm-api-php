@@ -199,7 +199,7 @@ class MailMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataIn
      * @param string|null $requestId
      * @return array
      */
-    public function toApi(?string $requestId = null): array
+    public function toApi(?string $requestId = "0"): array
     {
         return [];
     }

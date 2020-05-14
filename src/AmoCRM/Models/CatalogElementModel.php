@@ -357,7 +357,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         ];
     }
 
-    public function toApi(?string $requestId = null): array
+    public function toApi(?string $requestId = "0"): array
     {
         $result = [];
 

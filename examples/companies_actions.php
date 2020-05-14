@@ -6,7 +6,6 @@ use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Filters\CatalogElementsFilter;
 use AmoCRM\Filters\CompanyFilter;
-use AmoCRM\Models\CatalogElementModel;
 use AmoCRM\Models\CompanyModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -53,11 +52,9 @@ try {
 $links = new LinksCollection();
 $links->add($lead);
 
-//TODO проверить, можно ли реально привязать элемент каталога к компании
 //Получим элементы из нужного нам катагола, где в названии или полях есть слово кросовки
 $catalogElementsCollection = new CatalogElementsCollection();
-$catalogElementsService = $apiClient->catalogElements();
-$catalogElementsService->setEntityType(1001);
+$catalogElementsService = $apiClient->catalogElements(1001);
 $catalogElementsFilter = new CatalogElementsFilter();
 $catalogElementsFilter->setQuery('Кросовки');
 try {
@@ -67,7 +64,6 @@ try {
     die;
 }
 
-/** @var CatalogElementModel $nikeElement */
 $nikeElement = $catalogElementsCollection->getBy('name', 'Кросовки Nike');
 if ($nikeElement) {
     //Установим кол-во, так как эта модель будет привязана, данное свойство используется только при привязке к сущности

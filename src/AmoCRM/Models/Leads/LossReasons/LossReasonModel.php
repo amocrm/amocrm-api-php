@@ -183,7 +183,7 @@ class LossReasonModel extends BaseApiModel implements HasIdInterface
      *
      * @return array
      */
-    public function toApi(?string $requestId = null): array
+    public function toApi(?string $requestId = "0"): array
     {
         $result = [
             'name' => $this->getName(),

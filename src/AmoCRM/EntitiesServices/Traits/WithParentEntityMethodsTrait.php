@@ -60,7 +60,8 @@ trait WithParentEntityMethodsTrait
     public function getOne($id, array $with = []): ?BaseApiModel
     {
         $queryParams = [];
-        $with = array_intersect($with, $this->itemClass::getAvailableWith());
+        $class = static::ITEM_CLASS;
+        $with = array_intersect($with, $class::getAvailableWith());
         if (!empty($with)) {
             $queryParams['with'] = implode(',', $with);
         }
@@ -70,8 +71,9 @@ trait WithParentEntityMethodsTrait
 
         $response = $this->request->get($this->getMethodWithParent($parentId, $id), $queryParams);
 
+        $class = static::ITEM_CLASS;
         /** @var BaseApiModel $entity */
-        $entity = new $this->itemClass();
+        $entity = new $class();
 
         $entity = !empty($response) ? $entity->fromArray($response) : null;
 

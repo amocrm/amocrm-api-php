@@ -478,7 +478,7 @@ class RightModel extends BaseApiModel
         return $result;
     }
 
-    public function toApi(?string $requestId = null): array
+    public function toApi(?string $requestId = "0"): array
     {
         return [
             'leads' => $this->getLeadsRights(),

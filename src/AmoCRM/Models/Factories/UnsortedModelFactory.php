@@ -17,7 +17,7 @@ class UnsortedModelFactory
     /**
      * @param string $category
      *
-     * @return BaseUnsortedModel
+     * @return BaseUnsortedModel|FormUnsortedModel|SipUnsortedModel
      * @throws BadTypeException
      */
     public static function createForCategory(string $category): BaseUnsortedModel

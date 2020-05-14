@@ -17,7 +17,7 @@ use AmoCRM\Models\LinkModel;
  * @method LinkModel offsetGet($offset) : ?BaseApiModel
  * @method self offsetSet($offset, LinkModel $value) : BaseApiCollection
  * @method self prepend(LinkModel $value) : BaseApiCollection
- * @method self add(LinkModel $value) : BaseApiCollection
+ * @method self add(CanBeLinkedInterface|LinkModel $value) : BaseApiCollection
  * @method LinkModel getBy($key, $value) : ?BaseApiModel
  */
 class LinksCollection extends BaseApiCollection

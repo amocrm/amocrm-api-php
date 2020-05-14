@@ -12,7 +12,7 @@ abstract class NoParamNote extends NoteModel
      * @return array
      * @throws NotAvailableForActionException
      */
-    public function toApi(?string $requestId = null): array
+    public function toApi(?string $requestId = "0"): array
     {
         throw new NotAvailableForActionException();
     }

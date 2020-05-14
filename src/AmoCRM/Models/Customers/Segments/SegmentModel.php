@@ -15,6 +15,49 @@ use InvalidArgumentException;
  */
 class SegmentModel extends BaseApiModel implements HasIdInterface
 {
+    public const SEGMENT_COLORS = [
+        '10599d',
+        '2176ff',
+        '006acc',
+        '07a0c3',
+        '247ba0',
+        '177e89',
+        '046e8f',
+        '598381',
+        '0c7c59',
+        '495f41',
+        '00a44b',
+        '08605f',
+        'bf2600',
+        '06d6a0',
+        'e14945',
+        '79b473',
+        'ae003f',
+        'a2ad59',
+        'cd0f53',
+        '8e936d',
+        '832161',
+        '2e5339',
+        'bf126f',
+        '6f7c12',
+        'ff5376',
+        'dd1c1a',
+        'bb304e',
+        '631d76',
+        '9d2b32',
+        '4a001f',
+        'b118c8',
+        '6a0f49',
+        '6610f2',
+        'b38a58',
+        '8963ba',
+        '4b3666',
+        '932f6d',
+        '6b2d5c',
+        '6461a0',
+        '4f517d',
+    ];
+
     use RequestIdTrait;
 
     /**
@@ -43,7 +86,7 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
     protected $color;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $customersCount;
 
@@ -53,7 +96,7 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
     protected $customFieldsValues;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $availableProductsPriceTypes;
 
@@ -159,7 +202,7 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
      * @param string|null $requestId
      * @return array
      */
-    public function toApi(?string $requestId = null): array
+    public function toApi(?string $requestId = "0"): array
     {
         $result = [];
 
@@ -253,6 +296,10 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
      */
     public function setColor(string $color): self
     {
+        if (!in_array($color, self::SEGMENT_COLORS, true)) {
+            $color = '10599d';
+        }
+
         $this->color = $color;
 
         return $this;
@@ -261,7 +308,7 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
     /**
      * @return int
      */
-    public function getCustomersCount(): int
+    public function getCustomersCount(): ?int
     {
         return $this->customersCount;
     }
@@ -306,10 +353,10 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @param array $availableProductsPriceTypes
+     * @param null|array $availableProductsPriceTypes
      * @return SegmentModel
      */
-    public function setAvailableProductsPriceTypes(array $availableProductsPriceTypes): self
+    public function setAvailableProductsPriceTypes(?array $availableProductsPriceTypes): self
     {
         $this->availableProductsPriceTypes = $availableProductsPriceTypes;
 

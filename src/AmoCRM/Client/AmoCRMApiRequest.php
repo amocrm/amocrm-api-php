@@ -72,6 +72,11 @@ class AmoCRMApiRequest
     private $lastMethod;
 
     /**
+     * @var string
+     */
+    private $lastHttpMethod;
+
+    /**
      * @var array
      */
     private $lastBody = [];
@@ -147,7 +152,8 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
-        $this->lastMethod = self::POST_REQUEST . ' ' . $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastHttpMethod = self::POST_REQUEST;
+        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
         $this->lastBody = $body;
         $this->lastQueryParams = $queryParams;
 
@@ -221,7 +227,8 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
-        $this->lastMethod = self::PATCH_REQUEST . ' ' . $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastHttpMethod = self::PATCH_REQUEST;
+        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
         $this->lastBody = $body;
         $this->lastQueryParams = $queryParams;
 
@@ -295,7 +302,8 @@ class AmoCRMApiRequest
 
         $headers = array_merge($headers, $this->getBaseHeaders());
 
-        $this->lastMethod = self::DELETE_REQUEST . ' ' . $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastHttpMethod = self::DELETE_REQUEST;
+        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
         $this->lastBody = $body;
         $this->lastQueryParams = $queryParams;
 
@@ -374,7 +382,8 @@ class AmoCRMApiRequest
                 $method
             );
 
-        $this->lastMethod = self::GET_REQUEST . ' ' . $method;
+        $this->lastHttpMethod = self::GET_REQUEST;
+        $this->lastMethod = $method;
         $this->lastBody = [];
         $this->lastQueryParams = $queryParams;
 
@@ -521,13 +530,55 @@ class AmoCRMApiRequest
     public function getLastRequestInfo(): array
     {
         return [
+            'last_http_method' => $this->lastHttpMethod,
             'last_method' => $this->lastMethod,
             'last_body' => $this->lastBody,
             'last_query_params' => $this->lastQueryParams,
             'last_response' => $this->lastResponse,
             'last_response_code' => $this->lastResponseCode,
             'last_request_id' => $this->lastRequestId,
+            'jquery_call' => $this->buildJqueryCall(),
+            'curl_call' => $this->buildCurlCall(),
             'timestamp' => time(),
         ];
+    }
+
+    /**
+     * @return string
+     */
+    private function buildJqueryCall(): string
+    {
+        $url = $this->lastMethod;
+
+        if (!empty($this->lastQueryParams)) {
+            $url .= '?' . http_build_query($this->lastQueryParams);
+        }
+
+        $data = json_encode($this->lastBody, JSON_UNESCAPED_UNICODE);
+        $requestHttpMethod = $this->lastHttpMethod;
+
+        return '
+$.ajax({
+    url: "' . $url . '",
+    data: JSON.stringify(' . $data . '),
+    type: "' . $requestHttpMethod . '",
+    contentType: "application/json"
+});';
+    }
+
+    /**
+     * @return string
+     */
+    private function buildCurlCall(): string
+    {
+        $url = $this->lastMethod;
+
+        if (!empty($this->lastQueryParams)) {
+            $url .= '?' . http_build_query($this->lastQueryParams);
+        }
+
+        $requestHttpMethod = $this->lastHttpMethod;
+
+        return 'curl "' . $url . '" -X "' . $requestHttpMethod . '" -d"' . http_build_query($this->lastBody) . '"';
     }
 }
