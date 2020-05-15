@@ -27,8 +27,8 @@ use AmoCRM\EntitiesServices\Webhooks;
 use AmoCRM\EntitiesServices\Widgets;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\OAuth\AmoCRMOAuth;
-use Exception;
 use League\OAuth2\Client\Token\AccessToken;
+use AmoCRM\EntitiesServices\Customers\Statuses as CustomersStatuses;
 
 /**
  * Class AmoCRMApiClient
@@ -159,9 +159,11 @@ class AmoCRMApiClient
 
     /**
      * Метод вернет объект тегов
+     *
      * @param string $entityType
+     *
      * @return EntityTags
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function tags(string $entityType)
     {
@@ -184,9 +186,7 @@ class AmoCRMApiClient
     {
         $request = $this->buildRequest();
 
-        $service = new Tasks($request);
-
-        return $service;
+        return new Tasks($request);
     }
 
     /**
@@ -429,19 +429,13 @@ class AmoCRMApiClient
     /**
      * Метод вернет объект транзакций
      *
-     * @param int|null $customerId
-     *
      * @return Transactions
      */
-    public function transactions(?int $customerId = null): Transactions
+    public function transactions(): Transactions
     {
         $request = $this->buildRequest();
-        $service = new Transactions($request);
-        if (!is_null($customerId)) {
-            $service->setEntityId($customerId);
-        }
 
-        return $service;
+        return new Transactions($request);
     }
 
     /**
@@ -454,6 +448,18 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Customers($request);
+    }
+
+    /**
+     * Метод вернет объект статусов покупателей
+     *
+     * @return CustomersStatuses
+     */
+    public function customersStatuses(): CustomersStatuses
+    {
+        $request = $this->buildRequest();
+
+        return new CustomersStatuses($request);
     }
 
     /**

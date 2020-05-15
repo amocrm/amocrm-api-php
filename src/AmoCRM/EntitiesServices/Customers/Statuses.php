@@ -1,21 +1,20 @@
 <?php
 
-namespace AmoCRM\EntitiesServices\Leads;
+namespace AmoCRM\EntitiesServices\Customers;
 
+use AmoCRM\Collections\Customers\Statuses\StatusesCollection;
+use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Collections\Leads\Pipelines\Statuses\StatusesCollection;
-use AmoCRM\EntitiesServices\BaseEntityIdEntity;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
-use AmoCRM\Models\Leads\Pipelines\Statuses\StatusModel;
-use Exception;
+use AmoCRM\Models\Customers\Statuses\StatusModel;
 
 /**
  * Class Statuses
@@ -27,13 +26,14 @@ use Exception;
  * @method StatusModel addOne(BaseApiModel $model) : StatusModel
  * @method StatusesCollection add(BaseApiCollection $collection) : StatusesCollection
  * @method StatusModel updateOne(BaseApiModel $apiModel) : StatusModel
+ * @method StatusModel syncOne(BaseApiModel $apiModel, $with = []) : StatusModel
  */
-class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
+class Statuses extends BaseEntity implements HasDeleteMethodInterface
 {
     /**
      * @var string
      */
-    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::LEADS . '/' . EntityTypesInterface::LEADS_PIPELINES . '/%s/' . EntityTypesInterface::LEADS_STATUSES;
+    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::CUSTOMERS . '/' . EntityTypesInterface::CUSTOMERS_STATUSES;
 
     /**
      * @var string
@@ -54,8 +54,8 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
     {
         $entities = [];
 
-        if (isset($response[AmoCRMApiRequest::EMBEDDED]) && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS_STATUSES])) {
-            $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS_STATUSES];
+        if (isset($response[AmoCRMApiRequest::EMBEDDED]) && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CUSTOMERS_STATUSES])) {
+            $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CUSTOMERS_STATUSES];
         }
 
         return $entities;
@@ -159,21 +159,5 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
     public function delete(BaseApiCollection $collection): bool
     {
         throw new NotAvailableForActionException('This entity supports only deleteOne method');
-    }
-
-    /**
-     * @param BaseApiModel|StatusModel $apiModel
-     * @param array $with
-     *
-     * @return BaseApiModel
-     * @throws AmoCRMApiException
-     * @throws AmoCRMoAuthApiException
-     * @throws Exception
-     */
-    public function syncOne(BaseApiModel $apiModel, $with = []): BaseApiModel
-    {
-        $this->setEntityId($apiModel->getPipelineId());
-
-        return $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
     }
 }

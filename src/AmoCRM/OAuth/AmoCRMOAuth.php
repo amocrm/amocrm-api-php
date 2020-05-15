@@ -2,11 +2,19 @@
 
 namespace AmoCRM\OAuth;
 
+use AmoCRM\Client\AmoCRMApiRequest;
+use AmoCRM\Exceptions\AmoCRMApiConnectExceptionException;
+use AmoCRM\Exceptions\AmoCRMApiErrorResponseException;
+use AmoCRM\Exceptions\AmoCRMApiHttpClientException;
+use AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\OAuth2\Client\Provider\AmoCRM;
 use Exception;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\TooManyRedirectsException;
 use League\OAuth2\Client\Grant\AuthorizationCode;
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
@@ -45,6 +53,16 @@ class AmoCRMOAuth
     private $accessTokenRefreshCallback = null;
 
     /**
+     * @var string
+     */
+    private $clientId;
+
+    /**
+     * @var string
+     */
+    private $clientSecret;
+
+    /**
      * AmoCRMOAuth constructor.
      * @param string $clientId
      * @param string $clientSecret
@@ -60,6 +78,9 @@ class AmoCRMOAuth
                 'timeout' => self::REQUEST_TIMEOUT,
             ]
         );
+
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
     }
 
     /**
@@ -238,5 +259,57 @@ class AmoCRMOAuth
                     src="https://www.amocrm.ru/auth/button.min.js"
                 ></script>
         </div>';
+    }
+
+    /**
+     * @param string $login
+     * @param string $apiKey
+     *
+     * @throws AmoCRMApiConnectExceptionException
+     * @throws AmoCRMApiHttpClientException
+     * @throws AmoCRMApiTooManyRedirectsException
+     * @throws AmoCRMApiErrorResponseException
+     */
+    public function exchangeApiKey(string $login, string $apiKey)
+    {
+        $body = [
+            'login' => $login,
+            'api_key' => $apiKey,
+            'client_uuid' => $this->clientId,
+            'client_secret' => $this->clientSecret,
+        ];
+
+        $headers = [];
+        $headers['User-Agent'] = AmoCRMApiRequest::USER_AGENT;
+
+        try {
+            $response = $this->oauthProvider->getHttpClient()->request(
+                AmoCRMApiRequest::POST_REQUEST,
+                $this->oauthProvider->urlAccount() . '/oauth2/exchange_api_key',
+                [
+                    'json' => $body,
+                    'connect_timeout' => AmoCRMApiRequest::CONNECT_TIMEOUT,
+                    'headers' => $headers,
+                    'http_errors' => false,
+                    'query' => [],
+                    'timeout' => self::REQUEST_TIMEOUT,
+                ]
+            );
+        } catch (ConnectException $e) {
+            throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode());
+        } catch (TooManyRedirectsException $e) {
+            throw new AmoCRMApiTooManyRedirectsException($e->getMessage(), $e->getCode());
+        } catch (GuzzleException $e) {
+            throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode());
+        }
+
+        if ($response->getStatusCode() !== AmoCRMApiRequest::ACCEPTED) {
+            throw new AmoCRMApiErrorResponseException(
+                'Invalid response code',
+                $response->getStatusCode(),
+                [],
+                $response->getBody()->getContents()
+            );
+        }
     }
 }

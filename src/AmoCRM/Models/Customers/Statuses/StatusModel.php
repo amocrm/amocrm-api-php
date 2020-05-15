@@ -1,6 +1,6 @@
 <?php
 
-namespace AmoCRM\Models\Leads\Pipelines\Statuses;
+namespace AmoCRM\Models\Customers\Statuses;
 
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
@@ -42,7 +42,7 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
     /**
      * @var bool|null
      */
-    protected $isEditable;
+    protected $isDefault;
 
     /**
      * @var string|null
@@ -55,9 +55,10 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
     protected $type;
 
     /**
-     * @var int|null
+     * @var array
+     * //todo make collection
      */
-    protected $pipelineId;
+    protected $conditions;
 
     /**
      * @param array $status
@@ -72,8 +73,8 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
         $model->setName($status['name']);
         $model->setSort($status['sort']);
         $model->setAccountId($status['account_id']);
-        $model->setIsEditable($status['is_editable']);
-        $model->setPipelineId($status['pipeline_id']);
+        $model->setIsDefault($status['is_default']);
+        $model->setConditions($status['conditions']);
         $model->setColor($status['color']);
         $model->setType($status['type']);
 
@@ -92,8 +93,8 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
             'account_id' => $this->getAccountId(),
             'type' => $this->getType(),
             'color' => $this->getColor(),
-            'is_editable' => $this->getIsEditable(),
-            'pipeline_id' => $this->getPipelineId(),
+            'is_default' => $this->getIsDefault(),
+            'conditions' => $this->getConditions(),
         ];
     }
 
@@ -180,19 +181,39 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
     /**
      * @return bool|null
      */
-    public function getIsEditable(): ?bool
+    public function getIsDefault(): ?bool
     {
-        return $this->isEditable;
+        return $this->isDefault;
     }
 
     /**
-     * @param bool|null $isEditable
+     * @param bool|null $isDefault
      *
      * @return StatusModel
      */
-    public function setIsEditable(?bool $isEditable): StatusModel
+    public function setIsDefault(?bool $isDefault): StatusModel
     {
-        $this->isEditable = $isEditable;
+        $this->isDefault = $isDefault;
+
+        return $this;
+    }
+
+    /**
+     * @return null|array
+     */
+    public function getConditions(): ?array
+    {
+        return $this->conditions;
+    }
+
+    /**
+     * @param null|array $conditions
+     *
+     * @return StatusModel
+     */
+    public function setConditions(?array $conditions): StatusModel
+    {
+        $this->conditions = $conditions;
 
         return $this;
     }
@@ -233,26 +254,6 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
     public function setType(?int $type): StatusModel
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getPipelineId(): ?int
-    {
-        return $this->pipelineId;
-    }
-
-    /**
-     * @param int|null $pipelineId
-     *
-     * @return StatusModel
-     */
-    public function setPipelineId(?int $pipelineId): StatusModel
-    {
-        $this->pipelineId = $pipelineId;
 
         return $this;
     }

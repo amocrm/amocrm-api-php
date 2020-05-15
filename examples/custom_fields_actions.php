@@ -1,9 +1,9 @@
 <?php
 
 use AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\Collections\CustomFieldsCollection;
+use AmoCRM\Collections\CustomFields\CustomFieldsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Models\CustomFieldModel;
+use AmoCRM\Models\CustomFields\CustomFieldModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 include_once __DIR__ . '/bootstrap.php';
@@ -27,6 +27,22 @@ $apiClient->setAccessToken($accessToken)
 
 //Сервис кастом полей для сделок
 $customFieldsService = $apiClient->customFields(EntityTypesInterface::LEADS);
+
+//todo update example
+try {
+    $result = $customFieldsService->get();
+} catch (AmoCRMApiException $e) {
+    printError($e);
+}
+
+var_dump($result);
+die;
+//$customFieldModel = new CustomFieldModel();
+//$customFieldModel->setId(269303);
+//
+//$customFieldModel = $customFieldsService->syncOne($customFieldModel);
+//
+//var_dump($customFieldModel); die;
 
 //Сервис кастом полей для сегментов
 //$customFieldsService = $apiClient->customFields(EntityTypesInterface::CUSTOMERS_SEGMENTS);
@@ -77,14 +93,7 @@ try {
     $customFieldsService->add($customFieldsCollection);
 
     //Получим поля сделок со всеми параметрами
-    $customFieldsCollection = $customFieldsService->get(
-        null,
-        [
-            CustomFieldModel::REQUIRED_STATUSES,
-            CustomFieldModel::GROUP_ID,
-            CustomFieldModel::ENUMS,
-        ]
-    );
+    $customFieldsCollection = $customFieldsService->get();
 
     //Получим объект поля и удалим его
     $fieldToDelete = $customFieldsCollection->getBy('name', 'Поле Чекбокс');

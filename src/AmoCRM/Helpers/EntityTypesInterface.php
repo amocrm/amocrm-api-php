@@ -24,6 +24,7 @@ interface EntityTypesInterface
     const USER_ROLES = 'roles';
     const USERS = 'users';
     const CUSTOMERS_SEGMENTS = 'segments';
+    const CUSTOMERS_STATUSES = 'statuses';
     const WIDGETS = 'widgets';
     const STATUS_RIGHTS = 'status_rights';
 
