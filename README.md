@@ -10,7 +10,7 @@
 composer require amocrm/amocrm-api-library
 ```
 
-## Использование
+## Начало работы (авторизация)
 
 Для начала использования вам необходимо создать объект бибилиотеки:
 ```php
@@ -26,7 +26,7 @@ $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redir
 $apiClient->setAccessToken($accessToken)
         ->setAccountBaseDomain($accessToken->getValues()['baseDomain'])
         ->onAccessTokenRefresh(
-            function (AccessTokenInterface $accessToken, string $baseDomain) {
+            function (\League\OAuth2\Client\Token\AccessTokenInterface $accessToken, string $baseDomain) {
                 saveToken(
                     [
                         'accessToken' => $accessToken->getToken(),
@@ -37,6 +37,75 @@ $apiClient->setAccessToken($accessToken)
                 );
             });
 ```
+
+Отправить пользователя на страницу авторизации можно 2мя способами:
+1. Отрисовав кнопку на сайт:
+```php
+$apiClient->getOAuthClient()->getOAuthButton(
+            [
+                'title' => 'Установить интеграцию',
+                'compact' => true,
+                'class_name' => 'className',
+                'color' => 'default',
+                'error_callback' => 'handleOauthError',
+                'state' => $state,
+            ]
+        );
+```
+2. Отправив пользователя на страницу авторизации
+```php
+$authorizationUrl = $apiClient->getOAuthClient()->getAuthorizeUrl([
+            'state' => $state,
+            'mode' => 'post_message', //post_message - редирект произойдет в открытом окне, popup - редирект произойдет в окне родителе
+        ]);
+        header('Location: ' . $authorizationUrl);
+```
+
+Для получения Access Token можно использовать следующий код в обработчике, который будет находится по адресу, указаному в redirect_uri
+```php
+$accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code']);
+```
+
+Пример авторизации можно посмотреть в файле examples/get_token.php
+
+## Поддерживаемые методы
+
+Библиотека поддерживает большое количество методов API. Методы сгруппированы и объекты-сервисы. Получить объект сервиса можно вызвав необходимый метод у библиотеки, например:
+```php
+$leadsService = $apiClient->leads();
+```
+
+В данный момент доступны следующие сервисы:
+
+| Сервис            | Цель сервиса                  |
+|-------------------|-------------------------------|
+| notes             | Примечание сущности           |
+| tags              | Теги сущностей                |
+| tasks             | Задачи                        |
+| leads             | Сделки                        |
+| contacts          | Контакты                      |
+| companies         | Компании                      |
+| catalogs          | Каталоги                      |
+| catalogElements   | Элементы каталогов            |
+| customFields      | Пользовательские поля         |
+| customFieldGroups | Группы пользовательских полей |
+| account           | Информация об аккаунте        |
+| roles             | Роли пользователей            |
+| users             | Роли юзеров                   |
+| customersSegments | Сегменты покупателей          |
+| events            | Список событий                |
+| webhooks          | Вебхуки                       | 
+| unsorted          | Неразобранное                 |
+| pipelines         | Воронки сделок                |
+| statuses          | Статусы сделок                |
+| widgets           | Виджеты                       |
+| lossReason        | Причины отказа                |
+| transactions      | Покупки покупателей           |
+| customers         | Покупатели                    |
+| customersStatuses | Сегменты покупателя           |
+| getOAuthClient    | oAuth сервис                  |
+| getRequest        | Голый запросы                 |
+
 
 ### Пример
 В рамках данного репозитория имеется файл **index.php**, который реализует простейшую логику авторизации, сохранения токена, а также совершения запросов.
