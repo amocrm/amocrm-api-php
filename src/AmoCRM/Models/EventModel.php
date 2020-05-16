@@ -2,7 +2,9 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Exceptions\InvalidArgumentException;
+use AmoCRM\Models\Factories\EntityFactory;
 
 /**
  * Class EventModel
@@ -62,6 +64,11 @@ class EventModel extends BaseApiModel
      * @var int
      */
     protected $accountId;
+
+    /**
+     * @var BaseApiModel|null
+     */
+    protected $entity;
 
     /**
      * @return string
@@ -235,6 +242,26 @@ class EventModel extends BaseApiModel
     }
 
     /**
+     * @return null|BaseApiModel
+     */
+    public function getEntity(): ?BaseApiModel
+    {
+        return $this->entity;
+    }
+
+    /**
+     * @param BaseApiModel|null $entity
+     *
+     * @return EventModel
+     */
+    public function setEntity(?BaseApiModel $entity): EventModel
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
      * @param array $event
      *
      * @return self
@@ -257,6 +284,13 @@ class EventModel extends BaseApiModel
             ->setAccountId($event['account_id'])
             ->setValueBefore($event['value_before'])
             ->setValueAfter($event['value_after']);
+
+        $entityModel = null;
+        if (isset($event[AmoCRMApiRequest::EMBEDDED]['entity'])) {
+            $entityModel = EntityFactory::createForType($event['entity_type'], $event[AmoCRMApiRequest::EMBEDDED]['entity']);
+        }
+
+        $eventModel->setEntity($entityModel);
 
         return $eventModel;
     }
@@ -289,7 +323,13 @@ class EventModel extends BaseApiModel
      */
     public static function getAvailableWith(): array
     {
-        //todo
-        return [];
+        return [
+            self::CONTACT_NAME,
+            self::LEAD_NAME,
+            self::COMPANY_NAME,
+            self::CATALOG_ELEMENT_NAME,
+            self::CUSTOMER_NAME,
+            self::CATALOG_NAME,
+        ];
     }
 }

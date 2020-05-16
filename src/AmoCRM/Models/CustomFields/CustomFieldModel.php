@@ -437,9 +437,9 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getAccountId(): int
+    public function getAccountId(): ?int
     {
         return $this->accountId;
     }

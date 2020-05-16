@@ -8,6 +8,7 @@ use AmoCRM\Collections\Traits\PagesTrait;
 use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFields\Factories\CustomFieldModelFactory;
+use AmoCRM\Models\CustomFields\WithEnumCustomFieldModel;
 
 /**
  * Class CustomFieldsCollection
@@ -21,7 +22,7 @@ use AmoCRM\Models\CustomFields\Factories\CustomFieldModelFactory;
  * @method self offsetSet($offset, CustomFieldModel $value) : BaseApiCollection
  * @method self prepend(CustomFieldModel $value) : BaseApiCollection
  * @method self add(CustomFieldModel $value) : BaseApiCollection
- * @method CustomFieldModel getBy($key, $value) : ?BaseApiModel
+ * @method CustomFieldModel|WithEnumCustomFieldModel getBy($key, $value) : ?BaseApiModel
  */
 class CustomFieldsCollection extends BaseApiCollection implements HasPagesInterface
 {

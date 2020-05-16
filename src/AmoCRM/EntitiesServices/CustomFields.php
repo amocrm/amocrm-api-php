@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Filters\BaseEntityFilter;
@@ -16,6 +17,7 @@ use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
+use AmoCRM\Models\CustomFields\Factories\CustomFieldModelFactory;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 
 /**
@@ -23,7 +25,6 @@ use AmoCRM\Models\Interfaces\HasIdInterface;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method CustomFieldModel getOne($id, array $with = []) : ?CustomFieldModel
  * @method CustomFieldsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CustomFieldsCollection
  */
 class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterface, HasPageMethodsInterface
@@ -41,12 +42,12 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/custom_fields';
 
     /**
-     * @var string
+     * @var CustomFieldsCollection
      */
     protected $collectionClass = CustomFieldsCollection::class;
 
     /**
-     * @var string
+     * @var CustomFieldModel
      */
     public const ITEM_CLASS = CustomFieldModel::class;
 
@@ -110,6 +111,7 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
      * @param array $response
      *
      * @return BaseApiModel
+     * @throws BadTypeException
      */
     protected function processUpdateOne(BaseApiModel $model, array $response): BaseApiModel
     {
@@ -123,6 +125,7 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
      * @param array $response
      *
      * @return BaseApiCollection
+     * @throws BadTypeException
      */
     protected function processUpdate(BaseApiCollection $collection, array $response): BaseApiCollection
     {
@@ -134,6 +137,7 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
      * @param array $response
      *
      * @return BaseApiCollection
+     * @throws BadTypeException
      */
     protected function processAdd(BaseApiCollection $collection, array $response): BaseApiCollection
     {
@@ -145,6 +149,7 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
      * @param array $response
      *
      * @return BaseApiCollection
+     * @throws BadTypeException
      */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
@@ -154,6 +159,7 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
                 $initialEntity = $collection->getBy('requestId', $entity['request_id']);
                 if (!empty($initialEntity)) {
                     $this->processModelAction($initialEntity, $entity);
+                    $collection->replaceBy('requestId', $entity['request_id'], $initialEntity);
                 }
             }
         }
@@ -164,16 +170,12 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     /**
      * @param BaseApiModel|CustomFieldModel $apiModel
      * @param array $entity
+     *
+     * @throws BadTypeException
      */
-    protected function processModelAction(BaseApiModel $apiModel, array $entity): void
+    protected function processModelAction(BaseApiModel &$apiModel, array $entity): void
     {
-        if (isset($entity['id'])) {
-            $apiModel->setId($entity['id']);
-        }
-
-        if (isset($entity['name'])) {
-            $apiModel->setName($entity['name']);
-        }
+        $apiModel = CustomFieldModelFactory::createModel($entity);
     }
 
     /**
@@ -278,6 +280,30 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     }
 
     /**
+     * Получение одной конкретной сущности
+     * @param int|string $id
+     * @param array $with
+     *
+     * @return BaseApiModel|null|CustomFieldModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function getOne($id, array $with = []): ?BaseApiModel
+    {
+        $queryParams = [];
+        $itemClass = static::ITEM_CLASS;
+        $with = array_intersect($with, $itemClass::getAvailableWith());
+        if (!empty($with)) {
+            $queryParams['with'] = implode(',', $with);
+        }
+        $response = $this->request->get($this->getMethod() . '/' . $id, $queryParams);
+
+        $collection = !empty($response) ? $this->collectionClass::fromArray([$response]) : null;
+
+        return !empty($response) ? $collection->first() : null;
+    }
+
+    /**
      * @param BaseApiModel|CustomFieldModel $apiModel
      * @param array $with
      *
@@ -289,5 +315,20 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     {
         $apiModel->setEntityType($this->cleanEntityType);
         return $this->mergeModels($this->getOne($apiModel->getId(), $with), $apiModel);
+    }
+
+    /**
+     * @param BaseApiModel $objectA
+     * @param BaseApiModel $objectB
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkModelsClasses(
+        BaseApiModel $objectA,
+        BaseApiModel $objectB
+    ) {
+        if (!($objectA instanceof $objectB || $objectB instanceof $objectA)) {
+            throw new InvalidArgumentException('Can not merge 2 different objects');
+        }
     }
 }

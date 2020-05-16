@@ -339,4 +339,31 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
 
         return $result;
     }
+
+    /**
+     * Поиск объекта в коллекции по параметру объекта
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param BaseApiModel $replacement
+     *
+     * @return void
+     */
+    public function replaceBy($key, $value, BaseApiModel $replacement): void
+    {
+        $key = Str::ucfirst(Str::camel($key));
+        $getter = (method_exists(static::ITEM_CLASS, 'get' . $key) ? 'get' . $key : null);
+
+        if ($getter) {
+            foreach ($this->data as &$object) {
+                $fieldValue = $object->$getter();
+
+                if ($fieldValue === $value) {
+                    $object = $replacement;
+                    break;
+                }
+            }
+            unset($object);
+        }
+    }
 }
