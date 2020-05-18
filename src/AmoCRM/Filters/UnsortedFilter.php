@@ -3,11 +3,13 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
 class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use PagesFilterTrait;
+    use OrderTrait;
 
     /**
      * @var array|null
@@ -25,18 +27,6 @@ class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface
     private $pipelineId = null;
 
     /**
-     * @var array
-     */
-    private $order;
-
-    /**
-     * @var array
-     */
-    private $orderFields = [
-        'created_at'
-    ];
-
-    /**
      * @return array|null
      */
     public function getUids(): ?array
@@ -50,7 +40,7 @@ class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setUids(?array $uids): UnsortedFilter
     {
-        $this->uids = $uids;
+        $this->uids = array_map('strval', $uids);
 
         return $this;
     }
@@ -69,7 +59,7 @@ class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setCategory($category)
     {
-        $this->category = (array)$category;
+        $this->category =  array_map('strval', (array)$category);
 
         return $this;
     }
@@ -89,35 +79,6 @@ class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface
     public function setPipelineId(?int $pipelineId): UnsortedFilter
     {
         $this->pipelineId = $pipelineId;
-
-        return $this;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getOrder(): ?array
-    {
-        return $this->order;
-    }
-
-    /**
-     * @param array $order
-     * @return UnsortedFilter
-     */
-    public function setOrder(array $order): UnsortedFilter
-    {
-        $orderFieldsFiltered = [];
-
-        foreach ($order as $orderField => $orderDirection) {
-            if (in_array($orderField, $this->orderFields)) {
-                $orderFieldsFiltered[$orderField] = $orderDirection;
-            }
-        }
-
-        $this->orderFields = $orderFieldsFiltered;
-
-        $this->order = $orderFieldsFiltered;
 
         return $this;
     }
