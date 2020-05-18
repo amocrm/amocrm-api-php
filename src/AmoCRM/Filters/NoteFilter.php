@@ -3,10 +3,12 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
 class NoteFilter extends BaseEntityFilter implements HasPagesInterface
 {
+    use OrderTrait;
     use PagesFilterTrait;
 
     /**
@@ -18,6 +20,11 @@ class NoteFilter extends BaseEntityFilter implements HasPagesInterface
      * @var array
      */
     private $noteTypes = [];
+
+    /**
+     * @var int|array|null
+     */
+    private $updatedAt = null;
 
     /**
      * @return null|array
@@ -64,6 +71,30 @@ class NoteFilter extends BaseEntityFilter implements HasPagesInterface
     }
 
     /**
+     * @param BaseRangeFilter|int|null $updatedAt
+     *
+     * @return NoteFilter
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        if ($updatedAt instanceof BaseRangeFilter) {
+            $updatedAt = $updatedAt->toFilter();
+        }
+
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return array|int|null
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
      * @return array
      */
     public function buildFilter(): array
@@ -76,6 +107,14 @@ class NoteFilter extends BaseEntityFilter implements HasPagesInterface
 
         if (!empty($this->getNoteTypes())) {
             $filter['filter']['note_type'] = $this->getNoteTypes();
+        }
+
+        if (!empty($this->getUpdatedAt())) {
+            $filter['filter']['updated_at'] = $this->getUpdatedAt();
+        }
+
+        if (!is_null($this->getOrder())) {
+            $filter['order'] = $this->getOrder();
         }
 
         $filter = $this->buildPagesFilter($filter);
