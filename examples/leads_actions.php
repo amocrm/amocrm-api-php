@@ -35,16 +35,14 @@ $apiClient->setAccessToken($accessToken)
 
 $leadsService = $apiClient->leads();
 
-//try {
-//    $service = $apiClient->leads();
-//    $q = $service->get();
-//    $q = $service->nextPage($q);
-//} catch (AmoCRMApiException $e) {
-//    printError($e);
-//    die;
-//}
-//
-//die;
+//Получим сделки и следующую страницу сделок
+try {
+    $leadsCollection = $leadsService->get();
+    $leadsCollection = $leadsService->nextPage($leadsCollection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
 
 //Создадим сделку с заполненым полем типа текст
 $lead = new LeadModel();
@@ -89,7 +87,7 @@ try {
 //Создадим фильтр по id сделки и ответственному пользователю
 $filter = new LeadFilter();
 $filter->setIds([1, 5170965])
-    ->setResponsibleUserIds([504141]);
+    ->setResponsibleUserId([504141]);
 
 //Получим сделки по фильтру и с полем with=is_price_modified_by_robot,loss_reason,contacts
 try {

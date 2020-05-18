@@ -6,7 +6,7 @@ use AmoCRM\Filters\Interfaces\HasPagesInterface;
 use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
-class NoteFilter extends BaseEntityFilter implements HasPagesInterface
+class NotesFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use OrderTrait;
     use PagesFilterTrait;
@@ -36,7 +36,8 @@ class NoteFilter extends BaseEntityFilter implements HasPagesInterface
 
     /**
      * @param array $ids
-     * @return NoteFilter
+     *
+     * @return NotesFilter
      */
     public function setIds(array $ids): self
     {
@@ -59,7 +60,8 @@ class NoteFilter extends BaseEntityFilter implements HasPagesInterface
 
     /**
      * @param array $types
-     * @return NoteFilter
+     *
+     * @return NotesFilter
      */
     public function setNoteTypes(array $types): self
     {
@@ -73,7 +75,7 @@ class NoteFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param BaseRangeFilter|int|null $updatedAt
      *
-     * @return NoteFilter
+     * @return NotesFilter
      */
     public function setUpdatedAt($updatedAt)
     {

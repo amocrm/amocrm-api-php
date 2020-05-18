@@ -1,5 +1,6 @@
 <?php
 
+use AmoCRM\Filters\TagsFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
@@ -43,8 +44,8 @@ try {
 $tagsCollection->first()->setId(69079); //убрать, когда будет request_id в тегах
 
 //Найдем тег
-$tagsFilter = new \AmoCRM\Filters\TagFilter();
-$tagsFilter->setSearch('новый тег');
+$tagsFilter = new TagsFilter();
+$tagsFilter->setQuery('новый тег');
 try {
     $tagsCollection = $apiClient->tags(EntityTypesInterface::LEADS)->get($tagsFilter);
 } catch (AmoCRMApiException $e) {
