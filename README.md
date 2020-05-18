@@ -256,9 +256,10 @@ $leadsService = $apiClient->leads();
 
 2. getLinks Получить связи сущности
     1. model (BaseApiModel) - модель главной сущности
-    2. Результатом выполнения является коллекция связей (LinksCollection)
+    2. filter (LinksFilter) - фильтр для связей
+    3. Результатом выполнения является коллекция связей (LinksCollection)
     ```php
-    getLinks(BaseApiModel $model);
+    getLinks(BaseApiModel $model, LinksFilter $filter);
     ```
        
 3. unlink Отвязать сущность
@@ -395,6 +396,14 @@ $leadsService = $apiClient->leads();
 У ошибки типа AmoCRMApiErrorResponseException есть метод ```getValidationErrors()```, который вернет ошибки валидации входящих данных.
 
 ## Фильтры
+
+```todo```
+
+## Работа с Custom Fields сущностей
+
+```todo```
+
+## Константы
 
 ```todo```
 

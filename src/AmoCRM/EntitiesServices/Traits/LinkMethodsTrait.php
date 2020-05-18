@@ -8,6 +8,8 @@ use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMApiNoContentException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\InvalidArgumentException;
+use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Filters\LinksFilter;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\LinkModel;
@@ -44,15 +46,22 @@ trait LinkMethodsTrait
     }
 
     /**
-     * @param BaseApiModel $model
+     * @param BaseApiModel|HasIdInterface $model
+     *
+     * @param LinksFilter|null $filter
      *
      * @return LinksCollection
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function getLinks(BaseApiModel $model): LinksCollection
+    public function getLinks(BaseApiModel $model, LinksFilter $filter = null): LinksCollection
     {
-        $response = $this->request->get($this->getLinksMethod($model->getId()));
+        $queryParams = [];
+        if ($filter instanceof BaseEntityFilter) {
+            $queryParams = $filter->buildFilter();
+        }
+
+        $response = $this->request->get($this->getLinksMethod($model->getId()), $queryParams);
 
         return $this->getLinksCollectionFromResponse($response);
     }
