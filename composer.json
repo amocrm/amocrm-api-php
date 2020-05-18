@@ -1,5 +1,5 @@
 {
-  "name": "amocrm/api-client",
+  "name": "amocrm/amocrm-api-library",
   "description": "amoCRM API Client",
   "license": "MIT",
   "authors": [
@@ -27,7 +27,7 @@
     "symfony/dotenv": "^4.4"
   },
   "require-dev": {
-    "phpunit/phpunit": "*",
+    "phpunit/phpunit": "7.*.*",
     "squizlabs/php_codesniffer": "3.5.*"
   },
   "autoload": {
@@ -40,13 +40,17 @@
       "AmoCRM\\Models\\": "src/AmoCRM/Models",
       "AmoCRM\\Collections\\": "src/AmoCRM/Collections",
       "AmoCRM\\Filters\\": "src/AmoCRM/Filters",
-      "AmoCRM\\Factories\\": "src/AmoCRM/Factories",
       "AmoCRM\\Helpers\\": "src/AmoCRM/Helpers"
     }
   },
   "scripts": {
+    "test": "vendor/bin/phpunit -c phpunit.xml",
     "style:check": "vendor/bin/phpcs",
     "style:fix": "vendor/bin/phpcbf",
-    "serve": "php -S localhost:8181"
+    "serve": "php -S localhost:8181",
+    "git:prepush": [
+      "@style:check",
+      "@test"
+    ]
   }
 }
