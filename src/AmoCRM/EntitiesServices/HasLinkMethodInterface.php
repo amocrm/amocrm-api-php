@@ -21,6 +21,13 @@ interface HasLinkMethodInterface
     public function link(BaseApiModel $mainEntity, $linkedEntities): LinksCollection;
 
     /**
+     * @param BaseApiModel $model
+     *
+     * @return LinksCollection
+     */
+    public function getLinks(BaseApiModel $model): LinksCollection;
+
+    /**
      * @param BaseApiModel $mainEntity
      * @param $linkedEntities
      *

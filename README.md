@@ -110,7 +110,7 @@ $leadsService = $apiClient->leads();
 | getOAuthClient    | oAuth сервис                  |
 | getRequest        | Голый запросы                 |
 
-Для большинства сервисов есть базовый набор методов:
+#### Для большинства сервисов есть базовый набор методов:
 
 1. getOne - Получить 1 сущность
     1. id (int|string) - id сущности
@@ -168,7 +168,129 @@ $leadsService = $apiClient->leads();
 
 Некоторые сервисы имеют специфичные методы, ниже рассмотрим сервисы, которые имеют специфичные методы.
 
-```todo```
+#### Методы связей доступны в сервисах ```leads```, ```contacts```, ```companies```, ```customers```:
+1. link Привязать сущность
+    1. model (BaseApiModel) - модель главной сущности
+    2. links (LinksCollection|LinkModel) - коллекция или модель связи
+    3. Результатом выполнения является коллекция связей (LinksCollection)
+    ```php
+    link(BaseApiModel $model, $linkedEntities);
+    ```
+
+2. getLinks Получить связи сущности
+    1. model (BaseApiModel) - модель главной сущности
+    2. Результатом выполнения является коллекция связей (LinksCollection)
+    ```php
+    getLinks(BaseApiModel $model): LinksCollection;
+    ```
+       
+3. unlink Отвязать сущность
+    1. model (BaseApiModel) - модель главной сущности
+    2. links (LinksCollection|LinkModel) - коллекция или модель связи
+    3. Результатом выполнения является bool значение
+    ```php
+    unlink(BaseApiModel $model, $linkedEntities);
+    ```
+
+#### Методы удаления доступны в сервисах ```transactions```, ```lossReasons```, ```statuses```, ```pipelines```, ```customFields```, ```customFieldsGroups```, ```roles```, ```customersStatuses```:
+1. delete
+    1. model (BaseApiModel) - модель сущности
+    2. Результатом выполнения является bool значение
+    ```php
+    deleteOne(BaseApiModel $model);
+    ```
+   
+2. deleteOne
+    1. collection (BaseApiCollection) - коллекция моделей сущностей
+    2. Результатом выполнения является bool значение
+    ```php
+    deleteOne(BaseApiModel $model);
+    ```
+
+#### Методы доступные в сервисе ```account```
+1. getCurrent
+    1. with (array) - массив параметров with, которые поддерживает модель сервиса
+    2. Результатом выполнения является модель AccountModel
+    ```php
+    getCurrent(array $with = []);
+    ```
+   
+
+#### Методы доступные в сервисе ```unsorted```
+1. addOne Создать одну сущность:
+    1. model (BaseApiModel) - модель создаваемой сущности
+    2. Результатом выполнения будет модель сущности
+    ```php
+    addOne(BaseApiModel $model);
+    ```
+   
+2. add Создать сущности пакетно:
+    1. collection (BaseApiCollection) - коллекция моделей создаваемой сущности
+    2. Результатом выполнения будет коллекция моделей сущности
+    ```php
+    add(BaseApiCollection $collection);
+    ```
+
+3. link
+    1. model (BaseApiModel) - модель неразобранного
+    2. body (array) - массив дополнительной информации для привязки 
+    2. Результатом выполнения будет модель LinkUnsortedModel
+    ```php
+    link(BaseApiModel $unsortedModel, $body = []);
+    ```
+   
+4. accept
+    1. model (BaseApiModel) - модель неразобранного
+    2. body (array) - массив дополнительной информации для принятия 
+    2. Результатом выполнения будет модель AcceptUnsortedModel
+    ```php
+    accept(BaseApiModel $unsortedModel, $body = []);
+    ```
+
+5. decline
+    1. model (BaseApiModel) - модель неразобранного
+    2. body (array) - массив дополнительной информации для отклонения 
+    2. Результатом выполнения будет модель DeclineUnsortedModel
+    ```php
+    decline(BaseApiModel $unsortedModel, $body = []);
+    ```
+
+6. summary
+    1. filter (BaseEntityFilter) - фильтр для сущности
+    2. Результатом выполнения будет модель UnsortedSummaryModel
+    ```php
+    summary(BaseEntityFilter $filter);
+    ```
+   
+#### Методы доступные в сервисе ```webhooks```
+1. subscribe
+    1. model (WebhookModel) - модель вебхука
+    2. Результатом выполнения является модель WebhookModel
+    ```php
+    subscribe(WebhookModel $webhookModel);
+    ```
+   
+2. unsubscribe
+    1. model (WebhookModel) - модель вебхука
+    2. Результатом выполнения является bool значение
+    ```php
+    unsubscribe(WebhookModel $webhookModel);
+    ```
+
+#### Методы доступные в сервисе ```widgets```
+1. install
+    1. model (WidgetModel) - модель виджета
+    2. Результатом выполнения является модель WidgetModel
+    ```php
+    install(WidgetModel $widgetModel);
+    ```
+   
+2. uninstall
+    1. model (WidgetModel) - модель виджета
+    2. Результатом выполнения является модель WidgetModel
+    ```php
+    uninstall(WidgetModel $widgetModel);
+    ```
 
 ## Обработка ошибок
 

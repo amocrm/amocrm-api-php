@@ -20,7 +20,9 @@ use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Unsorted\AcceptUnsortedModel;
 use AmoCRM\Models\Unsorted\BaseUnsortedModel;
 use AmoCRM\Models\Unsorted\DeclineUnsortedModel;
+use AmoCRM\Models\Unsorted\FormUnsortedModel;
 use AmoCRM\Models\Unsorted\LinkUnsortedModel;
+use AmoCRM\Models\Unsorted\SipUnsortedModel;
 use AmoCRM\Models\Unsorted\UnsortedSummaryModel;
 
 /**
@@ -215,7 +217,7 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
 
     /**
      * Добавление сщуности
-     * @param BaseApiModel|BaseUnsortedModel $model
+     * @param BaseApiModel|BaseUnsortedModel|SipUnsortedModel|FormUnsortedModel $model
      *
      * @return BaseApiModel|BaseUnsortedModel
      * @throws AmoCRMApiException

@@ -44,6 +44,20 @@ trait LinkMethodsTrait
     }
 
     /**
+     * @param BaseApiModel $model
+     *
+     * @return LinksCollection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function getLinks(BaseApiModel $model): LinksCollection
+    {
+        $response = $this->request->get($this->getLinksMethod($model->getId()));
+
+        return $this->getLinksCollectionFromResponse($response);
+    }
+
+    /**
      * @param BaseApiModel $mainEntity
      * @param LinksCollection|LinkModel $linkedEntities
      *
@@ -130,6 +144,16 @@ trait LinkMethodsTrait
         $action = $isLink ? 'link' : 'unlink';
 
         return $this->getMethod() . '/' . $id . '/' . $action;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return string
+     */
+    protected function getLinksMethod(int $id): string
+    {
+        return $this->getMethod() . '/' . $id . '/links';
     }
 
     /**
