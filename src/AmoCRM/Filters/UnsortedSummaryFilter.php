@@ -5,7 +5,7 @@ namespace AmoCRM\Filters;
 class UnsortedSummaryFilter extends BaseEntityFilter
 {
     /**
-     * @var array|null
+     * @var array|int|null
      */
     private $createdAt = null;
 
@@ -42,11 +42,15 @@ class UnsortedSummaryFilter extends BaseEntityFilter
     }
 
     /**
-     * @param array|null $createdAt
+     * @param BaseRangeFilter|int|null $createdAt
      * @return UnsortedSummaryFilter
      */
-    public function setCreatedAt(?array $createdAt): UnsortedSummaryFilter
+    public function setCreatedAt($createdAt): UnsortedSummaryFilter
     {
+        if ($createdAt instanceof BaseRangeFilter) {
+            $createdAt = $createdAt->toFilter();
+        }
+
         $this->createdAt = $createdAt;
 
         return $this;
