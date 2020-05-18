@@ -1,14 +1,7 @@
 <?php
 
-use AmoCRM\Collections\ContactsCollection;
-use AmoCRM\Collections\Customers\CustomersCollection;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Exceptions\AmoCRMoAuthApiException;
-use AmoCRM\Filters\ContactFilter;
-use AmoCRM\Models\ContactModel;
-use AmoCRM\Models\Customers\CustomerModel;
-use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 include_once __DIR__ . '/bootstrap.php';

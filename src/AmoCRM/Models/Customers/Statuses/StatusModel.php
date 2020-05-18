@@ -56,7 +56,7 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
 
     /**
      * @var array
-     * //todo make collection
+     * //todo make collection when conditions will be available in api
      */
     protected $conditions;
 

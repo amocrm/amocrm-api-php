@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
@@ -174,6 +175,10 @@ class Segments extends BaseEntity implements HasPageMethodsInterface
             $apiModel->setColor($entity['color']);
         }
 
-        //todo other свойства
+        $customFieldsValues = new CustomFieldsValuesCollection();
+        if (isset($entity['custom_fields_values'])) {
+            $customFieldsValues = CustomFieldsValuesCollection::fromArray($entity['custom_fields_values']);
+        }
+        $apiModel->setCustomFieldsValues($customFieldsValues);
     }
 }

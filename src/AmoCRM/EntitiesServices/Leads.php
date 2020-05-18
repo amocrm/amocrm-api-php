@@ -26,6 +26,8 @@ use AmoCRM\Models\LeadModel;
  * @method LeadModel updateOne(BaseApiModel $apiModel) : LeadModel
  * @method LeadsCollection update(BaseApiCollection $collection) : LeadsCollection
  * @method LeadModel syncOne(BaseApiModel $apiModel, $with = []) : LeadModel
+ * @method link(BaseApiModel $mainEntity, $linkedEntities) : LinksCollection
+ * @method unlink(BaseApiModel $mainEntity, $linkedEntities) : bool
  */
 class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {
