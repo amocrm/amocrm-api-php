@@ -3,10 +3,12 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
-class LeadFilter extends BaseEntityFilter implements HasPagesInterface
+class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
 {
+    use OrderTrait;
     use PagesFilterTrait;
 
     /**
@@ -85,7 +87,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|int|null $ids
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setIds($ids)
     {
@@ -109,7 +111,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|string|null $names
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setNames($names)
     {
@@ -133,7 +135,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param BaseRangeFilter|int|null $price
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setPrice($price)
     {
@@ -157,7 +159,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|int|null $createdBy
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setCreatedBy($createdBy)
     {
@@ -181,7 +183,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|int|null $updatedBy
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setUpdatedBy($updatedBy)
     {
@@ -205,7 +207,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|int|null $responsibleUserId
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setResponsibleUserId($responsibleUserId)
     {
@@ -229,7 +231,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param BaseRangeFilter|int|null $createdAt
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setCreatedAt($createdAt)
     {
@@ -253,7 +255,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param BaseRangeFilter|int|null $updatedAt
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -277,7 +279,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param BaseRangeFilter|int|null $closedAt
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setClosedAt($closedAt)
     {
@@ -301,7 +303,7 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param BaseRangeFilter|int|null $closestTaskAt
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
     public function setClosestTaskAt($closestTaskAt)
     {
@@ -325,9 +327,9 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|null $statuses
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
-    public function setStatuses(?array $statuses): LeadFilter
+    public function setStatuses(?array $statuses): LeadsFilter
     {
         $statusesFilter = [];
 
@@ -354,9 +356,9 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|null $customFieldsValues
      *
-     * @return LeadFilter
+     * @return LeadsFilter
      */
-    public function setCustomFieldsValues(?array $customFieldsValues): LeadFilter
+    public function setCustomFieldsValues(?array $customFieldsValues): LeadsFilter
     {
         $cfFilter = [];
 
@@ -383,7 +385,8 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
 
     /**
      * @param string|null $query
-     * @return LeadFilter
+     *
+     * @return LeadsFilter
      */
     public function setQuery(?string $query): self
     {
@@ -451,6 +454,10 @@ class LeadFilter extends BaseEntityFilter implements HasPagesInterface
 
         if (!is_null($this->getQuery())) {
             $filter['query'] = $this->getQuery();
+        }
+
+        if (!is_null($this->getOrder())) {
+            $filter['order'] = $this->getOrder();
         }
 
         $filter = $this->buildPagesFilter($filter);

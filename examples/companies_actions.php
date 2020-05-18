@@ -5,7 +5,7 @@ use AmoCRM\Collections\CompaniesCollection;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Filters\CatalogElementsFilter;
-use AmoCRM\Filters\CompanyFilter;
+use AmoCRM\Filters\CompaniesFilter;
 use AmoCRM\Models\CompanyModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -79,7 +79,7 @@ try {
 }
 
 //Создадим фильтр по id компании
-$filter = new CompanyFilter();
+$filter = new CompaniesFilter();
 $filter->setIds([1]);
 
 //Получим компании по фильтру

@@ -3,7 +3,7 @@
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Filters\ContactFilter;
+use AmoCRM\Filters\ContactsFilter;
 use AmoCRM\Models\ContactModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -72,7 +72,7 @@ try {
 }
 
 //Создадим фильтр по id контакта
-$filter = new ContactFilter();
+$filter = new ContactsFilter();
 $filter->setIds([3]);
 
 //Получим сделки по фильтру

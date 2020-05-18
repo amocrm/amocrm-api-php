@@ -264,7 +264,6 @@ class TasksFilter
     {
         $filter = [];
 
-        //todo
         if (!is_null($this->getIds())) {
             $filter['filter']['id'] = $this->getIds();
         }

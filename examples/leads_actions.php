@@ -5,7 +5,7 @@ use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Filters\LeadFilter;
+use AmoCRM\Filters\LeadsFilter;
 use AmoCRM\Models\CustomFieldsValues\TextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\NullCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\TextCustomFieldValueCollection;
@@ -85,7 +85,7 @@ try {
 
 
 //Создадим фильтр по id сделки и ответственному пользователю
-$filter = new LeadFilter();
+$filter = new LeadsFilter();
 $filter->setIds([1, 5170965])
     ->setResponsibleUserId([504141]);
 

@@ -3,10 +3,12 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
-class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
+class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
 {
+    use OrderTrait;
     use PagesFilterTrait;
 
     /**
@@ -70,7 +72,7 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|int|null $ids
      *
-     * @return CompanyFilter
+     * @return ContactsFilter
      */
     public function setIds($ids)
     {
@@ -94,7 +96,7 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|string|null $names
      *
-     * @return CompanyFilter
+     * @return ContactsFilter
      */
     public function setNames($names)
     {
@@ -118,7 +120,7 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|int|null $createdBy
      *
-     * @return CompanyFilter
+     * @return ContactsFilter
      */
     public function setCreatedBy($createdBy)
     {
@@ -142,7 +144,7 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|int|null $updatedBy
      *
-     * @return CompanyFilter
+     * @return ContactsFilter
      */
     public function setUpdatedBy($updatedBy)
     {
@@ -166,7 +168,7 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|int|null $responsibleUserId
      *
-     * @return CompanyFilter
+     * @return ContactsFilter
      */
     public function setResponsibleUserId($responsibleUserId)
     {
@@ -190,7 +192,7 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param BaseRangeFilter|int|null $createdAt
      *
-     * @return CompanyFilter
+     * @return ContactsFilter
      */
     public function setCreatedAt($createdAt)
     {
@@ -214,7 +216,7 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param BaseRangeFilter|int|null $updatedAt
      *
-     * @return CompanyFilter
+     * @return ContactsFilter
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -238,7 +240,7 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param BaseRangeFilter|int|null $closestTaskAt
      *
-     * @return CompanyFilter
+     * @return ContactsFilter
      */
     public function setClosestTaskAt($closestTaskAt)
     {
@@ -262,9 +264,9 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @param array|null $customFieldsValues
      *
-     * @return CompanyFilter
+     * @return ContactsFilter
      */
-    public function setCustomFieldsValues(?array $customFieldsValues): CompanyFilter
+    public function setCustomFieldsValues(?array $customFieldsValues): ContactsFilter
     {
         $cfFilter = [];
 
@@ -291,7 +293,8 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
 
     /**
      * @param string|null $query
-     * @return CompanyFilter
+     *
+     * @return ContactsFilter
      */
     public function setQuery(?string $query): self
     {
@@ -347,6 +350,10 @@ class CompanyFilter extends BaseEntityFilter implements HasPagesInterface
 
         if (!is_null($this->getQuery())) {
             $filter['query'] = $this->getQuery();
+        }
+
+        if (!is_null($this->getOrder())) {
+            $filter['order'] = $this->getOrder();
         }
 
         $filter = $this->buildPagesFilter($filter);

@@ -7,6 +7,7 @@ use AmoCRM\Filters\Traits\PagesFilterTrait;
 
 class CatalogElementsFilter extends BaseEntityFilter implements HasPagesInterface
 {
+    //todo support order and other fields
     use PagesFilterTrait;
 
     /**
@@ -75,7 +76,7 @@ class CatalogElementsFilter extends BaseEntityFilter implements HasPagesInterfac
         }
 
         if (!is_null($this->getQuery())) {
-            $filter['term'] = $this->getQuery();
+            $filter['query'] = $this->getQuery();
         }
 
         $filter = $this->buildPagesFilter($filter);
