@@ -26,9 +26,12 @@ use AmoCRM\EntitiesServices\Users;
 use AmoCRM\EntitiesServices\Webhooks;
 use AmoCRM\EntitiesServices\Widgets;
 use AmoCRM\Exceptions\InvalidArgumentException;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use League\OAuth2\Client\Token\AccessToken;
 use AmoCRM\EntitiesServices\Customers\Statuses as CustomersStatuses;
+
+use function is_callable;
 
 /**
  * Class AmoCRMApiClient
@@ -122,7 +125,9 @@ class AmoCRMApiClient
     private function buildRequest(): AmoCRMApiRequest
     {
         $oAuthClient = $this->getOAuthClient();
-        $oAuthClient->setAccessTokenRefreshCallback($this->accessTokenRefreshCallback);
+        if (is_callable($this->accessTokenRefreshCallback)) {
+            $oAuthClient->setAccessTokenRefreshCallback($this->accessTokenRefreshCallback);
+        }
 
         return new AmoCRMApiRequest($this->accessToken, $oAuthClient);
     }
@@ -239,6 +244,7 @@ class AmoCRMApiClient
      * @param int|null $catalogId
      *
      * @return CatalogElements
+     * @throws InvalidArgumentException
      */
     public function catalogElements(int $catalogId = null)
     {
@@ -246,6 +252,10 @@ class AmoCRMApiClient
         $service = new CatalogElements($request);
         if (!is_null($catalogId)) {
             $service->setEntityId($catalogId);
+        } else {
+            if ($catalogId < EntityTypesInterface::MIN_CATALOG_ID) {
+                throw new InvalidArgumentException('Catalog id is invalid');
+            }
         }
 
         return $service;
