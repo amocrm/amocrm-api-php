@@ -277,7 +277,7 @@ abstract class BaseEntity
 //    public function sync(BaseApiCollection $collection, $with = []): BaseApiCollection
 //    {
 //        $ids = $collection->pluck('id');
-//        //TODO implement sync()
+//        //TODO implement sync() and pluck();
 //
 //        $freshModel = $this->mergeModels($this->get($collection, $with), $apiModel);
 //

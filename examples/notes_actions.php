@@ -1,6 +1,7 @@
 <?php
 
-use AmoCRM\AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\EntitiesServices\Interfaces\HasParentEntity;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\NotesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\NoteType\CallInNote;
@@ -58,10 +59,33 @@ $notesCollection->add($smsNote);
 $notesCollection->add($callInNote);
 
 try {
-    $notesCollection = $apiClient->notes(EntityTypesInterface::LEADS)->add($notesCollection);
+    $leadNotesService = $apiClient->notes(EntityTypesInterface::LEADS);
+    $notesCollection = $leadNotesService->add($notesCollection);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
 }
 
-var_dump($notesCollection->toArray());
+//Получение примечаний
+try {
+    $notesCollection = $leadNotesService->get();
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+//Получение одного примечания, в метод getOne необходимо передать массив,
+//так как для получения конкретного примечания нужно знать и id сущности и id примечания
+try {
+    $noteModel = $leadNotesService->getOne(
+        [
+            HasParentEntity::ID_KEY => 9,
+            HasParentEntity::PARENT_ID_KEY => 1,
+        ]
+    );
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+var_dump($noteModel->toArray());

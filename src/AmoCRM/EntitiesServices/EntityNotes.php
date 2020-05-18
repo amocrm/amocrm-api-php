@@ -50,6 +50,11 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
     public const ITEM_CLASS = NoteModel::class;
 
     /**
+     * @var string
+     */
+    protected $methodWithParent = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/%s/notes/%s';
+
+    /**
      * @param string $entityType
      *
      * @return string

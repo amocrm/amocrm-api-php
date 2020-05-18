@@ -58,7 +58,8 @@ $authorizationUrl = $apiClient->getOAuthClient()->getAuthorizeUrl([
             'state' => $state,
             'mode' => 'post_message', //post_message - редирект произойдет в открытом окне, popup - редирект произойдет в окне родителе
         ]);
-        header('Location: ' . $authorizationUrl);
+
+header('Location: ' . $authorizationUrl);
 ```
 
 Для получения Access Token можно использовать следующий код в обработчике, который будет находится по адресу, указаному в redirect_uri

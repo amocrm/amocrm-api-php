@@ -6,7 +6,10 @@ use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Filters\LeadFilter;
-use AmoCRM\Models\CustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\TextCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\NullCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\TextCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\TextCustomFieldValueModel;
 use AmoCRM\Models\LeadModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -30,6 +33,8 @@ $apiClient->setAccessToken($accessToken)
     );
 
 
+$leadsService = $apiClient->leads();
+
 //try {
 //    $service = $apiClient->leads();
 //    $q = $service->get();
@@ -40,19 +45,28 @@ $apiClient->setAccessToken($accessToken)
 //}
 //
 //die;
-//Создадим сделку
+
+//Создадим сделку с заполненым полем типа текст
 $lead = new LeadModel();
+$leadCustomFieldsValues = new CustomFieldsValuesCollection();
+$textCustomFieldValueModel = new TextCustomFieldValuesModel();
+$textCustomFieldValueModel->setFieldId(269303);
+$textCustomFieldValueModel->setValues(
+    (new TextCustomFieldValueCollection())
+        ->add((new TextCustomFieldValueModel())->setValue('Текст'))
+);
+$leadCustomFieldsValues->add($textCustomFieldValueModel);
+$lead->setCustomFieldsValues($leadCustomFieldsValues);
 $lead->setName('Example');
 
 $leadsCollection = new LeadsCollection();
 $leadsCollection->add($lead);
 try {
-    $apiClient->leads()->add($leadsCollection);
+    $lead = $leadsService->addOne($lead);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
 }
-
 
 //Получим контакт по ID, сделку и првяжем контакт к сделке
 try {
@@ -91,26 +105,33 @@ try {
 foreach ($leads as $lead) {
     //Получим коллекцию значений полей сделки
     $customFields = $lead->getCustomFieldsValues();
-    /** @var CustomFieldValueModel $textField */
+
     //Получем значение поля по его ID
     if (!empty($customFields)) {
-        $textField = $customFields->getBy('fieldId', 231189);
+        $textField = $customFields->getBy('fieldId', 269303);
+        $textFieldValues = $textField->getValues();
     } else {
-        $customFields = new CustomFieldsValuesCollection();
+        $textField = new CustomFieldsValuesCollection();
     }
+
     //Если значения нет, то создадим новый объект поля и добавим его в колекцию значенй
-    if (empty($textField)) {
-        $textField = (new CustomFieldValueModel())->setFieldId(231189);
-        $customFields->add($textField);
+    if (empty($textFieldValues)) {
+        $textFieldValues = (new TextCustomFieldValuesModel())->setFieldId(269303);
+        $textField->add($textFieldValues);
     }
 
     //Установим значение поля
     $textField->setValues(
-        [
-            [
-                'value' => 'asfasf',
-            ],
-        ]
+        (new TextCustomFieldValueCollection())
+            ->add(
+                (new TextCustomFieldValueModel())
+                    ->setValue('новое значение')
+            )
+    );
+
+    //Или удалим значение поля
+    $textField->setValues(
+        (new NullCustomFieldValueCollection())
     );
 
     //Установим название
