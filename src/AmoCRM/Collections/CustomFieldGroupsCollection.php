@@ -8,7 +8,7 @@ use AmoCRM\Models\CustomFieldGroupModel;
  * Class CustomFieldGroupsCollection
  *
  * @package AmoCRM\Collections
- * 
+ *
  * @method CustomFieldGroupModel current() : ?BaseApiModel
  * @method CustomFieldGroupModel last() : ?BaseApiModel
  * @method CustomFieldGroupModel first() : ?BaseApiModel

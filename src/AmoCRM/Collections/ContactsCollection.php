@@ -10,7 +10,7 @@ use AmoCRM\Models\ContactModel;
  * Class ContactsCollection
  *
  * @package AmoCRM\Collections
- * 
+ *
  * @method ContactModel current() : ?BaseApiModel
  * @method ContactModel last() : ?BaseApiModel
  * @method ContactModel first() : ?BaseApiModel

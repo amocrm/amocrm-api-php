@@ -70,7 +70,27 @@ $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code'])
 Пример авторизации можно посмотреть в файле examples/get_token.php
 
 ## Подход к работе с библиотекой
-```todo```
+В библиотеке используется сервисный подход. Для каждой сущности имеется сервис.
+Для каждого метода имеется свой объект коллекции и модели.
+Работа с данными происходит через коллекции и методы библиотеки.
+
+Модели и коллекции имеют методы ```toArray()``` и ```toApi()```, методы возвращают представление объекта в виде массива и в виде данных, отправляемых в API.
+
+Также для работы с коллекциями имеют следующие методы:
+1. add(BaseApiModel $model): self - добавляет модель в конец коллекции.
+2. prepend(BaseApiModel $value): self - добавляет модель в начало коллекции.
+3. all(): array - возвращает массив моделей в коллекции.
+4. first(): ?BaseApiModel - получение первой модели в коллекции.
+5. last(): ?BaseApiModel - получение последней модели в коллекции.
+6. count(): int - получение кол-ва элементов в коллекции.
+7. isEmpty(): bool - проверяет, что коллекция не пустая.
+8. getBy($key, $value): ?BaseApiModel - получение модели по значению ключа.
+9. replaceBy($key, $value, BaseApiModel $replacement): void - замена модели по значению ключа.
+
+При работе с библиотекой необходимо не забывать о лимитах API amoCRM.
+Для оптимальной работы с данными лучше всего создавать/изменять за раз не более 50 сущностей в методах, где есть пакетная обработка.
+
+Нужно не забывать про обработку ошибок, а также не забывать о безопасности хранилища токенов. **Утечка токена грозит потерей досутпа к аккаунту.**
 
 ## Поддерживаемые методы и сервисы
 
@@ -168,6 +188,63 @@ $leadsService = $apiClient->leads();
 
 Некоторые сервисы имеют специфичные методы, ниже рассмотрим сервисы, которые имеют специфичные методы.
 
+#### Методы доступные в сервисе ```getOAuthClient```:
+1. getAuthorizeUrl получение ссылки на авторизация
+    1. options (array)
+        1. state (string) состояние приложения
+    2. Результатом выполнения будет строка с ссылкой на авторизация приложения
+    ```php
+    getAuthorizeUrl(array $options = []);
+    ```
+   
+2. getAccessTokenByCode получение аксес токена по коду авторизации
+    1. code (string) код авторизации
+    2. Результатом выполнения будет объект (AccessTokenInterface)
+    ```php
+    getAccessTokenByCode(string $code);
+    ```
+   
+3. getAccessTokenByRefreshToken получение аксес токена по рефреш токену
+    1. accessToken (AccessTokenInterface) объект аксес токена
+    2. Результатом выполнения будет объект (AccessTokenInterface)
+    ```php
+    getAccessTokenByRefreshToken(AccessTokenInterface $accessToken);
+    ```
+   
+4. setBaseDomain установка базового домена, куда будут отправляться запросы необходимые для работы с токенами
+    1. domain (string)
+    ```php
+    setBaseDomain(string $domain);
+    ```
+
+5. setAccessTokenRefreshCallback установка callback, который будет вызван при обновлении аксес токена
+    1. function (callable)
+    ```php
+    setAccessTokenRefreshCallback(callable $function);
+    ```
+
+5. getOAuthButton установка callback, который будет вызван при обновлении аксес токена
+    1. options (array)
+        1. state (string) состояние приложения
+        2. color (string)
+        3. title (string)
+        4. compact (bool)
+        5. class_name (string)
+        6. error_callback (string)
+        7. mode (string)
+    2. Результатом выполнения будет строка с HTML кодом кнопки авторизации
+    ```php
+    getOAuthButton(array $options = []);
+    ```
+   
+6. exchangeApiKey метод для обмена API ключа на код авторизации
+    1. login - email пользователя, для которого обменивается API ключ
+    2. apiKey - API ключ пользователя
+    3. Код авторизации будет прислан на указанный в настройках приложения redirect_uri
+    ```php
+    exchangeApiKey(string $login, string $apiKey);
+    ```
+
 #### Методы связей доступны в сервисах ```leads```, ```contacts```, ```companies```, ```customers```:
 1. link Привязать сущность
     1. model (BaseApiModel) - модель главной сущности
@@ -181,7 +258,7 @@ $leadsService = $apiClient->leads();
     1. model (BaseApiModel) - модель главной сущности
     2. Результатом выполнения является коллекция связей (LinksCollection)
     ```php
-    getLinks(BaseApiModel $model): LinksCollection;
+    getLinks(BaseApiModel $model);
     ```
        
 3. unlink Отвязать сущность
@@ -333,9 +410,9 @@ CLIENT_REDIRECT_URI=
 
 Затем вы можете поднять локальный сервер командой ```composer serve```. После конфигурацию необходимо перейти в браузере на страницу
 ```http://localhost:8181/examples/get_token.php``` для получения Access Token.
-Для получения доступа к вашему локальному серверу из вне, можно использовать сервис ngrok.io. 
+Для получения доступа к вашему локальному серверу из вне можно использовать сервис ngrok.io. 
 
-После авторизации вы можете проверить работу примеров обращаясь к ним из браузера. Стоит отметить, что для корректной работы примеров
+После авторизации вы можете проверить работу примеров, обращаясь к ним из браузера. Стоит отметить, что для корректной работы примеров
 необходимо проверить ID сущностей в них.
 
 ## License

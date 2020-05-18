@@ -15,6 +15,8 @@ use InvalidArgumentException;
  */
 class SegmentModel extends BaseApiModel implements HasIdInterface
 {
+    use RequestIdTrait;
+
     public const SEGMENT_COLORS = [
         '10599d',
         '2176ff',
@@ -57,8 +59,6 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
         '6461a0',
         '4f517d',
     ];
-
-    use RequestIdTrait;
 
     /**
      * @var int

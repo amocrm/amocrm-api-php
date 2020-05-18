@@ -68,13 +68,14 @@ try {
 
 $segmentModel->setCustomFieldsValues(
     (new CustomFieldsValuesCollection())
-    ->add((new TextCustomFieldValuesModel())
-        ->setFieldId($field->getId())
-        ->setValues(
-            (new TextCustomFieldValueCollection())
-                ->add((new TextCustomFieldValueModel())->setValue('Текст'))
+        ->add(
+            (new TextCustomFieldValuesModel())
+                ->setFieldId($field->getId())
+                ->setValues(
+                    (new TextCustomFieldValueCollection())
+                        ->add((new TextCustomFieldValueModel())->setValue('Текст'))
+                )
         )
-    )
 );
 
 //Обновим покупателя
