@@ -5,7 +5,7 @@ namespace AmoCRM\Filters;
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
-class TagFilter extends BaseEntityFilter implements HasPagesInterface
+class TagsFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use PagesFilterTrait;
 
@@ -17,7 +17,7 @@ class TagFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @var string|null
      */
-    private $search = null;
+    private $query = null;
 
     /**
      * @var string|null
@@ -34,7 +34,8 @@ class TagFilter extends BaseEntityFilter implements HasPagesInterface
 
     /**
      * @param array $ids
-     * @return TagFilter
+     *
+     * @return TagsFilter
      */
     public function setIds(array $ids): self
     {
@@ -50,19 +51,20 @@ class TagFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @return string|null
      */
-    public function getSearch(): ?string
+    public function getQuery(): ?string
     {
-        return $this->search;
+        return $this->query;
     }
 
     /**
      * @param string|null $query
-     * @return TagFilter
+     *
+     * @return TagsFilter
      */
-    public function setSearch(?string $query): self
+    public function setQuery(?string $query): self
     {
         if (!empty($query)) {
-            $this->search = (string)$query;
+            $this->query = (string)$query;
         }
 
         return $this;
@@ -78,7 +80,8 @@ class TagFilter extends BaseEntityFilter implements HasPagesInterface
 
     /**
      * @param string|null $name
-     * @return TagFilter
+     *
+     * @return TagsFilter
      */
     public function setName(?string $name): self
     {
@@ -100,8 +103,8 @@ class TagFilter extends BaseEntityFilter implements HasPagesInterface
             $filter['filter']['id'] = $this->getIds();
         }
 
-        if (!is_null($this->getSearch())) {
-            $filter['search'] = $this->getSearch();
+        if (!is_null($this->getQuery())) {
+            $filter['query'] = $this->getQuery();
         }
 
         if (!is_null($this->getName())) {
