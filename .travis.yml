@@ -19,5 +19,9 @@ install:
   - if [[ $MINIMUM_VERSIONS = false ]]; then composer install; fi
   - if [[ $MINIMUM_VERSIONS = true ]]; then composer update --no-interaction --prefer-lowest; fi
 
-script:
-  - composer run style:check
+jobs:
+  include:
+    - stage: style check
+      script: composer run style:check
+    - stage: tests
+      script: composer run test
