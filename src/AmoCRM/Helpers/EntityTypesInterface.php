@@ -4,37 +4,37 @@ namespace AmoCRM\Helpers;
 
 interface EntityTypesInterface
 {
-    const LEADS = 'leads';
-    const LEADS_PIPELINES = 'pipelines';
-    const LEADS_LOSS_REASONS = 'loss_reasons';
-    const LEADS_STATUSES = 'statuses';
-    const CONTACTS = 'contacts';
-    const CATALOGS = 'catalogs';
-    const COMPANIES = 'companies';
-    const CUSTOMERS = 'customers';
-    const CUSTOMERS_TRANSACTIONS = 'transactions';
-    const EVENTS = 'events';
-    const NOTES = 'notes';
-    const TAGS = 'tags';
-    const TASKS = 'tasks';
-    const WEBHOOKS = 'webhooks';
-    const UNSORTED = 'unsorted';
-    const CATALOG_ELEMENTS = 'elements';
-    const CATALOG_ELEMENTS_FULL = 'catalog_elements';
-    const USER_ROLES = 'roles';
-    const USERS = 'users';
-    const CUSTOMERS_SEGMENTS = 'segments';
-    const CUSTOMERS_STATUSES = 'statuses';
-    const WIDGETS = 'widgets';
-    const STATUS_RIGHTS = 'status_rights';
+    public const LEADS = 'leads';
+    public const LEADS_PIPELINES = 'pipelines';
+    public const LEADS_LOSS_REASONS = 'loss_reasons';
+    public const LEADS_STATUSES = 'statuses';
+    public const CONTACTS = 'contacts';
+    public const CATALOGS = 'catalogs';
+    public const COMPANIES = 'companies';
+    public const CUSTOMERS = 'customers';
+    public const CUSTOMERS_TRANSACTIONS = 'transactions';
+    public const EVENTS = 'events';
+    public const NOTES = 'notes';
+    public const TAGS = 'tags';
+    public const TASKS = 'tasks';
+    public const WEBHOOKS = 'webhooks';
+    public const UNSORTED = 'unsorted';
+    public const CATALOG_ELEMENTS = 'elements';
+    public const CATALOG_ELEMENTS_FULL = 'catalog_elements';
+    public const USER_ROLES = 'roles';
+    public const USERS = 'users';
+    public const CUSTOMERS_SEGMENTS = 'segments';
+    public const CUSTOMERS_STATUSES = 'statuses';
+    public const WIDGETS = 'widgets';
+    public const STATUS_RIGHTS = 'status_rights';
 
 
-    const CUSTOM_FIELDS = 'custom_fields';
-    const CUSTOM_FIELD_GROUPS = 'custom_field_groups';
+    public const CUSTOM_FIELDS = 'custom_fields';
+    public const CUSTOM_FIELD_GROUPS = 'custom_field_groups';
 
-    const DEFAULT_CATALOG_TYPE_STRING = 'regular';
-    const INVOICES_CATALOG_TYPE_STRING = 'invoices';
-    const PRODUCTS_CATALOG_TYPE_STRING = 'products';
+    public const DEFAULT_CATALOG_TYPE_STRING = 'regular';
+    public const INVOICES_CATALOG_TYPE_STRING = 'invoices';
+    public const PRODUCTS_CATALOG_TYPE_STRING = 'products';
 
-    const MIN_CATALOG_ID = 1000;
+    public const MIN_CATALOG_ID = 1000;
 }

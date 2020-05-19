@@ -21,10 +21,10 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     use RequestIdTrait;
     use GetLinkTrait;
 
-    const CATALOG_ELEMENTS = 'catalog_elements';
-    const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
-    const LOSS_REASON = 'loss_reason';
-    const CONTACTS = 'contacts';
+    public const CATALOG_ELEMENTS = 'catalog_elements';
+    public const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
+    public const LOSS_REASON = 'loss_reason';
+    public const CONTACTS = 'contacts';
 
     /**
      * @var int

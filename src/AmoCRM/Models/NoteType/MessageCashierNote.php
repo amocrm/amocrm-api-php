@@ -10,11 +10,11 @@ class MessageCashierNote extends NoteModel
 {
     protected $modelClass = MessageCashierNote::class;
 
-    const STATUS_CREATED = 'created';
-    const STATUS_SHOWN = 'shown';
-    const STATUS_CANCELED = 'canceled';
+    public const STATUS_CREATED = 'created';
+    public const STATUS_SHOWN = 'shown';
+    public const STATUS_CANCELED = 'canceled';
 
-    const AVAILABLE_STATUSES = [
+    public const AVAILABLE_STATUSES = [
         self::STATUS_CANCELED,
         self::STATUS_CREATED,
         self::STATUS_SHOWN,

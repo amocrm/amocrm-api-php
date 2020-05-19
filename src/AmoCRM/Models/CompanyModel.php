@@ -22,10 +22,10 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     use RequestIdTrait;
     use GetLinkTrait;
 
-    const LEADS = 'leads';
-    const CUSTOMERS = 'customers';
-    const CONTACTS = 'contacts';
-    const CATALOG_ELEMENTS = 'catalog_elements';
+    public const LEADS = 'leads';
+    public const CUSTOMERS = 'customers';
+    public const CONTACTS = 'contacts';
+    public const CATALOG_ELEMENTS = 'catalog_elements';
 
     /**
      * @var int

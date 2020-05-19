@@ -28,9 +28,9 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
     use GetLinkTrait;
     use RequestIdTrait;
 
-    const CATALOG_ELEMENTS = 'catalog_elements';
-    const CONTACTS = 'contacts';
-    const COMPANIES = 'companies';
+    public const CATALOG_ELEMENTS = 'catalog_elements';
+    public const CONTACTS = 'contacts';
+    public const COMPANIES = 'companies';
 
     /**
      * @var int

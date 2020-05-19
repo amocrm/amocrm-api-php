@@ -10,6 +10,7 @@ use AmoCRM\Exceptions\AmoCRMApiNoContentException;
 use AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\OAuth\AmoCRMOAuth;
+use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -25,31 +26,23 @@ use Psr\Http\Message\ResponseInterface;
  */
 class AmoCRMApiRequest
 {
-    const POST_REQUEST = 'POST';
-    const GET_REQUEST = 'GET';
-    const PATCH_REQUEST = 'PATCH';
-    const DELETE_REQUEST = 'DELETE';
+    public const POST_REQUEST = 'POST';
+    public const GET_REQUEST = 'GET';
+    public const PATCH_REQUEST = 'PATCH';
+    public const DELETE_REQUEST = 'DELETE';
 
-    const CONNECT_TIMEOUT = 5;
-    const REQUEST_TIMEOUT = 20;
-    const USER_AGENT = 'amoCRM-API-Library/1.0';
+    public const CONNECT_TIMEOUT = 5;
+    public const REQUEST_TIMEOUT = 20;
+    public const USER_AGENT = 'amoCRM-API-Library/1.0';
 
-    const OK = 200;
-    const CREATED = 201;
-    const ACCEPTED = 202;
-    const NO_CONTENT = 204;
-
-    const BAD_REQUEST = 400;
-    const UNAUTHORIZED = 401;
-
-    const SUCCESS_STATUSES = [
-        self::OK,
-        self::CREATED,
-        self::ACCEPTED,
-        self::NO_CONTENT,
+    public const SUCCESS_STATUSES = [
+        StatusCodeInterface::STATUS_OK,
+        StatusCodeInterface::STATUS_CREATED,
+        StatusCodeInterface::STATUS_ACCEPTED,
+        StatusCodeInterface::STATUS_NO_CONTENT,
     ];
 
-    const EMBEDDED = '_embedded';
+    public const EMBEDDED = '_embedded';
 
     /**
      * @var AccessTokenInterface
@@ -438,7 +431,7 @@ class AmoCRMApiRequest
     protected function checkHttpStatus(ResponseInterface $response, $decodedBody = []): void
     {
         $this->lastResponseCode = $response->getStatusCode();
-        if ((int)$response->getStatusCode() === self::UNAUTHORIZED) {
+        if ((int)$response->getStatusCode() === StatusCodeInterface::STATUS_UNAUTHORIZED) {
             throw new AmoCRMoAuthApiException(
                 "Unauthorized",
                 $response->getStatusCode(),
@@ -447,7 +440,7 @@ class AmoCRMApiRequest
             );
         }
 
-        if ((int)$response->getStatusCode() === self::NO_CONTENT) {
+        if ((int)$response->getStatusCode() === StatusCodeInterface::STATUS_NO_CONTENT) {
             throw new AmoCRMApiNoContentException(
                 "No content",
                 $response->getStatusCode(),
@@ -464,7 +457,7 @@ class AmoCRMApiRequest
             );
 
             if (
-                $response->getStatusCode() === self::BAD_REQUEST
+                $response->getStatusCode() === StatusCodeInterface::STATUS_BAD_REQUEST
                 && !empty($decodedBody['validation-errors'])
             ) {
                 $exception = new AmoCRMApiErrorResponseException(
@@ -496,7 +489,7 @@ class AmoCRMApiRequest
         $decodedBody = json_decode($bodyContents, true);
 
         if (
-            $response->getStatusCode() !== self::ACCEPTED
+            $response->getStatusCode() !== StatusCodeInterface::STATUS_ACCEPTED
             && !$decodedBody
             && !empty($bodyContents)
         ) {

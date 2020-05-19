@@ -7,12 +7,12 @@ use AmoCRM\Models\NoteModel;
 
 abstract class TargetingNote extends NoteModel
 {
-    const TARGETING_NOTE_SERVICE_FACEBOOK = 'facebook';
-    const TARGETING_NOTE_SERVICE_VKONTAKTE = 'vkontakte';
-    const TARGETING_NOTE_SERVICE_MAILCHIMP = 'mailchimp';
-    const TARGETING_NOTE_SERVICE_ADWORDS = 'adwords';
+    public const TARGETING_NOTE_SERVICE_FACEBOOK = 'facebook';
+    public const TARGETING_NOTE_SERVICE_VKONTAKTE = 'vkontakte';
+    public const TARGETING_NOTE_SERVICE_MAILCHIMP = 'mailchimp';
+    public const TARGETING_NOTE_SERVICE_ADWORDS = 'adwords';
 
-    const AVAILABLE_SERVICES = [
+    public const AVAILABLE_SERVICES = [
         self::TARGETING_NOTE_SERVICE_ADWORDS,
         self::TARGETING_NOTE_SERVICE_MAILCHIMP,
         self::TARGETING_NOTE_SERVICE_VKONTAKTE,

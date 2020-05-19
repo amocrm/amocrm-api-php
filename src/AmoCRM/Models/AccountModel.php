@@ -11,13 +11,13 @@ use Carbon\Carbon;
 
 class AccountModel extends BaseApiModel
 {
-    const AMOJO_ID = 'amojo_id';
-    const UUID = 'uuid';
-    const AMOJO_RIGHTS = 'amojo_rights';
-    const USER_GROUPS = 'users_groups';
-    const TASK_TYPES = 'task_types';
-    const VERSION = 'version';
-    const DATETIME_SETTINGS = 'datetime_settings';
+    public const AMOJO_ID = 'amojo_id';
+    public const UUID = 'uuid';
+    public const AMOJO_RIGHTS = 'amojo_rights';
+    public const USER_GROUPS = 'users_groups';
+    public const TASK_TYPES = 'task_types';
+    public const VERSION = 'version';
+    public const DATETIME_SETTINGS = 'datetime_settings';
 
     /** @var int */
     protected $id;

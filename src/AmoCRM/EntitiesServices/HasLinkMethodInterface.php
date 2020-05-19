@@ -3,6 +3,7 @@
 namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\Collections\LinksCollection;
+use AmoCRM\Filters\LinksFilter;
 use AmoCRM\Models\BaseApiModel;
 
 /**
@@ -23,9 +24,11 @@ interface HasLinkMethodInterface
     /**
      * @param BaseApiModel $model
      *
+     * @param LinksFilter|null $filter
+     *
      * @return LinksCollection
      */
-    public function getLinks(BaseApiModel $model): LinksCollection;
+    public function getLinks(BaseApiModel $model, LinksFilter $filter = null): LinksCollection;
 
     /**
      * @param BaseApiModel $mainEntity

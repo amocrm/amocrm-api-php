@@ -11,6 +11,7 @@ use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\OAuth2\Client\Provider\AmoCRM;
 use Exception;
+use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -303,7 +304,7 @@ class AmoCRMOAuth
             throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode());
         }
 
-        if ($response->getStatusCode() !== AmoCRMApiRequest::ACCEPTED) {
+        if ($response->getStatusCode() !== StatusCodeInterface::STATUS_ACCEPTED) {
             throw new AmoCRMApiErrorResponseException(
                 'Invalid response code',
                 $response->getStatusCode(),

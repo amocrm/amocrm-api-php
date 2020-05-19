@@ -307,7 +307,7 @@ class AmoCRMApiClient
      * Метод вернет объект аккаунта
      * @return Account
      */
-    public function account()
+    public function account(): Account
     {
         $request = $this->buildRequest();
 

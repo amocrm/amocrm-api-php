@@ -13,12 +13,12 @@ use AmoCRM\Models\Factories\EntityFactory;
  */
 class EventModel extends BaseApiModel
 {
-    const CONTACT_NAME = 'contact_name';
-    const LEAD_NAME = 'lead_name';
-    const COMPANY_NAME = 'company_name';
-    const CATALOG_ELEMENT_NAME = 'catalog_element_name';
-    const CUSTOMER_NAME = 'customer_name';
-    const CATALOG_NAME = 'catalog_name';
+    public const CONTACT_NAME = 'contact_name';
+    public const LEAD_NAME = 'lead_name';
+    public const COMPANY_NAME = 'company_name';
+    public const CATALOG_ELEMENT_NAME = 'catalog_element_name';
+    public const CUSTOMER_NAME = 'customer_name';
+    public const CATALOG_NAME = 'catalog_name';
 
     /**
      * @var string

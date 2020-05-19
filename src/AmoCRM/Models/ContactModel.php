@@ -21,9 +21,9 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     use RequestIdTrait;
     use GetLinkTrait;
 
-    const LEADS = 'leads';
-    const CUSTOMERS = 'customers';
-    const CATALOG_ELEMENTS = 'catalog_elements';
+    public const LEADS = 'leads';
+    public const CUSTOMERS = 'customers';
+    public const CATALOG_ELEMENTS = 'catalog_elements';
 
     /**
      * @var int

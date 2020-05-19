@@ -15,8 +15,8 @@ class TaskModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 
-    const TASK_TYPE_ID_CALL = 1;
-    const TASK_TYPE_ID_MEETING = 2;
+    public const TASK_TYPE_ID_CALL = 1;
+    public const TASK_TYPE_ID_MEETING = 2;
 
     /**
      * @var int

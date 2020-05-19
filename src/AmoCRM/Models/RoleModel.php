@@ -14,7 +14,7 @@ class RoleModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 
-    const USERS = 'users';
+    public const USERS = 'users';
 
     /**
      * @var int

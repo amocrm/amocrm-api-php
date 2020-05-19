@@ -1,5 +1,6 @@
 <?php
 
+use AmoCRM\Filters\Interfaces\HasOrderInterface;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\CustomFieldsValues\MultitextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\MultitextCustomFieldValueCollection;
@@ -134,7 +135,7 @@ try {
     $unsortedFiler = new UnsortedFilter();
     $unsortedFiler
         ->setCategory([BaseUnsortedModel::CATEGORY_CODE_FORMS,  BaseUnsortedModel::CATEGORY_CODE_SIP])
-        ->setOrder(['created_at' => 'asc']);
+        ->setOrder('created_at', HasOrderInterface::SORT_ASC);
     $unsortedCollection = $unsortedService->get($unsortedFiler);
 } catch (AmoCRMApiException $e) {
     printError($e);

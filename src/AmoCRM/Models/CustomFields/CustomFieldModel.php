@@ -20,24 +20,24 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 
-    const TYPE_TEXT = 'text';
-    const TYPE_NUMERIC = 'numeric';
-    const TYPE_CHECKBOX = 'checkbox';
-    const TYPE_SELECT = 'select';
-    const TYPE_MULTISELECT = 'multiselect';
-    const TYPE_MULTITEXT = 'multitext';
-    const TYPE_DATE = 'date';
-    const TYPE_URL = 'url';
-    const TYPE_TEXTAREA = 'textarea';
-    const TYPE_RADIOBUTTON = 'radiobutton';
-    const TYPE_STREET_ADDRESS = 'streetaddress';
-    const TYPE_SMART_ADDRESS = 'smart_address';
-    const TYPE_BIRTHDAY = 'birthday';
-    const TYPE_LEGAL_ENTITY = 'legal_entity';
-    const TYPE_DATE_TIME = 'date_time';
-    const TYPE_ITEMS = 'items';
-    const TYPE_CATEGORY = 'category';
-    const TYPE_PRICE = 'price';
+    public const TYPE_TEXT = 'text';
+    public const TYPE_NUMERIC = 'numeric';
+    public const TYPE_CHECKBOX = 'checkbox';
+    public const TYPE_SELECT = 'select';
+    public const TYPE_MULTISELECT = 'multiselect';
+    public const TYPE_MULTITEXT = 'multitext';
+    public const TYPE_DATE = 'date';
+    public const TYPE_URL = 'url';
+    public const TYPE_TEXTAREA = 'textarea';
+    public const TYPE_RADIOBUTTON = 'radiobutton';
+    public const TYPE_STREET_ADDRESS = 'streetaddress';
+    public const TYPE_SMART_ADDRESS = 'smart_address';
+    public const TYPE_BIRTHDAY = 'birthday';
+    public const TYPE_LEGAL_ENTITY = 'legal_entity';
+    public const TYPE_DATE_TIME = 'date_time';
+    public const TYPE_ITEMS = 'items';
+    public const TYPE_CATEGORY = 'category';
+    public const TYPE_PRICE = 'price';
 
     protected const CAN_HAVE_REQUIRED_STATUSES = [
         EntityTypesInterface::LEADS,

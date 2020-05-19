@@ -397,15 +397,58 @@ $leadsService = $apiClient->leads();
 
 ## Фильтры
 
-```todo```
+В данный момент библиотека поддерживает фильтры для следующих сервисов:
+
+|Сервис                                                       |Фильтр                                     |Особенности                                                                                     |Поддерживает ли сортировку?|
+|-------------------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------------------------------|---------------------------|
+|```catalogElements```                                        |```\AmoCRM\Filters\CatalogElementsFilter```|Доступен в ограниченном виде, в будущих версиях будет расширен                                  |❌                          |
+|```companies```                                              |```\AmoCRM\Filters\CompaniesFilter```      |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API   |✅                          |
+|```contacts```                                               |```\AmoCRM\Filters\ContactsFilter```       |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API   |✅                          |
+|```customers```                                              |```\AmoCRM\Filters\CustomersFilter```      |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API   |✅                          |
+|```leads```                                                  |```\AmoCRM\Filters\LeadsFilter```          |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API   |✅                          |
+|```events```                                                 |```\AmoCRM\Filters\EventsFilter```         |Фильтр для списка событий                                                                       |❌                          |
+|```leads```, ```contacts```, ```customers```, ```companies```|```\AmoCRM\Filters\LinksFilter```          |Фильтр для получения связей для метода \AmoCRM\EntitiesServices\HasLinkMethodInterface::getLinks|❌                          |
+|```notes```                                                  |```\AmoCRM\Filters\NotesFilter```          |Фильтра для \AmoCRM\EntitiesServices\EntityNotes::get                                           |✅                          |
+|```tags```                                                   |```\AmoCRM\Filters\TagsFilter```           |Фильтр для \AmoCRM\EntitiesServices\EntityTags::get                                             |❌                          |
+|```tasks```                                                  |```\AmoCRM\Filters\TasksFilter```          |Фильтр для метода \AmoCRM\EntitiesServices\Tasks::get                                           |✅                          |
+|```unsorted```                                               |```\AmoCRM\Filters\UnsortedFilter```       |Фильтр для метода \AmoCRM\EntitiesServices\Unsorted::get                                        |✅                          |
+|```unsorted```                                               |```\AmoCRM\Filters\UnsortedSummaryFilter```|Фильтр для метода \AmoCRM\EntitiesServices\Unsorted::summary                                    |❌                          |
+|```webhooks```                                               |```\AmoCRM\Filters\WebhooksFilter```       |Фильтр для метода получения хуков                                                               |❌                          |
+
 
 ## Работа с Custom Fields сущностей
 
 ```todo```
 
-## Константы
+## Работа с тегами сущностей
 
 ```todo```
+
+## Константы
+
+Основные константы находятся в интерфейсе ```\AmoCRM\Helpers\EntityTypesInterface```.
+
+Также доступны константы в следующих классах/интерфейсах:
+1. ```\AmoCRM\OAuth\AmoCRMOAuth::BUTTON_COLORS``` - доступные цвета для кнопки на сайт
+2. ```\AmoCRM\Models\Unsorted\BaseUnsortedModel``` - константы для кодов категорий неразобранного
+3. ```\AmoCRM\Models\CustomFields\BirthdayCustomFieldModel``` - константы для свойства remind у поля День Рождения
+4. ```\AmoCRM\Models\NoteType\CallNote``` - константы статусов звонков
+5. ```\AmoCRM\EntitiesServices\Interfaces\HasParentEntity``` - константы для ключей в запросах методов, у которых есть родительский сущность (в данный момент только notes)
+6. ```\AmoCRM\Models\CustomFieldsValues\ValueModels\ItemsCustomFieldValueModel``` - константы для ключей значения поля Items
+7. ```\AmoCRM\Models\Rights\RightModel``` - константы, связанные с правами
+8. ```\AmoCRM\Models\AccountModel``` - константы для аргумента with для сервиса ```account```
+9. ```\AmoCRM\Models\TaskModel``` - константы для дефолтных типов задач
+10. ```\AmoCRM\Models\NoteType\TargetingNote``` - константы поддерживаемых внешних сервисов для примечаний о таргетинге (добавляют DP) 
+11. ```\AmoCRM\Models\RoleModel``` - константы для аргумента with для сервиса ```roles```
+12. ```\AmoCRM\Models\Factories\NoteFactory``` - константы типов примечаний
+13. ```\AmoCRM\Models\NoteType\MessageCashierNote``` - статусы примечания "Сообщение кассиру"
+14. ```\AmoCRM\Models\LeadModel``` - константы для аргумента with для сервиса ```leads```
+15. ```\AmoCRM\Filters\Interfaces\HasOrderInterface``` - константы для сортировки
+16. ```\AmoCRM\Models\EventModel``` - константы для аргумента with для сервиса ```events```
+17. ```\AmoCRM\Models\CustomFields\CustomFieldModel``` - константы типов полей
+18. ```\AmoCRM\Models\Customers\CustomerModel``` - константы для аргумента with для сервиса ```customers```
+19. ```\AmoCRM\Models\ContactModel``` - константы для аргумента with для сервиса ```contacts```
+20. ```\AmoCRM\Models\CompanyModel``` - константы для аргумента with для сервиса ```companies```
 
 ## Примеры
 В рамках данного репозитория имеется папка examples с различными примерами.

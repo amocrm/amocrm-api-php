@@ -33,31 +33,31 @@ use AmoCRM\Models\NoteType\ZoomMeetingNote;
  */
 class NoteFactory
 {
-    const NOTE_TYPE_CODE_COMMON = 'common';
-    const NOTE_TYPE_CODE_ATTACHMENT = 'attachment';
-    const NOTE_TYPE_CODE_CALL_IN = 'call_in';
-    const NOTE_TYPE_CODE_CALL_OUT = 'call_out';
-    const NOTE_TYPE_CODE_AMOMAIL_MESSAGE = 'amomail_message';
+    public const NOTE_TYPE_CODE_COMMON = 'common';
+    public const NOTE_TYPE_CODE_ATTACHMENT = 'attachment';
+    public const NOTE_TYPE_CODE_CALL_IN = 'call_in';
+    public const NOTE_TYPE_CODE_CALL_OUT = 'call_out';
+    public const NOTE_TYPE_CODE_AMOMAIL_MESSAGE = 'amomail_message';
     /** @deprecated */
-    const NOTE_TYPE_CODE_CHAT = 'chat';
-    const NOTE_TYPE_CODE_SITE_VISIT = 'site_visit';
-    const NOTE_TYPE_CODE_TARGETING_IN = 'targeting_in';
-    const NOTE_TYPE_CODE_TARGETING_OUT = 'targeting_out';
-    const NOTE_TYPE_CODE_TRANSACTION = 'transaction';
-    const NOTE_TYPE_CODE_SERVICE_MESSAGE = 'service_message';
-    const NOTE_TYPE_CODE_MESSAGE_CASHIER = 'message_cashier';
-    const NOTE_TYPE_CODE_INVOICE_PAID = 'invoice_paid';
-    const NOTE_TYPE_CODE_GEOLOCATION = 'geolocation';
-    const NOTE_TYPE_CODE_SMS_IN = 'sms_in';
-    const NOTE_TYPE_CODE_SMS_OUT = 'sms_out';
-    const NOTE_TYPE_CODE_EXTENDED_SERVICE_MESSAGE = 'extended_service_message';
-    const NOTE_TYPE_CODE_ZOOM_MEETING = 'zoom_meeting';
-    const NOTE_TYPE_CODE_DROPBOX = 'dropbox_attachment';
-    const NOTE_TYPE_CODE_LINK_FOLLOWED = 'link_followed';
+    public const NOTE_TYPE_CODE_CHAT = 'chat';
+    public const NOTE_TYPE_CODE_SITE_VISIT = 'site_visit';
+    public const NOTE_TYPE_CODE_TARGETING_IN = 'targeting_in';
+    public const NOTE_TYPE_CODE_TARGETING_OUT = 'targeting_out';
+    public const NOTE_TYPE_CODE_TRANSACTION = 'transaction';
+    public const NOTE_TYPE_CODE_SERVICE_MESSAGE = 'service_message';
+    public const NOTE_TYPE_CODE_MESSAGE_CASHIER = 'message_cashier';
+    public const NOTE_TYPE_CODE_INVOICE_PAID = 'invoice_paid';
+    public const NOTE_TYPE_CODE_GEOLOCATION = 'geolocation';
+    public const NOTE_TYPE_CODE_SMS_IN = 'sms_in';
+    public const NOTE_TYPE_CODE_SMS_OUT = 'sms_out';
+    public const NOTE_TYPE_CODE_EXTENDED_SERVICE_MESSAGE = 'extended_service_message';
+    public const NOTE_TYPE_CODE_ZOOM_MEETING = 'zoom_meeting';
+    public const NOTE_TYPE_CODE_DROPBOX = 'dropbox_attachment';
+    public const NOTE_TYPE_CODE_LINK_FOLLOWED = 'link_followed';
     /**
      * Данное событие отличается от invoice_paid тем, что вызывает событие Счет оплачен в Digital Pipeline
      */
-    const NOTE_TYPE_CODE_BILL_PAID = 'bill_paid';
+    public const NOTE_TYPE_CODE_BILL_PAID = 'bill_paid';
 
     /**
      * @param string $type

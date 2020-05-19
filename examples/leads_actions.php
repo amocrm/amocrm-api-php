@@ -4,6 +4,7 @@ use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\LinksCollection;
+use AmoCRM\Collections\NullTagsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Filters\LeadsFilter;
 use AmoCRM\Models\CustomFieldsValues\TextCustomFieldValuesModel;
@@ -66,7 +67,7 @@ try {
     die;
 }
 
-//Получим контакт по ID, сделку и првяжем контакт к сделке
+//Получим контакт по ID, сделку и привяжем контакт к сделке
 try {
     $contact = $apiClient->contacts()->getOne(7143559);
 } catch (AmoCRMApiException $e) {
@@ -138,6 +139,8 @@ foreach ($leads as $lead) {
     $lead->setPrice(12);
     //Установим нового ответственного пользователя
     $lead->setResponsibleUserId(0);
+    //Удалим теги
+    $lead->setTags((new NullTagsCollection()));
 }
 
 //Сохраним сделку

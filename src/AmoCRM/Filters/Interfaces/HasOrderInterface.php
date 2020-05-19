@@ -10,8 +10,8 @@ use AmoCRM\Filters\Traits\PagesFilterTrait;
  */
 interface HasOrderInterface
 {
-    const SORT_ASC = 'asc';
-    const SORT_DESC = 'desc';
+    public const SORT_ASC = 'asc';
+    public const SORT_DESC = 'desc';
 
     /**
      * @param string $field
