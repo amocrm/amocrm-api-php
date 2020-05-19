@@ -1,13 +1,14 @@
 language: php
 
-sudo: false
-
 cache:
   directories:
     - vendor
     - $HOME/.composer/cache
 
 env: MINIMUM_VERSIONS=false
+
+os: linux
+dist: bionic
 
 php:
   - 7.1
