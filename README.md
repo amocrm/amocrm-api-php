@@ -2,15 +2,26 @@
 
 В данном пакете представлен API клиент с поддержкой основных сущностей и авторизацией по протоколу OAuth 2.0 в amoCRM.
 
+## Оглавление
+- [Установка](#установка)
+- [Начало работы](#начало-работы-и-авторизация)
+- [Поддерживаемые методы и сервисы](#поддерживаемые-методы-и-сервисы)
+- [Обработка ошибок](#поддерживаемые-методы-и-сервисы)
+- [Фильтры](#Фильтры)
+- [Работа с Custom Fields сущностей](#работа-с-дополнительными-полями-сущностей)
+- [Работа с тегами сущностей](#работа-с-тегами-сущностей)
+- [Константы](#константы)
+- [Примеры](#примеры)
+
 ## Установка
 
-Установить можно с помощью composer:
+Установить библиотеку можно с помощью composer:
 
 ```
 composer require amocrm/amocrm-api-library
 ```
 
-## Начало работы (авторизация)
+## Начало работы и авторизация
 
 Для начала использования вам необходимо создать объект бибилиотеки:
 ```php
@@ -77,15 +88,15 @@ $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code'])
 Модели и коллекции имеют методы ```toArray()``` и ```toApi()```, методы возвращают представление объекта в виде массива и в виде данных, отправляемых в API.
 
 Также для работы с коллекциями имеют следующие методы:
-1. add(BaseApiModel $model): self - добавляет модель в конец коллекции.
-2. prepend(BaseApiModel $value): self - добавляет модель в начало коллекции.
-3. all(): array - возвращает массив моделей в коллекции.
-4. first(): ?BaseApiModel - получение первой модели в коллекции.
-5. last(): ?BaseApiModel - получение последней модели в коллекции.
-6. count(): int - получение кол-ва элементов в коллекции.
-7. isEmpty(): bool - проверяет, что коллекция не пустая.
-8. getBy($key, $value): ?BaseApiModel - получение модели по значению ключа.
-9. replaceBy($key, $value, BaseApiModel $replacement): void - замена модели по значению ключа.
+1. ```add(BaseApiModel $model): self``` - добавляет модель в конец коллекции.
+2. ```prepend(BaseApiModel $value): self``` - добавляет модель в начало коллекции.
+3. ```all(): array``` - возвращает массив моделей в коллекции.
+4. ```first(): ?BaseApiModel``` - получение первой модели в коллекции.
+5. ```last(): ?BaseApiModel``` - получение последней модели в коллекции.
+6. ```count(): int``` - получение кол-ва элементов в коллекции.
+7. ```isEmpty(): bool``` - проверяет, что коллекция не пустая.
+8. ```getBy($key, $value): ?BaseApiModel``` - получение модели по значению ключа.
+9. ```replaceBy($key, $value, BaseApiModel $replacement): void``` - замена модели по значению ключа.
 
 При работе с библиотекой необходимо не забывать о лимитах API amoCRM.
 Для оптимальной работы с данными лучше всего создавать/изменять за раз не более 50 сущностей в методах, где есть пакетная обработка.
@@ -416,13 +427,177 @@ $leadsService = $apiClient->leads();
 |```webhooks```                                               |```\AmoCRM\Filters\WebhooksFilter```       |Фильтр для метода получения хуков                                                               |❌                          |
 
 
-## Работа с Custom Fields сущностей
+## Работа с дополнительными полями сущностей
 
-```todo```
+Дополнительные поля доступны у сущностей следующих сервисов:
+1. ```leads```
+2. ```contacts```
+3. ```companies```
+4. ```customers```
+5. ```catalogElements```
+6. ```segments```
+
+У моделей, который возвращаются у этих сервисов, поля можно получить через метод ```getCustomFieldsValues()```.
+На вызов данного метода возвращается объект ```CustomFieldsValuesCollection``` или ```null```, 
+если значений полей нет.
+
+Внутри коллекции ```CustomFieldsValuesCollection``` находятся модели значений полей, 
+все модели наследуются от ```BaseCustomFieldValuesModel```, но зависят от типа поля.
+
+У моделей, наследующих ```BaseCustomFieldValuesModel``` доступны следующие методы:
+1. ```getFieldId```, ```setFieldId``` - получение/установка id поля
+2. ```getFieldType``` - получение типа поля
+3. ```getFieldCode```, ```setFieldCode``` - получение/установка кода поля
+4. ```getFieldName```, ```setFieldName``` - получение/установка кода поля
+5. ```getValues```, ```setValues``` - получение/установка коллекции значений
+
+Так как некоторые поля могут иметь несколько значений,
+в свойстве values хранится именно коллекция значений типа ```BaseCustomFieldValueCollection```.
+Моделями коллекции являются модели типа ```BaseCustomFieldValueModel```.
+
+#### Схема отношений объектов:
+
+```CustomFieldsValuesCollection 1 <---> n BaseCustomFieldValuesModel```
+```BaseCustomFieldValuesModel::getValues() 1 <---> 1 BaseCustomFieldValueCollection```
+```BaseCustomFieldValueCollection 1 <---> n BaseCustomFieldValueModel```
+
+#### Для разных типов полей мы уже подготовили разные модели и коллекции:
+
+Namespace, в котором находятся модели значения - ```\AmoCRM\Models\CustomFieldsValues\ValueModels```
+
+Namespace, в котором находятся коллекции моделей значения - ```\AmoCRM\Models\CustomFieldsValues\ValueCollections```
+
+Namespace, в котором находятся модели дополнительных полей - ```\AmoCRM\Models\CustomFieldsValues```
+
+| Тип поля            | Модель значения                    | Коллекция моделей значений              | Модель доп поля                     | Контакт | Сделка | Компания | Покупатель | Каталог | Сегмент |
+|---------------------|------------------------------------|-----------------------------------------|-------------------------------------|:-------:|:------:|:--------:|:----------:|:-------:|:-------:|
+| Текст               | TextCustomFieldValueModel          | TextCustomFieldValueCollection          | TextCustomFieldValuesModel          | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Число               | NumericCustomFieldValueModel       | NumericCustomFieldValueCollection       | NumericCustomFieldValuesModel       | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Флаг                | CheckboxCustomFieldValueModel      | CheckboxCustomFieldValueCollection      | CheckboxCustomFieldValuesModel      | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Список              | SelectCustomFieldValueModel        | SelectCustomFieldValueCollection        | SelectCustomFieldValuesModel        | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Мультисписок        | MultiselectCustomFieldValueModel   | MultiselectCustomFieldValueCollection   | MultiSelectCustomFieldValuesModel   | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Мультитекст         | MultitextCustomFieldValueModel     | MultitextCustomFieldValueCollection     | MultitextCustomFieldValuesModel     | ✅       | ❌     | ❌       | ❌          | ❌      | ❌       |
+| Дата                | DateCustomFieldValueModel          | DateCustomFieldValueCollection          | DateCustomFieldValuesModel          | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Ссылка              | UrlCustomFieldValueModel           | UrlCustomFieldValueCollection           | UrlCustomFieldValuesModel           | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Дата и время        | DateTimeCustomFieldValueModel      | DateTimeCustomFieldValueCollection      | DateTimeCustomFieldValuesModel      | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Текстовая область   | TextareaCustomFieldValueModel      | TextareaCustomFieldValueCollection      | TextareaCustomFieldValuesModel      | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Переключатель       | RadiobuttonCustomFieldValueModel   | RadiobuttonCustomFieldValueCollection   | RadiobuttonCustomFieldValuesModel   | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Короткий адрес      | StreetAddressCustomFieldValueModel | StreetAddressCustomFieldValueCollection | StreetAddressCustomFieldValuesModel | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
+| Адрес               | SmartAddressCustomFieldValueModel  | SmartAddressCustomFieldValueCollection  | SmartAddressCustomFieldValuesModel  | ✅       | ✅     | ✅       | ❌          | ❌      | ❌       |
+| День рождения       | BirthdayCustomFieldValueModel      | BirthdayCustomFieldValueCollection      | BirthdayCustomFieldValuesModel      | ✅       | ✅     | ✅       | ❌          | ❌      | ❌       |
+| Юр. лицо            | LegalEntityCustomFieldValueModel   | LegalEntityCustomFieldValueCollection   | LegalEntityCustomFieldValuesModel   | ✅       | ✅     | ✅       | ❌          | ❌      | ❌       |
+| Цена                | PriceCustomFieldValueModel         | PriceCustomFieldValueCollection         | PriceCustomFieldValuesModel         | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
+| Категория           | CategoryCustomFieldValueModel      | CategoryCustomFieldValueCollection      | CategoryCustomFieldValuesModel      | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
+| Предметы            | ItemsCustomFieldValueModel         | ItemsCustomFieldValueCollection         | ItemsCustomFieldValuesModel         | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
+
+Пример кода, как создать коллекцию значения полей сущности:
+```php
+//Создадим модель сущности
+$lead = new LeadModel();
+$lead->setId(1);
+//Создадим коллекцию полей сущности
+$leadCustomFieldsValues = new CustomFieldsValuesCollection();
+//Создадим модель значений поля типа текст
+$textCustomFieldValuesModel = new TextCustomFieldValuesModel();
+//Укажем ID поля
+$textCustomFieldValuesModel->setFieldId(123);
+//Добавим значения
+$textCustomFieldValuesModel->setValues(
+    (new TextCustomFieldValueCollection())
+        ->add((new TextCustomFieldValueModel())->setValue('Текст'))
+);
+//Добавим значение в коллекцию полей сущности
+$leadCustomFieldsValues->add($textCustomFieldValuesModel);
+//Установим сущности эти поля
+$lead->setCustomFieldsValues($leadCustomFieldsValues);
+``` 
+
+Чтобы удалить значения поля доступен специальный объект ```\AmoCRM\Models\CustomFieldsValues\ValueCollections\NullCustomFieldValueCollection```.
+
+Передав этот объект, вы зануляете значение поля.
+
+Пример:
+```php
+//Создадим модель сущности
+$lead = new LeadModel();
+$lead->setId(1);
+//Создадим коллекцию полей сущности
+$leadCustomFieldsValues = new CustomFieldsValuesCollection();
+//Создадим модель значений поля типа текст
+$textCustomFieldValuesModel = new TextCustomFieldValuesModel();
+//Укажем ID поля
+$textCustomFieldValuesModel->setFieldId(123);
+//Обнулим значения
+$textCustomFieldValuesModel->setValues(
+    (new NullCustomFieldValueCollection())
+);
+//Добавим значение в коллекцию полей сущности
+$leadCustomFieldsValues->add($textCustomFieldValuesModel);
+//Установим сущности эти поля
+$lead->setCustomFieldsValues($leadCustomFieldsValues);
+```
 
 ## Работа с тегами сущностей
 
-```todo```
+Теги доступны как отдельный сервис ```tags```.
+При создании данного сервиса, вы указываете тип сущности, с тегами которой вы будете работать.
+В данный момент доступны:
+1. EntityTypesInterface::LEADS,
+2. EntityTypesInterface::CONTACTS,
+3. EntityTypesInterface::COMPANIES,
+4. EntityTypesInterface::CUSTOMERS,
+
+Для работы с тегами конкретной сущности, нужно взаимодействовать с конкретной моделью сущности.
+С помощью методов ```getTags``` и ```setTags``` вы можете получить коллекцию тегов сущности или установить её.
+
+Для изменения тегов вам необходимо передавать всю коллекцию тегов, иначе теги могут быть потеряны.
+
+Пример добавления/изменения тегов у сущности:
+```php
+//Создадим модель сущности
+$lead = new LeadModel();
+$lead->setId(1);
+//Создадим коллекцию тегов с тегами и установим их в сущности
+$lead->setTags((new TagsCollection())
+    ->add(
+        (new TagModel())
+            ->setName('тег')
+    )->add(
+        (new TagModel())
+            ->setId(123123)
+    )
+);
+```
+
+или
+
+```php
+//Создадим модель сущности
+$lead = new LeadModel();
+$lead->setId(1);
+//Создадим коллекцию тегов с тегами и установим их в сущности
+$lead->setTags(
+    TagsCollection::fromArray([
+        [
+            'name' => 'тег',
+        ],
+        [
+            'id' => 123,
+        ],
+    ])
+);
+```
+
+Для удаления тегов в setTags можно передать в ```setTags``` специальный объект ```\AmoCRM\Collections\NullTagsCollection```.
+
+Пример удаления тегов у сущности:
+```php
+//Создадим модель сущности
+$lead = new LeadModel();
+$lead->setId(1);
+//Удалим теги
+$lead->setTags((new NullTagsCollection()));
+```
 
 ## Константы
 

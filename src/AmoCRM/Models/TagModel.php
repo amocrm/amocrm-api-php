@@ -56,10 +56,14 @@ class TagModel extends BaseApiModel implements Arrayable, HasIdInterface
 
     /**
      * @param int $id
+     *
+     * @return TagModel
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -72,10 +76,14 @@ class TagModel extends BaseApiModel implements Arrayable, HasIdInterface
 
     /**
      * @param string $name
+     *
+     * @return TagModel
      */
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
