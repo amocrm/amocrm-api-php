@@ -27,6 +27,7 @@ interface EntityTypesInterface
     public const CUSTOMERS_STATUSES = 'statuses';
     public const WIDGETS = 'widgets';
     public const STATUS_RIGHTS = 'status_rights';
+    public const CALLS = 'calls';
 
 
     public const CUSTOM_FIELDS = 'custom_fields';

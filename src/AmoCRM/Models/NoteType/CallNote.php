@@ -3,18 +3,30 @@
 namespace AmoCRM\Models\NoteType;
 
 use AmoCRM\Models\NoteModel;
+use AmoCRM\Models\Traits\CallTrait;
 
 abstract class CallNote extends NoteModel
 {
+    use CallTrait;
+
+    /** @deprecated */
     public const CALL_STATUS_LEAVE_MESSAGE = 1;
+    /** @deprecated */
     public const CALL_STATUS_SUCCESS_RECALL = 2;
+    /** @deprecated */
     public const CALL_STATUS_SUCCESS_NOT_IN_STOCK = 3;
+    /** @deprecated */
     public const CALL_STATUS_SUCCESS_CONVERSATION = 4;
+    /** @deprecated */
     public const CALL_STATUS_FAIL_WRONG_NUMBER = 5;
+    /** @deprecated */
     public const CALL_STATUS_FAIL_NOT_PHONED = 6;
+    /** @deprecated */
     public const CALL_STATUS_FAIL_BUSY = 7;
+    /** @deprecated */
     public const CALL_STATUS_UNDEFINED = 8;
 
+    /** @deprecated */
     protected const AVAILABLE_CALL_STATUSES = [
         self::CALL_STATUS_LEAVE_MESSAGE,
         self::CALL_STATUS_SUCCESS_RECALL,
@@ -25,41 +37,6 @@ abstract class CallNote extends NoteModel
         self::CALL_STATUS_FAIL_BUSY,
         self::CALL_STATUS_UNDEFINED,
     ];
-
-    /**
-     * @var null|string
-     */
-    protected $uniq;
-
-    /**
-     * @var null|string
-     */
-    protected $source;
-
-    /**
-     * @var int|string
-     */
-    protected $duration;
-
-    /**
-     * @var null|string
-     */
-    protected $link;
-
-    /**
-     * @var null|string
-     */
-    protected $phone;
-
-    /**
-     * @var null|string
-     */
-    protected $callResult;
-
-    /**
-     * @var null|int
-     */
-    protected $callStatus;
 
     /**
      * @param array $note
@@ -140,143 +117,5 @@ abstract class CallNote extends NoteModel
         ];
 
         return $result;
-    }
-
-
-    /**
-     * @return string|null
-     */
-    public function getUniq(): ?string
-    {
-        return $this->uniq;
-    }
-
-    /**
-     * @param string|null $uniq
-     * @return CallNote
-     */
-    public function setUniq(?string $uniq): CallNote
-    {
-        $this->uniq = $uniq;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSource(): ?string
-    {
-        return $this->source;
-    }
-
-    /**
-     * @param string|null $source
-     * @return CallNote
-     */
-    public function setSource(?string $source): CallNote
-    {
-        $this->source = $source;
-
-        return $this;
-    }
-
-    /**
-     * @return int|string
-     */
-    public function getDuration()
-    {
-        return $this->duration;
-    }
-
-    /**
-     * @param int|string $duration
-     * @return CallNote
-     */
-    public function setDuration($duration)
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLink(): ?string
-    {
-        return $this->link;
-    }
-
-    /**
-     * @param string|null $link
-     * @return CallNote
-     */
-    public function setLink(?string $link): CallNote
-    {
-        $this->link = $link;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param string|null $phone
-     * @return CallNote
-     */
-    public function setPhone(?string $phone): CallNote
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCallResult(): ?string
-    {
-        return $this->callResult;
-    }
-
-    /**
-     * @param string|null $callResult
-     * @return CallNote
-     */
-    public function setCallResult(?string $callResult): CallNote
-    {
-        $this->callResult = $callResult;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getCallStatus(): ?int
-    {
-        return $this->callStatus;
-    }
-
-    /**
-     * @param int|null $callStatus
-     * @return CallNote
-     */
-    public function setCallStatus(?int $callStatus): CallNote
-    {
-        if (!in_array($callStatus, self::AVAILABLE_CALL_STATUSES, true)) {
-            return $this;
-        }
-
-        $this->callStatus = $callStatus;
-
-        return $this;
     }
 }

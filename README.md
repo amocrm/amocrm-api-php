@@ -138,6 +138,7 @@ $leadsService = $apiClient->leads();
 | transactions      | Покупки покупателей           |
 | customers         | Покупатели                    |
 | customersStatuses | Сегменты покупателя           |
+| calls             | Звонки                        |
 | getOAuthClient    | oAuth сервис                  |
 | getRequest        | Голый запросы                 |
 
@@ -607,7 +608,7 @@ $lead->setTags((new NullTagsCollection()));
 1. ```\AmoCRM\OAuth\AmoCRMOAuth::BUTTON_COLORS``` - доступные цвета для кнопки на сайт
 2. ```\AmoCRM\Models\Unsorted\BaseUnsortedModel``` - константы для кодов категорий неразобранного
 3. ```\AmoCRM\Models\CustomFields\BirthdayCustomFieldModel``` - константы для свойства remind у поля День Рождения
-4. ```\AmoCRM\Models\NoteType\CallNote``` - константы статусов звонков
+4. ```\AmoCRM\Models\Interfaces\CallInterface``` - константы статусов звонков
 5. ```\AmoCRM\EntitiesServices\Interfaces\HasParentEntity``` - константы для ключей в запросах методов, у которых есть родительский сущность (в данный момент только notes)
 6. ```\AmoCRM\Models\CustomFieldsValues\ValueModels\ItemsCustomFieldValueModel``` - константы для ключей значения поля Items
 7. ```\AmoCRM\Models\Rights\RightModel``` - константы, связанные с правами
