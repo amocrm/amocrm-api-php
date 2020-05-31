@@ -98,7 +98,7 @@ $phoneField->setValues(
     (new MultitextCustomFieldValueCollection())
         ->add(
             (new MultitextCustomFieldValueModel())
-                ->setEnum('PRIV')
+                ->setEnum('WORKDD')
                 ->setValue('+79123')
         )
 );
