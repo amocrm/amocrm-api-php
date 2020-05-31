@@ -97,7 +97,7 @@ if (empty($phoneField)) {
 $phoneField->setValues(
     (new MultitextCustomFieldValueCollection())
         ->add(
-            (new MultitextCustomFieldValueModel)
+            (new MultitextCustomFieldValueModel())
                 ->setEnum('PRIV')
                 ->setValue('+79123')
         )
@@ -144,7 +144,7 @@ foreach ($contacts as $contact) {
     $emailField->setValues(
         (new MultitextCustomFieldValueCollection())
             ->add(
-                (new MultitextCustomFieldValueModel)
+                (new MultitextCustomFieldValueModel())
                     ->setEnum('WORK')
                     ->setValue('example@test.com')
             )
