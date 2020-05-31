@@ -2,15 +2,17 @@
 
 namespace AmoCRM\Filters;
 
+use AmoCRM\Filters\Traits\ArrayOrNumericFilterTrait;
 use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
-
-use function is_numeric;
+use AmoCRM\Filters\Traits\IntOrIntRangeFilterTrait;
 
 class TasksFilter
 {
     use OrderTrait;
     use PagesFilterTrait;
+    use ArrayOrNumericFilterTrait;
+    use IntOrIntRangeFilterTrait;
 
     /**
      * @var array|int|null
@@ -18,7 +20,7 @@ class TasksFilter
     private $ids = null;
 
     /**
-     * @var null|array|int
+     * @var null|array
      */
     private $createdBy = null;
 
@@ -72,7 +74,8 @@ class TasksFilter
      */
     public function setIds($ids)
     {
-        $this->ids = $ids;
+        $this->ids = $this->parseArrayOrNumberFilter($ids);
+
         return $this;
     }
 
@@ -91,11 +94,7 @@ class TasksFilter
      */
     public function setCreatedBy($createdBy)
     {
-        if (is_numeric($createdBy)) {
-            $createdBy = [$createdBy];
-        }
-
-        $this->createdBy = array_map('intval', $createdBy);
+        $this->createdBy = $this->parseArrayOrNumberFilter($createdBy);
 
         return $this;
     }
@@ -115,11 +114,7 @@ class TasksFilter
      */
     public function setResponsibleUserId($responsibleUserId)
     {
-        if (is_numeric($responsibleUserId)) {
-            $responsibleUserId = [$responsibleUserId];
-        }
-
-        $this->responsibleUserId = array_map('intval', $responsibleUserId);
+        $this->responsibleUserId = $this->parseArrayOrNumberFilter($responsibleUserId);
 
         return $this;
     }
@@ -139,11 +134,7 @@ class TasksFilter
      */
     public function setUpdatedAt($updatedAt)
     {
-        if ($updatedAt instanceof BaseRangeFilter) {
-            $updatedAt = $updatedAt->toFilter();
-        }
-
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = $this->parseIntOrIntRangeFilter($updatedAt);
 
         return $this;
     }

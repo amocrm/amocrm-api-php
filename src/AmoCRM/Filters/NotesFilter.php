@@ -3,13 +3,17 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\ArrayOrNumericFilterTrait;
 use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
+use AmoCRM\Filters\Traits\IntOrIntRangeFilterTrait;
 
 class NotesFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use OrderTrait;
     use PagesFilterTrait;
+    use ArrayOrNumericFilterTrait;
+    use IntOrIntRangeFilterTrait;
 
     /**
      * @var array|null
@@ -41,11 +45,7 @@ class NotesFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setIds(array $ids): self
     {
-        $ids = array_map('intval', $ids);
-
-        if (!empty($ids)) {
-            $this->ids = $ids;
-        }
+        $this->ids = $this->parseArrayOrNumberFilter($ids);
 
         return $this;
     }
@@ -79,11 +79,7 @@ class NotesFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setUpdatedAt($updatedAt)
     {
-        if ($updatedAt instanceof BaseRangeFilter) {
-            $updatedAt = $updatedAt->toFilter();
-        }
-
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = $this->parseIntOrIntRangeFilter($updatedAt);
 
         return $this;
     }

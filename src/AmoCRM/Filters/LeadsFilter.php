@@ -3,16 +3,22 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\ArrayOrNumericFilterTrait;
+use AmoCRM\Filters\Traits\ArrayOrStringFilterTrait;
 use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
+use AmoCRM\Filters\Traits\IntOrIntRangeFilterTrait;
 
 class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use OrderTrait;
     use PagesFilterTrait;
+    use ArrayOrNumericFilterTrait;
+    use ArrayOrStringFilterTrait;
+    use IntOrIntRangeFilterTrait;
 
     /**
-     * @var array|int|null
+     * @var array|null
      */
     private $ids = null;
 
@@ -27,12 +33,12 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
     private $price = null;
 
     /**
-     * @var null|array|int
+     * @var null|array
      */
     private $createdBy = null;
 
     /**
-     * @var null|array|int
+     * @var null|array
      */
     private $updatedBy = null;
 
@@ -77,7 +83,7 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
     private $query = null;
 
     /**
-     * @return array|int|null
+     * @return array|null
      */
     public function getIds()
     {
@@ -85,17 +91,13 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
     }
 
     /**
-     * @param array|int|null $ids
+     * @param array|int $ids
      *
      * @return LeadsFilter
      */
     public function setIds($ids)
     {
-        if (is_numeric($ids)) {
-            $ids = [$ids];
-        }
-
-        $this->ids = array_map('intval', $ids);
+        $this->ids = $this->parseArrayOrNumberFilter($ids);
 
         return $this;
     }
@@ -115,11 +117,7 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setNames($names)
     {
-        if (is_string($names)) {
-            $names = [$names];
-        }
-
-        $this->names = array_map('strval', $names);
+        $this->names = $this->parseArrayOrStringFilter($names);
 
         return $this;
     }
@@ -139,17 +137,13 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setPrice($price)
     {
-        if ($price instanceof BaseRangeFilter) {
-            $price = $price->toFilter();
-        }
-
-        $this->price = $price;
+        $this->price = $this->parseIntOrIntRangeFilter($price);
 
         return $this;
     }
 
     /**
-     * @return array|int|null
+     * @return array|null
      */
     public function getCreatedBy()
     {
@@ -157,23 +151,19 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
     }
 
     /**
-     * @param array|int|null $createdBy
+     * @param array|int $createdBy
      *
      * @return LeadsFilter
      */
     public function setCreatedBy($createdBy)
     {
-        if (is_numeric($createdBy)) {
-            $createdBy = [$createdBy];
-        }
-
-        $this->createdBy = array_map('intval', $createdBy);
+        $this->createdBy = $this->parseArrayOrNumberFilter($createdBy);
 
         return $this;
     }
 
     /**
-     * @return array|int|null
+     * @return array|null
      */
     public function getUpdatedBy()
     {
@@ -181,17 +171,13 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
     }
 
     /**
-     * @param array|int|null $updatedBy
+     * @param array|null $updatedBy
      *
      * @return LeadsFilter
      */
     public function setUpdatedBy($updatedBy)
     {
-        if (is_numeric($updatedBy)) {
-            $updatedBy = [$updatedBy];
-        }
-
-        $this->updatedBy = array_map('intval', $updatedBy);
+        $this->updatedBy = $this->parseArrayOrNumberFilter($updatedBy);
 
         return $this;
     }
@@ -211,11 +197,7 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setResponsibleUserId($responsibleUserId)
     {
-        if (is_numeric($responsibleUserId)) {
-            $responsibleUserId = [$responsibleUserId];
-        }
-
-        $this->responsibleUserId = array_map('intval', $responsibleUserId);
+        $this->responsibleUserId = $this->parseArrayOrNumberFilter($responsibleUserId);
 
         return $this;
     }
@@ -235,11 +217,7 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setCreatedAt($createdAt)
     {
-        if ($createdAt instanceof BaseRangeFilter) {
-            $createdAt = $createdAt->toFilter();
-        }
-
-        $this->createdAt = $createdAt;
+        $this->createdAt = $this->parseIntOrIntRangeFilter($createdAt);
 
         return $this;
     }
@@ -259,11 +237,7 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setUpdatedAt($updatedAt)
     {
-        if ($updatedAt instanceof BaseRangeFilter) {
-            $updatedAt = $updatedAt->toFilter();
-        }
-
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = $this->parseIntOrIntRangeFilter($updatedAt);
 
         return $this;
     }
@@ -283,11 +257,7 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setClosedAt($closedAt)
     {
-        if ($closedAt instanceof BaseRangeFilter) {
-            $closedAt = $closedAt->toFilter();
-        }
-
-        $this->closedAt = $closedAt;
+        $this->closedAt = $this->parseIntOrIntRangeFilter($closedAt);
 
         return $this;
     }
@@ -307,11 +277,7 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setClosestTaskAt($closestTaskAt)
     {
-        if ($closestTaskAt instanceof BaseRangeFilter) {
-            $closestTaskAt = $closestTaskAt->toFilter();
-        }
-
-        $this->closestTaskAt = $closestTaskAt;
+        $this->closestTaskAt = $this->parseIntOrIntRangeFilter($closestTaskAt);
 
         return $this;
     }
@@ -334,13 +300,17 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
         $statusesFilter = [];
 
         foreach ($statuses as $status) {
+            if (!isset($status['status_id']) || !isset($status['pipeline_id'])) {
+                continue;
+            }
+
             $statusesFilter[] = [
-                'status_id' => $status['status_id'] ?? null,
-                'pipeline_id' => $status['pipeline_id'] ?? null,
+                'status_id' => (int)$status['status_id'] ?? null,
+                'pipeline_id' => (int)$status['pipeline_id'] ?? null,
             ];
         }
 
-        $this->statuses = $statusesFilter;
+        $this->statuses = empty($statusesFilter) ? null : $statusesFilter;
 
         return $this;
     }

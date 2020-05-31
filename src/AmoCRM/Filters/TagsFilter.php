@@ -3,11 +3,13 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\ArrayOrNumericFilterTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
 class TagsFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use PagesFilterTrait;
+    use ArrayOrNumericFilterTrait;
 
     /**
      * @var array|null
@@ -39,11 +41,7 @@ class TagsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setIds(array $ids): self
     {
-        $ids = array_map('intval', $ids);
-
-        if (!empty($ids)) {
-            $this->ids = $ids;
-        }
+        $this->ids = $this->parseArrayOrNumberFilter($ids);
 
         return $this;
     }

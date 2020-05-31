@@ -3,13 +3,19 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\ArrayOrNumericFilterTrait;
+use AmoCRM\Filters\Traits\ArrayOrStringFilterTrait;
 use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
+use AmoCRM\Filters\Traits\IntOrIntRangeFilterTrait;
 
 class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use OrderTrait;
     use PagesFilterTrait;
+    use ArrayOrNumericFilterTrait;
+    use ArrayOrStringFilterTrait;
+    use IntOrIntRangeFilterTrait;
 
     /**
      * @var array|int|null
@@ -76,11 +82,7 @@ class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setIds($ids)
     {
-        if (is_numeric($ids)) {
-            $ids = [$ids];
-        }
-
-        $this->ids = array_map('intval', $ids);
+        $this->ids = $this->parseArrayOrNumberFilter($ids);
 
         return $this;
     }
@@ -100,11 +102,7 @@ class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setNames($names)
     {
-        if (is_string($names)) {
-            $names = [$names];
-        }
-
-        $this->names = array_map('strval', $names);
+        $this->names = $this->parseArrayOrStringFilter($names);
 
         return $this;
     }
@@ -124,11 +122,7 @@ class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setCreatedBy($createdBy)
     {
-        if (is_numeric($createdBy)) {
-            $createdBy = [$createdBy];
-        }
-
-        $this->createdBy = array_map('intval', $createdBy);
+        $this->createdBy = $this->parseArrayOrNumberFilter($createdBy);
 
         return $this;
     }
@@ -148,11 +142,7 @@ class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setUpdatedBy($updatedBy)
     {
-        if (is_numeric($updatedBy)) {
-            $updatedBy = [$updatedBy];
-        }
-
-        $this->updatedBy = array_map('intval', $updatedBy);
+        $this->updatedBy = $this->parseArrayOrNumberFilter($updatedBy);
 
         return $this;
     }
@@ -172,11 +162,7 @@ class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setResponsibleUserId($responsibleUserId)
     {
-        if (is_numeric($responsibleUserId)) {
-            $responsibleUserId = [$responsibleUserId];
-        }
-
-        $this->responsibleUserId = array_map('intval', $responsibleUserId);
+        $this->responsibleUserId = $this->parseArrayOrNumberFilter($responsibleUserId);
 
         return $this;
     }
@@ -196,11 +182,7 @@ class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setCreatedAt($createdAt)
     {
-        if ($createdAt instanceof BaseRangeFilter) {
-            $createdAt = $createdAt->toFilter();
-        }
-
-        $this->createdAt = $createdAt;
+        $this->createdAt = $this->parseIntOrIntRangeFilter($createdAt);
 
         return $this;
     }
@@ -220,11 +202,7 @@ class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setUpdatedAt($updatedAt)
     {
-        if ($updatedAt instanceof BaseRangeFilter) {
-            $updatedAt = $updatedAt->toFilter();
-        }
-
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = $this->parseIntOrIntRangeFilter($updatedAt);
 
         return $this;
     }
@@ -244,11 +222,7 @@ class ContactsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setClosestTaskAt($closestTaskAt)
     {
-        if ($closestTaskAt instanceof BaseRangeFilter) {
-            $closestTaskAt = $closestTaskAt->toFilter();
-        }
-
-        $this->closestTaskAt = $closestTaskAt;
+        $this->closestTaskAt = $this->parseIntOrIntRangeFilter($closestTaskAt);
 
         return $this;
     }

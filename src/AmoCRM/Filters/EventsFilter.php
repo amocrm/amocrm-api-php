@@ -3,11 +3,15 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\ArrayOrNumericFilterTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
+use AmoCRM\Filters\Traits\IntOrIntRangeFilterTrait;
 
 class EventsFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use PagesFilterTrait;
+    use ArrayOrNumericFilterTrait;
+    use IntOrIntRangeFilterTrait;
 
     /**
      * @var array|null
@@ -158,6 +162,7 @@ class EventsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setCreatedAt($createdAt)
     {
+        //todo support for range filter
         if (!is_array($createdAt)) {
             $createdAt = [$createdAt];
         }
@@ -181,11 +186,7 @@ class EventsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setCreatedBy($createdBy)
     {
-        if (!is_array($createdBy)) {
-            $createdBy = [$createdBy];
-        }
-
-        $this->createdBy = $createdBy;
+        $this->createdBy = $this->parseArrayOrNumberFilter($createdBy);
 
         return $this;
     }

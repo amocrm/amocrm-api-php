@@ -351,7 +351,7 @@ class AmoCRMApiClientTest extends TestCase
      */
     private function _getInnerPropertyValueByReflection(string $property)
     {
-        $reflector = new \ReflectionClass($this->apiClient);
+        $reflector = new ReflectionClass($this->apiClient);
         $reflectorProperty = $reflector->getProperty($property);
         $reflectorProperty->setAccessible(true);
 

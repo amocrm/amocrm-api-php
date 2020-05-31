@@ -3,6 +3,7 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\ArrayOrStringFilterTrait;
 use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
@@ -10,6 +11,7 @@ class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use PagesFilterTrait;
     use OrderTrait;
+    use ArrayOrStringFilterTrait;
 
     /**
      * @var array|null
@@ -40,7 +42,7 @@ class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setUids(?array $uids): UnsortedFilter
     {
-        $this->uids = array_map('strval', $uids);
+        $this->uids = $this->parseArrayOrStringFilter($uids);
 
         return $this;
     }
@@ -59,7 +61,7 @@ class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setCategory($category)
     {
-        $this->category =  array_map('strval', (array)$category);
+        $this->category = $this->parseArrayOrStringFilter($category);
 
         return $this;
     }

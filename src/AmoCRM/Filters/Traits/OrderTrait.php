@@ -31,10 +31,10 @@ trait OrderTrait
     }
 
     /**
-     * @return array
+     * @return null|array
      */
-    public function getOrder(): array
+    public function getOrder(): ?array
     {
-        return [$this->orderField => $this->direction];
+        return empty($this->orderField) || empty($this->direction) ? null : [$this->orderField => $this->direction];
     }
 }

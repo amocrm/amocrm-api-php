@@ -16,9 +16,10 @@ trait PagesFilterTrait
 
     /**
      * @param int $page
+     *
      * @return PagesFilterTrait
      */
-    public function setPage(int $page): PagesFilterTrait
+    public function setPage(int $page): self
     {
         $this->page = $page;
 
@@ -37,7 +38,7 @@ trait PagesFilterTrait
      * @param int $limit
      * @return PagesFilterTrait
      */
-    public function setLimit(int $limit): PagesFilterTrait
+    public function setLimit(int $limit): self
     {
         $this->limit = $limit;
 

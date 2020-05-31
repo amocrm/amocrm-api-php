@@ -2,8 +2,12 @@
 
 namespace AmoCRM\Filters;
 
+use AmoCRM\Filters\Traits\IntOrIntRangeFilterTrait;
+
 class UnsortedSummaryFilter extends BaseEntityFilter
 {
+    use IntOrIntRangeFilterTrait;
+
     /**
      * @var array|int|null
      */
@@ -47,11 +51,7 @@ class UnsortedSummaryFilter extends BaseEntityFilter
      */
     public function setCreatedAt($createdAt): UnsortedSummaryFilter
     {
-        if ($createdAt instanceof BaseRangeFilter) {
-            $createdAt = $createdAt->toFilter();
-        }
-
-        $this->createdAt = $createdAt;
+        $this->createdAt = $this->parseIntOrIntRangeFilter($createdAt);
 
         return $this;
     }

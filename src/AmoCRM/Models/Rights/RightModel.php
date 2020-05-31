@@ -442,8 +442,11 @@ class RightModel extends BaseApiModel
             ->setLeadsRights($rights['leads'])
             ->setContactsRights($rights['contacts'])
             ->setCompaniesRights($rights['companies'])
-            ->setTasksRights($rights['tasks'])
-            ->setStatusRights($rights['status_rights']);
+            ->setTasksRights($rights['tasks']);
+
+        if (!empty($rights['status_rights'])) {
+            $model->setStatusRights($rights['status_rights']);
+        }
 
         return $model;
     }

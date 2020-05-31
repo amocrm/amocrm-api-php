@@ -5,63 +5,67 @@ namespace AmoCRM\Filters;
 class BaseRangeFilter
 {
     /**
-     * @var string|int
+     * @var int
      */
     private $to;
 
     /**
-     * @var string|int
+     * @var int
      */
     private $from;
 
     /**
-     * @return int|string
+     * @return int
      */
-    public function getTo()
+    public function getTo(): int
     {
         return $this->to;
     }
 
     /**
-     * @param int|string $to
+     * @param int $to
      *
      * @return BaseRangeFilter
      */
-    public function setTo($to)
+    public function setTo(int $to): self
     {
-        $this->to = $to;
+        if ($to >= 0) {
+            $this->to = $to;
+        }
 
         return $this;
     }
 
     /**
-     * @return int|string
+     * @return int
      */
-    public function getFrom()
+    public function getFrom(): int
     {
         return $this->from;
     }
 
     /**
-     * @param int|string $from
+     * @param int $from
      *
      * @return BaseRangeFilter
      */
-    public function setFrom($from)
+    public function setFrom(int $from): self
     {
-        $this->from = $from;
+        if ($from >= 0) {
+            $this->from = $from;
+        }
 
         return $this;
     }
 
     /**
-     * @return array
+     * @return array|int[]
      */
     public function toFilter()
     {
         return [
-            'to' => $this->getTo(),
             'from' => $this->getFrom(),
+            'to' => $this->getTo(),
         ];
     }
 }
