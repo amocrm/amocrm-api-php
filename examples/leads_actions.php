@@ -105,7 +105,7 @@ foreach ($leads as $lead) {
     //Получим коллекцию значений полей сделки
     $customFields = $lead->getCustomFieldsValues();
 
-    //Получем значение поля по его ID
+    //Получим значение поля по его ID
     if (!empty($customFields)) {
         $textField = $customFields->getBy('fieldId', 269303);
         $textFieldValues = $textField->getValues();
@@ -113,7 +113,7 @@ foreach ($leads as $lead) {
         $textField = new CustomFieldsValuesCollection();
     }
 
-    //Если значения нет, то создадим новый объект поля и добавим его в колекцию значенй
+    //Если значения нет, то создадим новый объект поля и добавим его в коллекцию значений
     if (empty($textFieldValues)) {
         $textFieldValues = (new TextCustomFieldValuesModel())->setFieldId(269303);
         $textField->add($textFieldValues);

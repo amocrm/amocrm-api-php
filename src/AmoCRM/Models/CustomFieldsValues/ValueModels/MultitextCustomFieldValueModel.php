@@ -60,7 +60,7 @@ class MultitextCustomFieldValueModel extends BaseEnumCustomFieldValueModel
         return [
             'value' => $this->getValue(),
             'enum_id' => $this->getEnumId(),
-            'enum' => $this->getEnum(),
+            'enum_code' => $this->getEnum(),
         ];
     }
 

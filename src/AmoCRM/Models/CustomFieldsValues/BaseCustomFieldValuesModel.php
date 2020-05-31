@@ -149,7 +149,7 @@ class BaseCustomFieldValuesModel extends BaseApiModel
         return [
             'field_id' => $this->getFieldId(),
             'field_code' => $this->getFieldCode(),
-            'values' => $this->getValues()->toArray(),
+            'values' => $this->getValues()->toApi(),
         ];
     }
 }
