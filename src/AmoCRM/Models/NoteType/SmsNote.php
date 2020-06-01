@@ -26,11 +26,11 @@ abstract class SmsNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['text'])) {
-            $this->setText($note['params']['text']);
+            $model->setText($note['params']['text']);
         }
 
         if (isset($note['params']['phone'])) {
-            $this->setPhone($note['params']['phone']);
+            $model->setPhone($note['params']['phone']);
         }
 
         return $model;

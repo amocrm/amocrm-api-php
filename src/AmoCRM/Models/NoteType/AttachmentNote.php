@@ -35,11 +35,11 @@ class AttachmentNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['original_name'])) {
-            $this->setOriginalName($note['params']['original_name']);
+            $model->setOriginalName($note['params']['original_name']);
         }
 
         if (isset($note['params']['attachment'])) {
-            $this->setAttachment($note['params']['attachment']);
+            $model->setAttachment($note['params']['attachment']);
         }
 
         return $model;

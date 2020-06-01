@@ -34,11 +34,11 @@ class ZoomMeetingNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['recordings'])) {
-            $this->setRecordings($note['params']['recordings']);
+            $model->setRecordings($note['params']['recordings']);
         }
 
         if (isset($note['params']['conference'])) {
-            $this->setConference($note['params']['conference']);
+            $model->setConference($note['params']['conference']);
         }
 
         return $model;

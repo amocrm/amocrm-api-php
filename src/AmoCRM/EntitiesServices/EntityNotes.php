@@ -28,6 +28,7 @@ use AmoCRM\Models\NoteModel;
  * @method NoteModel updateOne(BaseApiModel $apiModel) : NoteModel
  * @method NotesCollection update(BaseApiCollection $collection) : NotesCollection
  * @method NoteModel syncOne(BaseApiModel $apiModel, $with = []) : NoteModel
+ * @method NotesCollection getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = []) : ?NotesCollection
  */
 class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterface, HasParentEntity
 {
@@ -52,7 +53,7 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
     /**
      * @var string
      */
-    protected $methodWithParent = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/%s/notes/%s';
+    protected $methodWithParent = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/%s/notes';
 
     /**
      * @param string $entityType

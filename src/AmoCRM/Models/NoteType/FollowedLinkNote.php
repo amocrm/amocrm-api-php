@@ -30,7 +30,7 @@ class FollowedLinkNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['url'])) {
-            $this->setUrl($note['params']['url']);
+            $model->setUrl($note['params']['url']);
         }
 
         return $model;

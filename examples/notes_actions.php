@@ -1,9 +1,11 @@
 <?php
 
 use AmoCRM\EntitiesServices\Interfaces\HasParentEntity;
+use AmoCRM\Filters\NotesFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\NotesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Models\Factories\NoteFactory;
 use AmoCRM\Models\NoteType\CallInNote;
 use AmoCRM\Models\NoteType\CallNote;
 use AmoCRM\Models\NoteType\ServiceMessageNote;
@@ -34,7 +36,7 @@ $apiClient->setAccessToken($accessToken)
 $notesCollection = new NotesCollection();
 $serviceMessageNote = new ServiceMessageNote();
 $serviceMessageNote->setEntityId(1)
-    ->setText('Текст прмечания')
+    ->setText('Текст примечания')
     ->setService('Api Library')
     ->setCreatedBy(0);
 
@@ -61,6 +63,14 @@ $notesCollection->add($callInNote);
 try {
     $leadNotesService = $apiClient->notes(EntityTypesInterface::LEADS);
     $notesCollection = $leadNotesService->add($notesCollection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+//Получение примечаний конкретной сущности с фильтром по типу примечания
+try {
+    $notesCollection = $leadNotesService->getByParentId(1, (new NotesFilter())->setNoteTypes([NoteFactory::NOTE_TYPE_CODE_CALL_IN]));
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;

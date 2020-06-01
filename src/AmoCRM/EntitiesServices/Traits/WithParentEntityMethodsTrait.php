@@ -3,12 +3,16 @@
 namespace AmoCRM\EntitiesServices\Traits;
 
 use AmoCRM\Client\AmoCRMApiRequest;
+use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasParentEntity;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\InvalidArgumentException;
+use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
+
+use function is_null;
 
 trait WithParentEntityMethodsTrait
 {
@@ -86,9 +90,15 @@ trait WithParentEntityMethodsTrait
      *
      * @return string
      */
-    protected function getMethodWithParent($parentId, $id): string
+    protected function getMethodWithParent($parentId, $id = null): string
     {
-        return sprintf($this->methodWithParent, $this->getEntityType(), $parentId, $id);
+        $method = sprintf($this->methodWithParent, $this->getEntityType(), $parentId);
+
+        if (!is_null($id)) {
+            $method .= '/' . $id;
+        }
+
+        return $method;
     }
 
     /**
@@ -112,5 +122,32 @@ trait WithParentEntityMethodsTrait
         }
 
         return $this->mergeModels($this->getOne([HasParentEntity::ID_KEY => $id, HasParentEntity::PARENT_ID_KEY => $parentId], $with), $apiModel);
+    }
+
+    /**
+     * Получение коллекции сущностей по ID родительской сущности
+     *
+     * @param int $parentId
+     * @param null|BaseEntityFilter $filter
+     * @param array $with
+     *
+     * @return BaseApiCollection|null
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
+    {
+        $queryParams = [];
+        if ($filter instanceof BaseEntityFilter) {
+            $queryParams = $filter->buildFilter();
+        }
+        $with = array_intersect($with, (static::ITEM_CLASS)::getAvailableWith());
+        if (!empty($with)) {
+            $queryParams['with'] = implode(',', $with);
+        }
+
+        $response = $this->request->get($this->getMethodWithParent($parentId), $queryParams);
+
+        return $this->createCollection($response);
     }
 }
