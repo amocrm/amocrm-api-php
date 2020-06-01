@@ -1,4 +1,10 @@
+![amoCRM API Library](.github/logo.png?raw=true)
+
 # amoCRM API Library
+
+[![Latest Version](https://img.shields.io/github/release/amocrm/amocrm-api-php)](https://github.com/amocrm/amocrm-api-php/releases)
+[![Build Status](https://img.shields.io/travis/amocrm/amocrm-api-php)](https://travis-ci.org/github/amocrm/amocrm-api-php/)
+[![Total Downloads](https://img.shields.io/packagist/dt/amocrm/amocrm-api-library.svg)](https://packagist.org/packages/amocrm/amocrm-api-library)
 
 В данном пакете представлен API клиент с поддержкой основных сущностей и авторизацией по протоколу OAuth 2.0 в amoCRM.
 

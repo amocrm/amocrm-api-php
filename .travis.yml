@@ -24,5 +24,3 @@ jobs:
   include:
     - stage: style check
       script: composer run style:check
-    - stage: tests
-      script: composer run test
