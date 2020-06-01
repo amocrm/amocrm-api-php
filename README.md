@@ -297,6 +297,15 @@ $leadsService = $apiClient->leads();
     deleteOne(BaseApiModel $model);
     ```
 
+#### Методы доступные в сервисе ```notes```:
+1. getByParentId Получение данных по ID родительской сущности
+    1. parentId - ID родительской сущности
+    2. filter (BaseEntityFilter) - фильтр
+    3. with (array) - массив параметров with, которые поддерживает модель сервиса
+    ```php
+   getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = []);
+    ```
+
 #### Методы доступные в сервисе ```account```
 1. getCurrent
     1. with (array) - массив параметров with, которые поддерживает модель сервиса

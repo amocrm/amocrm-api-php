@@ -26,11 +26,11 @@ abstract class BaseServiceMessageNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['service'])) {
-            $this->setService($note['params']['service']);
+            $model->setService($note['params']['service']);
         }
 
         if (isset($note['params']['text'])) {
-            $this->setText($note['params']['text']);
+            $model->setText($note['params']['text']);
         }
 
         return $model;

@@ -30,7 +30,7 @@ class TransactionNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['transaction_id'])) {
-            $this->setTransactionId($note['params']['transaction_id']);
+            $model->setTransactionId($note['params']['transaction_id']);
         }
 
         return $model;

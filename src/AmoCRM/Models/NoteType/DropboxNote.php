@@ -35,11 +35,11 @@ class DropboxNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['link'])) {
-            $this->setLink($note['params']['link']);
+            $model->setLink($note['params']['link']);
         }
 
         if (isset($note['params']['filename'])) {
-            $this->setFilename($note['params']['filename']);
+            $model->setFilename($note['params']['filename']);
         }
 
         return $model;

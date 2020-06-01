@@ -45,15 +45,15 @@ abstract class TargetingNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['contacts'])) {
-            $this->setContacts($note['params']['contacts']);
+            $model->setContacts($note['params']['contacts']);
         }
 
         if (isset($note['params']['campaign'])) {
-            $this->setCampaign($note['params']['campaign']);
+            $model->setCampaign($note['params']['campaign']);
         }
 
         if (isset($note['params']['service'])) {
-            $this->setService($note['params']['service']);
+            $model->setService($note['params']['service']);
         }
 
         return $model;

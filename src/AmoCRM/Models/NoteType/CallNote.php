@@ -48,31 +48,31 @@ abstract class CallNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['uniq'])) {
-            $this->setUniq($note['params']['uniq']);
+            $model->setUniq($note['params']['uniq']);
         }
 
         if (isset($note['params']['duration'])) {
-            $this->setDuration($note['params']['duration']);
+            $model->setDuration($note['params']['duration']);
         }
 
         if (isset($note['params']['source'])) {
-            $this->setSource($note['params']['source']);
+            $model->setSource($note['params']['source']);
         }
 
         if (isset($note['params']['link'])) {
-            $this->setLink($note['params']['link']);
+            $model->setLink($note['params']['link']);
         }
 
         if (isset($note['params']['phone'])) {
-            $this->setPhone($note['params']['phone']);
+            $model->setPhone($note['params']['phone']);
         }
 
         if (isset($note['params']['call_result'])) {
-            $this->setCallResult($note['params']['call_result']);
+            $model->setCallResult($note['params']['call_result']);
         }
 
         if (isset($note['params']['call_status'])) {
-            $this->setCallStatus($note['params']['call_status']);
+            $model->setCallStatus($note['params']['call_status']);
         }
 
         return $model;

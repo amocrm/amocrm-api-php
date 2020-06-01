@@ -46,11 +46,11 @@ class MessageCashierNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['status'])) {
-            $this->setStatus($note['params']['status']);
+            $model->setStatus($note['params']['status']);
         }
 
         if (isset($note['params']['text'])) {
-            $this->setText($note['params']['text']);
+            $model->setText($note['params']['text']);
         }
 
         return $model;

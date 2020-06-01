@@ -44,15 +44,15 @@ class GeolocationNote extends NoteModel
         $model = parent::fromArray($note);
 
         if (isset($note['params']['address'])) {
-            $this->setAddress($note['params']['address']);
+            $model->setAddress($note['params']['address']);
         }
 
         if (isset($note['params']['text'])) {
-            $this->setText($note['params']['text']);
+            $model->setText($note['params']['text']);
         }
 
         if (isset($note['params']['latitude'])) {
-            $this->setLatitude($note['params']['latitude']);
+            $model->setLatitude($note['params']['latitude']);
         }
 
         if (isset($note['params']['longitude'])) {
@@ -103,9 +103,9 @@ class GeolocationNote extends NoteModel
 
     /**
      * @param string|null $address
-     * @return MessageCashierNote
+     * @return GeolocationNote
      */
-    public function setAddress(?string $address): MessageCashierNote
+    public function setAddress(?string $address): GeolocationNote
     {
         $this->address = $address;
 
@@ -122,9 +122,9 @@ class GeolocationNote extends NoteModel
 
     /**
      * @param string|null $longitude
-     * @return MessageCashierNote
+     * @return GeolocationNote
      */
-    public function setLongitude(?string $longitude): MessageCashierNote
+    public function setLongitude(?string $longitude): GeolocationNote
     {
         $this->longitude = $longitude;
 
