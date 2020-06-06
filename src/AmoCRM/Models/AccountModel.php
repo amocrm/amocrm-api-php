@@ -7,17 +7,53 @@ use AmoCRM\Collections\TaskTypesCollection;
 use AmoCRM\Collections\UsersGroupsCollection;
 use AmoCRM\Models\AccountSettings\AmojoRights;
 use AmoCRM\Models\AccountSettings\DateTimeSettings;
-use Carbon\Carbon;
 
 class AccountModel extends BaseApiModel
 {
+    /** @var string ID аккаунта в сервисе чатов */
     public const AMOJO_ID = 'amojo_id';
+    /** @var string UUID аккаунта */
     public const UUID = 'uuid';
+    /** @var string Права на встроенные чаты */
     public const AMOJO_RIGHTS = 'amojo_rights';
+    /** @var string Группы пользователей */
     public const USER_GROUPS = 'users_groups';
+    /** @var string Типы задач */
     public const TASK_TYPES = 'task_types';
+    /** @var string Версия аккаунта */
     public const VERSION = 'version';
+    /** @var string Настройки форматов времени */
     public const DATETIME_SETTINGS = 'datetime_settings';
+
+    /** @var string Покупатели недоступны. */
+    public const CUSTOMERS_MODE_UNAVAILABLE = 'unavailable';
+    /** @var string Покупатели выключены. */
+    public const CUSTOMERS_MODE_DISABLED = 'disabled';
+
+    /**
+     * Режим периодических покупок (когда статус покупателя зависит от кол-ва дней до следующего платежа)
+     * и покупатель оказывается в определенном статусе при совершении покупки
+     *
+     * @var string
+     */
+    public const CUSTOMERS_MODE_PERIODICITY = 'periodicity';
+
+    /**
+     * Статус, в котором находится покупатель, не зависит от даты следующей покупки
+     *
+     * @var string
+     * @deprecated
+     */
+    public const CUSTOMERS_MODE_DYNAMIC = 'dynamic';
+
+    /**
+     * Покупатели не имеют статусов, но разделены по сегментам по принципу:
+     * каждый покупатель может входить в состав множества сегментов
+     * каждый сегмент может иметь множество покупателей
+     *
+     * @var string
+     */
+    public const SEGMENTS = 'segments';
 
     /** @var int */
     protected $id;
@@ -64,11 +100,8 @@ class AccountModel extends BaseApiModel
     /** @var int */
     protected $mobileFeatureVersion;
 
-    /** @var bool */
-    protected $customersEnabled;
-
-    /** @var bool */
-    protected $periodicityEnabled;
+    /** @var string */
+    protected $customersMode;
 
     /** @var bool */
     protected $lossReasonsEnabled;
@@ -178,11 +211,11 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @param Carbon $timestamp
+     * @param int $timestamp
      *
      * @return self
      */
-    public function setCreatedAt(Carbon $timestamp): self
+    public function setCreatedAt(int $timestamp): self
     {
         $this->createdAt = $timestamp;
 
@@ -198,11 +231,11 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @param Carbon $timestamp
+     * @param int $timestamp
      *
      * @return self
      */
-    public function setUpdatedAt(Carbon $timestamp): self
+    public function setUpdatedAt(int $timestamp): self
     {
         $this->updatedAt = $timestamp;
 
@@ -284,8 +317,7 @@ class AccountModel extends BaseApiModel
             ->setCountry((string)$account['country'])
             ->setUnsortedOn((bool)$account['is_unsorted_on'])
             ->setMobileFeatureVersion((int)$account['mobile_feature_version'])
-            ->setCustomersEnabled((bool)$account['is_customers_enabled'])
-            ->setPeriodicityEnabled((bool)$account['is_periodicity_enabled'])
+            ->setCustomersMode($account['customers_mode'])
             ->setLossReasonsEnabled((bool)$account['is_loss_reason_enabled'])
             ->setHelpbotEnabled((bool)$account['is_helpbot_enabled'])
             ->setContactNameDisplayOrder((int)$account['contact_name_display_order']);
@@ -357,8 +389,7 @@ class AccountModel extends BaseApiModel
             'country' => $this->getCountry(),
             'is_unsorted_on' => $this->getIsUnsortedOn(),
             'mobile_feature_version' => $this->getMobileFeatureVersion(),
-            'is_customers_enabled' => $this->getIsCustomersEnabled(),
-            'is_periodicity_enabled' => $this->getIsPeriodicityEnabled(),
+            'customers_mode' => $this->getCustomersMode(),
             'is_loss_reason_enabled' => $this->getIsLossReasonsEnabled(),
             'is_helpbot_enabled' => $this->getIsHelpbotEnabled(),
             'contact_name_display_order' => $this->getContactNameDisplayOrder(),
@@ -393,6 +424,26 @@ class AccountModel extends BaseApiModel
         }
 
         return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomersMode(): string
+    {
+        return $this->customersMode;
+    }
+
+    /**
+     * @param string $customersMode
+     *
+     * @return AccountModel
+     */
+    public function setCustomersMode(string $customersMode): AccountModel
+    {
+        $this->customersMode = $customersMode;
+
+        return $this;
     }
 
     /**
@@ -505,44 +556,6 @@ class AccountModel extends BaseApiModel
     public function setMobileFeatureVersion(int $mobileFeatureVersion): self
     {
         $this->mobileFeatureVersion = $mobileFeatureVersion;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsCustomersEnabled(): bool
-    {
-        return $this->customersEnabled;
-    }
-
-    /**
-     * @param bool $customersEnabled
-     * @return AccountModel
-     */
-    public function setCustomersEnabled(bool $customersEnabled): self
-    {
-        $this->customersEnabled = $customersEnabled;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsPeriodicityEnabled(): bool
-    {
-        return $this->periodicityEnabled;
-    }
-
-    /**
-     * @param bool $periodicityEnabled
-     * @return AccountModel
-     */
-    public function setPeriodicityEnabled(bool $periodicityEnabled): self
-    {
-        $this->periodicityEnabled = $periodicityEnabled;
 
         return $this;
     }
