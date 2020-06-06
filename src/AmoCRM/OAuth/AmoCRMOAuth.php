@@ -227,7 +227,7 @@ class AmoCRMOAuth
      */
     public function getOAuthButton(array $options = []): string
     {
-        if (isset($options['color']) && !in_array($options['color'], self::BUTTON_COLORS, true)) {
+        if (isset($options['color']) && !array_key_exists($options['color'], self::BUTTON_COLORS)) {
             throw new BadTypeException('Invalid color selected');
         }
 
