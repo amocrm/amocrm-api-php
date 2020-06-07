@@ -2,11 +2,12 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Models\Interfaces\EntityApiInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use Illuminate\Contracts\Support\Arrayable;
 
-class TagModel extends BaseApiModel implements Arrayable, HasIdInterface
+class TagModel extends BaseApiModel implements Arrayable, HasIdInterface, EntityApiInterface
 {
     use RequestIdTrait;
 
@@ -109,5 +110,23 @@ class TagModel extends BaseApiModel implements Arrayable, HasIdInterface
         $result['request_id'] = $this->getRequestId();
 
         return $result;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function toEntityApi(): ?array
+    {
+        $result = [];
+
+        if (!is_null($this->getName())) {
+            $result['name'] = $this->getName();
+        }
+
+        if (!is_null($this->getId())) {
+            $result['id'] = $this->getId();
+        }
+
+        return $result ?? null;
     }
 }
