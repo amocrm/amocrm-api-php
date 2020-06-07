@@ -412,9 +412,9 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @return CustomersCollection
+     * @return null|CustomersCollection
      */
-    public function getCustomers(): CustomersCollection
+    public function getCustomers(): ?CustomersCollection
     {
         return $this->customers;
     }
