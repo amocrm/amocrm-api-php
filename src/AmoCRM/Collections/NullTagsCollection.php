@@ -13,4 +13,9 @@ class NullTagsCollection extends TagsCollection
     {
         return null;
     }
+
+    public function toEntityApi(): ?array
+    {
+        return null;
+    }
 }

@@ -3,6 +3,7 @@
 namespace AmoCRM\Collections;
 
 use AmoCRM\Collections\Interfaces\HasPagesInterface;
+use AmoCRM\Collections\Traits\EntityApiTrait;
 use AmoCRM\Collections\Traits\PagesTrait;
 use AmoCRM\Models\TagModel;
 
@@ -22,6 +23,7 @@ use AmoCRM\Models\TagModel;
  */
 class TagsCollection extends BaseApiCollection implements HasPagesInterface
 {
+    use EntityApiTrait;
     use PagesTrait;
 
     public const ITEM_CLASS = TagModel::class;

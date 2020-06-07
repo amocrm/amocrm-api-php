@@ -5,7 +5,7 @@ use League\OAuth2\Client\Token\AccessToken;
 define('TOKEN_FILE', DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'token_info.json');
 
 /**
- * @param string $accessToken
+ * @param array $accessToken
  */
 function saveToken($accessToken)
 {

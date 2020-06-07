@@ -798,7 +798,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
         }
 
         if (!is_null($this->getCatalogElementsLinks())) {
-            $result['catalog_elements'] = $this->getCatalogElementsLinks();
+            $result['catalog_elements'] = $this->getCatalogElementsLinks()->toArray();
         }
 
         if (!is_null($this->getIsPriceModifiedByRobot())) {
@@ -806,19 +806,19 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
         }
 
         if (!is_null($this->getTags())) {
-            $result['tags'] = $this->getTags();
+            $result['tags'] = $this->getTags()->toArray();
         }
 
         if (!is_null($this->getLossReason())) {
-            $result['loss_reason'] = $this->getLossReason();
+            $result['loss_reason'] = $this->getLossReason()->toArray();
         }
 
         if (!is_null($this->getCompany())) {
-            $result['company'] = $this->getCompany();
+            $result['company'] = $this->getCompany()->toArray();
         }
 
         if (!is_null($this->getContacts())) {
-            $result['contacts'] = $this->getContacts();
+            $result['contacts'] = $this->getContacts()->toArray();
         }
 
         return $result;
@@ -881,7 +881,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
         }
 
         if (!is_null($this->getTags())) {
-            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags()->toApi();
+            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags()->toEntityApi();
         }
 
         if (!is_null($this->getVisitorUid())) {

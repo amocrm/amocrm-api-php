@@ -812,7 +812,7 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
         }
 
         if (!is_null($this->getTags())) {
-            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags()->toApi();
+            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags()->toEntityApi();
         }
 
         if (!is_null($this->getSegments())) {

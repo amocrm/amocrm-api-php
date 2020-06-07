@@ -538,23 +538,23 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
         }
 
         if (!is_null($this->getTags())) {
-            $result['tags'] = $this->getTags();
+            $result['tags'] = $this->getTags()->toArray();
         }
 
         if (!is_null($this->getCatalogElementsLinks())) {
-            $result['catalog_elements'] = $this->getCatalogElementsLinks();
+            $result['catalog_elements'] = $this->getCatalogElementsLinks()->toArray();
         }
 
         if (!is_null($this->getContacts())) {
-            $result['contacts'] = $this->getContacts();
+            $result['contacts'] = $this->getContacts()->toArray();
         }
 
         if (!is_null($this->getLeads())) {
-            $result['leads'] = $this->getLeads();
+            $result['leads'] = $this->getLeads()->toArray();
         }
 
         if (!is_null($this->getCustomers())) {
-            $result['customers'] = $this->getCustomers();
+            $result['customers'] = $this->getCustomers()->toArray();
         }
 
         return $result;
@@ -593,7 +593,7 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
         }
 
         if (!is_null($this->getTags())) {
-            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags()->toApi();
+            $result[AmoCRMApiRequest::EMBEDDED]['tags'] = $this->getTags()->toEntityApi();
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
