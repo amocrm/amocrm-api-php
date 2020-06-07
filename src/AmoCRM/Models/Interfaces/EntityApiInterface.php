@@ -2,7 +2,6 @@
 
 namespace AmoCRM\Models\Interfaces;
 
-
 interface EntityApiInterface
 {
     /**
