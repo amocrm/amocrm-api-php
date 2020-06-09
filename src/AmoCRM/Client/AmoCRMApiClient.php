@@ -490,7 +490,7 @@ class AmoCRMApiClient
      * Метод вернет объект Продуктов
      * @return Products
      */
-    public function Products(): Products
+    public function products(): Products
     {
         $request = $this->buildRequest();
 
