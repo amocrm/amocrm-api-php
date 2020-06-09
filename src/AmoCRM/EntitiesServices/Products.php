@@ -16,6 +16,12 @@ use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\BaseApiModel;
 
+/**
+ * Class Products
+ * Для работы с API товаров, есть только методы настроек
+ * 
+ * @package AmoCRM\AmoCRM\EntitiesServices
+ */
 class Products extends BaseEntity
 {
     /**
