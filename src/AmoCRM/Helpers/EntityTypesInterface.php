@@ -28,6 +28,7 @@ interface EntityTypesInterface
     public const WIDGETS = 'widgets';
     public const STATUS_RIGHTS = 'status_rights';
     public const CALLS = 'calls';
+    public const PRODUCTS = 'products';
 
 
     public const CUSTOM_FIELDS = 'custom_fields';
