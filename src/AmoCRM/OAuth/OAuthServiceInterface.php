@@ -18,5 +18,5 @@ interface OAuthServiceInterface
      * @param AccessTokenInterface $accessToken
      * @param string               $baseDomain
      */
-    public function saveOauthToken(AccessTokenInterface $accessToken, string $baseDomain): void;
+    public function saveOAuthToken(AccessTokenInterface $accessToken, string $baseDomain): void;
 }

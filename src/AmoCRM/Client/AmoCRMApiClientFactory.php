@@ -47,7 +47,7 @@ class AmoCRMApiClientFactory
 
         $client->onAccessTokenRefresh(
             function (AccessTokenInterface $accessToken, string $baseDomain) {
-                $this->oAuthService->saveOauthToken($accessToken, $baseDomain);
+                $this->oAuthService->saveOAuthToken($accessToken, $baseDomain);
             }
         );
 
