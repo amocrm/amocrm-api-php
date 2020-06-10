@@ -145,20 +145,22 @@ class Customers extends BaseEntity implements HasLinkMethodInterface, HasPageMet
      *
      * @param string $mode
      *
+     * @param bool $isEnabled
+     *
      * @return BaseApiModel
      * @throws AmoCRMApiException
-     * @throws AmoCRMoAuthApiException
      * @throws AmoCRMApiNoContentException
+     * @throws AmoCRMoAuthApiException
      */
-    public function setMode(string $mode): ?string
+    public function setMode(string $mode, bool $isEnabled = true): ?string
     {
         if (!in_array($mode, [AccountModel::CUSTOMERS_MODE_PERIODICITY, AccountModel::SEGMENTS], true)) {
             throw new AmoCRMApiException('Invalid mode');
         }
 
-        $response = $this->request->patch($this->getMethod() . '/mode', ['mode' => $mode]);
+        $response = $this->request->patch($this->getMethod() . '/mode', ['mode' => $mode, 'is_enabled' => $isEnabled]);
 
-        return $response['mode'] ?? null;
+        return $response['is_enabled'] && $response['mode'] ? $response['mode'] : null;
     }
 
     /**
