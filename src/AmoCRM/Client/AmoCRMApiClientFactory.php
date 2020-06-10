@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AmoCRM\AmoCRM\Client;
 
 use AmoCRM\Client\AmoCRMApiClient;
-use AmoCRM\OAuth\OauthConfigInterface;
-use AmoCRM\OAuth\OauthServiceInterface;
+use AmoCRM\OAuth\OAuthConfigInterface;
+use AmoCRM\OAuth\OAuthServiceInterface;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 /**
@@ -17,21 +17,21 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
  */
 class AmoCRMApiClientFactory
 {
-    /** @var OauthConfigInterface */
-    protected $oauthConfig;
-    /** @var OauthServiceInterface */
-    protected $oauthService;
+    /** @var OAuthConfigInterface */
+    protected $oAuthConfig;
+    /** @var OAuthServiceInterface */
+    protected $oAuthService;
 
     /**
      * AmoCRMApiClientFactory constructor.
      *
-     * @param OauthConfigInterface  $oauthConfig
-     * @param OauthServiceInterface $oauthService
+     * @param OAuthConfigInterface  $oAuthConfig
+     * @param OAuthServiceInterface $oAuthService
      */
-    public function __construct(OauthConfigInterface $oauthConfig, OauthServiceInterface $oauthService)
+    public function __construct(OAuthConfigInterface $oAuthConfig, OAuthServiceInterface $oAuthService)
     {
-        $this->oauthConfig  = $oauthConfig;
-        $this->oauthService = $oauthService;
+        $this->oAuthConfig  = $oAuthConfig;
+        $this->oAuthService = $oAuthService;
     }
 
     /**
@@ -40,14 +40,14 @@ class AmoCRMApiClientFactory
     public function make(): AmoCRMApiClient
     {
         $client = new AmoCRMApiClient(
-            $this->oauthConfig->getIntegrationId(),
-            $this->oauthConfig->getSecretKey(),
-            $this->oauthConfig->getRedirectDomain()
+            $this->oAuthConfig->getIntegrationId(),
+            $this->oAuthConfig->getSecretKey(),
+            $this->oAuthConfig->getRedirectDomain()
         );
 
         $client->onAccessTokenRefresh(
             function (AccessTokenInterface $accessToken, string $baseDomain) {
-                $this->oauthService->saveOauthToken($accessToken, $baseDomain);
+                $this->oAuthService->saveOauthToken($accessToken, $baseDomain);
             }
         );
 

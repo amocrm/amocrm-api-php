@@ -35,10 +35,10 @@ $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redir
 ```
 
 Так же предоставляется фабрика для создания объектов `\AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory`.
-Для ее использования нужно реализовать интерфейс `\AmoCRM\OAuth\OauthConfigInterface` и `\AmoCRM\OAuth\OauthServiceInterface`
+Для ее использования вам нужно реализовать интерфейс `\AmoCRM\OAuth\OAuthConfigInterface` и `\AmoCRM\OAuth\OAuthServiceInterface`
 
 ```php
-$apiClientFactory = new \AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory($oauthConfig, $oauthService);
+$apiClientFactory = new \AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory($oAuthConfig, $oAuthService);
 $apiClient = $apiClientFactory->make();
 ```
 

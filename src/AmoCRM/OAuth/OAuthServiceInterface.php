@@ -12,7 +12,7 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
  *
  * @package AmoCRM\OAuth
  */
-interface OauthServiceInterface
+interface OAuthServiceInterface
 {
     /**
      * @param AccessTokenInterface $accessToken
