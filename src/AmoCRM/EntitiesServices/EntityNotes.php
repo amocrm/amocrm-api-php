@@ -198,5 +198,4 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
 
         return !empty($response) ? $collection->first() : null;
     }
-
 }
