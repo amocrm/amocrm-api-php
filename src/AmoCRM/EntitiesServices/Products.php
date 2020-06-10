@@ -27,7 +27,17 @@ class Products extends BaseEntity
     /**
      * @var string
      */
-    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::PRODUCTS;
+    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION
+        . '/' . EntityTypesInterface::CATALOGS
+        . '/' . EntityTypesInterface::PRODUCTS;
+
+    /**
+     * @var string
+     */
+    protected $methodSettings = 'api/v' . AmoCRMApiClient::API_VERSION
+        . '/' . EntityTypesInterface::CATALOGS
+        . '/' . EntityTypesInterface::PRODUCTS
+        . '/' . EntityTypesInterface::SETTINGS;
 
     /**
      * @var string
@@ -122,7 +132,7 @@ class Products extends BaseEntity
      */
     public function settings(): ?ProductsSettingsModel
     {
-        $response = $this->request->get($this->getMethod());
+        $response = $this->request->get($this->methodSettings);
 
         $class = static::ITEM_CLASS;
         /** @var BaseApiModel $entity */
@@ -141,7 +151,7 @@ class Products extends BaseEntity
      */
     public function updateSettings(ProductsSettingsModel $productsSettings)
     {
-        $response = $this->request->patch($this->getMethod(), $productsSettings->toApi());
+        $response = $this->request->patch($this->methodSettings, $productsSettings->toApi());
 
         return $this->processUpdateOne($productsSettings, $response);
     }

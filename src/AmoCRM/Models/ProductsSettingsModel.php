@@ -29,9 +29,9 @@ class ProductsSettingsModel extends BaseApiModel
     /**
      * @param bool|null $isEnabled
      *
-     * @return ProductsSettings
+     * @return ProductsSettingsModel
      */
-    public function setIsEnabled(bool $isEnabled): ProductsSettings
+    public function setIsEnabled(bool $isEnabled): ProductsSettingsModel
     {
         $this->isEnabled = $isEnabled;
 
@@ -52,9 +52,9 @@ class ProductsSettingsModel extends BaseApiModel
     /**
      * @param array $settings
      *
-     * @return static
+     * @return ProductsSettingsModel
      */
-    public static function fromArray(array $settings): self
+    public static function fromArray(array $settings): ProductsSettingsModel
     {
         $model = new self();
 
