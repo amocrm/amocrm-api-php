@@ -18,9 +18,9 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
 class AmoCRMApiClientFactory
 {
     /** @var OauthConfigInterface */
-    protected  $oauthConfig;
+    protected $oauthConfig;
     /** @var OauthServiceInterface */
-    protected  $oauthService;
+    protected $oauthService;
 
     /**
      * AmoCRMApiClientFactory constructor.
