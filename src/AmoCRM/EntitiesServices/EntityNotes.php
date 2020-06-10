@@ -4,6 +4,8 @@ namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\EntitiesServices\Interfaces\HasParentEntity;
 use AmoCRM\EntitiesServices\Traits\WithParentEntityMethodsTrait;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -14,6 +16,7 @@ use AmoCRM\Collections\NotesCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\NoteModel;
 
 /**
@@ -21,7 +24,6 @@ use AmoCRM\Models\NoteModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method NoteModel getOne(array $id, array $with = []) : ?NoteModel
  * @method NotesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?NotesCollection
  * @method NoteModel addOne(BaseApiModel $model) : NoteModel
  * @method NotesCollection add(BaseApiCollection $collection) : NotesCollection
@@ -41,12 +43,12 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
     protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/%s/notes';
 
     /**
-     * @var string
+     * @var NotesCollection
      */
     protected $collectionClass = NotesCollection::class;
 
     /**
-     * @var string
+     * @var NoteModel
      */
     public const ITEM_CLASS = NoteModel::class;
 
@@ -168,4 +170,33 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
             $apiModel->setEntityId($entity['entity_id']);
         }
     }
+
+    /**
+     * Получение одной конкретной сущности
+     * @param array $id
+     * @param array $with
+     *
+     * @return BaseApiModel|null|NoteModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function getOne($id, array $with = []): ?BaseApiModel
+    {
+        $queryParams = [];
+        $class = static::ITEM_CLASS;
+        $with = array_intersect($with, $class::getAvailableWith());
+        if (!empty($with)) {
+            $queryParams['with'] = implode(',', $with);
+        }
+
+        $parentId = $id[HasParentEntity::PARENT_ID_KEY] ?? null;
+        $id = $id[HasParentEntity::ID_KEY] ?? null;
+
+        $response = $this->request->get($this->getMethodWithParent($parentId, $id), $queryParams);
+
+        $collection = !empty($response) ? $this->collectionClass::fromArray([$response]) : null;
+
+        return !empty($response) ? $collection->first() : null;
+    }
+
 }
