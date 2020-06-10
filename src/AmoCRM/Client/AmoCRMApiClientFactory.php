@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AmoCRM\AmoCRM\Client;
 
 use AmoCRM\Client\AmoCRMApiClient;
-use AmoCRM\OAuth\CrmOauthConfigInterface;
-use AmoCRM\OAuth\CrmOauthServiceInterface;
+use AmoCRM\OAuth\OauthConfigInterface;
+use AmoCRM\OAuth\OauthServiceInterface;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 /**
@@ -17,18 +17,18 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
  */
 class AmoCRMApiClientFactory
 {
-    /** @var CrmOauthConfigInterface */
+    /** @var OauthConfigInterface */
     protected  $oauthConfig;
-    /** @var CrmOauthServiceInterface */
+    /** @var OauthServiceInterface */
     protected  $oauthService;
 
     /**
      * AmoCRMApiClientFactory constructor.
      *
-     * @param CrmOauthConfigInterface $oauthConfig
-     * @param CrmOauthServiceInterface   $oauthService
+     * @param OauthConfigInterface  $oauthConfig
+     * @param OauthServiceInterface $oauthService
      */
-    public function __construct(CrmOauthConfigInterface $oauthConfig, CrmOauthServiceInterface $oauthService)
+    public function __construct(OauthConfigInterface $oauthConfig, OauthServiceInterface $oauthService)
     {
         $this->oauthConfig  = $oauthConfig;
         $this->oauthService = $oauthService;

@@ -34,6 +34,14 @@ composer require amocrm/amocrm-api-library
 $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
 ```
 
+Так же предоставляется фабрика для создания объектов `\AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory`.
+Для ее использования нужно реализовать интерфейс `\AmoCRM\OAuth\OauthConfigInterface` и `\AmoCRM\OAuth\OauthServiceInterface`
+
+```php
+$apiClientFactory = new \AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory($oauthConfig, $oauthService);
+$apiClient = $apiClientFactory->make();
+```
+
 Затем необходимо создать объект (`\League\OAuth2\Client\Token\AccessToken`) Access токена из вашего хранилища токенов и установить его в API клиент.
 
 Также необходимо установить домен аккаунта amoCRM в виде СУБДОМЕН.amocrm.(ru/com).

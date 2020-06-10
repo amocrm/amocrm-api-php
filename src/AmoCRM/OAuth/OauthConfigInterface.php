@@ -10,7 +10,7 @@ namespace AmoCRM\OAuth;
  *
  * @package AmoCRM\OAuth
  */
-interface CrmOauthConfigInterface
+interface OauthConfigInterface
 {
     /**
      * @return string
