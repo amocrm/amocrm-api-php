@@ -4,6 +4,9 @@ namespace AmoCRM\EntitiesServices\Customers;
 
 use AmoCRM\EntitiesServices\HasLinkMethodInterface;
 use AmoCRM\EntitiesServices\Traits\LinkMethodsTrait;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMApiNoContentException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
@@ -13,6 +16,7 @@ use AmoCRM\Collections\Customers\CustomersCollection;
 use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
+use AmoCRM\Models\AccountModel;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Customers\CustomerModel;
 
@@ -134,6 +138,29 @@ class Customers extends BaseEntity implements HasLinkMethodInterface, HasPageMet
         if (isset($entity['updated_at'])) {
             $apiModel->setUpdatedAt($entity['updated_at']);
         }
+    }
+
+    /**
+     * Смена режима покупателей
+     *
+     * @param string $mode
+     *
+     * @param bool $isEnabled
+     *
+     * @return BaseApiModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMApiNoContentException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function setMode(string $mode, bool $isEnabled = true): ?string
+    {
+        if (!in_array($mode, [AccountModel::CUSTOMERS_MODE_PERIODICITY, AccountModel::SEGMENTS], true)) {
+            throw new AmoCRMApiException('Invalid mode');
+        }
+
+        $response = $this->request->patch($this->getMethod() . '/mode', ['mode' => $mode, 'is_enabled' => $isEnabled]);
+
+        return $response['is_enabled'] && $response['mode'] ? $response['mode'] : null;
     }
 
     /**

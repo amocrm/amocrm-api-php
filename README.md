@@ -206,6 +206,7 @@ $leadsService = $apiClient->leads();
 
 Некоторые сервисы имеют специфичные методы, ниже рассмотрим сервисы, которые имеют специфичные методы.
 
+
 #### Методы доступные в сервисе ```getOAuthClient```:
 1. getAuthorizeUrl получение ссылки на авторизация
     1. options (array)
@@ -263,6 +264,7 @@ $leadsService = $apiClient->leads();
     exchangeApiKey(string $login, string $apiKey);
     ```
 
+
 #### Методы связей доступны в сервисах ```leads```, ```contacts```, ```companies```, ```customers```:
 1. link Привязать сущность
     1. model (BaseApiModel) - модель главной сущности
@@ -288,6 +290,7 @@ $leadsService = $apiClient->leads();
     unlink(BaseApiModel $model, $linkedEntities);
     ```
 
+
 #### Методы удаления доступны в сервисах ```transactions```, ```lossReasons```, ```statuses```, ```pipelines```, ```customFields```, ```customFieldsGroups```, ```roles```, ```customersStatuses```:
 1. delete
     1. model (BaseApiModel) - модель сущности
@@ -303,6 +306,17 @@ $leadsService = $apiClient->leads();
     deleteOne(BaseApiModel $model);
     ```
 
+
+#### Методы доступные в сервисе ```customers```:
+1. setMode Смена режима покупателей (периодические покупки или сегментация). Если покупатели выключены - то они будут включены.
+    1. mode (string) - тип режима (periodicity или segments)
+    1. isEnabled (bool) - включен ли функционал покупателей, по-умолчанию - true
+    2. Результатом выполнения является строка названия включенного режима или null в случае отключения функционала
+    ```php
+    setMode(string $mode, bool $isEnabled = true);
+    ```
+
+
 #### Методы доступные в сервисе ```notes```:
 1. getByParentId Получение данных по ID родительской сущности
     1. parentId - ID родительской сущности
@@ -311,6 +325,7 @@ $leadsService = $apiClient->leads();
     ```php
    getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = []);
     ```
+
 
 #### Методы доступные в сервисе ```account```
 1. getCurrent
@@ -367,6 +382,7 @@ $leadsService = $apiClient->leads();
     summary(BaseEntityFilter $filter);
     ```
    
+
 #### Методы доступные в сервисе ```webhooks```
 1. subscribe
     1. model (WebhookModel) - модель вебхука
@@ -382,6 +398,7 @@ $leadsService = $apiClient->leads();
     unsubscribe(WebhookModel $webhookModel);
     ```
 
+
 #### Методы доступные в сервисе ```widgets```
 1. install
     1. model (WidgetModel) - модель виджета
@@ -396,6 +413,7 @@ $leadsService = $apiClient->leads();
     ```php
     uninstall(WidgetModel $widgetModel);
     ```
+
 
 ## Обработка ошибок
 
