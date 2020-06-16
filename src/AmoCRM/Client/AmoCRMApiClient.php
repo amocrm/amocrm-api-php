@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\AmoCRM\EntitiesServices\Products;
 use AmoCRM\EntitiesServices\Calls;
 use AmoCRM\EntitiesServices\Customers\Transactions;
 use AmoCRM\EntitiesServices\Leads\LossReasons;
@@ -483,6 +484,17 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Calls($request);
+    }
+
+    /**
+     * Метод вернет объект Продуктов
+     * @return Products
+     */
+    public function products(): Products
+    {
+        $request = $this->buildRequest();
+
+        return  new Products($request);
     }
 
     /**
