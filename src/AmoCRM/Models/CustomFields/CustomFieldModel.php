@@ -157,7 +157,7 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
             ->setId($customField['id'])
             ->setName($customField['name'])
             ->setSort($customField['sort'])
-            ->setCode($customField['code'])
+            ->setCode(empty($customField['code']) ? null : $customField['code'])
             ->setEntityType($customField['entity_type'])
             ->setAccountId($customField['account_id']);
 
@@ -170,7 +170,6 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
                 CustomFieldRequiredStatusesCollection::fromArray($customField['required_statuses'])
             );
         }
-
 
         if (array_key_exists('is_api_only', $customField)) {
             $customFieldModel->setIsApiOnly($customField['is_api_only']);
