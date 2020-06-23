@@ -52,7 +52,7 @@ class CustomFieldGroupModel extends BaseApiModel
             ->setName($customFieldGroup['name'])
             ->setSort($customFieldGroup['sort'])
             ->setIsPredefined($customFieldGroup['is_predefined'])
-            ->setEntityType($customFieldGroupModel['entity_type']);
+            ->setEntityType($customFieldGroup['entity_type']);
 
         return $customFieldGroupModel;
     }

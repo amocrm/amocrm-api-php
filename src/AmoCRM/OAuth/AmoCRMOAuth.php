@@ -130,7 +130,7 @@ class AmoCRMOAuth
                 'refresh_token' => $accessToken->getRefreshToken(),
             ]);
         } catch (IdentityProviderException $e) {
-            throw new AmoCRMoAuthApiException($e);
+            throw new AmoCRMoAuthApiException($e->getResponseBody());
         }
 
         if (is_callable($this->accessTokenRefreshCallback)) {
