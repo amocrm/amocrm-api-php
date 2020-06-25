@@ -34,6 +34,14 @@ composer require amocrm/amocrm-api-library
 $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
 ```
 
+Так же предоставляется фабрика для создания объектов `\AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory`.
+Для ее использования вам нужно реализовать интерфейс `\AmoCRM\OAuth\OAuthConfigInterface` и `\AmoCRM\OAuth\OAuthServiceInterface`
+
+```php
+$apiClientFactory = new \AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory($oAuthConfig, $oAuthService);
+$apiClient = $apiClientFactory->make();
+```
+
 Затем необходимо создать объект (`\League\OAuth2\Client\Token\AccessToken`) Access токена из вашего хранилища токенов и установить его в API клиент.
 
 Также необходимо установить домен аккаунта amoCRM в виде СУБДОМЕН.amocrm.(ru/com).
@@ -145,6 +153,7 @@ $leadsService = $apiClient->leads();
 | customers         | Покупатели                    |
 | customersStatuses | Сегменты покупателя           |
 | calls             | Звонки                        |
+| products          | Товары                        |
 | getOAuthClient    | oAuth сервис                  |
 | getRequest        | Голый запросы                 |
 
@@ -412,6 +421,19 @@ $leadsService = $apiClient->leads();
     2. Результатом выполнения является модель WidgetModel
     ```php
     uninstall(WidgetModel $widgetModel);
+    ```
+#### Методы доступные в сервисе ```products```
+1. settings
+    1. Результатом выполнения является модель ProductsSettingsModel
+    ```php
+    settings();
+    ```
+   
+2. updateSettings
+    1. model (ProductsSettingsModel) - модель виджета
+    2. Результатом выполнения является модель ProductsSettingsModel
+    ```php
+    updateSettings(ProductsSettingsModel $productsSettings);
     ```
 
 
