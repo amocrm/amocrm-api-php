@@ -33,7 +33,7 @@ class DateCustomFieldValueModel extends BaseCustomFieldValueModel
     public function toApi(string $requestId = null): array
     {
         return [
-            'value' => date('Y-m-d', $this->value),
+            'value' => $this->value,
         ];
     }
 }
