@@ -405,7 +405,7 @@ class CatalogModel extends BaseApiModel implements TypeAwareInterface, HasIdInte
             $catalogModel->setSort((int)$catalog['sort']);
         }
         if (array_key_exists('type', $catalog) && !is_null($catalog['type'])) {
-            $catalogModel->setCatalogType((int)$catalog['type']);
+            $catalogModel->setCatalogType($catalog['type']);
         }
         if (array_key_exists('can_add_elements', $catalog) && !is_null($catalog['can_add_elements'])) {
             $catalogModel->setCanAddElements((bool)$catalog['can_add_elements']);
