@@ -30,6 +30,7 @@ interface EntityTypesInterface
     public const CALLS = 'calls';
     public const PRODUCTS = 'products';
     public const SETTINGS = 'settings';
+    public const SHORT_LINKS = 'short_links';
 
 
     public const CUSTOM_FIELDS = 'custom_fields';

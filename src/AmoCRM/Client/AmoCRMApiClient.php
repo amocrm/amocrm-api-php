@@ -22,6 +22,7 @@ use AmoCRM\EntitiesServices\Events;
 use AmoCRM\EntitiesServices\Leads;
 use AmoCRM\EntitiesServices\Roles;
 use AmoCRM\EntitiesServices\Segments;
+use AmoCRM\EntitiesServices\ShortLinks;
 use AmoCRM\EntitiesServices\Tasks;
 use AmoCRM\EntitiesServices\Unsorted;
 use AmoCRM\EntitiesServices\Users;
@@ -424,6 +425,18 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Widgets($request);
+    }
+
+    /**
+     * Метод вернет объект коротких ссылок
+     *
+     * @return ShortLinks
+     */
+    public function shortLinks(): ShortLinks
+    {
+        $request = $this->buildRequest();
+
+        return new ShortLinks($request);
     }
 
     /**

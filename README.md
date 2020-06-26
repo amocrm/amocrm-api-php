@@ -154,6 +154,7 @@ $leadsService = $apiClient->leads();
 | customersStatuses | Сегменты покупателя           |
 | calls             | Звонки                        |
 | products          | Товары                        |
+| shortLinks        | Короткие ссылки               |
 | getOAuthClient    | oAuth сервис                  |
 | getRequest        | Голый запросы                 |
 
@@ -422,6 +423,7 @@ $leadsService = $apiClient->leads();
     ```php
     uninstall(WidgetModel $widgetModel);
     ```
+ 
 #### Методы доступные в сервисе ```products```
 1. settings
     1. Результатом выполнения является модель ProductsSettingsModel
