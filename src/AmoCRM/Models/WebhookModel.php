@@ -63,7 +63,7 @@ class WebhookModel extends BaseApiModel
         $model = new self();
 
         $model->setId($webhook['id'])
-            ->setDestination($webhook['name'])
+            ->setDestination($webhook['destination'])
             ->setAccountId($webhook['account_id'])
             ->setSettings($webhook['settings'])
             ->setCreatedBy($webhook['created_by'])
