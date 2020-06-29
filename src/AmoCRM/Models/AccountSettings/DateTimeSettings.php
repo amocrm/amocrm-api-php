@@ -68,7 +68,7 @@ class DateTimeSettings implements Arrayable
             'date_pattern' => $this->datePattern,
             'short_date_pattern' => $this->shortDatePattern,
             'short_time_pattern' => $this->shortTimePattern,
-            'date_formant' => $this->dateFormat,
+            'date_format' => $this->dateFormat,
             'time_format' => $this->timeFormat,
             'timezone' => $this->timezone,
             'timezone_offset' => $this->timezoneOffset,
