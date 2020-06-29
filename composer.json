@@ -23,7 +23,7 @@
     "ext-json": "*",
     "amocrm/oauth2-amocrm": "^2.0",
     "guzzlehttp/guzzle": "6.*",
-    "illuminate/support": "5.* || 6.*",
+    "illuminate/support": "5.* || 6.* || 7.*",
     "symfony/dotenv": "4.* || 5.*",
     "fig/http-message-util": "1.*",
     "ramsey/uuid": "3.*"
