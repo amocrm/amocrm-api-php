@@ -348,7 +348,7 @@ class AccountModel extends BaseApiModel
                 $dateTimeSettings['date_pattern'],
                 $dateTimeSettings['short_date_pattern'],
                 $dateTimeSettings['short_time_pattern'],
-                $dateTimeSettings['date_formant'],
+                $dateTimeSettings['date_format'],
                 $dateTimeSettings['time_format'],
                 $dateTimeSettings['timezone'],
                 $dateTimeSettings['timezone_offset']
