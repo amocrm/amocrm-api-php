@@ -2,8 +2,6 @@
 
 namespace AmoCRM\Filters\Interfaces;
 
-use AmoCRM\Filters\Traits\PagesFilterTrait;
-
 /**
  * Интерфейс для фильтров, которые поддерживают постраничную навигацию
  * @package AmoCRM\Filters\Interfaces
@@ -22,7 +20,7 @@ interface HasOrderInterface
     public function setOrder(string $field, string $direction = self::SORT_ASC);
 
     /**
-     * @return array
+     * @return null|array
      */
-    public function getOrder(): array;
+    public function getOrder(): ?array;
 }
