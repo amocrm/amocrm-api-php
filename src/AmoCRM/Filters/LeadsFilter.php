@@ -11,7 +11,6 @@ use AmoCRM\Filters\Traits\PagesFilterTrait;
 use AmoCRM\Filters\Traits\IntOrIntRangeFilterTrait;
 
 class LeadsFilter extends BaseEntityFilter implements HasPagesInterface, HasOrderInterface
-
 {
     use OrderTrait;
     use PagesFilterTrait;
