@@ -19,7 +19,7 @@ interface HasOrderInterface
      *
      * @return $this
      */
-    public function setOrder(string $field, string $direction = self::SORT_ASC): self;
+    public function setOrder(string $field, string $direction = self::SORT_ASC);
 
     /**
      * @return array
