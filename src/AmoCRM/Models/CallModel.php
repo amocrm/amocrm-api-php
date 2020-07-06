@@ -105,6 +105,10 @@ class CallModel extends BaseApiModel
      */
     public function toApi(?string $requestId = "0"): array
     {
+        if (is_null($this->getRequestId()) && !is_null($requestId)) {
+            $this->setRequestId($requestId);
+        }
+
         return [
             'uniq' => $this->getUniq(),
             'duration' => $this->getDuration(),
