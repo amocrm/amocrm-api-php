@@ -687,7 +687,7 @@ $lead->setTags((new NullTagsCollection()));
 ```php
 /**
  * Получим модель с информацией о домене аккаунта по access_token
- * Подробнее: @see AccountSubdomainModel
+ * Подробнее: @see AccountDomainModel
  *
  * Запрос уходит на www.amocrm.ru/oauth2/account/subdomain
  * С Authorization: Bearer {access_token}
@@ -695,11 +695,11 @@ $lead->setTags((new NullTagsCollection()));
  *
  * @example examples/get_account_subdomain.php
  */
-$accountSubdomainModel = $apiClient->getOAuthClient()
+$accountDomain = $apiClient->getOAuthClient()
         ->getAccountSubdomain($accessToken);
 
 // Возьмём из полученной модели текущий subdomain аккаунта и засетим наш апи клиент
-$apiClient->setAccountBaseDomain($accountSubdomainModel->getSubdomain());
+$apiClient->setAccountBaseDomain($accountDomain->getSubdomain());
 // ... дальше продолжаем работу с апи клиентом
 ```
 
@@ -707,8 +707,7 @@ $apiClient->setAccountBaseDomain($accountSubdomainModel->getSubdomain());
 ```php
 // Как пример, получим заголовки с реквеста
 // И получим нужный нам X-Auth-Token
-$headers = apache_request_headers();
-$token = $headers['X-Auth-Token'];
+$token = $_SERVER['HTTP_X_AUTH_TOKEN'];
 
 /**
  * Одноразовый токен для интеграций, для того чтобы его получить используйте

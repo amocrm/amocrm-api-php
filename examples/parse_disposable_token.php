@@ -11,8 +11,7 @@ $accessToken = getToken();
 
 // Как пример, получим заголовки с реквеста
 // И получим нужный нам X-Auth-Token
-$headers = apache_request_headers();
-$token = $headers['X-Auth-Token'];
+$token = $_SERVER['HTTP_X_AUTH_TOKEN'] ?? null;
 
 if ($token === null) {
     echo 'X-Auth-Token not found';

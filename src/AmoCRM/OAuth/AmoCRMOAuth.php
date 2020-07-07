@@ -4,7 +4,7 @@ namespace AmoCRM\OAuth;
 
 use AmoCRM\AmoCRM\Exceptions\DisposableTokenExpiredException;
 use AmoCRM\AmoCRM\Exceptions\DisposableTokenVerificationFailedException;
-use AmoCRM\AmoCRM\Models\AccountSubdomainModel;
+use AmoCRM\AmoCRM\Models\AccountDomainModel;
 use AmoCRM\AmoCRM\Models\DisposableTokenModel;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Exceptions\AmoCRMApiConnectExceptionException;
@@ -331,14 +331,15 @@ class AmoCRMOAuth
 
     /**
      * Получение субдомена аккаунта по токену
+     *
      * @param AccessTokenInterface $accessToken
      *
-     * @return AccountSubdomainModel
+     * @return AccountDomainModel
      * @throws AmoCRMApiErrorResponseException
      * @throws AmoCRMApiConnectExceptionException
      * @throws AmoCRMApiHttpClientException
      */
-    public function getAccountSubdomain(AccessTokenInterface $accessToken): AccountSubdomainModel
+    public function getAccountSubdomain(AccessTokenInterface $accessToken): AccountDomainModel
     {
         try {
             $response = $this->oauthProvider->getHttpClient()->request(
@@ -367,14 +368,14 @@ class AmoCRMOAuth
                     $response->getBody()->getContents()
                 );
             }
-            $accountSubdomainModel = AccountSubdomainModel::fromArray($response);
+            $accountDomainModel = AccountDomainModel::fromArray($response);
         } catch (ConnectException $e) {
             throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode());
         } catch (GuzzleException $e) {
             throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode());
         }
 
-        return $accountSubdomainModel;
+        return $accountDomainModel;
     }
 
     /**

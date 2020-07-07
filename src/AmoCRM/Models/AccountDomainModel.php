@@ -7,11 +7,11 @@ namespace AmoCRM\AmoCRM\Models;
 use AmoCRM\Models\BaseApiModel;
 
 /**
- * Class AccountSubdomainModel
+ * Class AccountDomainModel
  *
  * @package AmoCRM\AmoCRM\Models
  */
-class AccountSubdomainModel extends BaseApiModel
+class AccountDomainModel extends BaseApiModel
 {
     /** @var int */
     protected $id;
@@ -106,19 +106,19 @@ class AccountSubdomainModel extends BaseApiModel
     }
 
     /**
-     * @param array $accountSubdomain
+     * @param array $accountDomain
      *
      * @return static
      */
-    public static function fromArray(array $accountSubdomain): self
+    public static function fromArray(array $accountDomain): self
     {
-        $accountSubdomainModel = new self();
-        $accountSubdomainModel->setId((int)$accountSubdomain['id'])
-            ->setSubdomain($accountSubdomain['subdomain'])
-            ->setDomain($accountSubdomain['domain'])
-            ->setTopLevelDomain($accountSubdomain['top_level_domain']);
+        $accountDomainModel = new self();
+        $accountDomainModel->setId((int)$accountDomain['id'])
+            ->setSubdomain($accountDomain['subdomain'])
+            ->setDomain($accountDomain['domain'])
+            ->setTopLevelDomain($accountDomain['top_level_domain']);
 
-        return $accountSubdomainModel;
+        return $accountDomainModel;
     }
 
     /**
