@@ -16,7 +16,6 @@ try {
     $apiClient->setAccountBaseDomain($accountSubdomainModel->getSubdomain());
 
     var_dump($apiClient->getAccountBaseDomain());
-
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
