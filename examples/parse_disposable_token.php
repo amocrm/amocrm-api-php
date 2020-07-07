@@ -37,11 +37,11 @@ try {
 
     var_dump($disposableTokenModel->toArray());
 } catch (DisposableTokenExpiredException $e) {
-    // Токен не прошел проверку подписи
+    // Время жизни токена истекло
     printError($e);
     die;
 } catch (DisposableTokenVerificationFailedException $e) {
-    // Токен
+    // Токен не прошел проверку подписи
     printError($e);
     die;
 }
