@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace AmoCRM\AmoCRM\Models;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
+use AmoCRM\Models\BaseApiModel;
 
 /**
  * Class AccountSubdomainModel
  *
  * @package AmoCRM\AmoCRM\Models
  */
-class AccountSubdomainModel implements Arrayable, Jsonable
+class AccountSubdomainModel extends BaseApiModel
 {
     /** @var int */
     protected $id;
@@ -136,12 +135,12 @@ class AccountSubdomainModel implements Arrayable, Jsonable
     }
 
     /**
-     * @param int $options
+     * @param string|null $requestId
      *
-     * @return string
+     * @return array
      */
-    public function toJson($options = 0): string
+    public function toApi(string $requestId = null): array
     {
-        return json_encode($this->toArray(), $options);
+        return $this->toArray();
     }
 }

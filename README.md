@@ -683,6 +683,50 @@ $lead->setTags((new NullTagsCollection()));
 19. ```\AmoCRM\Models\ContactModel``` - константы для аргумента with для сервиса ```contacts```
 20. ```\AmoCRM\Models\CompanyModel``` - константы для аргумента with для сервиса ```companies```
 
+## Работа в случае смены субдомена аккаунта
+```php
+/**
+ * Получим модель с информацией о домене аккаунта по access_token
+ * Подробнее: @see AccountSubdomainModel
+ *
+ * Запрос уходит на www.amocrm.ru/oauth2/account/subdomain
+ * С Authorization: Bearer {access_token}
+ * curl 'https://www.amocrm.ru/oauth2/account/subdomain' -H 'Authorization: Bearer {access_token}'
+ *
+ * @example examples/get_account_subdomain.php
+ */
+$accountSubdomainModel = $apiClient->getOAuthClient()
+        ->getAccountSubdomain($accessToken);
+
+// Возьмём из полученной модели текущий subdomain аккаунта и засетим наш апи клиент
+$apiClient->setAccountBaseDomain($accountSubdomainModel->getSubdomain());
+// ... дальше продолжаем работу с апи клиентом
+```
+
+## Одноразовые токены интеграций, расшифровка
+```php
+// Как пример, получим заголовки с реквеста
+// И получим нужный нам X-Auth-Token
+$headers = apache_request_headers();
+$token = $headers['X-Auth-Token'];
+
+/**
+ * Одноразовый токен для интеграций, для того чтобы его получить используйте
+ * метод this.$authorizedAjax() в своей интеграции
+ * Подробнее: @link https://www.amocrm.ru/developers/content/web_sdk/mechanics
+ *
+ * Данный токен должен передаваться в заголовках вместе с запросом на ваш удаленный сервер
+ * X-Auth-Token: {disposable_token}
+ * Время жизни токена: 30 минут
+ *
+ * Расшифруем пришедший токен и получим модель с информацией
+ * Подробнее: @see DisposableTokenModel
+ * @example examples/parse_disposable_token.php
+ */
+$disposableTokenModel = $apiClient->getOAuthClient()
+    ->parseDisposableToken($token);
+```
+
 ## Примеры
 В рамках данного репозитория имеется папка examples с различными примерами.
 
