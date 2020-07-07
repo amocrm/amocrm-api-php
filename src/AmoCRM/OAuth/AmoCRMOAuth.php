@@ -339,7 +339,7 @@ class AmoCRMOAuth
      * @throws AmoCRMApiConnectExceptionException
      * @throws AmoCRMApiHttpClientException
      */
-    public function getAccountSubdomain(AccessTokenInterface $accessToken): AccountDomainModel
+    public function getAccountDomain(AccessTokenInterface $accessToken): AccountDomainModel
     {
         try {
             $response = $this->oauthProvider->getHttpClient()->request(

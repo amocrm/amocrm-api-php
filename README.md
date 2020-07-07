@@ -696,7 +696,7 @@ $lead->setTags((new NullTagsCollection()));
  * @example examples/get_account_subdomain.php
  */
 $accountDomain = $apiClient->getOAuthClient()
-        ->getAccountSubdomain($accessToken);
+        ->getAccountDomain($accessToken);
 
 // Возьмём из полученной модели текущий subdomain аккаунта и засетим наш апи клиент
 $apiClient->setAccountBaseDomain($accountDomain->getSubdomain());

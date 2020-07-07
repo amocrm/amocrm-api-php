@@ -20,7 +20,7 @@ try {
      * @example curl 'https://www.amocrm.ru/oauth2/account/subdomain' -H 'Authorization: Bearer {access_token}'
      */
     $accountDomainModel = $apiClient->getOAuthClient()
-        ->getAccountSubdomain($accessToken);
+        ->getAccountDomain($accessToken);
 
     var_dump($accountDomainModel->toArray());
 
