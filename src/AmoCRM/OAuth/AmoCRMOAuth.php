@@ -2,6 +2,7 @@
 
 namespace AmoCRM\OAuth;
 
+use AmoCRM\AmoCRM\Models\AccountSubdomainModel;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Exceptions\AmoCRMApiConnectExceptionException;
 use AmoCRM\Exceptions\AmoCRMApiErrorResponseException;
@@ -312,5 +313,48 @@ class AmoCRMOAuth
                 $response->getBody()->getContents()
             );
         }
+    }
+
+    /**
+     * Получение субдомена аккаунта по токену
+     * @param AccessTokenInterface $accessToken
+     *
+     * @return AccountSubdomainModel
+     * @throws AmoCRMApiErrorResponseException
+     * @throws AmoCRMApiConnectExceptionException
+     * @throws AmoCRMApiHttpClientException
+     */
+    public function getAccountSubdomain(AccessTokenInterface $accessToken): AccountSubdomainModel
+    {
+        try {
+            $response = $this->oauthProvider->getHttpClient()->request(
+                AmoCRMApiRequest::GET_REQUEST,
+                $this->oauthProvider->urlAccount() . '/oauth2/account/subdomain',
+                [
+                    'headers' => $this->oauthProvider->getHeaders($accessToken),
+                    'connect_timeout' => AmoCRMApiRequest::CONNECT_TIMEOUT,
+                    'http_errors' => false,
+                    'timeout' => self::REQUEST_TIMEOUT,
+                    'query' => [],
+                    'json' => [],
+                ]
+            );
+            $response = json_decode($response->getBody()->getContents(), true);
+            if (empty($response)) {
+                throw new AmoCRMApiErrorResponseException(
+                    'Invalid response',
+                    $response->getStatusCode(),
+                    [],
+                    $response->getBody()->getContents()
+                );
+            }
+            $accountSubdomainModel = AccountSubdomainModel::fromArray($response);
+        } catch (ConnectException $e) {
+            throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode());
+        } catch (GuzzleException $e) {
+            throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode());
+        }
+
+        return $accountSubdomainModel;
     }
 }
