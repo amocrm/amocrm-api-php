@@ -171,11 +171,10 @@ class DisposableTokenModel extends BaseApiModel
     public function setExpiresAt(int $expiresAt): DisposableTokenModel
     {
         $this->expiresAt = $expiresAt;
-        
+
         return $this;
     }
-    
-    
+
 
     /**
      * @param Token $jwtToken
