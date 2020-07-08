@@ -2,8 +2,12 @@
 
 namespace AmoCRM\Models\CustomFields;
 
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
 use Illuminate\Contracts\Support\Arrayable;
+
+use function is_null;
+use function preg_match;
 
 /**
  * Class NestedModel
@@ -21,6 +25,16 @@ class NestedModel extends BaseApiModel implements Arrayable
      * @var int|null
      */
     protected $parentId;
+
+    /**
+     * @var string|null
+     */
+    protected $requestId;
+
+    /**
+     * @var string|null
+     */
+    protected $parentRequestId;
 
     /**
      * @var string
@@ -144,6 +158,64 @@ class NestedModel extends BaseApiModel implements Arrayable
     }
 
     /**
+     * @param string $requestId
+     *
+     * @return $this
+     * @throws InvalidArgumentException
+     */
+    public function setRequestId(string $requestId): self
+    {
+        $this->validateRequestId($requestId);
+
+        $this->requestId = $requestId;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRequestId(): ?string
+    {
+        return $this->requestId;
+    }
+
+    /**
+     * @param string $requestId
+     *
+     * @return $this
+     * @throws InvalidArgumentException
+     */
+    public function setParentRequestId(string $requestId): self
+    {
+        $this->validateRequestId($requestId);
+
+        $this->parentRequestId = $requestId;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getParentRequestId(): ?string
+    {
+        return $this->parentRequestId;
+    }
+
+    /**
+     * @param string $requestId
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function validateRequestId(string $requestId): void
+    {
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $requestId)) {
+            throw new InvalidArgumentException('Request id must consists of only letters and numbers');
+        }
+    }
+
+    /**
      * @param string|null $requestId
      * @return array
      */
@@ -157,6 +229,12 @@ class NestedModel extends BaseApiModel implements Arrayable
 
         if (!is_null($this->getId())) {
             $result['id'] = $this->getId();
+        }
+        if (!is_null($this->getRequestId())) {
+            $result['request_id'] = $this->getRequestId();
+        }
+        if (!is_null($this->getParentRequestId())) {
+            $result['parent_request_id'] = $this->getParentRequestId();
         }
 
         return $result;
