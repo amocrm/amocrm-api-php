@@ -32,6 +32,9 @@ class DisposableTokenModel extends BaseApiModel
     /** @var int */
     protected $userId;
 
+    /** @var int */
+    protected $expiresAt;
+
     /**
      * @param string $tokenUuid
      *
@@ -153,6 +156,28 @@ class DisposableTokenModel extends BaseApiModel
     }
 
     /**
+     * @return int
+     */
+    public function getExpiresAt(): int
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * @param int $expiresAt
+     *
+     * @return DisposableTokenModel
+     */
+    public function setExpiresAt(int $expiresAt): DisposableTokenModel
+    {
+        $this->expiresAt = $expiresAt;
+        
+        return $this;
+    }
+    
+    
+
+    /**
      * @param Token $jwtToken
      *
      * @return static
@@ -165,7 +190,8 @@ class DisposableTokenModel extends BaseApiModel
             ->setAccountDomain($jwtToken->getClaim('iss'))
             ->setAccountSubdomain($jwtToken->getClaim('subdomain'))
             ->setAccountId((int)$jwtToken->getClaim('account_id'))
-            ->setUserId((int)$jwtToken->getClaim('user_id'));
+            ->setUserId((int)$jwtToken->getClaim('user_id'))
+            ->setExpiresAt((int)$jwtToken->getClaim('exp'));
 
         return $disposableToken;
     }
@@ -182,6 +208,7 @@ class DisposableTokenModel extends BaseApiModel
             'account_subdomain' => $this->getAccountSubdomain(),
             'account_id'        => $this->getAccountId(),
             'user_id'           => $this->getUserId(),
+            'expires_at'        => $this->getExpiresAt(),
         ];
     }
 
