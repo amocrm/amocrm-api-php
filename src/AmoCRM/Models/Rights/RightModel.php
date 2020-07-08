@@ -159,6 +159,16 @@ class RightModel extends BaseApiModel
     protected $groupId;
 
     /**
+     * @var bool|null
+     */
+    protected $isAdmin;
+
+    /**
+     * @var bool|null
+     */
+    protected $isActive;
+
+    /**
      * @return null|array
      */
     public function getLeadsRights(): ?array
@@ -370,6 +380,46 @@ class RightModel extends BaseApiModel
     }
 
     /**
+     * @return bool|null
+     */
+    public function getIsAdmin(): ?bool
+    {
+        return $this->isAdmin;
+    }
+
+    /**
+     * @param bool|null $isAdmin
+     *
+     * @return RightModel
+     */
+    public function setIsAdmin(?bool $isAdmin): RightModel
+    {
+        $this->isAdmin = $isAdmin;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool|null $isActive
+     *
+     * @return RightModel
+     */
+    public function setIsActive(?bool $isActive): RightModel
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
      * @param array $rights
      *
      * @param string $entityType
@@ -442,7 +492,12 @@ class RightModel extends BaseApiModel
             ->setLeadsRights($rights['leads'])
             ->setContactsRights($rights['contacts'])
             ->setCompaniesRights($rights['companies'])
-            ->setTasksRights($rights['tasks']);
+            ->setTasksRights($rights['tasks'])
+            ->setIsAdmin($rights['is_admin'])
+            ->setIsFree($rights['is_free'])
+            ->setIsActive($rights['is_active'])
+            ->setRoleId($rights['role_id'])
+            ->setGroupId($rights['group_id']);
 
         if (!empty($rights['status_rights'])) {
             $model->setStatusRights($rights['status_rights']);
@@ -476,6 +531,14 @@ class RightModel extends BaseApiModel
 
         if (!is_null($this->getGroupId())) {
             $result['group_id'] = $this->getGroupId();
+        }
+
+        if (!is_null($this->getIsAdmin())) {
+            $result['is_admin'] = $this->getIsAdmin();
+        }
+
+        if (!is_null($this->getIsActive())) {
+            $result['is_active'] = $this->getIsActive();
         }
 
         return $result;
