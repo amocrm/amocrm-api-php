@@ -144,9 +144,9 @@ class RightModel extends BaseApiModel
     protected $statusRights;
 
     /**
-     * @var int|null
+     * @var bool|null
      */
-    protected $roleId;
+    protected $isAdmin;
 
     /**
      * @var bool|null
@@ -154,9 +154,19 @@ class RightModel extends BaseApiModel
     protected $isFree;
 
     /**
+     * @var bool|null
+     */
+    protected $isActive;
+
+    /**
      * @var int|null
      */
     protected $groupId;
+
+    /**
+     * @var int|null
+     */
+    protected $roleId;
 
     /**
      * @return null|array
@@ -310,21 +320,21 @@ class RightModel extends BaseApiModel
     }
 
     /**
-     * @return int|null
+     * @return bool|null
      */
-    public function getRoleId(): ?int
+    public function getIsAdmin(): ?bool
     {
-        return $this->roleId;
+        return $this->isAdmin;
     }
 
     /**
-     * @param int|null $roleId
+     * @param bool|null $isAdmin
      *
      * @return RightModel
      */
-    public function setRoleId(?int $roleId): RightModel
+    public function setIsAdmin(?bool $isAdmin): RightModel
     {
-        $this->roleId = $roleId;
+        $this->isAdmin = $isAdmin;
 
         return $this;
     }
@@ -350,6 +360,26 @@ class RightModel extends BaseApiModel
     }
 
     /**
+     * @return bool|null
+     */
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool|null $isActive
+     *
+     * @return RightModel
+     */
+    public function setIsActive(?bool $isActive): RightModel
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
      * @return int|null
      */
     public function getGroupId(): ?int
@@ -365,6 +395,26 @@ class RightModel extends BaseApiModel
     public function setGroupId(?int $groupId): RightModel
     {
         $this->groupId = $groupId;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getRoleId(): ?int
+    {
+        return $this->roleId;
+    }
+
+    /**
+     * @param int|null $roleId
+     *
+     * @return RightModel
+     */
+    public function setRoleId(?int $roleId): RightModel
+    {
+        $this->roleId = $roleId;
 
         return $this;
     }
@@ -442,7 +492,12 @@ class RightModel extends BaseApiModel
             ->setLeadsRights($rights['leads'])
             ->setContactsRights($rights['contacts'])
             ->setCompaniesRights($rights['companies'])
-            ->setTasksRights($rights['tasks']);
+            ->setTasksRights($rights['tasks'])
+            ->setIsAdmin($rights['is_admin'])
+            ->setIsFree($rights['is_free'])
+            ->setIsActive($rights['is_active'])
+            ->setRoleId($rights['role_id'])
+            ->setGroupId($rights['group_id']);
 
         if (!empty($rights['status_rights'])) {
             $model->setStatusRights($rights['status_rights']);
@@ -466,16 +521,24 @@ class RightModel extends BaseApiModel
             'catalog_access' => $this->getCatalogAccess(),
         ];
 
-        if (!is_null($this->getRoleId())) {
-            $result['role_id'] = $this->getRoleId();
+        if (!is_null($this->getIsAdmin())) {
+            $result['is_admin'] = $this->getIsAdmin();
         }
 
         if (!is_null($this->getIsFree())) {
             $result['is_free'] = $this->getIsFree();
         }
 
+        if (!is_null($this->getIsActive())) {
+            $result['is_active'] = $this->getIsActive();
+        }
+
         if (!is_null($this->getGroupId())) {
             $result['group_id'] = $this->getGroupId();
+        }
+
+        if (!is_null($this->getRoleId())) {
+            $result['role_id'] = $this->getRoleId();
         }
 
         return $result;
@@ -498,20 +561,24 @@ class RightModel extends BaseApiModel
     {
         $result = $this->toApi($requestId);
 
+        if (!is_null($this->getIsAdmin())) {
+            $result['is_admin'] = $this->getisAdmin();
+        }
+
+        if (!is_null($this->getIsFree())) {
+            $result['is_free'] = $this->getIsFree();
+        }
+
+        if (!is_null($this->getIsActive())) {
+            $result['is_active'] = $this->getIsActive();
+        }
+
         if (!is_null($this->getRoleId())) {
-            $result = [
-                'role_id' => $this->getRoleId(),
-            ];
+            $result['role_id'] = $this->getRoleId();
         }
 
         if (!is_null($this->getGroupId())) {
             $result['group_id'] = $this->getGroupId();
-        }
-
-        if (!is_null($this->getIsFree())) {
-            $result = [
-                'is_free' => $this->getIsFree(),
-            ];
         }
 
         return $result;
