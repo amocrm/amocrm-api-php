@@ -359,8 +359,7 @@ class AmoCRMOAuth
                     'json' => [],
                 ]
             );
-            $response = json_decode($response->getBody()->getContents(), true);
-            if (empty($response)) {
+            if ($response->getStatusCode() !== StatusCodeInterface::STATUS_OK) {
                 throw new AmoCRMApiErrorResponseException(
                     'Invalid response',
                     $response->getStatusCode(),
@@ -368,6 +367,7 @@ class AmoCRMOAuth
                     $response->getBody()->getContents()
                 );
             }
+            $response = json_decode($response->getBody()->getContents(), true);
             $accountDomainModel = AccountDomainModel::fromArray($response);
         } catch (ConnectException $e) {
             throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode());
