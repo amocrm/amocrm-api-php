@@ -463,6 +463,10 @@ class TaskModel extends BaseApiModel implements HasIdInterface
             $taskModel->setIsCompleted((int)$task['is_completed']);
         }
 
+        if (array_key_exists('complete_till', $task) && !is_null($task['complete_till'])) {
+            $taskModel->setCompleteTill((int)$task['complete_till']);
+        }
+
         if (!empty($task['task_type_id'])) {
             $taskModel->setTaskTypeId($task['task_type_id']);
         }
@@ -496,6 +500,7 @@ class TaskModel extends BaseApiModel implements HasIdInterface
             'entity_type' => $this->getEntityType(),
             'entity_id' => $this->getEntityId(),
             'is_completed' => $this->getIsCompleted(),
+            'complete_till' => $this->getCompleteTill(),
             'task_type_id' => $this->getTaskTypeId(),
             'result' => $this->getResult(),
             'account_id' => $this->getAccountId(),
