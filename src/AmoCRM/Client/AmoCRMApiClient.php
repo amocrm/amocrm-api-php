@@ -128,9 +128,17 @@ class AmoCRMApiClient
     private function buildRequest(): AmoCRMApiRequest
     {
         $oAuthClient = $this->getOAuthClient();
-        if (is_callable($this->accessTokenRefreshCallback)) {
-            $oAuthClient->setAccessTokenRefreshCallback($this->accessTokenRefreshCallback);
-        }
+
+        $oAuthClient->setAccessTokenRefreshCallback(
+            function (AccessToken $accessToken, string $baseAccountDomain) use ($oAuthClient) {
+                $this->setAccessToken($accessToken);
+
+                if (is_callable($this->accessTokenRefreshCallback)) {
+                    $callback = $this->accessTokenRefreshCallback;
+                    $callback($accessToken, $baseAccountDomain);
+                }
+            }
+        );
 
         return new AmoCRMApiRequest($this->accessToken, $oAuthClient);
     }
