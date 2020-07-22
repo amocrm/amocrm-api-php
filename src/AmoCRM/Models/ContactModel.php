@@ -639,7 +639,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
         }
 
         if (!is_null($this->getLastName())) {
-            $result['first_name'] = $this->getLastName();
+            $result['last_name'] = $this->getLastName();
         }
 
         if (!is_null($this->getResponsibleUserId())) {
