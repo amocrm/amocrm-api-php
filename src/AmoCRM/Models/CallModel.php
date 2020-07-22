@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\CallTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
 
@@ -10,10 +11,15 @@ use AmoCRM\Models\Traits\RequestIdTrait;
  *
  * @package AmoCRM\Models
  */
-class CallModel extends BaseApiModel
+class CallModel extends BaseApiModel implements HasIdInterface
 {
     use CallTrait;
     use RequestIdTrait;
+
+    /**
+     * @var int|null
+     */
+    protected $id;
 
     /**
      * @var string|null
@@ -43,6 +49,10 @@ class CallModel extends BaseApiModel
     public function fromArray(array $call): CallModel
     {
         $model = new static();
+
+        if (isset($call['id'])) {
+            $this->setId($call['id']);
+        }
 
         if (isset($call['uniq'])) {
             $this->setUniq($call['uniq']);
@@ -85,6 +95,7 @@ class CallModel extends BaseApiModel
     public function toArray(): array
     {
         return [
+            'id' => $this->getId(),
             'uniq' => $this->getUniq(),
             'duration' => $this->getDuration(),
             'source' => $this->getSource(),
@@ -120,6 +131,26 @@ class CallModel extends BaseApiModel
             'direction' => $this->getDirection(),
             'request_id' => $this->getRequestId(),
         ];
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return CallModel
+     */
+    public function setId(int $id): CallModel
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
