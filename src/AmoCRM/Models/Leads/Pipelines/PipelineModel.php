@@ -80,9 +80,7 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
             'account_id' => $this->getAccountId(),
             'is_main' => $this->getIsMain(),
             'is_unsorted_on' => $this->getIsUnsortedOn(),
-            '_embedded' => [
-                'statuses' => $this->getStatuses()->toArray(),
-            ],
+            'statuses' => $this->getStatuses()->toArray(),
         ];
     }
 
@@ -134,27 +132,48 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
         return $this->sort;
     }
 
+    /**
+     * @return StatusesCollection
+     */
     public function getStatuses(): StatusesCollection
     {
         return $this->statuses;
     }
 
-    public function setStatuses(StatusesCollection $statuses): void
+    /**
+     * @param StatusesCollection $statuses
+     * @return PipelineModel
+     */
+    public function setStatuses(StatusesCollection $statuses): PipelineModel
     {
         $this->statuses = $statuses;
+
+        return $this;
     }
 
-    public function setStatusesFromArray(array $statuses): void
+    /**
+     * @param array $statuses
+     * @return PipelineModel
+     */
+    public function setStatusesFromArray(array $statuses): PipelineModel
     {
         $this->statuses = new StatusesCollection();
         foreach ($statuses as $status) {
             $this->statuses->add(StatusModel::fromArray($status));
         }
+
+        return $this;
     }
 
-    public function addStatus(StatusModel $status): void
+    /**
+     * @param StatusModel $status
+     * @return PipelineModel
+     */
+    public function addStatus(StatusModel $status): PipelineModel
     {
         $this->statuses->add($status);
+
+        return $this;
     }
 
     /**
