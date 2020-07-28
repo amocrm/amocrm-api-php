@@ -6,6 +6,11 @@ use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
 use InvalidArgumentException;
 
+/**
+ * Class WidgetSourceModel
+ *
+ * @package AmoCRM\Models\Widgets
+ */
 class WidgetSourceModel extends  BaseApiModel
 {
     /**

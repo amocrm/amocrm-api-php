@@ -159,6 +159,14 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
         return $widgetModel;
     }
 
+    /**
+     * @param string $widgetCode
+     * @param WidgetSourcesCollection $widgetSourcesCollection
+     * @return WidgetSourcesCollection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     * @throws \AmoCRM\Exceptions\AmoCRMApiNoContentException
+     */
     public function editWidgetSources(string $widgetCode, WidgetSourcesCollection $widgetSourcesCollection): WidgetSourcesCollection
     {
         $body = ['services' => $widgetSourcesCollection->toArray()];
