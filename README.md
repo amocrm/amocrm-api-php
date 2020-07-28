@@ -506,7 +506,7 @@ $leadsService = $apiClient->leads();
 1. ```getFieldId```, ```setFieldId``` - получение/установка id поля
 2. ```getFieldType``` - получение типа поля
 3. ```getFieldCode```, ```setFieldCode``` - получение/установка кода поля
-4. ```getFieldName```, ```setFieldName``` - получение/установка кода поля
+4. ```getFieldName```, ```setFieldName``` - получение/установка названия поля
 5. ```getValues```, ```setValues``` - получение/установка коллекции значений
 
 Так как некоторые поля могут иметь несколько значений,
