@@ -4,14 +4,14 @@ namespace AmoCRM\Models\Widgets;
 
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\BaseApiModel;
-use InvalidArgumentException;
+use AmoCRM\Exceptions\InvalidArgumentException;
 
 /**
  * Class WidgetSourceModel
  *
  * @package AmoCRM\Models\Widgets
  */
-class WidgetSourceModel extends  BaseApiModel
+class WidgetSourceModel extends BaseApiModel
 {
     /**
      * @var string
@@ -31,9 +31,6 @@ class WidgetSourceModel extends  BaseApiModel
     {
         if (empty($widgetSource['type'])) {
             throw new InvalidArgumentException('Widget type is empty in ' . json_encode($widgetSource));
-        }
-        if(empty($widgetSource['pages'])) {
-            throw new InvalidArgumentException('Widget pages is empty in ' . json_encode($widgetSource));
         }
 
         $model = new self();
@@ -58,13 +55,13 @@ class WidgetSourceModel extends  BaseApiModel
      */
     public function toApi(string $requestId = null): array
     {
-        throw new NotAvailableForActionException('Method not available yet');
+        return ['type' => $this->type, 'pages' => $this->pages];
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -72,15 +69,17 @@ class WidgetSourceModel extends  BaseApiModel
     /**
      * @param mixed $type
      */
-    public function setType($type): void
+    public function setType($type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getPages()
+    public function getPages(): array
     {
         return $this->pages;
     }
@@ -88,13 +87,15 @@ class WidgetSourceModel extends  BaseApiModel
     /**
      * @param mixed $pages
      */
-    public function setPages($pages): void
+    public function setPages($pages): self
     {
         foreach ($pages as $page) {
-            if(!array_key_exists('link', $page) and !array_key_exists('id', $page)) {
-                throw new InvalidArgumentException('neither the "link" parameter nor the "id" parameter are present in pages:' . json_encode($pages));
+            if (!array_key_exists('link', $page) && !array_key_exists('id', $page)) {
+                throw new InvalidArgumentException('Neither "link" nor "id" parameter are present:' . json_encode($pages));
             }
         }
         $this->pages = $pages;
+
+        return $this;
     }
 }

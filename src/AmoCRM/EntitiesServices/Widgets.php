@@ -169,12 +169,11 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
      */
     public function editWidgetSources(string $widgetCode, WidgetSourcesCollection $widgetSourcesCollection): WidgetSourcesCollection
     {
-        $body = ['services' => $widgetSourcesCollection->toArray()];
         $response = $this->request->post(
-            $this->getMethod() . '/' . $widgetCode. '/sources',
-            $body
+            $this->getMethod() . '/' . $widgetCode . '/sources',
+            $widgetSourcesCollection->toApi()
         );
 
-        return  WidgetSourcesCollection::fromArray($response["_embedded"]["services"]);
+        return  WidgetSourcesCollection::fromArray($response['_embedded']['services']);
     }
 }

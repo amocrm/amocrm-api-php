@@ -12,4 +12,12 @@ use AmoCRM\Models\Widgets\WidgetSourceModel;
 class WidgetSourcesCollection extends BaseApiCollection
 {
     public const ITEM_CLASS = WidgetSourceModel::class;
+
+    /**
+     * @return array|null
+     */
+    public function toApi(): ?array
+    {
+        return ['services' => parent::toApi()];
+    }
 }
