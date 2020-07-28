@@ -67,7 +67,8 @@ class WidgetSourceModel extends BaseApiModel
     }
 
     /**
-     * @param mixed $type
+     * @param $type
+     * @return $this
      */
     public function setType($type): self
     {
@@ -77,7 +78,7 @@ class WidgetSourceModel extends BaseApiModel
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getPages(): array
     {
@@ -85,7 +86,9 @@ class WidgetSourceModel extends BaseApiModel
     }
 
     /**
-     * @param mixed $pages
+     * @param $pages
+     * @return $this
+     * @throws InvalidArgumentException
      */
     public function setPages($pages): self
     {
