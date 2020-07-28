@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Collections\Widgets\WidgetSourcesCollection;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
@@ -156,5 +157,16 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
         }
 
         return $widgetModel;
+    }
+
+    public function editWidgetSources(string $widgetCode, WidgetSourcesCollection $widgetSourcesCollection): WidgetSourcesCollection
+    {
+        $body = ['services' => $widgetSourcesCollection->toArray()];
+        $response = $this->request->post(
+            $this->getMethod() . '/' . $widgetCode. '/sources',
+            $body
+        );
+
+        return  WidgetSourcesCollection::fromArray($response["_embedded"]["services"]);
     }
 }
