@@ -8,6 +8,9 @@ use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
+use function is_null;
+use function array_key_exists;
+
 /**
  * Class SegmentModel
  *

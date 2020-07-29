@@ -18,6 +18,9 @@ use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CompanyModel;
 
+use function is_null;
+use function array_key_exists;
+
 /**
  * Class CustomerModel
  *
