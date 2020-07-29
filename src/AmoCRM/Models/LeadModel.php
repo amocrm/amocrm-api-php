@@ -16,6 +16,8 @@ use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
 use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
 
+use function is_null;
+
 class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
     use RequestIdTrait;
@@ -788,7 +790,9 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             'closed_at' => $this->getClosedAt(),
             'closest_task_at' => $this->getClosestTaskAt(),
             'is_deleted' => $this->getIsDeleted(),
-            'custom_fields_values' => $this->getCustomFieldsValues(),
+            'custom_fields_values' => is_null($this->getCustomFieldsValues())
+                ? null
+                : $this->getCustomFieldsValues()->toArray(),
             'score' => $this->getScore(),
             'account_id' => $this->getAccountId(),
         ];

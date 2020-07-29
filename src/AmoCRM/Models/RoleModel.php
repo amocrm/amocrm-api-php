@@ -10,6 +10,8 @@ use AmoCRM\Models\Rights\RightModel;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
+use function is_null;
+
 class RoleModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
@@ -73,7 +75,7 @@ class RoleModel extends BaseApiModel implements HasIdInterface
             'id' => $this->getId(),
             'name' => $this->getName(),
             'right' => $this->getRights()->toArray(),
-            'users' => $this->getUsers()->toArray(),
+            'users' => is_null($this->getUsers()) ? null : $this->getUsers()->toArray(),
         ];
     }
 
