@@ -2,6 +2,8 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
+use AmoCRM\Exceptions\InvalidArgumentException;
+
 /**
  * Class DateCustomFieldsValueModel
  *
@@ -13,13 +15,23 @@ class DateCustomFieldValueModel extends BaseCustomFieldValueModel
      * @param array|int|string|null $value
      *
      * @return $this|BaseCustomFieldValueModel
+     * @throws InvalidArgumentException
      */
     public function setValue($value): BaseCustomFieldValueModel
     {
         if (is_numeric($value)) {
-            $this->value = $value;
+            $this->value = (int)$value;
         } else {
-            $this->value = strtotime($value);
+            if (!is_scalar($value)) {
+                throw new InvalidArgumentException('Given value is not valid');
+            }
+
+            $value = strtotime($value);
+            if (!$value) {
+                throw new InvalidArgumentException('Given value is not valid - ' . $value);
+            } else {
+                $this->value = (int)$value;
+            }
         }
 
         return $this;
