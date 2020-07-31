@@ -2,6 +2,9 @@
 
 namespace AmoCRM\Models\Leads\Pipelines;
 
+use AmoCRM\Client\AmoCRMApiRequest;
+use AmoCRM\Collections\Leads\Pipelines\Statuses\StatusesCollection;
+use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
@@ -42,6 +45,16 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
     protected $isUnsortedOn;
 
     /**
+     * @var bool|null
+     */
+    protected $isArchive;
+
+    /**
+     * @var StatusesCollection
+     */
+    protected $statuses;
+
+    /**
      * @param array $pipeline
      *
      * @return self
@@ -56,6 +69,14 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
         $model->setAccountId($pipeline['account_id']);
         $model->setIsMain($pipeline['is_main']);
         $model->setIsUnsortedOn($pipeline['is_unsorted_on']);
+        $statusesCollection = new StatusesCollection();
+        if (!empty($pipeline[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS_STATUSES])) {
+            $statusesCollection = StatusesCollection::fromArray(
+                $pipeline[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS_STATUSES]
+            );
+        }
+        $model->setStatuses($statusesCollection);
+        $model->setIsArchive($pipeline['is_archive']);
 
         return $model;
     }
@@ -72,6 +93,8 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
             'account_id' => $this->getAccountId(),
             'is_main' => $this->getIsMain(),
             'is_unsorted_on' => $this->getIsUnsortedOn(),
+            'is_archive' => $this->getIsArchive(),
+            'statuses' => $this->getStatuses()->toArray(),
         ];
     }
 
@@ -195,6 +218,45 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
         return $this;
     }
 
+    /**
+     * @return StatusesCollection
+     */
+    public function getStatuses(): StatusesCollection
+    {
+        return $this->statuses;
+    }
+
+    /**
+     * @param StatusesCollection $statuses
+     *
+     * @return PipelineModel
+     */
+    public function setStatuses(StatusesCollection $statuses): PipelineModel
+    {
+        $this->statuses = $statuses;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsArchive(): ?bool
+    {
+        return $this->isArchive;
+    }
+
+    /**
+     * @param bool|null $isArchive
+     *
+     * @return PipelineModel
+     */
+    public function setIsArchive(?bool $isArchive): PipelineModel
+    {
+        $this->isArchive = $isArchive;
+
+        return $this;
+    }
 
     /**
      * @param string|null $requestId
@@ -210,6 +272,8 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
 
         if (!is_null($this->getSort())) {
             $result['sort'] = $this->getSort();
+        } elseif (empty($this->getId())) {
+            $result['sort'] = 100;
         }
 
         if (!is_null($this->getIsMain())) {
@@ -218,6 +282,13 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
 
         if (!is_null($this->getIsUnsortedOn())) {
             $result['is_unsorted_on'] = $this->getIsUnsortedOn();
+        } elseif (empty($this->getId())) {
+            $result['is_unsorted_on'] = true;
+        }
+
+        //Статусы можно передать только при создании воронки
+        if (empty($this->getId()) && !$this->getStatuses()->isEmpty()) {
+            $result[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS_STATUSES] = $this->getStatuses()->toApi();
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
