@@ -23,6 +23,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     use RequestIdTrait;
     use GetLinkTrait;
 
+    public const LOST_STATUS_ID = 143;
     public const CATALOG_ELEMENTS = 'catalog_elements';
     public const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
     public const LOSS_REASON = 'loss_reason';
@@ -860,7 +861,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             $result['pipeline_id'] = $this->getPipelineId();
         }
 
-        if (!is_null($this->getLossReasonId())) {
+        if ($this->getStatusId() === self::LOST_STATUS_ID && !is_null($this->getLossReasonId())) {
             $result['loss_reason_id'] = $this->getLossReasonId();
         }
 
