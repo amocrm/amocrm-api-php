@@ -29,7 +29,7 @@ trait PageMethodsTrait
         $nextPageLink = $collection->getNextPageLink();
         if (is_null($nextPageLink)) {
             throw new AmoCRMApiPageNotAvailableException(
-                "No next page available",
+                "No next page available"
             );
         }
 
@@ -51,7 +51,7 @@ trait PageMethodsTrait
         $prevPageLink = $collection->getPrevPageLink();
         if (is_null($prevPageLink)) {
             throw new AmoCRMApiPageNotAvailableException(
-                "No prev page available",
+                "No prev page available"
             );
         }
 
