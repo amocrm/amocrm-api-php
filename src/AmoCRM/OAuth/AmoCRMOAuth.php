@@ -324,7 +324,7 @@ class AmoCRMOAuth
                 'Invalid response code',
                 $response->getStatusCode(),
                 [],
-                $response->getBody()->getContents()
+                (string)$response->getBody()
             );
         }
     }
@@ -359,15 +359,17 @@ class AmoCRMOAuth
                     'json' => [],
                 ]
             );
+
+            $responseBody = (string)$response->getBody();
             if ($response->getStatusCode() !== StatusCodeInterface::STATUS_OK) {
                 throw new AmoCRMApiErrorResponseException(
                     'Invalid response',
                     $response->getStatusCode(),
                     [],
-                    $response->getBody()->getContents()
+                    $responseBody
                 );
             }
-            $response = json_decode($response->getBody()->getContents(), true);
+            $response = json_decode($responseBody, true);
             $accountDomainModel = AccountDomainModel::fromArray($response);
         } catch (ConnectException $e) {
             throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode());
