@@ -4,6 +4,8 @@ namespace AmoCRM\Models;
 
 use Illuminate\Support\Str;
 
+use function is_callable;
+
 abstract class BaseApiModel
 {
     /**
@@ -38,7 +40,7 @@ abstract class BaseApiModel
     public function __set($name, $value)
     {
         $methodName = 'set' . Str::camel(Str::ucfirst($name));
-        if (method_exists($this, $methodName)) {
+        if (method_exists($this, $methodName) && is_callable([$this, $methodName])) {
             $this->$methodName($value);
         }
     }
