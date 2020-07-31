@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
@@ -17,6 +18,8 @@ use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\ContactModel;
+use AmoCRM\Models\LeadModel;
 use AmoCRM\Models\Unsorted\AcceptUnsortedModel;
 use AmoCRM\Models\Unsorted\BaseUnsortedModel;
 use AmoCRM\Models\Unsorted\DeclineUnsortedModel;
@@ -180,11 +183,37 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
     /**
      * @param BaseApiModel|BaseUnsortedModel $apiModel
      * @param array $entity
+     *
+     * @throws InvalidArgumentException
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
     {
         if (isset($entity['uid'])) {
             $apiModel->setUid($entity['uid']);
+        }
+
+        if (
+            isset($entity[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS][0])
+            && !empty($apiModel->getLead())
+        ) {
+            /** @var LeadModel $addedLead */
+            $addedLead = $this->mergeModels(
+                $apiModel->getLead(),
+                LeadModel::fromArray($entity[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS][0])
+            );
+            $apiModel->setLead($addedLead);
+        }
+
+        if (
+            isset($entity[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CONTACTS][0])
+            && !empty($apiModel->getContacts())
+        ) {
+            /** @var ContactModel $addedContact */
+            $addedContact = $this->mergeModels(
+                $apiModel->getContacts()->first(),
+                ContactModel::fromArray($entity[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CONTACTS][0])
+            );
+            $apiModel->setContacts((new ContactsCollection())->add($addedContact));
         }
     }
 
@@ -248,7 +277,7 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
         }
 
         $collection->add($model);
-        $response = $this->request->post($this->getMethod(), $collection->toApi());
+        $response = $this->request->post($this->getMethod() . '/' . $model->getCategory(), $collection->toApi());
         $collection = $this->processAdd($collection, $response);
 
         return $collection->first();

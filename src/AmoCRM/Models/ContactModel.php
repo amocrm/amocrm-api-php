@@ -156,11 +156,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param string $name
+     * @param null|string $name
      *
      * @return self
      */
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -176,11 +176,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param string $name
+     * @param null|string $name
      *
      * @return self
      */
-    public function setFirstName(string $name): self
+    public function setFirstName(?string $name): self
     {
         $this->firstName = $name;
 
@@ -196,11 +196,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param string $name
+     * @param null|string $name
      *
      * @return self
      */
-    public function setLastName(string $name): self
+    public function setLastName(?string $name): self
     {
         $this->lastName = $name;
 
@@ -216,11 +216,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param int $id
+     * @param null|int $id
      *
      * @return self
      */
-    public function setAccountId(int $id): self
+    public function setAccountId(?int $id): self
     {
         $this->accountId = $id;
 
@@ -237,11 +237,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param int $groupId
+     * @param null|int $groupId
      *
      * @return self
      */
-    public function setGroupId(int $groupId): self
+    public function setGroupId(?int $groupId): self
     {
         $this->groupId = $groupId;
 
@@ -257,11 +257,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param int $userId
+     * @param null|int $userId
      *
      * @return self
      */
-    public function setResponsibleUserId(int $userId): self
+    public function setResponsibleUserId(?int $userId): self
     {
         $this->responsibleUserId = $userId;
 
@@ -277,11 +277,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param int $userId
+     * @param null|int $userId
      *
      * @return self
      */
-    public function setCreatedBy(int $userId): self
+    public function setCreatedBy(?int $userId): self
     {
         $this->createdBy = $userId;
 
@@ -297,11 +297,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param int $userId
+     * @param null|int $userId
      *
      * @return self
      */
-    public function setUpdatedBy(int $userId): self
+    public function setUpdatedBy(?int $userId): self
     {
         $this->updatedBy = $userId;
 
@@ -317,11 +317,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param int $timestamp
+     * @param null|int $timestamp
      *
      * @return self
      */
-    public function setCreatedAt(int $timestamp): self
+    public function setCreatedAt(?int $timestamp): self
     {
         $this->createdAt = $timestamp;
 
@@ -337,11 +337,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param int $timestamp
+     * @param null|int $timestamp
      *
      * @return self
      */
-    public function setUpdatedAt(int $timestamp): self
+    public function setUpdatedAt(?int $timestamp): self
     {
         $this->updatedAt = $timestamp;
 
@@ -377,11 +377,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param TagsCollection $tags
+     * @param null|TagsCollection $tags
      *
      * @return self
      */
-    public function setTags(TagsCollection $tags): self
+    public function setTags(?TagsCollection $tags): self
     {
         $this->tags = $tags;
 
@@ -400,7 +400,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
      * @param CatalogElementsCollection|null $catalogElementsLinks
      * @return ContactModel
      */
-    public function setCatalogElementsLinks(CatalogElementsCollection $catalogElementsLinks): self
+    public function setCatalogElementsLinks(?CatalogElementsCollection $catalogElementsLinks): self
     {
         $this->catalogElementsLinks = $catalogElementsLinks;
 
@@ -416,10 +416,10 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param LeadsCollection $leads
+     * @param null|LeadsCollection $leads
      * @return ContactModel
      */
-    public function setLeads(LeadsCollection $leads): self
+    public function setLeads(?LeadsCollection $leads): self
     {
         $this->leads = $leads;
 
@@ -435,11 +435,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param CompanyModel $company
+     * @param null|CompanyModel $company
      *
      * @return self
      */
-    public function setCompany(CompanyModel $company): self
+    public function setCompany(?CompanyModel $company): self
     {
         $this->company = $company;
 
@@ -455,10 +455,10 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param CustomersCollection $customersCollection
+     * @param null|CustomersCollection $customersCollection
      * @return self
      */
-    public function setCustomers(CustomersCollection $customersCollection): self
+    public function setCustomers(?CustomersCollection $customersCollection): self
     {
         $this->customers = $customersCollection;
 
@@ -700,10 +700,10 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param bool $isMain
+     * @param null|bool $isMain
      * @return ContactModel
      */
-    public function setIsMain(bool $isMain): self
+    public function setIsMain(?bool $isMain): self
     {
         $this->isMain = $isMain;
 
