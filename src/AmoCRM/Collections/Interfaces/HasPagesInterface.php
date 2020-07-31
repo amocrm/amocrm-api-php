@@ -19,7 +19,7 @@ interface HasPagesInterface
     /**
      * @return string
      */
-    public function getNextPageLink(): string;
+    public function getNextPageLink(): ?string;
 
     /**
      * @param string $url
@@ -30,5 +30,5 @@ interface HasPagesInterface
     /**
      * @return string
      */
-    public function getPrevPageLink(): string;
+    public function getPrevPageLink(): ?string;
 }
