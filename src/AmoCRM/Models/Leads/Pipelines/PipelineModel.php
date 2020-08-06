@@ -71,7 +71,6 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
         $model->setIsMain($pipeline['is_main']);
         $model->setIsUnsortedOn($pipeline['is_unsorted_on']);
         $model->setStatusesFromArray($pipeline[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS_STATUSES]);
-        $model->setStatuses($statusesCollection);
         $model->setIsArchive($pipeline['is_archive']);
 
         return $model;
@@ -168,10 +167,10 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
     public function setStatusesFromArray(array $statuses): PipelineModel
     {
         $this->statuses = new StatusesCollection();
-        if (!empty($statuses) {
+        if (!empty($statuses)) {
             $this->statuses = StatusesCollection::fromArray($statuses);
         }
-          
+
         return $this;
     }
 
@@ -254,26 +253,6 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
     public function setIsUnsortedOn(?bool $isUnsortedOn): PipelineModel
     {
         $this->isUnsortedOn = $isUnsortedOn;
-
-        return $this;
-    }
-
-    /**
-     * @return StatusesCollection
-     */
-    public function getStatuses(): StatusesCollection
-    {
-        return $this->statuses;
-    }
-
-    /**
-     * @param StatusesCollection $statuses
-     *
-     * @return PipelineModel
-     */
-    public function setStatuses(StatusesCollection $statuses): PipelineModel
-    {
-        $this->statuses = $statuses;
 
         return $this;
     }
