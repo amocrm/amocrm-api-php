@@ -225,7 +225,7 @@ class AmoCRMApiClientTest extends TestCase
 
     public function testStatuses()
     {
-        $this->assertInstanceOf(Leads\Statuses::class, $this->apiClient->statuses());
+        $this->assertInstanceOf(Leads\Statuses::class, $this->apiClient->statuses(1));
 
         $this->assertInstanceOf(
             Leads\Statuses::class,

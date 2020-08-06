@@ -7,12 +7,12 @@ use AmoCRM\Collections\BaseApiCollection;
 trait PagesTrait
 {
     /**
-     * @var string
+     * @var null|string
      */
     private $nextPageLink;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $prevPageLink;
 
@@ -28,9 +28,9 @@ trait PagesTrait
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getNextPageLink(): string
+    public function getNextPageLink(): ?string
     {
         return $this->nextPageLink;
     }
@@ -47,9 +47,9 @@ trait PagesTrait
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getPrevPageLink(): string
+    public function getPrevPageLink(): ?string
     {
         return $this->prevPageLink;
     }

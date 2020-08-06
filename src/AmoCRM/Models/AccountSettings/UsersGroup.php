@@ -99,7 +99,7 @@ class UsersGroup extends BaseApiModel implements Arrayable
     /**
      * @return string
      */
-    public function getUuid(): string
+    public function getUuid(): ?string
     {
         return $this->uuid;
     }

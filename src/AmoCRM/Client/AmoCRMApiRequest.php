@@ -483,7 +483,7 @@ class AmoCRMApiRequest
      */
     private function parseResponse(ResponseInterface $response): array
     {
-        $bodyContents = $response->getBody()->getContents();
+        $bodyContents = (string)$response->getBody();
         $this->lastResponse = $bodyContents;
 
         $decodedBody = json_decode($bodyContents, true);

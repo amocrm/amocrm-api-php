@@ -468,7 +468,7 @@ class AccountModel extends BaseApiModel
     /**
      * @return UsersGroupsCollection
      */
-    public function getUsersGroups(): UsersGroupsCollection
+    public function getUsersGroups(): ?UsersGroupsCollection
     {
         return $this->usersGroups;
     }
@@ -487,7 +487,7 @@ class AccountModel extends BaseApiModel
     /**
      * @return TaskTypesCollection
      */
-    public function getTaskTypes(): TaskTypesCollection
+    public function getTaskTypes(): ?TaskTypesCollection
     {
         return $this->taskTypes;
     }
