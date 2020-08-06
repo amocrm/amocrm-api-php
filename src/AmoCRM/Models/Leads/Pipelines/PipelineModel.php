@@ -166,12 +166,12 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
      */
     public function setStatusesFromArray(array $statuses): PipelineModel
     {
-        $this->statuses = new StatusesCollection();
+        $statusesCollection = new StatusesCollection();
         if (!empty($statuses)) {
-            $this->statuses = StatusesCollection::fromArray($statuses);
+            $statusesCollection = StatusesCollection::fromArray($statuses);
         }
 
-        return $this;
+        return $this->setStatuses($statusesCollection);
     }
 
     /**
