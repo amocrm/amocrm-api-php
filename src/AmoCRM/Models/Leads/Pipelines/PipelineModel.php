@@ -310,12 +310,6 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
             $result[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS_STATUSES] = $this->getStatuses()->toApi();
         }
 
-        if (!is_null($this->getStatuses())) {
-            $result['_embedded'] = [
-                'statuses' => $this->getStatuses()->toApi()
-            ];
-        }
-
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
             $this->setRequestId($requestId);
         }
