@@ -55,7 +55,7 @@ class AmoCRMOAuth
     /**
      * @var AmoCRM
      */
-    private $oauthProvider;
+    protected $oauthProvider;
 
     /**
      * @var null|callable
