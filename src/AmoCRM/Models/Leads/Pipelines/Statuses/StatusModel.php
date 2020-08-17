@@ -265,6 +265,10 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
     {
         $result = [];
 
+        if (!is_null($this->getId()) && !$this->getPipelineId()) {
+            $result['id'] = $this->getId();
+        }
+
         if (!is_null($this->getName())) {
             $result['name'] = $this->getName();
         }
