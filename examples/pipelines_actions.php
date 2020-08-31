@@ -1,14 +1,21 @@
 <?php
 
+use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Collections\Leads\Pipelines\PipelinesCollection;
+use AmoCRM\Collections\Leads\Pipelines\Statuses\StatusesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\Leads\Pipelines\PipelineModel;
+use AmoCRM\Models\Leads\Pipelines\Statuses\StatusModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
+/**
+ * @noinspection PhpRedundantVariableDocTypeInspection
+ * @var AmoCRMApiClient $apiClient
+ */
 $apiClient->setAccessToken($accessToken)
     ->setAccountBaseDomain($accessToken->getValues()['baseDomain'])
     ->onAccessTokenRefresh(
@@ -24,19 +31,31 @@ $apiClient->setAccessToken($accessToken)
         }
     );
 
-//Добавим новую главную воронку
+//Добавим новую главную воронку со статусами
 //Сортировка для главной воронки проставится автоматически
 $pipelinesCollection = new PipelinesCollection();
 $pipeline = new PipelineModel();
+$statusesCollection = new StatusesCollection();
+$statusesCollection->add(
+    (new StatusModel())
+        ->setName('Новый статус')
+        ->setColor('#fffd7f') /** @see StatusModel::COLORS */
+)->add(
+    (new StatusModel())
+        ->setName('Новый статус 2')
+        ->setColor('#ccc8f9') /** @see StatusModel::COLORS */
+);
+
 $pipeline
     ->setName('Новая главная поронка')
-    ->setIsMain(true);
+    ->setIsMain(true)
+    ->setStatuses($statusesCollection);
 
 $pipelinesCollection->add($pipeline);
 
 $pipelinesService = $apiClient->pipelines();
 try {
-    $pipelinesCollection = $pipelinesService->add($sipUnsortedCollection);
+    $pipelinesCollection = $pipelinesService->add($pipelinesCollection);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
