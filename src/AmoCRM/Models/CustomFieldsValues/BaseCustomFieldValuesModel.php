@@ -104,7 +104,7 @@ class BaseCustomFieldValuesModel extends BaseApiModel
     /**
      * @return BaseCustomFieldValueCollection
      */
-    public function getValues(): BaseCustomFieldValueCollection
+    public function getValues(): ?BaseCustomFieldValueCollection
     {
         return $this->values;
     }
