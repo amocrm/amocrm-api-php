@@ -27,6 +27,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     public const CATALOG_ELEMENTS = 'catalog_elements';
     public const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
     public const LOSS_REASON = 'loss_reason';
+    public const SOURCE_ID = 'source_id';
     public const CONTACTS = 'contacts';
 
     /**
@@ -689,7 +690,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             $leadModel->setLossReasonId($lead['loss_reason_id'] > 0 ? (int)$lead['loss_reason_id'] : null);
         }
 
-        if (!empty($lead['source_id'])) {
+        if (array_key_exists('source_id', $lead)) {
             $leadModel->setSourceId($lead['source_id'] > 0 ? (int)$lead['source_id'] : null);
         }
 
@@ -911,6 +912,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             self::CATALOG_ELEMENTS,
             self::IS_PRICE_BY_ROBOT,
             self::CONTACTS,
+            self::SOURCE_ID,
             self::LOSS_REASON,
         ];
     }
