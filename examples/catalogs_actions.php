@@ -1,5 +1,6 @@
 <?php
 
+use AmoCRM\AmoCRM\Filters\CatalogsFilter;
 use AmoCRM\Collections\CustomFields\CustomFieldNestedCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -52,6 +53,16 @@ $apiClient->setAccessToken($accessToken)
 //    printError($e);
 //    die;
 //}
+
+//Получим каталоги по типу
+try {
+    $catalogsFilter = new CatalogsFilter();
+    $catalogsFilter->setType(EntityTypesInterface::INVOICES_CATALOG_TYPE_STRING);
+    $catalogsCollection = $apiClient->catalogs()->get($catalogsFilter);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
 
 //Получим все каталоги
 try {
