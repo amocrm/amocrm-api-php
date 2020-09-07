@@ -335,6 +335,25 @@ class LeadsFilterTest extends TestCase
         $this->leadsFilter->setStatuses(new stdClass());
     }
 
+    public function testValidPipelineIds()
+    {
+        $pipelineIds = [33, "32343", "21123"];
+        $this->leadsFilter->setPipelineIds($pipelineIds);
+        $this->assertEquals($pipelineIds, $this->leadsFilter->getPipelineIds());
+
+        $pipelineIds = 123;
+        $filterValue = [$pipelineIds];
+        $this->leadsFilter->setPipelineIds($pipelineIds);
+        $this->assertEquals($filterValue, $this->leadsFilter->getPipelineIds());
+    }
+
+    public function testInvalidPipelineIds()
+    {
+        $pipelineIds = [0, null, false, []];
+        $this->leadsFilter->setPipelineIds($pipelineIds);
+        $this->assertNull($this->leadsFilter->getPipelineIds());
+    }
+
     public function testSetLimit()
     {
         $filter = $this->leadsFilter->setLimit(1);
@@ -346,7 +365,6 @@ class LeadsFilterTest extends TestCase
         $filter = $this->leadsFilter->setPage(1);
         $this->assertInstanceOf(LeadsFilter::class, $filter);
     }
-
 
     /**
      * @return array
