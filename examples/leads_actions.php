@@ -174,4 +174,3 @@ if ($lead->getCatalogElementsLinks()) {
 
     var_dump($syncedElement);
 }
-
