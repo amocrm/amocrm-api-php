@@ -14,6 +14,7 @@ use AmoCRM\Models\CustomFieldsValues\LegalEntityCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\MultiselectCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\MultitextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\NumericCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\OrgLegalNameCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\PriceCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\RadiobuttonCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\SelectCustomFieldValuesModel;
@@ -96,6 +97,9 @@ class CustomFieldValuesModelFactory
                 break;
             case CustomFieldModel::TYPE_PRICE:
                 $model = new PriceCustomFieldValuesModel();
+                break;
+            case CustomFieldModel::TYPE_ORG_LEGAL_NAME:
+                $model = new OrgLegalNameCustomFieldValuesModel();
                 break;
         }
 
