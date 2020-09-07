@@ -732,9 +732,9 @@ $disposableTokenModel = $apiClient->getOAuthClient()
 
 Для их работы необходимо добавить в неё файл .env со следующим содержимым, указав ваши значения:
 ```dotenv
-CLIENT_ID=
-CLIENT_SECRET=
-CLIENT_REDIRECT_URI=
+CLIENT_ID="UUID интеграци"
+CLIENT_SECRET="Секретный ключ интеграции"
+CLIENT_REDIRECT_URI="https://example.com/examples/get_token.php (Важно обратить внимание, что он должен содержать в себе точно тот адрес, который был указан при создании интеграции)"
 ```
 
 Затем вы можете поднять локальный сервер командой ```composer serve```. После конфигурацию необходимо перейти в браузере на страницу
