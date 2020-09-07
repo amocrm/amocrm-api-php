@@ -38,6 +38,8 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     public const TYPE_ITEMS = 'items';
     public const TYPE_CATEGORY = 'category';
     public const TYPE_PRICE = 'price';
+    /** @deprecated */
+    public const TYPE_ORG_LEGAL_NAME = 'org_legal_name';
 
     protected const CAN_HAVE_REQUIRED_STATUSES = [
         EntityTypesInterface::LEADS,
