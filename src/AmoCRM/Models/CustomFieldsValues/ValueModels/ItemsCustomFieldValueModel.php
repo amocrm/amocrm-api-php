@@ -32,7 +32,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     protected $description;
 
     /**
-     * @var int|null
+     * @var float|null
      */
     protected $unitPrice;
 
@@ -138,19 +138,19 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     }
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getUnitPrice(): ?int
+    public function getUnitPrice(): ?float
     {
         return $this->unitPrice;
     }
 
     /**
-     * @param int|null $unitPrice
+     * @param float|null $unitPrice
      *
      * @return ItemsCustomFieldValueModel
      */
-    public function setUnitPrice(?int $unitPrice): ItemsCustomFieldValueModel
+    public function setUnitPrice(?float $unitPrice): ItemsCustomFieldValueModel
     {
         $this->unitPrice = $unitPrice;
 
