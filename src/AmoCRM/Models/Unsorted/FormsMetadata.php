@@ -56,8 +56,7 @@ class FormsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataI
         $model->setFormName($metadata['form_name']);
         $model->setFormPage($metadata['form_page']);
         $model->setIp($metadata['ip']);
-        //$model->setFormSentAt($metadata['form_sent_at']);
-        $model->setFormSentAt(null);
+        $model->setFormSentAt((int)$metadata['form_sent_at']);
         $model->setReferer($metadata['referer']);
         $model->setVisitorUid($metadata['visitor_uid']);
 
