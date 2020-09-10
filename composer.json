@@ -1,12 +1,12 @@
 {
-  "name": "amocrm/amocrm-api-library",
+  "name": "AndreiMireichyk/amocrm-api-library",
   "description": "amoCRM API Client",
   "license": "MIT",
   "authors": [
     {
-      "name": "Nikita Bessudnov",
-      "email": "nbessudnov@team.amocrm.com",
-      "homepage": "https://github.com/bessudnov"
+      "name": "Andrei Mireichyk",
+      "email": "dnsxss@gmail.com",
+      "homepage": "https://github.com/AndreiMireichyk"
     }
   ],
   "keywords": [
