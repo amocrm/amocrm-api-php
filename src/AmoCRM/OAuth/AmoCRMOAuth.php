@@ -414,4 +414,12 @@ class AmoCRMOAuth
 
         return DisposableTokenModel::fromJwtToken($jwtToken);
     }
+
+    /**
+     * @return AmoCRM
+     */
+    public function getOauthProvider(): AmoCRM
+    {
+        return $this->oauthProvider;
+    }
 }
