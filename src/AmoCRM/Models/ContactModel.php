@@ -88,7 +88,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     protected $accountId;
 
     /**
-     * @var TagsCollection
+     * @var null|TagsCollection
      */
     protected $tags;
 
