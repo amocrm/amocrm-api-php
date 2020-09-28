@@ -318,7 +318,7 @@ class AccountModel extends BaseApiModel
             ->setUpdatedAt($account['updated_at'])
             ->setCurrentUserId((int)$account['current_user_id'])
             ->setCountry((string)$account['country'])
-            ->setCountry((string)$account['currency'])
+            ->setCurrency((string)$account['currency'])
             ->setUnsortedOn((bool)$account['is_unsorted_on'])
             ->setMobileFeatureVersion((int)$account['mobile_feature_version'])
             ->setCustomersMode($account['customers_mode'])
