@@ -126,7 +126,7 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
     protected $isDeleted;
 
     /**
-     * @var TagsCollection
+     * @var null|TagsCollection
      */
     protected $tags;
 
@@ -384,11 +384,11 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
     }
 
     /**
-     * @param TagsCollection $tags
+     * @param null|TagsCollection $tags
      *
      * @return self
      */
-    public function setTags(TagsCollection $tags): self
+    public function setTags(?TagsCollection $tags): self
     {
         $this->tags = $tags;
 
