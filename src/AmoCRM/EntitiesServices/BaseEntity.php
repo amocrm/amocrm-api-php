@@ -13,6 +13,8 @@ use AmoCRM\Models\Interfaces\HasIdInterface;
 use ReflectionClass;
 use ReflectionException;
 
+use function is_null;
+
 abstract class BaseEntity
 {
     /**
@@ -335,7 +337,9 @@ abstract class BaseEntity
                 $value = $objectA->$propertyName;
             }
 
-            $newObject->$propertyName = $value;
+            if (!is_null($value)) {
+                $newObject->$propertyName = $value;
+            }
         }
 
         return $newObject;
