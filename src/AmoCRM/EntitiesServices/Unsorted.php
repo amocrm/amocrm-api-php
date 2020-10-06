@@ -330,7 +330,7 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
         BaseApiModel $objectA,
         BaseApiModel $objectB
     ) {
-        if (!$objectB instanceof $objectA) {
+        if (!$objectA instanceof $objectB) {
             throw new InvalidArgumentException('Can not merge 2 different objects');
         }
     }
