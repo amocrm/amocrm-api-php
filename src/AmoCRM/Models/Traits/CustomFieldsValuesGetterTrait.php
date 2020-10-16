@@ -4,6 +4,7 @@ namespace AmoCRM\AmoCRM\Models\Traits;
 
 use AmoCRM\AmoCRM\Exceptions\NotContainCustomFieldsException;
 use AmoCRM\AmoCRM\Models\Interfaces\HasCustomFieldsValuesInterface;
+use AmoCRM\Collections\CustomFieldsValuesCollection;
 
 trait CustomFieldsValuesGetterTrait
 {
@@ -18,13 +19,20 @@ trait CustomFieldsValuesGetterTrait
             throw new NotContainCustomFieldsException(sprintf('%s does not contain custom fields', self::class));
         }
 
+        /** @var CustomFieldsValuesCollection|null $customFieldsValues */
         $customFieldsValues = $this->getCustomFieldsValues();
 
         if ($customFieldsValues !== null) {
             $valueModel = $customFieldsValues->getBy('fieldId', $fieldId);
 
             if ($valueModel && $values = $valueModel->getValues()->first()) {
-                $value = $values->toArray()['value'] ?? null;
+                $result = $values->toArray();
+
+                if (empty($result['value'])) {
+                    $value = null;
+                } else {
+                    $value = (string)$result['value'];
+                }
             }
         }
 
