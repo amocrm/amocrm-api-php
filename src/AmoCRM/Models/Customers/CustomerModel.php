@@ -2,6 +2,8 @@
 
 namespace AmoCRM\Models\Customers;
 
+use AmoCRM\AmoCRM\Models\Interfaces\HasCustomFieldsValuesInterface;
+use AmoCRM\AmoCRM\Models\Traits\CustomFieldsValuesGetterTrait;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
@@ -23,10 +25,12 @@ use AmoCRM\Models\CompanyModel;
  *
  * @package AmoCRM\Models\Customers
  */
-class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
+class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface,
+                                                    HasCustomFieldsValuesInterface
 {
     use GetLinkTrait;
     use RequestIdTrait;
+    use CustomFieldsValuesGetterTrait;
 
     public const CATALOG_ELEMENTS = 'catalog_elements';
     public const CONTACTS = 'contacts';

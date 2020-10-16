@@ -2,6 +2,8 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\AmoCRM\Models\Interfaces\HasCustomFieldsValuesInterface;
+use AmoCRM\AmoCRM\Models\Traits\CustomFieldsValuesGetterTrait;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
@@ -16,10 +18,12 @@ use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
 use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
 
-class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
+class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface,
+                                                HasCustomFieldsValuesInterface
 {
     use RequestIdTrait;
     use GetLinkTrait;
+    use CustomFieldsValuesGetterTrait;
 
     public const CATALOG_ELEMENTS = 'catalog_elements';
     public const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
