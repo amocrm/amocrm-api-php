@@ -13,7 +13,7 @@ trait CustomFieldsValuesGetterTrait
      *
      * @return mixed|null
      */
-    public function getPlainValueFromCf(int $fieldId)
+    public function getPlainValueFromCustomField(int $fieldId)
     {
         if (!$this->hasCustomFields()) {
             throw new NotContainCustomFieldsException(sprintf('%s does not contain custom fields', self::class));
@@ -23,10 +23,15 @@ trait CustomFieldsValuesGetterTrait
         $customFieldsValues = $this->getCustomFieldsValues();
 
         if ($customFieldsValues !== null) {
-            $valueModel = $customFieldsValues->getBy('fieldId', $fieldId);
+            $valuesModel = $customFieldsValues->getBy('fieldId', $fieldId);
+            $values = $valuesModel->getValues();
 
-            if ($valueModel && $values = $valueModel->getValues()->first()) {
-                $value = $values->toArray()['value'] ?? null;
+            if ($values !== null) {
+                $valueModel = $values->first();
+
+                if ($valueModel !== null) {
+                    $value = $valueModel->toArray()['value'] ?? null;
+                }
             }
         }
 
