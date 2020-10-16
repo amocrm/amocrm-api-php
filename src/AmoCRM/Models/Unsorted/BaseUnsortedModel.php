@@ -362,6 +362,10 @@ class BaseUnsortedModel extends BaseApiModel
             $result['lead'] = $this->getLead()->toArray();
         }
 
+        if (!is_null($this->getLead())) {
+            $result['leads'] = [$this->getLead()->toArray()];
+        }
+
         if (!is_null($this->getCompanies())) {
             $result['companies'] = $this->getCompanies()->toArray();
         }
@@ -408,7 +412,7 @@ class BaseUnsortedModel extends BaseApiModel
         $requestId = $this->getRequestId();
 
         if (!is_null($this->getLead())) {
-            $result[AmoCRMApiRequest::EMBEDDED]['lead'] = $this->getLead()->toApi($requestId);
+            $result[AmoCRMApiRequest::EMBEDDED]['leads'] = [$this->getLead()->toApi($requestId)];
         }
 
         if (!is_null($this->getCompanies())) {

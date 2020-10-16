@@ -11,6 +11,8 @@ use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Models\Traits\RequestIdTrait;
 
+use function is_null;
+
 class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
     use RequestIdTrait;
@@ -350,9 +352,9 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
             'updated_at' => $this->getUpdatedAt(),
             'catalog_id' => $this->getCatalogId(),
             'is_deleted' => $this->getIsDeleted(),
-            'custom_fields_values' => $this->getCustomFieldsValues()
-                ? $this->getCustomFieldsValues()->toArray()
-                : null,
+            'custom_fields_values' => is_null($this->getCustomFieldsValues())
+                ? null
+                : $this->getCustomFieldsValues()->toArray(),
             'account_id' => $this->getAccountId(),
         ];
     }

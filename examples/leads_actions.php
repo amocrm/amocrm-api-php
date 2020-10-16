@@ -108,18 +108,15 @@ foreach ($leads as $lead) {
     //Получим значение поля по его ID
     if (!empty($customFields)) {
         $textField = $customFields->getBy('fieldId', 269303);
-        $textFieldValues = $textField->getValues();
+        $textFieldValueCollection = $textField->getValues();
     } else {
-        $textField = new CustomFieldsValuesCollection();
+        //Если полей нет
+        $customFields = new CustomFieldsValuesCollection();
+        $textField = (new TextCustomFieldValuesModel())->setFieldId(269303);
+        $textFieldValueCollection = (new TextCustomFieldValueCollection());
+        $customFields->add($textField);
     }
 
-    //Если значения нет, то создадим новый объект поля и добавим его в коллекцию значений
-    if (empty($textFieldValues)) {
-        $textFieldValues = (new TextCustomFieldValuesModel())->setFieldId(269303);
-        $textField->add($textFieldValues);
-    }
-
-    //Установим значение поля
     $textField->setValues(
         (new TextCustomFieldValueCollection())
             ->add(
@@ -132,6 +129,8 @@ foreach ($leads as $lead) {
     $textField->setValues(
         (new NullCustomFieldValueCollection())
     );
+
+    $lead->setCustomFieldsValues($customFields);
 
     //Установим название
     $lead->setName('Example lead');
@@ -168,9 +167,10 @@ if ($leadContacts) {
 }
 
 //Получим элемент, прикрепленный к сделке по его ID
-$element = $lead->getCatalogElementsLinks()->getBy('id', 425909);
+if ($lead->getCatalogElementsLinks()) {
+    $element = $lead->getCatalogElementsLinks()->getBy('id', 425909);
 //Так как по-умолчанию в связи хранится минимум информации, то вызовем метод syncOne - чтобы засинхронить модель с amoCRM
-$syncedElement = $apiClient->catalogElements()->syncOne($element);
+    $syncedElement = $apiClient->catalogElements()->syncOne($element);
 
-var_dump($syncedElement);
-die;
+    var_dump($syncedElement);
+}

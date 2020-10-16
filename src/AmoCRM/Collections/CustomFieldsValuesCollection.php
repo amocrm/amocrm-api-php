@@ -2,7 +2,10 @@
 
 namespace AmoCRM\Collections;
 
+use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFieldsValues\BaseCustomFieldValuesModel;
+
+use function in_array;
 
 /**
  * Class CustomFieldsValuesCollection
@@ -20,5 +23,26 @@ use AmoCRM\Models\CustomFieldsValues\BaseCustomFieldValuesModel;
  */
 class CustomFieldsValuesCollection extends BaseApiCollection
 {
+    private $typesToSkip = [
+        CustomFieldModel::TYPE_ORG_LEGAL_NAME,
+    ];
+
     public const ITEM_CLASS = BaseCustomFieldValuesModel::class;
+
+    /**
+     * @return null|array
+     */
+    public function toApi(): ?array
+    {
+        $result = [];
+        /** @var BaseCustomFieldValuesModel $item */
+        foreach ($this->data as $key => $item) {
+            if (in_array($item->getFieldType(), $this->typesToSkip, true)) {
+                continue;
+            }
+            $result[$key] = $item->toApi($key);
+        }
+
+        return $result;
+    }
 }

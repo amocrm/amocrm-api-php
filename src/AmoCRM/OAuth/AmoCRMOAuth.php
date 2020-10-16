@@ -2,6 +2,10 @@
 
 namespace AmoCRM\OAuth;
 
+use AmoCRM\AmoCRM\Exceptions\DisposableTokenExpiredException;
+use AmoCRM\AmoCRM\Exceptions\DisposableTokenVerificationFailedException;
+use AmoCRM\AmoCRM\Models\AccountDomainModel;
+use AmoCRM\AmoCRM\Models\DisposableTokenModel;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Exceptions\AmoCRMApiConnectExceptionException;
 use AmoCRM\Exceptions\AmoCRMApiErrorResponseException;
@@ -16,6 +20,11 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TooManyRedirectsException;
+use GuzzleHttp\Psr7\Uri;
+use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\ValidationData;
 use League\OAuth2\Client\Grant\AuthorizationCode;
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
@@ -46,7 +55,7 @@ class AmoCRMOAuth
     /**
      * @var AmoCRM
      */
-    private $oauthProvider;
+    protected $oauthProvider;
 
     /**
      * @var null|callable
@@ -62,6 +71,11 @@ class AmoCRMOAuth
      * @var string
      */
     private $clientSecret;
+
+    /**
+     * @var string
+     */
+    private $redirectUri;
 
     /**
      * AmoCRMOAuth constructor.
@@ -82,6 +96,7 @@ class AmoCRMOAuth
 
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+        $this->redirectUri = $redirectUri;
     }
 
     /**
@@ -309,8 +324,94 @@ class AmoCRMOAuth
                 'Invalid response code',
                 $response->getStatusCode(),
                 [],
-                $response->getBody()->getContents()
+                (string)$response->getBody()
             );
         }
+    }
+
+    /**
+     * Получение субдомена аккаунта по токену
+     *
+     * @param AccessTokenInterface $accessToken
+     *
+     * @return AccountDomainModel
+     * @throws AmoCRMApiErrorResponseException
+     * @throws AmoCRMApiConnectExceptionException
+     * @throws AmoCRMApiHttpClientException
+     */
+    public function getAccountDomain(AccessTokenInterface $accessToken): AccountDomainModel
+    {
+        try {
+            $response = $this->oauthProvider->getHttpClient()->request(
+                AmoCRMApiRequest::GET_REQUEST,
+                sprintf(
+                    '%s%s%s',
+                    $this->oauthProvider->protocol,
+                    $this->oauthProvider->getBaseDomain(),
+                    '/oauth2/account/subdomain'
+                ),
+                [
+                    'headers' => $this->oauthProvider->getHeaders($accessToken),
+                    'connect_timeout' => AmoCRMApiRequest::CONNECT_TIMEOUT,
+                    'http_errors' => false,
+                    'timeout' => self::REQUEST_TIMEOUT,
+                    'query' => [],
+                    'json' => [],
+                ]
+            );
+
+            $responseBody = (string)$response->getBody();
+            if ($response->getStatusCode() !== StatusCodeInterface::STATUS_OK) {
+                throw new AmoCRMApiErrorResponseException(
+                    'Invalid response',
+                    $response->getStatusCode(),
+                    [],
+                    $responseBody
+                );
+            }
+            $response = json_decode($responseBody, true);
+            $accountDomainModel = AccountDomainModel::fromArray($response);
+        } catch (ConnectException $e) {
+            throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode());
+        } catch (GuzzleException $e) {
+            throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode());
+        }
+
+        return $accountDomainModel;
+    }
+
+    /**
+     * Расшифровывает полученный одноразовый токен и возвращает модель
+     * @param string $token
+     *
+     * @return DisposableTokenModel
+     * @throws DisposableTokenExpiredException
+     * @throws DisposableTokenVerificationFailedException
+     *
+     * @link https://www.amocrm.ru/developers/content/web_sdk/mechanics
+     */
+    public function parseDisposableToken(string $token): DisposableTokenModel
+    {
+        $jwtToken = (new Parser())->parse($token);
+        $signer = new Sha256();
+
+        // Проверка подписи токена
+        $isVerified = $jwtToken->verify($signer, new Key($this->clientSecret));
+        if (!$isVerified) {
+            throw new DisposableTokenVerificationFailedException('Disposable token verification failed');
+        }
+
+        $clientBaseUri = new Uri($this->redirectUri);
+        $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
+        $validationData = new ValidationData();
+        $validationData->setAudience($clientBaseUri);
+
+        // Проверка на истечение и адресата токена
+        $isValid = $jwtToken->validate($validationData);
+        if (!$isValid) {
+            throw new DisposableTokenExpiredException('Disposable token expired');
+        }
+
+        return DisposableTokenModel::fromJwtToken($jwtToken);
     }
 }

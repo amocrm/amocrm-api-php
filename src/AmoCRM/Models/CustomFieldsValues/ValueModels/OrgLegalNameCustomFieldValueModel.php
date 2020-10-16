@@ -3,10 +3,11 @@
 namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
 /**
- * Class DateTimeCustomFieldValueModel
+ * Class OrgLegalNameCustomFieldValueModel
  *
  * @package AmoCRM\Models\CustomFieldsValues\ValueModels
  */
-class DateTimeCustomFieldValueModel extends DateCustomFieldValueModel
+class OrgLegalNameCustomFieldValueModel extends BaseCustomFieldValueModel
 {
+
 }

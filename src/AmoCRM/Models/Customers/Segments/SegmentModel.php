@@ -8,6 +8,9 @@ use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
+use function is_null;
+use function array_key_exists;
+
 /**
  * Class SegmentModel
  *
@@ -111,12 +114,16 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
             throw new InvalidArgumentException('Segment id is empty in ' . json_encode($segment));
         }
 
-        $segmentModel = new self();
+        $segmentModel = (new self())
+            ->setId((int)$segment['id']);
 
-        $segmentModel
-            ->setId($segment['id'])
-            ->setName($segment['name'])
-            ->setColor($segment['color']);
+        if (!empty($segment['name'])) {
+            $segmentModel->setName($segment['name']);
+        }
+
+        if (!empty($segment['color'])) {
+            $segmentModel->setColor($segment['color']);
+        }
 
         if (!empty($segment['created_at'])) {
             $segmentModel->setCreatedAt($segment['created_at']);
@@ -156,7 +163,9 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
             'updated_at' => $this->getUpdatedAt(),
             'customers_count' => $this->getCustomersCount(),
             'available_products_price_types' => $this->getAvailableProductsPriceTypes(),
-            'custom_fields_values' => $this->getCustomFieldsValues()->toArray(),
+            'custom_fields_values' => is_null($this->getCustomFieldsValues())
+                ? null
+                : $this->getCustomFieldsValues()->toArray(),
         ];
     }
 
@@ -180,9 +189,9 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -283,9 +292,9 @@ class SegmentModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getColor(): string
+    public function getColor(): ?string
     {
         return $this->color;
     }

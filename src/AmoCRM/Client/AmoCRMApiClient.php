@@ -128,9 +128,17 @@ class AmoCRMApiClient
     private function buildRequest(): AmoCRMApiRequest
     {
         $oAuthClient = $this->getOAuthClient();
-        if (is_callable($this->accessTokenRefreshCallback)) {
-            $oAuthClient->setAccessTokenRefreshCallback($this->accessTokenRefreshCallback);
-        }
+
+        $oAuthClient->setAccessTokenRefreshCallback(
+            function (AccessToken $accessToken, string $baseAccountDomain) use ($oAuthClient) {
+                $this->setAccessToken($accessToken);
+
+                if (is_callable($this->accessTokenRefreshCallback)) {
+                    $callback = $this->accessTokenRefreshCallback;
+                    $callback($accessToken, $baseAccountDomain);
+                }
+            }
+        );
 
         return new AmoCRMApiRequest($this->accessToken, $oAuthClient);
     }
@@ -401,17 +409,16 @@ class AmoCRMApiClient
     /**
      * Метод вернет объект статусов
      *
-     * @param int|null $pipelineId
+     * @param int $pipelineId
      *
      * @return Statuses
      */
-    public function statuses(int $pipelineId = null): Statuses
+    public function statuses(int $pipelineId): Statuses
     {
         $request = $this->buildRequest();
         $service = new Statuses($request);
-        if (!is_null($pipelineId)) {
-            $service->setEntityId($pipelineId);
-        }
+        $service->setEntityId($pipelineId);
+
         return $service;
     }
 

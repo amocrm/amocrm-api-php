@@ -20,6 +20,9 @@ use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CompanyModel;
 
+use function is_null;
+use function array_key_exists;
+
 /**
  * Class CustomerModel
  *
@@ -127,7 +130,7 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
     protected $isDeleted;
 
     /**
-     * @var TagsCollection
+     * @var null|TagsCollection
      */
     protected $tags;
 
@@ -385,11 +388,11 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
     }
 
     /**
-     * @param TagsCollection $tags
+     * @param null|TagsCollection $tags
      *
      * @return self
      */
-    public function setTags(TagsCollection $tags): self
+    public function setTags(?TagsCollection $tags): self
     {
         $this->tags = $tags;
 
@@ -731,9 +734,9 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
             'updated_at' => $this->getUpdatedAt(),
             'closest_task_at' => $this->getClosestTaskAt(),
             'is_deleted' => $this->getIsDeleted(),
-            'custom_fields_values' => $this->getCustomFieldsValues()
-                ? $this->getCustomFieldsValues()->toArray()
-                : null,
+            'custom_fields_values' => is_null($this->getCustomFieldsValues())
+                ? null
+                : $this->getCustomFieldsValues()->toArray(),
             'ltv' => $this->getLtv(),
             'purchases_count' => $this->getPurchasesCount(),
             'average_check' => $this->getAverageCheck(),

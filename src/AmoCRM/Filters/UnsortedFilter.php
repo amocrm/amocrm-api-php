@@ -2,12 +2,13 @@
 
 namespace AmoCRM\Filters;
 
+use AmoCRM\Filters\Interfaces\HasOrderInterface;
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
 use AmoCRM\Filters\Traits\ArrayOrStringFilterTrait;
 use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
-class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface
+class UnsortedFilter extends BaseEntityFilter implements HasPagesInterface, HasOrderInterface
 {
     use PagesFilterTrait;
     use OrderTrait;

@@ -18,16 +18,19 @@ use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
 use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
 
-class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface,
-                                                HasCustomFieldsValuesInterface
+use function is_null;
+
+class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
     use RequestIdTrait;
     use GetLinkTrait;
     use CustomFieldsValuesGetterTrait;
 
+    public const LOST_STATUS_ID = 143;
     public const CATALOG_ELEMENTS = 'catalog_elements';
     public const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
     public const LOSS_REASON = 'loss_reason';
+    public const SOURCE_ID = 'source_id';
     public const CONTACTS = 'contacts';
 
     /**
@@ -214,11 +217,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $price
+     * @param null|int $price
      *
      * @return self
      */
-    public function setPrice(int $price): self
+    public function setPrice(?int $price): self
     {
         $this->price = $price;
 
@@ -234,11 +237,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $id
+     * @param null|int $id
      *
      * @return self
      */
-    public function setAccountId(int $id): self
+    public function setAccountId(?int $id): self
     {
         $this->accountId = $id;
 
@@ -255,11 +258,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $groupId
+     * @param int|null $groupId
      *
      * @return self
      */
-    public function setGroupId(int $groupId): self
+    public function setGroupId(?int $groupId): self
     {
         $this->groupId = $groupId;
 
@@ -275,11 +278,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $userId
+     * @param null|int $userId
      *
      * @return self
      */
-    public function setResponsibleUserId(int $userId): self
+    public function setResponsibleUserId(?int $userId): self
     {
         $this->responsibleUserId = $userId;
 
@@ -295,11 +298,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $userId
+     * @param null|int $userId
      *
      * @return self
      */
-    public function setCreatedBy(int $userId): self
+    public function setCreatedBy(?int $userId): self
     {
         $this->createdBy = $userId;
 
@@ -315,11 +318,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $userId
+     * @param null|int $userId
      *
      * @return self
      */
-    public function setUpdatedBy(int $userId): self
+    public function setUpdatedBy(?int $userId): self
     {
         $this->updatedBy = $userId;
 
@@ -335,11 +338,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $timestamp
+     * @param null|int $timestamp
      *
      * @return self
      */
-    public function setCreatedAt(int $timestamp): self
+    public function setCreatedAt(?int $timestamp): self
     {
         $this->createdAt = $timestamp;
 
@@ -355,11 +358,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $timestamp
+     * @param null|int $timestamp
      *
      * @return self
      */
-    public function setUpdatedAt(int $timestamp): self
+    public function setUpdatedAt(?int $timestamp): self
     {
         $this->updatedAt = $timestamp;
 
@@ -375,11 +378,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $pipelineId
+     * @param null|int $pipelineId
      *
      * @return self
      */
-    public function setPipelineId(int $pipelineId): self
+    public function setPipelineId(?int $pipelineId): self
     {
         $this->pipelineId = $pipelineId;
 
@@ -395,11 +398,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param int $statusId
+     * @param null|int $statusId
      *
      * @return self
      */
-    public function setStatusId(int $statusId): self
+    public function setStatusId(?int $statusId): self
     {
         $this->statusId = $statusId;
 
@@ -475,11 +478,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param LossReasonModel $lossReason
+     * @param null|LossReasonModel $lossReason
      *
      * @return self
      */
-    public function setLossReason(LossReasonModel $lossReason): self
+    public function setLossReason(?LossReasonModel $lossReason): self
     {
         $this->lossReason = $lossReason;
 
@@ -495,11 +498,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param bool $flag
+     * @param null|bool $flag
      *
      * @return self
      */
-    public function setIsDeleted(bool $flag): self
+    public function setIsDeleted(?bool $flag): self
     {
         $this->isDeleted = $flag;
 
@@ -515,11 +518,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param TagsCollection $tags
+     * @param null|TagsCollection $tags
      *
      * @return self
      */
-    public function setTags(TagsCollection $tags): self
+    public function setTags(?TagsCollection $tags): self
     {
         $this->tags = $tags;
 
@@ -555,11 +558,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param CompanyModel $company
+     * @param null|CompanyModel $company
      *
      * @return self
      */
-    public function setCompany(CompanyModel $company): self
+    public function setCompany(?CompanyModel $company): self
     {
         $this->company = $company;
 
@@ -595,11 +598,11 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @param ContactsCollection $contacts
+     * @param null|ContactsCollection $contacts
      *
      * @return self
      */
-    public function setContacts(ContactsCollection $contacts): self
+    public function setContacts(?ContactsCollection $contacts): self
     {
         $this->contacts = $contacts;
 
@@ -690,7 +693,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             $leadModel->setLossReasonId($lead['loss_reason_id'] > 0 ? (int)$lead['loss_reason_id'] : null);
         }
 
-        if (!empty($lead['source_id'])) {
+        if (array_key_exists('source_id', $lead)) {
             $leadModel->setSourceId($lead['source_id'] > 0 ? (int)$lead['source_id'] : null);
         }
 
@@ -792,7 +795,9 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             'closed_at' => $this->getClosedAt(),
             'closest_task_at' => $this->getClosestTaskAt(),
             'is_deleted' => $this->getIsDeleted(),
-            'custom_fields_values' => $this->getCustomFieldsValues(),
+            'custom_fields_values' => is_null($this->getCustomFieldsValues())
+                ? null
+                : $this->getCustomFieldsValues()->toArray(),
             'score' => $this->getScore(),
             'account_id' => $this->getAccountId(),
         ];
@@ -860,7 +865,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             $result['pipeline_id'] = $this->getPipelineId();
         }
 
-        if (!is_null($this->getLossReasonId())) {
+        if ($this->getStatusId() === self::LOST_STATUS_ID && !is_null($this->getLossReasonId())) {
             $result['loss_reason_id'] = $this->getLossReasonId();
         }
 
@@ -910,6 +915,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             self::CATALOG_ELEMENTS,
             self::IS_PRICE_BY_ROBOT,
             self::CONTACTS,
+            self::SOURCE_ID,
             self::LOSS_REASON,
         ];
     }
@@ -926,7 +932,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
      * @param CatalogElementsCollection|null $catalogElementsLinks
      * @return LeadModel
      */
-    public function setCatalogElementsLinks(CatalogElementsCollection $catalogElementsLinks): self
+    public function setCatalogElementsLinks(?CatalogElementsCollection $catalogElementsLinks): self
     {
         $this->catalogElementsLinks = $catalogElementsLinks;
 

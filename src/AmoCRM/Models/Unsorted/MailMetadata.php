@@ -29,12 +29,12 @@ class MailMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataIn
     protected $threadId;
 
     /**
-     * @var array|null
+     * @var int|null
      */
     protected $messageId;
 
     /**
-     * @var array|null
+     * @var string|null
      */
     protected $contentSummary;
 
@@ -156,19 +156,19 @@ class MailMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataIn
     }
 
     /**
-     * @return array|null
+     * @return int|null
      */
-    public function getMessageId(): ?array
+    public function getMessageId(): ?int
     {
         return $this->messageId;
     }
 
     /**
-     * @param array|null $messageId
+     * @param int|null $messageId
      *
      * @return MailMetadata
      */
-    public function setMessageId(?array $messageId): MailMetadata
+    public function setMessageId(?int $messageId): MailMetadata
     {
         $this->messageId = $messageId;
 
@@ -176,19 +176,19 @@ class MailMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataIn
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
-    public function getContentSummary(): ?array
+    public function getContentSummary(): ?string
     {
         return $this->contentSummary;
     }
 
     /**
-     * @param array|null $contentSummary
+     * @param string|null $contentSummary
      *
      * @return MailMetadata
      */
-    public function setContentSummary(?array $contentSummary): MailMetadata
+    public function setContentSummary(?string $contentSummary): MailMetadata
     {
         $this->contentSummary = $contentSummary;
 

@@ -71,9 +71,9 @@ $nikeElement = $catalogElementsCollection->getBy('name', 'Кросовки Nike'
 if ($nikeElement) {
     //Установим кол-во, так как эта модель будет привязана, данное свойство используется только при привязке к сущности
     $nikeElement->setQuantity(10);
-    //Получим контакт по ID, сделку и првяжем контакт к сделке
+    //Получим сделку по ID
     try {
-        $contact = $apiClient->leads()->getOne(5170965);
+        $lead = $apiClient->leads()->getOne(5170965);
     } catch (AmoCRMApiException $e) {
         printError($e);
         die;
@@ -83,7 +83,7 @@ if ($nikeElement) {
     $links = new LinksCollection();
     $links->add($nikeElement);
     try {
-        $apiClient->leads()->link($contact, $links);
+        $apiClient->leads()->link($lead, $links);
     } catch (AmoCRMApiException $e) {
         printError($e);
         die;

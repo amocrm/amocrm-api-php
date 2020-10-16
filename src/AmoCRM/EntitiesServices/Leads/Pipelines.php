@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices\Leads;
 
+use AmoCRM\Collections\Leads\Pipelines\Statuses\StatusesCollection;
 use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -127,8 +128,36 @@ class Pipelines extends BaseEntity implements HasDeleteMethodInterface
             $apiModel->setId($entity['id']);
         }
 
+        if (array_key_exists('name', $entity)) {
+            $apiModel->setName($entity['name']);
+        }
+
         if (array_key_exists('sort', $entity)) {
             $apiModel->setSort($entity['sort']);
+        }
+
+        if (array_key_exists('is_main', $entity)) {
+            $apiModel->setIsMain($entity['is_main']);
+        }
+
+        if (array_key_exists('is_unsorted_on', $entity)) {
+            $apiModel->setIsUnsortedOn($entity['is_unsorted_on']);
+        }
+
+        if (array_key_exists('is_archive', $entity)) {
+            $apiModel->setIsArchive($entity['is_archive']);
+        }
+
+        if (array_key_exists('account_id', $entity)) {
+            $apiModel->setAccountId($entity['account_id']);
+        }
+
+        if (!empty($entity[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS_STATUSES])) {
+            $apiModel->setStatuses(
+                StatusesCollection::fromArray(
+                    $entity[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS_STATUSES]
+                )
+            );
         }
     }
 

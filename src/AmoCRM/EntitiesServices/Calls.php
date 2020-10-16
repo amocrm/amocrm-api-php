@@ -122,7 +122,7 @@ class Calls extends BaseEntity
      */
     protected function processModelAction(BaseApiModel $apiModel, array $entity): void
     {
-        /** @var ContactModel $apiModel */
+        /** @var CallModel $apiModel */
         if (isset($entity['id'])) {
             $apiModel->setId($entity['id']);
         }

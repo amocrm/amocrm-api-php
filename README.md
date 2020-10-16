@@ -6,7 +6,8 @@
 [![Build Status](https://img.shields.io/travis/amocrm/amocrm-api-php)](https://travis-ci.org/github/amocrm/amocrm-api-php/)
 [![Total Downloads](https://img.shields.io/packagist/dt/amocrm/amocrm-api-library.svg)](https://packagist.org/packages/amocrm/amocrm-api-library)
 
-В данном пакете представлен API клиент с поддержкой основных сущностей и авторизацией по протоколу OAuth 2.0 в amoCRM.
+В данном пакете представлен API клиент с поддержкой основных сущностей и авторизацией по протоколу OAuth 2.0 в amoCRM. 
+Для работы библиотеки требуется PHP версии не ниже 7.1.
 
 ## Оглавление
 - [Установка](#установка)
@@ -455,6 +456,7 @@ $leadsService = $apiClient->leads();
 |AmoCRM\Exceptions\BadTypeException                  |Передан не верный тип данных                                                                         |
 |AmoCRM\Exceptions\InvalidArgumentException          |Передан не верный аргумент                                                                           |
 |AmoCRM\Exceptions\NotAvailableForActionException    |Метод не доступен для вызова                                                                         |
+|AmoCRM\Exceptions\AmoCRMApiPageNotAvailableException|Выбрасывается в случае запроса следующей или предыдущей страницы коллекции, когда страница отстутвует|
 
 У выброшенных Exception есть следующие методы:
 1. ```getErrorCode()```
@@ -506,7 +508,7 @@ $leadsService = $apiClient->leads();
 1. ```getFieldId```, ```setFieldId``` - получение/установка id поля
 2. ```getFieldType``` - получение типа поля
 3. ```getFieldCode```, ```setFieldCode``` - получение/установка кода поля
-4. ```getFieldName```, ```setFieldName``` - получение/установка кода поля
+4. ```getFieldName```, ```setFieldName``` - получение/установка названия поля
 5. ```getValues```, ```setValues``` - получение/установка коллекции значений
 
 Так как некоторые поля могут иметь несколько значений,
@@ -683,14 +685,57 @@ $lead->setTags((new NullTagsCollection()));
 19. ```\AmoCRM\Models\ContactModel``` - константы для аргумента with для сервиса ```contacts```
 20. ```\AmoCRM\Models\CompanyModel``` - константы для аргумента with для сервиса ```companies```
 
+## Работа в случае смены субдомена аккаунта
+```php
+/**
+ * Получим модель с информацией о домене аккаунта по access_token
+ * Подробнее: @see AccountDomainModel
+ *
+ * Запрос уходит на www.amocrm.ru/oauth2/account/subdomain
+ * С Authorization: Bearer {access_token}
+ * curl 'https://www.amocrm.ru/oauth2/account/subdomain' -H 'Authorization: Bearer {access_token}'
+ *
+ * @example examples/get_account_subdomain.php
+ */
+$accountDomain = $apiClient->getOAuthClient()
+        ->getAccountDomain($accessToken);
+
+// Возьмём из полученной модели текущий subdomain аккаунта и засетим наш апи клиент
+$apiClient->setAccountBaseDomain($accountDomain->getSubdomain());
+// ... дальше продолжаем работу с апи клиентом
+```
+
+## Одноразовые токены интеграций, расшифровка
+```php
+// Как пример, получим заголовки с реквеста
+// И получим нужный нам X-Auth-Token
+$token = $_SERVER['HTTP_X_AUTH_TOKEN'];
+
+/**
+ * Одноразовый токен для интеграций, для того чтобы его получить используйте
+ * метод this.$authorizedAjax() в своей интеграции
+ * Подробнее: @link https://www.amocrm.ru/developers/content/web_sdk/mechanics
+ *
+ * Данный токен должен передаваться в заголовках вместе с запросом на ваш удаленный сервер
+ * X-Auth-Token: {disposable_token}
+ * Время жизни токена: 30 минут
+ *
+ * Расшифруем пришедший токен и получим модель с информацией
+ * Подробнее: @see DisposableTokenModel
+ * @example examples/parse_disposable_token.php
+ */
+$disposableTokenModel = $apiClient->getOAuthClient()
+    ->parseDisposableToken($token);
+```
+
 ## Примеры
 В рамках данного репозитория имеется папка examples с различными примерами.
 
 Для их работы необходимо добавить в неё файл .env со следующим содержимым, указав ваши значения:
 ```dotenv
-CLIENT_ID=
-CLIENT_SECRET=
-CLIENT_REDIRECT_URI=
+CLIENT_ID="UUID интеграци"
+CLIENT_SECRET="Секретный ключ интеграции"
+CLIENT_REDIRECT_URI="https://example.com/examples/get_token.php (Важно обратить внимание, что он должен содержать в себе точно тот адрес, который был указан при создании интеграции)"
 ```
 
 Затем вы можете поднять локальный сервер командой ```composer serve```. После конфигурацию необходимо перейти в браузере на страницу

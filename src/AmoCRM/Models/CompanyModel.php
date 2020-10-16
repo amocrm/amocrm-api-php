@@ -17,6 +17,8 @@ use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Models\Traits\RequestIdTrait;
 
+use function is_null;
+
 class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
 {
     use RequestIdTrait;
@@ -78,7 +80,7 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     protected $accountId;
 
     /**
-     * @var TagsCollection
+     * @var null|TagsCollection
      */
     protected $tags;
 
@@ -322,11 +324,11 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param TagsCollection $tags
+     * @param null|TagsCollection $tags
      *
      * @return self
      */
-    public function setTags(TagsCollection $tags): self
+    public function setTags(?TagsCollection $tags): self
     {
         $this->tags = $tags;
 
@@ -529,7 +531,9 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
             'created_at' => $this->getCreatedAt(),
             'updated_at' => $this->getUpdatedAt(),
             'closest_task_at' => $this->getClosestTaskAt(),
-            'custom_fields_values' => $this->getCustomFieldsValues(),
+            'custom_fields_values' => is_null($this->getCustomFieldsValues())
+                ? null
+                : $this->getCustomFieldsValues()->toArray(),
             'account_id' => $this->getAccountId(),
         ];
 

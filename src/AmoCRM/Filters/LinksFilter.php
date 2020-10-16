@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Filters;
 
-class LinksFilter
+class LinksFilter extends BaseEntityFilter
 {
     /**
      * @var int|null

@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Filters;
 
+use AmoCRM\Filters\Interfaces\HasOrderInterface;
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
 use AmoCRM\Filters\Traits\ArrayOrNumericFilterTrait;
 use AmoCRM\Filters\Traits\ArrayOrStringFilterTrait;
@@ -9,7 +10,13 @@ use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 use AmoCRM\Filters\Traits\IntOrIntRangeFilterTrait;
 
-class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
+use function array_filter;
+use function array_map;
+use function array_unique;
+use function is_array;
+use function is_numeric;
+
+class LeadsFilter extends BaseEntityFilter implements HasPagesInterface, HasOrderInterface
 {
     use OrderTrait;
     use PagesFilterTrait;
@@ -71,6 +78,11 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
      * @var array|null
      */
     private $statuses = null;
+
+    /**
+     * @var array|null
+     */
+    private $pipelineIds = null;
 
     /**
      * @var null|array
@@ -318,6 +330,41 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @return array|null
      */
+    public function getPipelineIds(): ?array
+    {
+        return $this->pipelineIds;
+    }
+
+    /**
+     * @param array|int|null $pipelineIds
+     *
+     * @return LeadsFilter
+     */
+    public function setPipelineIds($pipelineIds): LeadsFilter
+    {
+        if (!is_array($pipelineIds)) {
+            $pipelineIds = [$pipelineIds];
+        }
+
+        $pipelineIds = array_unique(
+            array_filter(
+                array_map(
+                    function ($val) {
+                        return is_numeric($val) && $val > 0 ? (int)$val : null;
+                    },
+                    $pipelineIds
+                )
+            )
+        );
+
+        $this->pipelineIds = empty($pipelineIds) ? null : $pipelineIds;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
     public function getCustomFieldsValues(): ?array
     {
         return $this->customFieldsValues;
@@ -340,7 +387,7 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
             }
         }
 
-        $this->customFieldsValues = $customFieldsValues;
+        $this->customFieldsValues = $cfFilter;
 
         return $this;
     }
@@ -420,6 +467,10 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface
 
         if (!is_null($this->getStatuses())) {
             $filter['filter']['statuses'] = $this->getStatuses();
+        }
+
+        if (!is_null($this->getPipelineIds())) {
+            $filter['filter']['pipeline_id'] = $this->getPipelineIds();
         }
 
         if (!is_null($this->getQuery())) {

@@ -121,6 +121,9 @@ class AccountModel extends BaseApiModel
     /** @var string|null */
     protected $country;
 
+    /** @var string|null */
+    protected $currency;
+
     /**
      * @return int
      */
@@ -315,6 +318,7 @@ class AccountModel extends BaseApiModel
             ->setUpdatedAt($account['updated_at'])
             ->setCurrentUserId((int)$account['current_user_id'])
             ->setCountry((string)$account['country'])
+            ->setCurrency((string)$account['currency'])
             ->setUnsortedOn((bool)$account['is_unsorted_on'])
             ->setMobileFeatureVersion((int)$account['mobile_feature_version'])
             ->setCustomersMode($account['customers_mode'])
@@ -387,6 +391,7 @@ class AccountModel extends BaseApiModel
             'updated_by' => $this->getUpdatedBy(),
             'current_user_id' => $this->getCurrentUserId(),
             'country' => $this->getCountry(),
+            'currency' => $this->getCurrency(),
             'is_unsorted_on' => $this->getIsUnsortedOn(),
             'mobile_feature_version' => $this->getMobileFeatureVersion(),
             'customers_mode' => $this->getCustomersMode(),
@@ -468,7 +473,7 @@ class AccountModel extends BaseApiModel
     /**
      * @return UsersGroupsCollection
      */
-    public function getUsersGroups(): UsersGroupsCollection
+    public function getUsersGroups(): ?UsersGroupsCollection
     {
         return $this->usersGroups;
     }
@@ -487,7 +492,7 @@ class AccountModel extends BaseApiModel
     /**
      * @return TaskTypesCollection
      */
-    public function getTaskTypes(): TaskTypesCollection
+    public function getTaskTypes(): ?TaskTypesCollection
     {
         return $this->taskTypes;
     }
@@ -670,6 +675,26 @@ class AccountModel extends BaseApiModel
     public function setCountry(?string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string|null $currency
+     *
+     * @return AccountModel
+     */
+    public function setCurrency(?string $currency): AccountModel
+    {
+        $this->currency = $currency;
 
         return $this;
     }
