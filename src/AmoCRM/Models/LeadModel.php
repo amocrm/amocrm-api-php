@@ -20,8 +20,11 @@ use AmoCRM\Models\Traits\RequestIdTrait;
 
 use function is_null;
 
-class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface,
-                                                HasCustomFieldsValuesInterface
+class LeadModel extends BaseApiModel implements
+    TypeAwareInterface,
+    CanBeLinkedInterface,
+    HasIdInterface,
+    HasCustomFieldsValuesInterface
 {
     use RequestIdTrait;
     use GetLinkTrait;

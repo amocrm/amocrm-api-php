@@ -28,8 +28,11 @@ use function array_key_exists;
  *
  * @package AmoCRM\Models\Customers
  */
-class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface,
-                                                    HasCustomFieldsValuesInterface
+class CustomerModel extends BaseApiModel implements
+    TypeAwareInterface,
+    CanBeLinkedInterface,
+    HasIdInterface,
+    HasCustomFieldsValuesInterface
 {
     use GetLinkTrait;
     use RequestIdTrait;
