@@ -502,7 +502,7 @@ class AmoCRMApiRequest
 
         $this->checkHttpStatus($response, $decodedBody);
 
-        return $decodedBody;
+        return $decodedBody ?? [];
     }
 
     /**
