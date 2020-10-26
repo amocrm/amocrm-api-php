@@ -5,6 +5,8 @@ namespace AmoCRM\Models\NoteType;
 use AmoCRM\Models\NoteModel;
 use AmoCRM\Models\Traits\CallTrait;
 
+use function is_string;
+
 abstract class CallNote extends NoteModel
 {
     use CallTrait;
@@ -47,7 +49,7 @@ abstract class CallNote extends NoteModel
     {
         $model = parent::fromArray($note);
 
-        if (isset($note['params']['uniq'])) {
+        if (isset($note['params']['uniq']) && is_string($note['params']['uniq'])) {
             $model->setUniq($note['params']['uniq']);
         }
 
