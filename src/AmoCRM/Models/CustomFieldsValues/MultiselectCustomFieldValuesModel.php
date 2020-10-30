@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\CustomFieldsValues;
 
-use AmoCRM\Helpers\CustomFieldHelper;
+use AmoCRM\Models\CustomFields\CustomFieldModel;
 
 /**
  * Class MultiselectCustomFieldValuesModel
@@ -16,6 +16,6 @@ class MultiselectCustomFieldValuesModel extends BaseCustomFieldValuesModel
      */
     public function getFieldType(): string
     {
-        return CustomFieldHelper::FIELD_TYPE_CODE_NUMERIC;
+        return CustomFieldModel::TYPE_MULTISELECT;
     }
 }
