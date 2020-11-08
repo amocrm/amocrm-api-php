@@ -10,14 +10,14 @@ use AmoCRM\Models\Unsorted\FormUnsortedModel;
  *
  * @package AmoCRM\Collections\Leads\Unsorted
  *
- * @method FormUnsortedModel current() : ?BaseApiModel
- * @method FormUnsortedModel last() : ?BaseApiModel
- * @method FormUnsortedModel first() : ?BaseApiModel
- * @method FormUnsortedModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, FormUnsortedModel $value) : BaseApiCollection
- * @method self prepend(FormUnsortedModel $value) : BaseApiCollection
- * @method self add(FormUnsortedModel $value) : BaseApiCollection
- * @method FormUnsortedModel getBy($key, $value) : ?BaseApiModel
+ * @method null|FormUnsortedModel current()
+ * @method null|FormUnsortedModel last()
+ * @method null|FormUnsortedModel first()
+ * @method null|FormUnsortedModel offsetGet($offset)
+ * @method FormsUnsortedCollection offsetSet($offset, FormUnsortedModel $value)
+ * @method FormsUnsortedCollection prepend(FormUnsortedModel $value)
+ * @method FormsUnsortedCollection add(FormUnsortedModel $value)
+ * @method null|FormUnsortedModel getBy($key, $value)
  */
 class FormsUnsortedCollection extends UnsortedCollection
 {

@@ -9,14 +9,14 @@ use AmoCRM\Models\CustomFieldGroupModel;
  *
  * @package AmoCRM\Collections
  *
- * @method CustomFieldGroupModel current() : ?BaseApiModel
- * @method CustomFieldGroupModel last() : ?BaseApiModel
- * @method CustomFieldGroupModel first() : ?BaseApiModel
- * @method CustomFieldGroupModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, CustomFieldGroupModel $value) : BaseApiCollection
- * @method self prepend(CustomFieldGroupModel $value) : BaseApiCollection
- * @method self add(CustomFieldGroupModel $value) : BaseApiCollection
- * @method CustomFieldGroupModel getBy($key, $value) : ?BaseApiModel
+ * @method null|CustomFieldGroupModel current()
+ * @method null|CustomFieldGroupModel last()
+ * @method null|CustomFieldGroupModel first()
+ * @method null|CustomFieldGroupModel offsetGet($offset)
+ * @method CustomFieldGroupsCollection offsetSet($offset, CustomFieldGroupModel $value)
+ * @method CustomFieldGroupsCollection prepend(CustomFieldGroupModel $value)
+ * @method CustomFieldGroupsCollection add(CustomFieldGroupModel $value)
+ * @method null|CustomFieldGroupModel getBy($key, $value)
  */
 class CustomFieldGroupsCollection extends BaseApiCollection
 {

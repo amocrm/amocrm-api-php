@@ -10,14 +10,14 @@ use AmoCRM\Models\Widgets\SettingTemplateModel;
  *
  * @package AmoCRM\Collections\Widgets
  *
- * @method SettingTemplateModel current() : ?BaseApiModel
- * @method SettingTemplateModel last() : ?BaseApiModel
- * @method SettingTemplateModel first() : ?BaseApiModel
- * @method SettingTemplateModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, SettingTemplateModel $value) : BaseApiCollection
- * @method self prepend(SettingTemplateModel $value) : BaseApiCollection
- * @method self add(SettingTemplateModel $value) : BaseApiCollection
- * @method SettingTemplateModel getBy($key, $value) : ?BaseApiModel
+ * @method null|SettingTemplateModel current()
+ * @method null|SettingTemplateModel last()
+ * @method null|SettingTemplateModel first()
+ * @method null|SettingTemplateModel offsetGet($offset)
+ * @method SettingsTemplatesCollection offsetSet($offset, SettingTemplateModel $value)
+ * @method SettingsTemplatesCollection prepend(SettingTemplateModel $value)
+ * @method SettingsTemplatesCollection add(SettingTemplateModel $value)
+ * @method null|SettingTemplateModel getBy($key, $value)
  */
 class SettingsTemplatesCollection extends BaseApiCollection
 {

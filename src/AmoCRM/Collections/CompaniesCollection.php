@@ -11,14 +11,14 @@ use AmoCRM\Models\CompanyModel;
  *
  * @package AmoCRM\Collections
  *
- * @method CompanyModel current() : ?BaseApiModel
- * @method CompanyModel last() : ?BaseApiModel
- * @method CompanyModel first() : ?BaseApiModel
- * @method CompanyModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, CompanyModel $value) : BaseApiCollection
- * @method self prepend(CompanyModel $value) : BaseApiCollection
- * @method self add(CompanyModel $value) : BaseApiCollection
- * @method CompanyModel getBy($key, $value) : ?BaseApiModel
+ * @method null|CompanyModel current()
+ * @method null|CompanyModel last()
+ * @method null|CompanyModel first()
+ * @method null|CompanyModel offsetGet($offset)
+ * @method CompaniesCollection offsetSet($offset, CompanyModel $value)
+ * @method CompaniesCollection prepend(CompanyModel $value)
+ * @method CompaniesCollection add(CompanyModel $value)
+ * @method null|CompanyModel getBy($key, $value)
  */
 class CompaniesCollection extends BaseApiCollection implements HasPagesInterface
 {

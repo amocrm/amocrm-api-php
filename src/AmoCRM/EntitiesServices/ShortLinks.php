@@ -16,8 +16,8 @@ use AmoCRM\Models\ShortLinks\ShortLinkModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method ShortLinksCollection add(ShortLinksCollection $collection) : BaseApiCollection
- * @method ShortLinkModel addOne(ShortLinkModel $model) : BaseApiModel
+ * @method ShortLinksCollection add(ShortLinksCollection $collection)
+ * @method ShortLinkModel addOne(ShortLinkModel $model)
  */
 class ShortLinks extends BaseEntity
 {

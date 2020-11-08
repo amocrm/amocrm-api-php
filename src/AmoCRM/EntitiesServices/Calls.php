@@ -20,8 +20,8 @@ use AmoCRM\Models\Factories\EntityFactory;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method CallModel addOne(BaseApiModel $model) : CallModel
- * @method CallsCollection add(BaseApiCollection $collection) : CallsCollection
+ * @method CallModel addOne(BaseApiModel $model)
+ * @method CallsCollection add(BaseApiCollection $collection)
  */
 class Calls extends BaseEntity
 {

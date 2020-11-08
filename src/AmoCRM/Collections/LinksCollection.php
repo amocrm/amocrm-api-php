@@ -11,14 +11,14 @@ use AmoCRM\Models\LinkModel;
  *
  * @package AmoCRM\Collections
  *
- * @method LinkModel current() : ?BaseApiModel
- * @method LinkModel last() : ?BaseApiModel
- * @method LinkModel first() : ?BaseApiModel
- * @method LinkModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, LinkModel $value) : BaseApiCollection
- * @method self prepend(LinkModel $value) : BaseApiCollection
- * @method self add(CanBeLinkedInterface|LinkModel $value) : BaseApiCollection
- * @method LinkModel getBy($key, $value) : ?BaseApiModel
+ * @method null|LinkModel current()
+ * @method null|LinkModel last()
+ * @method null|LinkModel first()
+ * @method null|LinkModel offsetGet($offset)
+ * @method LinksCollection offsetSet($offset, LinkModel $value)
+ * @method LinksCollection prepend(LinkModel $value)
+ * @method LinksCollection add(CanBeLinkedInterface|LinkModel $value)
+ * @method null|LinkModel getBy($key, $value)
  */
 class LinksCollection extends BaseApiCollection
 {

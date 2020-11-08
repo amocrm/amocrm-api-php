@@ -9,14 +9,14 @@ use AmoCRM\Models\AccountSettings\UsersGroup;
  *
  * @package AmoCRM\Collections
  *
- * @method UsersGroup current() : ?BaseApiModel
- * @method UsersGroup last() : ?BaseApiModel
- * @method UsersGroup first() : ?BaseApiModel
- * @method UsersGroup offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, UsersGroup $value) : BaseApiCollection
- * @method self prepend(UsersGroup $value) : BaseApiCollection
- * @method self add(UsersGroup $value) : BaseApiCollection
- * @method UsersGroup getBy($key, $value) : ?BaseApiModel
+ * @method null|UsersGroup current()
+ * @method null|UsersGroup last()
+ * @method null|UsersGroup first()
+ * @method null|UsersGroup offsetGet($offset)
+ * @method UsersGroupsCollection offsetSet($offset, UsersGroup $value)
+ * @method UsersGroupsCollection prepend(UsersGroup $value)
+ * @method UsersGroupsCollection add(UsersGroup $value)
+ * @method null|UsersGroup getBy($key, $value)
  */
 class UsersGroupsCollection extends BaseApiCollection
 {

@@ -18,13 +18,13 @@ use AmoCRM\Models\CatalogModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method CatalogModel getOne($id, array $with = []) : ?CatalogModel
- * @method CatalogsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CatalogsCollection
- * @method CatalogModel addOne(BaseApiModel $model) : CatalogModel
- * @method CatalogsCollection add(BaseApiCollection $collection) : CatalogsCollection
- * @method CatalogModel updateOne(BaseApiModel $apiModel) : CatalogModel
- * @method CatalogsCollection update(BaseApiCollection $collection) : CatalogsCollection
- * @method CatalogModel syncOne(BaseApiModel $apiModel, $with = []) : CatalogModel
+ * @method null|CatalogModel getOne($id, array $with = [])
+ * @method null|CatalogsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method CatalogModel addOne(BaseApiModel $model)
+ * @method CatalogsCollection add(BaseApiCollection $collection)
+ * @method CatalogModel updateOne(BaseApiModel $apiModel)
+ * @method CatalogsCollection update(BaseApiCollection $collection)
+ * @method CatalogModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Catalogs extends BaseEntity implements HasPageMethodsInterface
 {

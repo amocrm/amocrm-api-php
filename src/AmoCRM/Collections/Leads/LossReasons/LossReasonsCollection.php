@@ -10,14 +10,14 @@ use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
  *
  * @package AmoCRM\Collections\Leads\LossReasons
  *
- * @method LossReasonModel current() : ?BaseApiModel
- * @method LossReasonModel last() : ?BaseApiModel
- * @method LossReasonModel first() : ?BaseApiModel
- * @method LossReasonModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, LossReasonModel $value) : BaseApiCollection
- * @method self prepend(LossReasonModel $value) : BaseApiCollection
- * @method self add(LossReasonModel $value) : BaseApiCollection
- * @method LossReasonModel getBy($key, $value) : ?BaseApiModel
+ * @method null|LossReasonModel current()
+ * @method null|LossReasonModel last()
+ * @method null|LossReasonModel first()
+ * @method null|LossReasonModel offsetGet($offset)
+ * @method LossReasonsCollection offsetSet($offset, LossReasonModel $value)
+ * @method LossReasonsCollection prepend(LossReasonModel $value)
+ * @method LossReasonsCollection add(LossReasonModel $value)
+ * @method null|LossReasonModel getBy($key, $value)
  */
 class LossReasonsCollection extends BaseApiCollection
 {

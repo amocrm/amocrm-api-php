@@ -11,14 +11,14 @@ use AmoCRM\Models\CatalogElementModel;
  *
  * @package AmoCRM\Collections
  *
- * @method CatalogElementModel current() : ?BaseApiModel
- * @method CatalogElementModel last() : ?BaseApiModel
- * @method CatalogElementModel first() : ?BaseApiModel
- * @method CatalogElementModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, CatalogElementModel $value) : BaseApiCollection
- * @method self prepend(CatalogElementModel $value) : BaseApiCollection
- * @method self add(CatalogElementModel $value) : BaseApiCollection
- * @method CatalogElementModel getBy($key, $value) : ?BaseApiModel
+ * @method null|CatalogElementModel current()
+ * @method null|CatalogElementModel last()
+ * @method null|CatalogElementModel first()
+ * @method null|CatalogElementModel offsetGet($offset)
+ * @method CatalogElementsCollection offsetSet($offset, CatalogElementModel $value)
+ * @method CatalogElementsCollection prepend(CatalogElementModel $value)
+ * @method CatalogElementsCollection add(CatalogElementModel $value)
+ * @method null|CatalogElementModel getBy($key, $value)
  */
 class CatalogElementsCollection extends BaseApiCollection implements HasPagesInterface
 {

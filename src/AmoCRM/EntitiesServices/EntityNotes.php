@@ -24,13 +24,13 @@ use AmoCRM\Models\NoteModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method NotesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?NotesCollection
- * @method NoteModel addOne(BaseApiModel $model) : NoteModel
- * @method NotesCollection add(BaseApiCollection $collection) : NotesCollection
- * @method NoteModel updateOne(BaseApiModel $apiModel) : NoteModel
- * @method NotesCollection update(BaseApiCollection $collection) : NotesCollection
- * @method NoteModel syncOne(BaseApiModel $apiModel, $with = []) : NoteModel
- * @method NotesCollection getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = []) : ?NotesCollection
+ * @method null|NotesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method NoteModel addOne(BaseApiModel $model)
+ * @method NotesCollection add(BaseApiCollection $collection)
+ * @method NoteModel updateOne(BaseApiModel $apiModel)
+ * @method NotesCollection update(BaseApiCollection $collection)
+ * @method NoteModel syncOne(BaseApiModel $apiModel, $with = [])
+ * @method null|NotesCollection getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = [])
  */
 class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterface, HasParentEntity
 {
