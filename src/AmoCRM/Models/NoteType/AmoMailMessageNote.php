@@ -190,7 +190,6 @@ class AmoMailMessageNote extends NoParamNote
     public function getContentSummary(): ?string
     {
         return $this->contentSummary;
-
     }
 
     /**
@@ -296,5 +295,4 @@ class AmoMailMessageNote extends NoParamNote
 
         return $model;
     }
-
 }
