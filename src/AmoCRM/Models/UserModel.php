@@ -15,6 +15,8 @@ use function is_null;
 
 class UserModel extends BaseApiModel implements HasIdInterface
 {
+    use RequestIdTrait;
+
     /** @var string Информация о роли пользователя */
     public const ROLE = 'role';
 
@@ -26,8 +28,6 @@ class UserModel extends BaseApiModel implements HasIdInterface
 
     /** @var string UUID пользователя */
     public const UUID = 'uuid';
-
-    use RequestIdTrait;
 
     /**
      * @var int|null
