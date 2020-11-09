@@ -25,13 +25,13 @@ use AmoCRM\Models\Customers\CustomerModel;
  *
  * @package AmoCRM\EntitiesServices\Customers
  *
- * @method CustomerModel getOne($id, array $with = []) : ?CustomerModel
- * @method CustomersCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CustomersCollection
- * @method CustomerModel addOne(BaseApiModel $model) : CustomerModel
- * @method CustomersCollection add(BaseApiCollection $collection) : CustomersCollection
- * @method CustomerModel updateOne(BaseApiModel $apiModel) : CustomerModel
- * @method CustomersCollection update(BaseApiCollection $collection) : CustomersCollection
- * @method CustomerModel syncOne(BaseApiModel $apiModel, $with = []) : CustomerModel
+ * @method null|CustomerModel getOne($id, array $with = [])
+ * @method null|CustomersCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method CustomerModel addOne(BaseApiModel $model)
+ * @method CustomersCollection add(BaseApiCollection $collection)
+ * @method CustomerModel updateOne(BaseApiModel $apiModel)
+ * @method CustomersCollection update(BaseApiCollection $collection)
+ * @method CustomerModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Customers extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {

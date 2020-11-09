@@ -12,14 +12,14 @@ use AmoCRM\Models\NoteModel;
  *
  * @package AmoCRM\Collections
  *
- * @method NoteModel current() : ?BaseApiModel
- * @method NoteModel last() : ?BaseApiModel
- * @method NoteModel first() : ?BaseApiModel
- * @method NoteModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, NoteModel $value) : BaseApiCollection
- * @method self prepend(NoteModel $value) : BaseApiCollection
- * @method self add(NoteModel $value) : BaseApiCollection
- * @method NoteModel getBy($key, $value) : ?BaseApiModel
+ * @method null|NoteModel current()
+ * @method null|NoteModel last()
+ * @method null|NoteModel first()
+ * @method null|NoteModel offsetGet($offset)
+ * @method NotesCollection offsetSet($offset, NoteModel $value)
+ * @method NotesCollection prepend(NoteModel $value)
+ * @method NotesCollection add(NoteModel $value)
+ * @method null|NoteModel getBy($key, $value)
  */
 class NotesCollection extends BaseApiCollection implements HasPagesInterface
 {

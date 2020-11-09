@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Collections\LinksCollection;
 use AmoCRM\EntitiesServices\Traits\LinkMethodsTrait;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -19,15 +20,15 @@ use AmoCRM\Models\LeadModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method LeadModel getOne($id, array $with = []) : ?LeadModel
- * @method LeadsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?LeadsCollection
- * @method LeadModel addOne(BaseApiModel $model) : LeadModel
- * @method LeadsCollection add(BaseApiCollection $collection) : LeadsCollection
- * @method LeadModel updateOne(BaseApiModel $apiModel) : LeadModel
- * @method LeadsCollection update(BaseApiCollection $collection) : LeadsCollection
- * @method LeadModel syncOne(BaseApiModel $apiModel, $with = []) : LeadModel
- * @method link(BaseApiModel $mainEntity, $linkedEntities) : LinksCollection
- * @method unlink(BaseApiModel $mainEntity, $linkedEntities) : bool
+ * @method null|LeadModel getOne($id, array $with = [])
+ * @method null|LeadsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method LeadModel addOne(BaseApiModel $model)
+ * @method LeadsCollection add(BaseApiCollection $collection)
+ * @method LeadModel updateOne(BaseApiModel $apiModel)
+ * @method LeadsCollection update(BaseApiCollection $collection)
+ * @method LeadModel syncOne(BaseApiModel $apiModel, $with = [])
+ * @method LinksCollection link(BaseApiModel $mainEntity, $linkedEntities)
+ * @method bool unlink(BaseApiModel $mainEntity, $linkedEntities)
  */
 class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {

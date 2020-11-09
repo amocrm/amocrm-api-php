@@ -17,13 +17,13 @@ use AmoCRM\Models\TaskModel;
  * Class Tasks
  *
  * @package AmoCRM\EntitiesServices
- * @method TaskModel getOne($id, array $with = []) : ?TaskModel
- * @method TasksCollection get(BaseEntityFilter $filter = null, array $with = []) : ?TasksCollection
- * @method TaskModel addOne(BaseApiModel $model) : TaskModel
- * @method TasksCollection add(BaseApiCollection $collection) : TasksCollection
- * @method TaskModel updateOne(BaseApiModel $apiModel) : TaskModel
- * @method TasksCollection update(BaseApiCollection $collection) : TasksCollection
- * @method TaskModel syncOne(BaseApiModel $apiModel, $with = []) : TaskModel
+ * @method null|TaskModel getOne($id, array $with = [])
+ * @method null|TasksCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method TaskModel addOne(BaseApiModel $model)
+ * @method TasksCollection add(BaseApiCollection $collection)
+ * @method TaskModel updateOne(BaseApiModel $apiModel)
+ * @method TasksCollection update(BaseApiCollection $collection)
+ * @method TaskModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Tasks extends BaseEntity implements HasPageMethodsInterface
 {

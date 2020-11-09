@@ -12,14 +12,14 @@ use AmoCRM\Models\TagModel;
  *
  * @package AmoCRM\Collections
  *
- * @method TagModel current() : ?BaseApiModel
- * @method TagModel last() : ?BaseApiModel
- * @method TagModel first() : ?BaseApiModel
- * @method TagModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, TagModel $value) : BaseApiCollection
- * @method self prepend(TagModel $value) : BaseApiCollection
- * @method self add(TagModel $value) : BaseApiCollection
- * @method TagModel getBy($key, $value) : ?BaseApiModel
+ * @method null|TagModel current()
+ * @method null|TagModel last()
+ * @method null|TagModel first()
+ * @method null|TagModel offsetGet($offset)
+ * @method TagsCollection offsetSet($offset, TagModel $value)
+ * @method TagsCollection prepend(TagModel $value)
+ * @method TagsCollection add(TagModel $value)
+ * @method null|TagModel getBy($key, $value)
  */
 class TagsCollection extends BaseApiCollection implements HasPagesInterface
 {

@@ -10,14 +10,14 @@ use AmoCRM\Models\CustomFields\NestedModel;
  *
  * @package AmoCRM\Collections
  *
- * @method NestedModel current() : ?BaseApiModel
- * @method NestedModel last() : ?BaseApiModel
- * @method NestedModel first() : ?BaseApiModel
- * @method NestedModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, NestedModel $value) : BaseApiCollection
- * @method self prepend(NestedModel $value) : BaseApiCollection
- * @method self add(NestedModel $value) : BaseApiCollection
- * @method NestedModel getBy($key, $value) : ?BaseApiModel
+ * @method null|NestedModel current()
+ * @method null|NestedModel last()
+ * @method null|NestedModel first()
+ * @method null|NestedModel offsetGet($offset)
+ * @method CustomFieldNestedCollection offsetSet($offset, NestedModel $value)
+ * @method CustomFieldNestedCollection prepend(NestedModel $value)
+ * @method CustomFieldNestedCollection add(NestedModel $value)
+ * @method null|NestedModel getBy($key, $value)
  */
 class CustomFieldNestedCollection extends BaseApiCollection
 {

@@ -11,14 +11,14 @@ use AmoCRM\Models\TaskModel;
  *
  * @package AmoCRM\Collections
  *
- * @method TaskModel current() : ?BaseApiModel
- * @method TaskModel last() : ?BaseApiModel
- * @method TaskModel first() : ?BaseApiModel
- * @method TaskModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, TaskModel $value) : BaseApiCollection
- * @method self prepend(TaskModel $value) : BaseApiCollection
- * @method self add(TaskModel $value) : BaseApiCollection
- * @method TaskModel getBy($key, $value) : ?BaseApiModel
+ * @method null|TaskModel current()
+ * @method null|TaskModel last()
+ * @method null|TaskModel first()
+ * @method null|TaskModel offsetGet($offset)
+ * @method TasksCollection offsetSet($offset, TaskModel $value)
+ * @method TasksCollection prepend(TaskModel $value)
+ * @method TasksCollection add(TaskModel $value)
+ * @method null|TaskModel getBy($key, $value)
  */
 class TasksCollection extends BaseApiCollection implements HasPagesInterface
 {

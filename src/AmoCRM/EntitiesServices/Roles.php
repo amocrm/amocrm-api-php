@@ -22,13 +22,14 @@ use AmoCRM\Models\RoleModel;
  * Class Roles
  *
  * @package AmoCRM\EntitiesServices
- * @method RoleModel getOne($id, array $with = []) : ?RoleModel
- * @method RolesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?RolesCollection
- * @method RoleModel addOne(BaseApiModel $model) : RoleModel
- * @method RolesCollection add(BaseApiCollection $collection) : RolesCollection
- * @method RoleModel updateOne(BaseApiModel $apiModel) : RoleModel
- * @method RolesCollection update(BaseApiCollection $collection) : RolesCollection
- * @method RoleModel syncOne(BaseApiModel $apiModel, $with = []) : RoleModel
+ *
+ * @method null|RoleModel getOne($id, array $with = [])
+ * @method null|RolesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method RoleModel addOne(BaseApiModel $model)
+ * @method RolesCollection add(BaseApiCollection $collection)
+ * @method RoleModel updateOne(BaseApiModel $apiModel)
+ * @method RolesCollection update(BaseApiCollection $collection)
+ * @method RoleModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Roles extends BaseEntity implements HasPageMethodsInterface, HasDeleteMethodInterface
 {

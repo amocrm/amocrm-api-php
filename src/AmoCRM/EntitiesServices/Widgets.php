@@ -20,7 +20,7 @@ use AmoCRM\Models\Widgets\WidgetModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method WidgetModel getOne($id, array $with = []) : ?WidgetModel
+ * @method null|WidgetModel getOne($id, array $with = [])
  */
 class Widgets extends BaseEntity implements HasPageMethodsInterface
 {

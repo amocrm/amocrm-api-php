@@ -9,14 +9,14 @@ use AmoCRM\Models\WebhookModel;
  *
  * @package AmoCRM\Collections
  *
- * @method WebhookModel current() : ?BaseApiModel
- * @method WebhookModel last() : ?BaseApiModel
- * @method WebhookModel first() : ?BaseApiModel
- * @method WebhookModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, WebhookModel $value) : BaseApiCollection
- * @method self prepend(WebhookModel $value) : BaseApiCollection
- * @method self add(WebhookModel $value) : BaseApiCollection
- * @method WebhookModel getBy($key, $value) : ?BaseApiModel
+ * @method null|WebhookModel current()
+ * @method null|WebhookModel last()
+ * @method null|WebhookModel first()
+ * @method null|WebhookModel offsetGet($offset)
+ * @method WebhooksCollection offsetSet($offset, WebhookModel $value)
+ * @method WebhooksCollection prepend(WebhookModel $value)
+ * @method WebhooksCollection add(WebhookModel $value)
+ * @method null|WebhookModel getBy($key, $value)
  */
 class WebhooksCollection extends BaseApiCollection
 {

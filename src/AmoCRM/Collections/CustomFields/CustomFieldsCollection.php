@@ -15,14 +15,14 @@ use AmoCRM\Models\CustomFields\WithEnumCustomFieldModel;
  *
  * @package AmoCRM\Collections
  *
- * @method CustomFieldModel current() : ?BaseApiModel
- * @method CustomFieldModel last() : ?BaseApiModel
- * @method CustomFieldModel first() : ?BaseApiModel
- * @method CustomFieldModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, CustomFieldModel $value) : BaseApiCollection
- * @method self prepend(CustomFieldModel $value) : BaseApiCollection
- * @method self add(CustomFieldModel $value) : BaseApiCollection
- * @method CustomFieldModel|WithEnumCustomFieldModel getBy($key, $value) : ?BaseApiModel
+ * @method null|CustomFieldModel current()
+ * @method null|CustomFieldModel last()
+ * @method null|CustomFieldModel first()
+ * @method null|CustomFieldModel offsetGet($offset)
+ * @method CustomFieldsCollection offsetSet($offset, CustomFieldModel $value)
+ * @method CustomFieldsCollection prepend(CustomFieldModel $value)
+ * @method CustomFieldsCollection add(CustomFieldModel $value)
+ * @method null|CustomFieldModel|WithEnumCustomFieldModel getBy($key, $value)
  */
 class CustomFieldsCollection extends BaseApiCollection implements HasPagesInterface
 {

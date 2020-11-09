@@ -17,10 +17,27 @@ class UserModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 
+    /** @var string Информация о роли пользователя */
+    public const ROLE = 'role';
+
+    /** @var string Информация о группе пользователя */
+    public const GROUP = 'group';
+
+    /** @var string amoJo ID пользователя */
+    public const AMOJO_ID = 'amojo_id';
+
+    /** @var string UUID пользователя */
+    public const UUID = 'uuid';
+
     /**
      * @var int|null
      */
     protected $id;
+
+    /**
+     * @var string|null
+     */
+    protected $uuid;
 
     /**
      * @var string|null
@@ -123,6 +140,26 @@ class UserModel extends BaseApiModel implements HasIdInterface
     public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string|null $uuid
+     *
+     * @return UserModel
+     */
+    public function setUuid(?string $uuid): UserModel
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }
@@ -300,5 +337,18 @@ class UserModel extends BaseApiModel implements HasIdInterface
         $result['request_id'] = $this->getRequestId();
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAvailableWith(): array
+    {
+        return [
+            self::ROLE,
+            self::UUID,
+            self::GROUP,
+            self::AMOJO_ID,
+        ];
     }
 }

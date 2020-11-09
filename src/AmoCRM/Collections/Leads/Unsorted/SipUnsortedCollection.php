@@ -10,14 +10,14 @@ use AmoCRM\Models\Unsorted\SipUnsortedModel;
  *
  * @package AmoCRM\Collections\Leads\Unsorted
  *
- * @method SipUnsortedModel current() : ?BaseApiModel
- * @method SipUnsortedModel last() : ?BaseApiModel
- * @method SipUnsortedModel first() : ?BaseApiModel
- * @method SipUnsortedModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, SipUnsortedModel $value) : BaseApiCollection
- * @method self prepend(SipUnsortedModel $value) : BaseApiCollection
- * @method self add(SipUnsortedModel $value) : BaseApiCollection
- * @method SipUnsortedModel getBy($key, $value) : ?BaseApiModel
+ * @method null|SipUnsortedModel current()
+ * @method null|SipUnsortedModel last()
+ * @method null|SipUnsortedModel first()
+ * @method null|SipUnsortedModel offsetGet($offset)
+ * @method SipUnsortedCollection offsetSet($offset, SipUnsortedModel $value)
+ * @method SipUnsortedCollection prepend(SipUnsortedModel $value)
+ * @method SipUnsortedCollection add(SipUnsortedModel $value)
+ * @method null|SipUnsortedModel getBy($key, $value)
  */
 class SipUnsortedCollection extends UnsortedCollection
 {

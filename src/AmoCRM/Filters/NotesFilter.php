@@ -22,6 +22,11 @@ class NotesFilter extends BaseEntityFilter implements HasPagesInterface, HasOrde
     private $ids = null;
 
     /**
+     * @var array|null
+     */
+    private $entityIds = null;
+
+    /**
      * @var array
      */
     private $noteTypes = [];
@@ -94,6 +99,26 @@ class NotesFilter extends BaseEntityFilter implements HasPagesInterface, HasOrde
     }
 
     /**
+     * @return array|null
+     */
+    public function getEntityIds(): ?array
+    {
+        return $this->entityIds;
+    }
+
+    /**
+     * @param array|null $entityIds
+     *
+     * @return NotesFilter
+     */
+    public function setEntityIds(?array $entityIds): NotesFilter
+    {
+        $this->entityIds = $entityIds;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function buildFilter(): array
@@ -110,6 +135,10 @@ class NotesFilter extends BaseEntityFilter implements HasPagesInterface, HasOrde
 
         if (!empty($this->getUpdatedAt())) {
             $filter['filter']['updated_at'] = $this->getUpdatedAt();
+        }
+
+        if (!empty($this->getEntityIds())) {
+            $filter['filter']['entity_id'] = $this->getEntityIds();
         }
 
         if (!is_null($this->getOrder())) {
