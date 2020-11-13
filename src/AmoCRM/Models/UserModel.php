@@ -47,6 +47,11 @@ class UserModel extends BaseApiModel implements HasIdInterface
     /**
      * @var string|null
      */
+    protected $amojoId;
+
+    /**
+     * @var string|null
+     */
     protected $email;
 
     /**
@@ -92,6 +97,8 @@ class UserModel extends BaseApiModel implements HasIdInterface
             ->setName($user['name'] ?? null)
             ->setEmail($user['email'])
             ->setLang($user['lang'] ?? null)
+            ->setUuid($user['uuid'] ?? null)
+            ->setAmojoId($user['amojo_id'] ?? null)
             ->setRights(RightModel::fromArray($user['rights']));
 
         $groupsCollection = new UsersGroupsCollection();
@@ -298,6 +305,26 @@ class UserModel extends BaseApiModel implements HasIdInterface
     public function setPassword(?string $password): UserModel
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAmojoId(): ?string
+    {
+        return $this->amojoId;
+    }
+
+    /**
+     * @param string|null $amojoId
+     *
+     * @return UserModel
+     */
+    public function setAmojoId(?string $amojoId): UserModel
+    {
+        $this->amojoId = $amojoId;
 
         return $this;
     }
