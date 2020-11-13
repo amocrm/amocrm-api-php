@@ -73,11 +73,33 @@ class ShortLinks extends BaseEntity
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
-        foreach ($entities as $entity) {
-            if (array_key_exists('url', $entity)) {
-                $initialEntity = $collection->getBy('entity_id', $entity['metadata']['entity_id']);
-                if (!empty($initialEntity)) {
-                    $this->processModelAction($initialEntity, $entity);
+
+        $collectionArray = $collection->toArray();
+        $metadatasArray  = array_column($collectionArray, 'metadata');
+        $ids             = array_column($metadatasArray, 'entity_id');
+        $uniqueIds       = array_unique($ids);
+        $uniqueIdsCount  = count($uniqueIds);
+
+        $collectionItemsCount = $collection->count();
+
+        if ($uniqueIdsCount < $collectionItemsCount) {
+            $collectionKeys = $collection->keys();
+            $entitiesKeys    = array_keys($entities);
+
+            if ($collectionKeys !== $entitiesKeys) {
+                return $collection;
+            }
+
+            foreach ($entitiesKeys as $key) {
+                $this->processModelAction($collection[$key], $entities[$key]);
+            }
+        } else {
+            foreach ($entities as $entity) {
+                if (array_key_exists('url', $entity)) {
+                    $initialEntity = $collection->getBy('entity_id', $entity['metadata']['entity_id']);
+                    if (!empty($initialEntity)) {
+                        $this->processModelAction($initialEntity, $entity);
+                    }
                 }
             }
         }
