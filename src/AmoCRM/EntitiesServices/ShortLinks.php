@@ -78,8 +78,8 @@ class ShortLinks extends BaseEntity
         $metadatasArray  = array_column($collectionArray, 'metadata');
         $ids             = array_column($metadatasArray, 'entity_id');
         $uniqueIds       = array_unique($ids);
-        $uniqueIdsCount  = count($uniqueIds);
-
+        
+        $uniqueIdsCount       = count($uniqueIds);
         $collectionItemsCount = $collection->count();
 
         if ($uniqueIdsCount < $collectionItemsCount) {
