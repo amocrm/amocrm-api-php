@@ -126,6 +126,8 @@ class UserModel extends BaseApiModel implements HasIdInterface
             'name' => $this->getName(),
             'email' => $this->getEmail(),
             'lang' => $this->getLang(),
+            'uuid' => $this->getUuid(),
+            'amojo_id' => $this->getAmojoId(),
             'rights' => $this->getRights()->toArray(),
             'roles' => is_null($this->getRoles()) ? null : $this->getRoles()->toArray(),
             'groups' => is_null($this->getGroups()) ? null : $this->getGroups()->toArray(),
