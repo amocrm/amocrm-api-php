@@ -7,7 +7,10 @@ use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
+use AmoCRM\Exceptions\ArrayKeysNotSequentialException;
+use AmoCRM\Exceptions\CollectionAndResponseKeysNotIndenticalException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
+use AmoCRM\Exceptions\StringCollectionKeyException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\ShortLinks\ShortLinkModel;
 
@@ -65,43 +68,77 @@ class ShortLinks extends BaseEntity
     }
 
     /**
+     * Проверка ключей коллекции сущности
+     * Для корректного сопоставления переданных и возвращённых моделей
+     * необходимо убедиться, что коллекция не имеет строковых ключей,
+     * и числовые ключи являются последовательностью [0 .. size-1]
+     * 
+     * @param BaseApiCollection
+     * 
+     * @throws StringCollectionKeyException
+     * @throws ArrayKeysNotSequentialException
+     */
+    protected function validateCollectionKeys(BaseApiCollection $collection): void
+    {
+        $collectionKeys = $collection->keys();
+        
+        $stringKeys = array_filter(
+            $collectionKeys,
+            /** @param int|string $key */
+            fn ($key) => is_string($key)
+        );
+
+        if (!empty($stringKeys)) {
+            throw new StringCollectionKeyException();
+        }
+
+        $collectionKeysCount = count($collectionKeys);
+        $estimatedKeys       = $collectionKeysCount === 0 ?
+                                [] : range(0, $collectionKeysCount - 1);
+
+        if ($collectionKeys !== $estimatedKeys) {
+            throw new ArrayKeysNotSequentialException();
+        }
+    }
+
+    /**
+     * Проверка ключей коллекции и добавление коллекции сущностей
+     * @param BaseApiCollection
+     * 
+     * @return BaseApiCollection
+     * 
+     * @throws StringCollectionKeyException
+     * @throws ArrayKeysNotSequentialException
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function add(BaseApiCollection $collection): BaseApiCollection
+    {
+        $this->validateCollectionKeys($collection);
+
+        return parent::add($collection);
+    }
+
+    /**
      * @param BaseApiCollection|ShortLinksCollection $collection
      * @param array $response
      *
+     * @throws CollectionAndResponseKeysNotIndenticalException
      * @return BaseApiCollection
      */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
 
-        $collectionArray = $collection->toArray();
-        $metadatasArray  = array_column($collectionArray, 'metadata');
-        $ids             = array_column($metadatasArray, 'entity_id');
-        $uniqueIds       = array_unique($ids);
-        
-        $uniqueIdsCount       = count($uniqueIds);
-        $collectionItemsCount = $collection->count();
+        $collectionKeys = $collection->keys();
+        $entitiesKeys   = array_keys($entities);
 
-        if ($uniqueIdsCount < $collectionItemsCount) {
-            $collectionKeys = $collection->keys();
-            $entitiesKeys    = array_keys($entities);
+        if ($collectionKeys !== $entitiesKeys) {
+            throw new CollectionAndResponseKeysNotIndenticalException();
+        }
 
-            if ($collectionKeys !== $entitiesKeys) {
-                return $collection;
-            }
-
-            foreach ($entitiesKeys as $key) {
-                $this->processModelAction($collection[$key], $entities[$key]);
-            }
-        } else {
-            foreach ($entities as $entity) {
-                if (array_key_exists('url', $entity)) {
-                    $initialEntity = $collection->getBy('entity_id', $entity['metadata']['entity_id']);
-                    if (!empty($initialEntity)) {
-                        $this->processModelAction($initialEntity, $entity);
-                    }
-                }
-            }
+        foreach ($entitiesKeys as $key) {
+            $this->processModelAction($collection[$key], $entities[$key]);
         }
 
         return $collection;
