@@ -85,7 +85,7 @@ class ShortLinks extends BaseEntity
         $stringKeys = array_filter(
             $collectionKeys,
             /** @param int|string $key */
-            fn ($key) => is_string($key)
+            'is_string'
         );
 
         if (!empty($stringKeys)) {
