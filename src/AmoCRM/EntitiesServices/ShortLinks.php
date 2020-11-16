@@ -7,7 +7,7 @@ use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Exceptions\ArrayKeysNotSequentialException;
+use AmoCRM\Exceptions\CollectionKeysNotSequentialException;
 use AmoCRM\Exceptions\CollectionAndResponseKeysNotIndenticalException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Exceptions\StringCollectionKeyException;
@@ -97,7 +97,7 @@ class ShortLinks extends BaseEntity
                                 [] : range(0, $collectionKeysCount - 1);
 
         if ($collectionKeys !== $estimatedKeys) {
-            throw new ArrayKeysNotSequentialException();
+            throw new CollectionKeysNotSequentialException();
         }
     }
 
