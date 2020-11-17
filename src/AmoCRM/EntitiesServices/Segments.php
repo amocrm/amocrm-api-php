@@ -22,10 +22,10 @@ use AmoCRM\Models\Customers\Segments\SegmentModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method SegmentModel getOne($id, array $with = []) : ?SegmentModel
- * @method SegmentsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?SegmentsCollection
- * @method SegmentModel updateOne(BaseApiModel $apiModel) : SegmentModel
- * @method SegmentModel syncOne(BaseApiModel $apiModel, $with = []) : SegmentModel
+ * @method null|SegmentModel getOne($id, array $with = [])
+ * @method null|SegmentsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method SegmentModel updateOne(BaseApiModel $apiModel)
+ * @method SegmentModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Segments extends BaseEntity implements HasPageMethodsInterface
 {

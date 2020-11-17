@@ -11,14 +11,14 @@ use AmoCRM\Models\UserModel;
  *
  * @package AmoCRM\Collections
  *
- * @method UserModel current() : ?BaseApiModel
- * @method UserModel last() : ?BaseApiModel
- * @method UserModel first() : ?BaseApiModel
- * @method UserModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, UserModel $value) : BaseApiCollection
- * @method self prepend(UserModel $value) : BaseApiCollection
- * @method self add(UserModel $value) : BaseApiCollection
- * @method UserModel getBy($key, $value) : ?BaseApiModel
+ * @method null|UserModel current()
+ * @method null|UserModel last()
+ * @method null|UserModel first()
+ * @method null|UserModel offsetGet($offset)
+ * @method UsersCollection offsetSet($offset, UserModel $value)
+ * @method UsersCollection prepend(UserModel $value)
+ * @method UsersCollection add(UserModel $value)
+ * @method null|UserModel getBy($key, $value)
  */
 class UsersCollection extends BaseApiCollection implements HasPagesInterface
 {

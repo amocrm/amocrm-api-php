@@ -12,14 +12,14 @@ use AmoCRM\Models\Widgets\WidgetModel;
  *
  * @package AmoCRM\Collections\Widgets
  *
- * @method WidgetModel current() : ?BaseApiModel
- * @method WidgetModel last() : ?BaseApiModel
- * @method WidgetModel first() : ?BaseApiModel
- * @method WidgetModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, WidgetModel $value) : BaseApiCollection
- * @method self prepend(WidgetModel $value) : BaseApiCollection
- * @method self add(WidgetModel $value) : BaseApiCollection
- * @method WidgetModel getBy($key, $value) : ?BaseApiModel
+ * @method null|WidgetModel current()
+ * @method null|WidgetModel last()
+ * @method null|WidgetModel first()
+ * @method null|WidgetModel offsetGet($offset)
+ * @method WidgetsCollection offsetSet($offset, WidgetModel $value) : BaseApiCollection
+ * @method WidgetsCollection prepend(WidgetModel $value) : BaseApiCollection
+ * @method WidgetsCollection add(WidgetModel $value) : BaseApiCollection
+ * @method null|WidgetModel getBy($key, $value)
  */
 class WidgetsCollection extends BaseApiCollection implements HasPagesInterface
 {

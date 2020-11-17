@@ -21,9 +21,9 @@ use AmoCRM\Models\Customers\Transactions\TransactionModel;
  *
  * @package AmoCRM\EntitiesServices\Customers
  *
- * @method TransactionModel getOne($id, array $with = []) : ?TransactionModel
- * @method TransactionsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?TransactionsCollection
- * @method TransactionModel syncOne(BaseApiModel $apiModel, $with = []) : TransactionModel
+ * @method null|TransactionModel getOne($id, array $with = [])
+ * @method null|TransactionsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method TransactionModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Transactions extends BaseEntity implements HasDeleteMethodInterface
 {

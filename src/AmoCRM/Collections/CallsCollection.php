@@ -11,14 +11,14 @@ use AmoCRM\Models\CallModel;
  *
  * @package AmoCRM\Collections
  *
- * @method CallModel current() : ?BaseApiModel
- * @method CallModel last() : ?BaseApiModel
- * @method CallModel first() : ?BaseApiModel
- * @method CallModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, CallModel $value) : BaseApiCollection
- * @method self prepend(CallModel $value) : BaseApiCollection
- * @method self add(CallModel $value) : BaseApiCollection
- * @method CallModel getBy($key, $value) : ?BaseApiModel
+ * @method null|CallModel current()
+ * @method null|CallModel last()
+ * @method null|CallModel first()
+ * @method null|CallModel offsetGet($offset)
+ * @method CallsCollection offsetSet($offset, CallModel $value)
+ * @method CallsCollection prepend(CallModel $value)
+ * @method CallsCollection add(CallModel $value)
+ * @method null|CallModel getBy($key, $value)
  */
 class CallsCollection extends BaseApiCollection implements HasPagesInterface
 {

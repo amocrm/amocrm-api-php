@@ -25,7 +25,7 @@ use AmoCRM\Models\Interfaces\HasIdInterface;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method CustomFieldsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CustomFieldsCollection
+ * @method null|CustomFieldsCollection get(BaseEntityFilter $filter = null, array $with = [])
  */
 class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterface, HasPageMethodsInterface
 {

@@ -21,12 +21,12 @@ use AmoCRM\Models\CatalogElementModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method CatalogElementModel getOne($id, array $with = []) : ?CatalogElementModel
- * @method CatalogElementsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CatalogElementsCollection
- * @method CatalogElementModel addOne(BaseApiModel $model) : CatalogElementModel
- * @method CatalogElementsCollection add(BaseApiCollection $collection) : CatalogElementsCollection
- * @method CatalogElementModel updateOne(BaseApiModel $apiModel) : CatalogElementModel
- * @method CatalogElementsCollection update(BaseApiCollection $collection) : CatalogElementsCollection
+ * @method null|CatalogElementModel getOne($id, array $with = [])
+ * @method null|CatalogElementsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method CatalogElementModel addOne(BaseApiModel $model)
+ * @method CatalogElementsCollection add(BaseApiCollection $collection)
+ * @method CatalogElementModel updateOne(BaseApiModel $apiModel)
+ * @method CatalogElementsCollection update(BaseApiCollection $collection)
  */
 class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterface
 {

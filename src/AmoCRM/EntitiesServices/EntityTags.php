@@ -20,9 +20,9 @@ use AmoCRM\Models\TagModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method TagsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?TagsCollection
- * @method TagModel addOne(BaseApiModel $model) : Tag
- * @method TagsCollection add(BaseApiCollection $collection) : TagsCollection
+ * @method null|TagsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method TagModel addOne(BaseApiModel $model)
+ * @method TagsCollection add(BaseApiCollection $collection)
  */
 class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
 {

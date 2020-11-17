@@ -10,14 +10,14 @@ use AmoCRM\Models\ShortLinks\ShortLinkModel;
  *
  * @package AmoCRM\Collections\ShortLinks
  *
- * @method ShortLinkModel current() : ?BaseApiModel
- * @method ShortLinkModel last() : ?BaseApiModel
- * @method ShortLinkModel first() : ?BaseApiModel
- * @method ShortLinkModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, ShortLinkModel $value) : BaseApiCollection
- * @method self prepend(ShortLinkModel $value) : BaseApiCollection
- * @method self add(ShortLinkModel $value) : BaseApiCollection
- * @method ShortLinkModel getBy($key, $value) : ?BaseApiModel
+ * @method null|ShortLinkModel current()
+ * @method null|ShortLinkModel last()
+ * @method null|ShortLinkModel first()
+ * @method null|ShortLinkModel offsetGet($offset)
+ * @method ShortLinksCollection offsetSet($offset, ShortLinkModel $value)
+ * @method ShortLinksCollection prepend(ShortLinkModel $value)
+ * @method ShortLinksCollection add(ShortLinkModel $value)
+ * @method null|ShortLinkModel getBy($key, $value)
  */
 class ShortLinksCollection extends BaseApiCollection
 {

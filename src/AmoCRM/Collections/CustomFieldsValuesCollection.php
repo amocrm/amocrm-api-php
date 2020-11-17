@@ -12,14 +12,14 @@ use function in_array;
  *
  * @package AmoCRM\Collections
  *
- * @method BaseCustomFieldValuesModel current() : ?BaseApiModel
- * @method BaseCustomFieldValuesModel last() : ?BaseApiModel
- * @method BaseCustomFieldValuesModel first() : ?BaseApiModel
- * @method BaseCustomFieldValuesModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, BaseCustomFieldValuesModel $value) : BaseApiCollection
- * @method self prepend(BaseCustomFieldValuesModel $value) : BaseApiCollection
- * @method self add(BaseCustomFieldValuesModel $value) : BaseApiCollection
- * @method BaseCustomFieldValuesModel getBy($key, $value) : ?BaseApiModel
+ * @method null|BaseCustomFieldValuesModel current()
+ * @method null|BaseCustomFieldValuesModel last()
+ * @method null|BaseCustomFieldValuesModel first()
+ * @method null|BaseCustomFieldValuesModel offsetGet($offset)
+ * @method CustomFieldsValuesCollection offsetSet($offset, BaseCustomFieldValuesModel $value)
+ * @method CustomFieldsValuesCollection prepend(BaseCustomFieldValuesModel $value)
+ * @method CustomFieldsValuesCollection add(BaseCustomFieldValuesModel $value)
+ * @method null|BaseCustomFieldValuesModel getBy($key, $value)
  */
 class CustomFieldsValuesCollection extends BaseApiCollection
 {
