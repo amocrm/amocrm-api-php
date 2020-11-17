@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Collections\SocialProfiles\SocialProfilesCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
@@ -26,6 +27,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     public const LEADS = 'leads';
     public const CUSTOMERS = 'customers';
     public const CATALOG_ELEMENTS = 'catalog_elements';
+    public const SOCIAL_PROFILES = 'social_profiles';
 
     /**
      * @var int
@@ -121,6 +123,11 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
      * @var CatalogElementsCollection|null
      */
     protected $catalogElementsLinks = null;
+
+    /**
+     * @var SocialProfilesCollection|null
+     */
+    protected $socialProfiles = null;
 
     public function getType(): string
     {
@@ -408,6 +415,26 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
+     * @return SocialProfilesCollection|null
+     */
+    public function getSocialProfiles(): ?SocialProfilesCollection
+    {
+        return $this->socialProfiles;
+    }
+
+    /**
+     * @param SocialProfilesCollection|null $socialProfiles
+     *
+     * @return ContactModel
+     */
+    public function setSocialProfiles(?SocialProfilesCollection $socialProfiles): ContactModel
+    {
+        $this->socialProfiles = $socialProfiles;
+
+        return $this;
+    }
+
+    /**
      * @return LeadsCollection|null
      */
     public function getLeads(): ?LeadsCollection
@@ -568,7 +595,10 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
             );
             $contactModel->setCatalogElementsLinks($catalogElementsCollection);
         }
-
+        if (!empty($contact[AmoCRMApiRequest::EMBEDDED][self::SOCIAL_PROFILES])) {
+            $socialProfilesCollection = SocialProfilesCollection::fromArray($contact[AmoCRMApiRequest::EMBEDDED][self::SOCIAL_PROFILES]);
+            $contactModel->setSocialProfiles($socialProfilesCollection);
+        }
 
         if (!empty($contact['account_id'])) {
             $contactModel->setAccountId((int)$contact['account_id']);
@@ -609,6 +639,10 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
 
         if (!is_null($this->getCatalogElementsLinks())) {
             $result['catalog_elements'] = $this->getCatalogElementsLinks()->toArray();
+        }
+
+        if (!is_null($this->getSocialProfiles())) {
+            $result['social_profiles'] = $this->getSocialProfiles()->toArray();
         }
 
         if (!is_null($this->getCompany())) {
