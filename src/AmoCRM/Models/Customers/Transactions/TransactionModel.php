@@ -96,6 +96,11 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
     protected $nextPrice;
 
     /**
+     * @var array|null
+     */
+    protected $metadata = [];
+
+    /**
      * @param array $transaction
      *
      * @return self
@@ -132,6 +137,10 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
 
         if (!empty($transaction['created_at'])) {
             $model->setCreatedAt($transaction['created_at']);
+        }
+
+        if (!empty($transaction['metadata'])) {
+            $model->setMetadata($transaction['metadata']);
         }
 
         if (!empty($transaction['updated_at'])) {
@@ -190,6 +199,7 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
             'catalog_elements' => $this->getCatalogElements() ? $this->getCatalogElements()->toArray() : null,
             'customer_id' => $this->getCustomerId(),
             'customer' =>  $this->getCustomer()->toArray(),
+            'metadata' => $this->getMetadata(),
         ];
     }
 
@@ -494,6 +504,44 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
+     * @return array|null
+     */
+    protected function getMetadata(): array
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @param array $metadata
+     * @return $this
+     */
+    protected function setMetadata(array $metadata): self
+    {
+        $this->metadata = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalId(): ?string
+    {
+        return $this->metadata['external_id'];
+    }
+
+    /**
+     * @param string $externalId
+     * @return $this
+     */
+    public function setExternalId(string $externalId): self
+    {
+        $this->metadata['external_id'] = $externalId;
+
+        return $this;
+    }
+
+    /**
      * @param string|null $requestId
      *
      * @return array
@@ -538,6 +586,10 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
             $this->setRequestId($requestId);
+        }
+
+        if (!empty($this->metadata)) {
+            $result['metadata'] = $this->metadata;
         }
 
         $result['request_id'] = (string)$this->getRequestId();

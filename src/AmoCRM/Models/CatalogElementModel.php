@@ -397,18 +397,18 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     }
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getQuantity(): ?int
+    public function getQuantity(): ?float
     {
         return $this->quantity;
     }
 
     /**
-     * @param int $quantity
+     * @param float $quantity
      * @return CatalogElementModel
      */
-    public function setQuantity(int $quantity): CatalogElementModel
+    public function setQuantity(float $quantity): CatalogElementModel
     {
         $this->quantity = $quantity;
 
