@@ -589,7 +589,7 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
         }
 
         if (!empty($this->metadata)) {
-            $result['metadata'] = $this->metadata;
+            $result['metadata'] = $this->getMetadata();
         }
 
         $result['request_id'] = (string)$this->getRequestId();

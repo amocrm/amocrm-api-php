@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
@@ -397,20 +398,25 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     }
 
     /**
-     * @return float|null
+     * @return int|float|null
      */
-    public function getQuantity(): ?float
+    public function getQuantity()
     {
         return $this->quantity;
     }
 
     /**
-     * @param float $quantity
+     * @param int|float $quantity
      * @return CatalogElementModel
+     * @throws AmoCRMApiException
      */
-    public function setQuantity(float $quantity): CatalogElementModel
+    public function setQuantity($quantity): CatalogElementModel
     {
-        $this->quantity = $quantity;
+        if (is_int($quantity) || is_float($quantity)) {
+            $this->quantity = $quantity;
+        } else {
+            throw new AmoCRMApiException('Quantity must be integer or float number');
+        }
 
         return $this;
     }
