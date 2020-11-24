@@ -68,9 +68,9 @@ class AmoCRMApiClient
      * AmoCRMApiClient constructor.
      * @param string $clientId
      * @param string $clientSecret
-     * @param string $redirectUri
+     * @param null|string $redirectUri
      */
-    public function __construct(string $clientId, string $clientSecret, string $redirectUri)
+    public function __construct(string $clientId, string $clientSecret, ?string $redirectUri)
     {
         $this->oAuthClient = new AmoCRMOAuth($clientId, $clientSecret, $redirectUri);
     }
