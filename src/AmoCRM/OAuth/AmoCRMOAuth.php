@@ -181,6 +181,19 @@ class AmoCRMOAuth
     }
 
     /**
+     * Установка протокола
+     * @param string $protocol
+     *
+     * @return $this
+     */
+    public function setProtocol(string $protocol): self
+    {
+        $this->oauthProvider->setProtocol($protocol);
+
+        return $this;
+    }
+
+    /**
      * Получение авторизационных заголовков для переданного Access токена
      * @param AccessTokenInterface $accessToken
      *
@@ -346,7 +359,7 @@ class AmoCRMOAuth
                 AmoCRMApiRequest::GET_REQUEST,
                 sprintf(
                     '%s%s%s',
-                    $this->oauthProvider->protocol,
+                    $this->oauthProvider->getProtocol(),
                     $this->oauthProvider->getBaseDomain(),
                     '/oauth2/account/subdomain'
                 ),
