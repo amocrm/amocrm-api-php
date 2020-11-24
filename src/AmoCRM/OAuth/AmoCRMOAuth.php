@@ -81,9 +81,9 @@ class AmoCRMOAuth
      * AmoCRMOAuth constructor.
      * @param string $clientId
      * @param string $clientSecret
-     * @param string $redirectUri
+     * @param null|string $redirectUri
      */
-    public function __construct(string $clientId, string $clientSecret, string $redirectUri)
+    public function __construct(string $clientId, string $clientSecret, ?string $redirectUri)
     {
         $this->oauthProvider = new AmoCRM(
             [
@@ -191,6 +191,30 @@ class AmoCRMOAuth
         $this->oauthProvider->setProtocol($protocol);
 
         return $this;
+    }
+
+    /**
+     * Установка адреса перенаправления
+     *
+     * @param string|null $redirectUri
+     *
+     * @return $this
+     */
+    public function setRedirectUri(?string $redirectUri): self
+    {
+        $this->oauthProvider->setRedirectUri($redirectUri);
+
+        return $this;
+    }
+
+    /**
+     * Получаем oAuth провайдера
+     *
+     * @return AmoCRM
+     */
+    public function getOAuthProvider(): AmoCRM
+    {
+        return $this->oauthProvider;
     }
 
     /**
