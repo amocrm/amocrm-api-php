@@ -23,6 +23,7 @@ trait PageMethodsTrait
      * @return HasPagesInterface
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiPageNotAvailableException
      */
     public function nextPage(HasPagesInterface $collection): HasPagesInterface
     {
@@ -45,6 +46,7 @@ trait PageMethodsTrait
      * @return HasPagesInterface
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiPageNotAvailableException
      */
     public function prevPage(HasPagesInterface $collection): HasPagesInterface
     {

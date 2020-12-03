@@ -124,6 +124,9 @@ class AccountModel extends BaseApiModel
     /** @var string|null */
     protected $currency;
 
+    /** @var string|null */
+    protected $currencySymbol;
+
     /**
      * @return int
      */
@@ -319,6 +322,7 @@ class AccountModel extends BaseApiModel
             ->setCurrentUserId((int)$account['current_user_id'])
             ->setCountry((string)$account['country'])
             ->setCurrency((string)$account['currency'])
+            ->setCurrencySymbol((string)$account['currency_symbol'])
             ->setUnsortedOn((bool)$account['is_unsorted_on'])
             ->setMobileFeatureVersion((int)$account['mobile_feature_version'])
             ->setCustomersMode($account['customers_mode'])
@@ -392,6 +396,7 @@ class AccountModel extends BaseApiModel
             'current_user_id' => $this->getCurrentUserId(),
             'country' => $this->getCountry(),
             'currency' => $this->getCurrency(),
+            'currency_symbol' => $this->getCurrencySymbol(),
             'is_unsorted_on' => $this->getIsUnsortedOn(),
             'mobile_feature_version' => $this->getMobileFeatureVersion(),
             'customers_mode' => $this->getCustomersMode(),
@@ -695,6 +700,26 @@ class AccountModel extends BaseApiModel
     public function setCurrency(?string $currency): AccountModel
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCurrencySymbol(): ?string
+    {
+        return $this->currencySymbol;
+    }
+
+    /**
+     * @param string|null $currencySymbol
+     *
+     * @return AccountModel
+     */
+    public function setCurrencySymbol(?string $currencySymbol): AccountModel
+    {
+        $this->currencySymbol = $currencySymbol;
 
         return $this;
     }
