@@ -440,7 +440,7 @@ class AmoCRMOAuth
 
         $clientBaseUri = new Uri($this->redirectUri);
         $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
-        $validationData = new ValidationData();
+        $validationData = new ValidationData(null, 60);
         $validationData->setAudience($clientBaseUri);
 
         // Проверка на истечение и адресата токена
