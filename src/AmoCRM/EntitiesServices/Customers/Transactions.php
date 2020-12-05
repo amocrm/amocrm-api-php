@@ -43,6 +43,11 @@ class Transactions extends BaseEntity implements HasDeleteMethodInterface
     protected $customerId;
 
     /**
+     * @var bool
+     */
+    protected $accrueBonus = true;
+
+    /**
      * @var string
      */
     protected $collectionClass = TransactionsCollection::class;
@@ -60,6 +65,18 @@ class Transactions extends BaseEntity implements HasDeleteMethodInterface
     public function setCustomerId(int $customerId): Transactions
     {
         $this->customerId = $customerId;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $accrueBonus
+     *
+     * @return Transactions
+     */
+    public function setAccrueBonus(bool $accrueBonus): Transactions
+    {
+        $this->accrueBonus = $accrueBonus;
 
         return $this;
     }
@@ -177,7 +194,7 @@ class Transactions extends BaseEntity implements HasDeleteMethodInterface
      */
     public function add(BaseApiCollection $collection): BaseApiCollection
     {
-        $response = $this->request->post($this->getMethodWithId(), $collection->toApi());
+        $response = $this->request->post($this->getMethodWithId(), $collection->toApi(), $this->getQueryParams());
         $collection = $this->processAdd($collection, $response);
 
         return $collection;
@@ -230,5 +247,14 @@ class Transactions extends BaseEntity implements HasDeleteMethodInterface
     public function delete(BaseApiCollection $collection): bool
     {
         throw new NotAvailableForActionException('This entity supports only deleteOne method');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getQueryParams(): array {
+        return [
+            'accrue_bonus' => $this->accrueBonus ? 'true' : 'false',
+        ];
     }
 }
