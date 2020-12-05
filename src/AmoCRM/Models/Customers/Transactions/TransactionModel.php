@@ -95,6 +95,12 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
      */
     protected $nextPrice;
 
+    /** @var string|null */
+    protected $externalId;
+
+    /** @var string|null */
+    protected $receiptLink;
+
     /**
      * @param array $transaction
      *
@@ -536,6 +542,16 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
             $result['next_price'] = $this->getNextPrice();
         }
 
+        if (!is_null($this->getReceiptLink())) {
+            $result['metadata'] = $result['metadata'] ?? [];
+            $result['metadata']['receipt_link'] = $this->getReceiptLink();
+        }
+
+        if (!is_null($this->getExternalId())) {
+            $result['metadata'] = $result['metadata'] ?? [];
+            $result['metadata']['external_id'] = $this->getExternalId();
+        }
+
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
             $this->setRequestId($requestId);
         }
@@ -543,5 +559,43 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
         $result['request_id'] = (string)$this->getRequestId();
 
         return $result;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReceiptLink(): ?string
+    {
+        return $this->receiptLink;
+    }
+
+    /**
+     * @param string|null $receiptLink
+     * @return TransactionModel
+     */
+    public function setReceiptLink(?string $receiptLink)
+    {
+        $this->receiptLink = $receiptLink;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
+    }
+
+    /**
+     * @param string|null $externalId
+     * @return TransactionModel
+     */
+    public function setExternalId(?string $externalId)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
     }
 }
