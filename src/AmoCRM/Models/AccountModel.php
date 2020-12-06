@@ -322,7 +322,7 @@ class AccountModel extends BaseApiModel
             ->setCurrentUserId((int)$account['current_user_id'])
             ->setCountry((string)$account['country'])
             ->setCurrency((string)$account['currency'])
-            ->setCurrencySymbol((string)$account['currency_symbol'])
+            ->setCurrencySymbol((string)($account['currency_symbol'] ?? null) ?: null)
             ->setUnsortedOn((bool)$account['is_unsorted_on'])
             ->setMobileFeatureVersion((int)$account['mobile_feature_version'])
             ->setCustomersMode($account['customers_mode'])
