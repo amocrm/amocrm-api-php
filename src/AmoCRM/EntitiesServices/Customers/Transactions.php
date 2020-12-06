@@ -252,7 +252,8 @@ class Transactions extends BaseEntity implements HasDeleteMethodInterface
     /**
      * @return array
      */
-    protected function getQueryParams(): array {
+    protected function getQueryParams(): array
+    {
         return [
             'accrue_bonus' => $this->accrueBonus ? 'true' : 'false',
         ];
