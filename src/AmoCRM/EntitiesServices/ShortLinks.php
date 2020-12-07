@@ -72,19 +72,18 @@ class ShortLinks extends BaseEntity
      * Для корректного сопоставления переданных и возвращённых моделей
      * необходимо убедиться, что коллекция не имеет строковых ключей,
      * и числовые ключи являются последовательностью [0 .. size-1]
-     * 
+     *
      * @param BaseApiCollection
-     * 
+     *
      * @throws StringCollectionKeyException
      * @throws ArrayKeysNotSequentialException
      */
     protected function validateCollectionKeys(BaseApiCollection $collection): void
     {
         $collectionKeys = $collection->keys();
-        
+
         $stringKeys = array_filter(
             $collectionKeys,
-            /** @param int|string $key */
             'is_string'
         );
 
@@ -104,9 +103,9 @@ class ShortLinks extends BaseEntity
     /**
      * Проверка ключей коллекции и добавление коллекции сущностей
      * @param BaseApiCollection
-     * 
+     *
      * @return BaseApiCollection
-     * 
+     *
      * @throws StringCollectionKeyException
      * @throws ArrayKeysNotSequentialException
      * @throws AmoCRMApiException
