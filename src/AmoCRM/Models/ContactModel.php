@@ -722,6 +722,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
             self::LEADS,
             self::CUSTOMERS,
             self::CATALOG_ELEMENTS,
+            self::SOCIAL_PROFILES,
         ];
     }
 
