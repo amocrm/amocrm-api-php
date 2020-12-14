@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
+use AmoCRM\AmoCRM\Models\CustomFieldsValues\TrackingDataCustomFieldValuesModel;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFieldsValues\BaseCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\BirthdayCustomFieldValuesModel;
@@ -101,6 +102,8 @@ class CustomFieldValuesModelFactory
             case CustomFieldModel::TYPE_ORG_LEGAL_NAME:
                 $model = new OrgLegalNameCustomFieldValuesModel();
                 break;
+            case CustomFieldModel::TYPE_TRACKING_DATA:
+                $model = new TrackingDataCustomFieldValuesModel();
         }
 
         if (!isset($model)) {

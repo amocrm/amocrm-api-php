@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\CustomFields\Factories;
 
+use AmoCRM\AmoCRM\Models\CustomFields\TrackingDataCustomFieldModel;
 use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Models\CustomFields\BirthdayCustomFieldModel;
 use AmoCRM\Models\CustomFields\CategoryCustomFieldModel;
@@ -95,6 +96,8 @@ class CustomFieldModelFactory
             case CustomFieldModel::TYPE_PRICE:
                 $model = PriceCustomFieldModel::fromArray($field);
                 break;
+            case CustomFieldModel::TYPE_TRACKING_DATA:
+                $model = TrackingDataCustomFieldModel::fromArray($field);
         }
 
         if (!isset($model)) {

@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
+use AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueCollections\TrackingDataCustomFieldValueCollection;
 use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Helpers\CustomFieldHelper;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
@@ -100,6 +101,9 @@ class CustomFieldValueCollectionFactory
                 break;
             case CustomFieldModel::TYPE_ORG_LEGAL_NAME:
                 $collection = new OrgLegalNameCustomFieldValueCollection();
+                break;
+            case CustomFieldModel::TYPE_TRACKING_DATA:
+                $collection = new TrackingDataCustomFieldValueCollection();
                 break;
         }
 
