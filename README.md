@@ -155,6 +155,7 @@ $leadsService = $apiClient->leads();
 | customersStatuses | Сегменты покупателя           |
 | calls             | Звонки                        |
 | products          | Товары                        |
+| links             | Массовая привязка сущностей   |
 | shortLinks        | Короткие ссылки               |
 | getOAuthClient    | oAuth сервис                  |
 | getRequest        | Голый запросы                 |

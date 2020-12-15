@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\AmoCRM\EntitiesServices\Links;
 use AmoCRM\AmoCRM\EntitiesServices\Products;
 use AmoCRM\EntitiesServices\Calls;
 use AmoCRM\EntitiesServices\Customers\Transactions;
@@ -291,6 +292,20 @@ class AmoCRMApiClient
         }
 
         return $service;
+    }
+
+    /**
+     * Метод вернет объект связи сущностей
+     *
+     * @param string $entityType
+     *
+     * @return Links
+     * @throws InvalidArgumentException
+     */
+    public function links(string $entityType): Links
+    {
+        return (new Links($this->buildRequest()))
+            ->setEntityType($entityType);
     }
 
     /**

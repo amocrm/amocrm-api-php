@@ -4,6 +4,12 @@ namespace AmoCRM\Models;
 
 class LinkModel extends BaseApiModel
 {
+    /** @var int|null */
+    protected $entityId;
+
+    /** @var string|null */
+    protected $entityType;
+
     /**
      * @var int|null
      */
@@ -79,6 +85,30 @@ class LinkModel extends BaseApiModel
         return $this;
     }
 
+    public function getEntityId(): ?int
+    {
+        return $this->entityId;
+    }
+
+    public function setEntityId(?int $entityId): self
+    {
+        $this->entityId = $entityId;
+
+        return $this;
+    }
+
+    public function getEntityType(): ?string
+    {
+        return $this->entityType;
+    }
+
+    public function setEntityType(?string $entityType): self
+    {
+        $this->entityType = $entityType;
+
+        return $this;
+    }
+
     /**
      * @param array $link
      *
@@ -88,7 +118,10 @@ class LinkModel extends BaseApiModel
     {
         $model = new self();
 
-        $model->setToEntityType($link['to_entity_type'] ?? null)
+        $model
+            ->setEntityId($link['entity_id'] ?? null)
+            ->setEntityType($link['entity_type'] ?? null)
+            ->setToEntityType($link['to_entity_type'] ?? null)
             ->setToEntityId($link['to_entity_id'] ?? null)
             ->setMetadata($link['metadata'] ?? null);
 
@@ -101,6 +134,8 @@ class LinkModel extends BaseApiModel
     public function toArray(): array
     {
         return [
+            'entity_type' => $this->getEntityType(),
+            'entity_id' => $this->getEntityId(),
             'to_entity_type' => $this->getToEntityType(),
             'to_entity_id' => $this->getToEntityId(),
             'metadata' => $this->getMetadata(),
