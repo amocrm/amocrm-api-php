@@ -104,6 +104,7 @@ class CustomFieldValuesModelFactory
                 break;
             case CustomFieldModel::TYPE_TRACKING_DATA:
                 $model = new TrackingDataCustomFieldValuesModel();
+                break;
         }
 
         if (!isset($model)) {

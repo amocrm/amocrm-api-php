@@ -98,6 +98,7 @@ class CustomFieldModelFactory
                 break;
             case CustomFieldModel::TYPE_TRACKING_DATA:
                 $model = TrackingDataCustomFieldModel::fromArray($field);
+                break;
         }
 
         if (!isset($model)) {

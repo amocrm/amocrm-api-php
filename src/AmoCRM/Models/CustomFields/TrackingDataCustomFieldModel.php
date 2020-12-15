@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AmoCRM\AmoCRM\Models\CustomFields;
 
 use AmoCRM\Models\CustomFields\CustomFieldModel;
