@@ -44,7 +44,8 @@ $transaction
 
 $transactionsCollection->add($transaction);
 
-$transactionsService = $apiClient->transactions(1);
+$transactionsService = $apiClient->transactions();
+$transactionsService->setCustomerId(1);
 try {
     $transactionsCollection = $transactionsService->add($transactionsCollection);
 } catch (AmoCRMApiException $e) {
