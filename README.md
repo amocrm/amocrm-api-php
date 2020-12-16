@@ -330,14 +330,19 @@ $leadsService = $apiClient->leads();
     ```
 
 #### Методы доступные в сервисе ```customersBonusPoints```:
-1. updateCustomerBonusPoints Списывает/начисляет бонусные баллы покупателю
-    1. customerId (int) - Id покупателя которому нужно начислить/списать баллы
-    1. bonusPointsCount (int) - если при инициализации сервиса был выбран режим списания ("redeem"), тогда данный параметр укажет сколько баллов нужно списать, если режим начисления ("earn") соотвественно сколько баллов будет начислено
+1. earnPoints Начисляет бонусные баллы покупателю
+    1. model (BonusPointsActionModel) - модель в которой Id покупателя и количество баллов для начисления
     2. Результатом выполнения является обновленное количество бонусных баллов покупателя или null в случае если произошла ошибка
     ```php
-    updateCustomerBonusPoints(int $customerId, int $bonusPointsCount)
+    earnPoints(BonusPointsActionModel $bonusPointsActionModel)
     ```
 
+2. redeemPoints Списывает бонусные баллы покупателя
+    1. model (BonusPointsActionModel) - модель в которой Id покупателя и количество баллов для списания
+    2. Результатом выполнения является обновленное количество бонусных баллов покупателя или null в случае если произошла ошибка
+    ```php
+    redeemPoints(BonusPointsActionModel $bonusPointsActionModel)
+    ```
 
 #### Методы доступные в сервисе ```notes```:
 1. getByParentId Получение данных по ID родительской сущности
