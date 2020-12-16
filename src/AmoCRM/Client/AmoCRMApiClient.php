@@ -2,6 +2,9 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\AmoCRM\EntitiesServices\Customers\BaseCustomersBonusPoints;
+use AmoCRM\AmoCRM\EntitiesServices\Customers\EarnBonusPoints;
+use AmoCRM\AmoCRM\EntitiesServices\Customers\RedeemBonusPoints;
 use AmoCRM\AmoCRM\EntitiesServices\Links;
 use AmoCRM\AmoCRM\EntitiesServices\Products;
 use AmoCRM\EntitiesServices\Calls;
@@ -507,6 +510,29 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new CustomersStatuses($request);
+    }
+
+    /**
+     * Метод вернет объект для накопления/списания баллов покупателей
+     *
+     * @param string $pointsUpdatingMode
+     *  'earn' - вернет объект для накопления баллов
+     *  'redeem' - вернет объект для списания баллов
+     *
+     * @return BaseCustomersBonusPoints
+     * @throws InvalidArgumentException
+     */
+    public function customersBonusPoints(string $pointsUpdatingMode): BaseCustomersBonusPoints
+    {
+        $request = $this->buildRequest();
+
+        if ($pointsUpdatingMode === 'earn') {
+            return new EarnBonusPoints($request);
+        } elseif ($pointsUpdatingMode === 'redeem') {
+            return new RedeemBonusPoints($request);
+        }
+
+        throw new InvalidArgumentException('Updating mode can be only "earn" or "redeem"');
     }
 
     /**
