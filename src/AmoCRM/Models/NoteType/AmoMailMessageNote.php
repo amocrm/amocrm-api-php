@@ -205,9 +205,9 @@ class AmoMailMessageNote extends NoParamNote
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getAttachCount(): int
+    public function getAttachCount(): ?int
     {
         return $this->attachCount;
     }
