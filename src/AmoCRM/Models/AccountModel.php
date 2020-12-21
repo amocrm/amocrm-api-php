@@ -127,6 +127,9 @@ class AccountModel extends BaseApiModel
     /** @var string|null */
     protected $currencySymbol;
 
+    /** @var bool */
+    protected $isTechnicalAccount;
+
     /**
      * @return int
      */
@@ -328,6 +331,7 @@ class AccountModel extends BaseApiModel
             ->setCustomersMode($account['customers_mode'])
             ->setLossReasonsEnabled((bool)$account['is_loss_reason_enabled'])
             ->setHelpbotEnabled((bool)$account['is_helpbot_enabled'])
+            ->setIsTechnicalAccount((bool)$account['is_technical_account'])
             ->setContactNameDisplayOrder((int)$account['contact_name_display_order']);
 
         if (isset($account[self::AMOJO_ID])) {
@@ -403,6 +407,7 @@ class AccountModel extends BaseApiModel
             'is_loss_reason_enabled' => $this->getIsLossReasonsEnabled(),
             'is_helpbot_enabled' => $this->getIsHelpbotEnabled(),
             'contact_name_display_order' => $this->getContactNameDisplayOrder(),
+            'is_technical_account' => $this->getIsTechnicalAccount(),
         ];
 
         if (!is_null($this->getAmojoId())) {
@@ -720,6 +725,26 @@ class AccountModel extends BaseApiModel
     public function setCurrencySymbol(?string $currencySymbol): AccountModel
     {
         $this->currencySymbol = $currencySymbol;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsTechnicalAccount(): bool
+    {
+        return $this->isTechnicalAccount;
+    }
+
+    /**
+     * @param bool $isTechnicalAccount
+     *
+     * @return AccountModel
+     */
+    public function setIsTechnicalAccount(bool $isTechnicalAccount): AccountModel
+    {
+        $this->isTechnicalAccount = $isTechnicalAccount;
 
         return $this;
     }
