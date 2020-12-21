@@ -153,6 +153,7 @@ $leadsService = $apiClient->leads();
 | transactions      | Покупки покупателей           |
 | customers         | Покупатели                    |
 | customersStatuses | Сегменты покупателя           |
+| customersBonusPoints | Бонусные баллы покупателя  |
 | calls             | Звонки                        |
 | products          | Товары                        |
 | links             | Массовая привязка сущностей   |
@@ -328,6 +329,20 @@ $leadsService = $apiClient->leads();
     setMode(string $mode, bool $isEnabled = true);
     ```
 
+#### Методы доступные в сервисе ```customersBonusPoints```:
+1. earnPoints Начисляет бонусные баллы покупателю
+    1. model (BonusPointsActionModel) - модель в которой Id покупателя и количество баллов для начисления
+    2. Результатом выполнения является обновленное количество бонусных баллов покупателя или null в случае если произошла ошибка
+    ```php
+    earnPoints(BonusPointsActionModel $bonusPointsActionModel)
+    ```
+
+2. redeemPoints Списывает бонусные баллы покупателя
+    1. model (BonusPointsActionModel) - модель в которой Id покупателя и количество баллов для списания
+    2. Результатом выполнения является обновленное количество бонусных баллов покупателя или null в случае если произошла ошибка
+    ```php
+    redeemPoints(BonusPointsActionModel $bonusPointsActionModel)
+    ```
 
 #### Методы доступные в сервисе ```notes```:
 1. getByParentId Получение данных по ID родительской сущности

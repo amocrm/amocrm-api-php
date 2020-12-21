@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\AmoCRM\EntitiesServices\Customers\BonusPoints;
 use AmoCRM\AmoCRM\EntitiesServices\Links;
 use AmoCRM\AmoCRM\EntitiesServices\Products;
 use AmoCRM\EntitiesServices\Calls;
@@ -507,6 +508,18 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new CustomersStatuses($request);
+    }
+
+    /**
+     * Метод вернет объект для списания/начисления бонусных баллов покупателю
+     *
+     * @return BonusPoints
+     */
+    public function customersBonusPoints(): BonusPoints
+    {
+        $request = $this->buildRequest();
+
+        return new BonusPoints($request);
     }
 
     /**
