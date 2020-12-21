@@ -56,7 +56,7 @@ class GeolocationNote extends NoteModel
         }
 
         if (isset($note['params']['longitude'])) {
-            $this->setLongitude($note['params']['longitude']);
+            $model->setLongitude($note['params']['longitude']);
         }
 
         return $model;
