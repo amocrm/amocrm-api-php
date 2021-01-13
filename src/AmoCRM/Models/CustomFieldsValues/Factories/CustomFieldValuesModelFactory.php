@@ -105,10 +105,10 @@ class CustomFieldValuesModelFactory
             case CustomFieldModel::TYPE_TRACKING_DATA:
                 $model = new TrackingDataCustomFieldValuesModel();
                 break;
-        }
-
-        if (!isset($model)) {
-            throw new BadTypeException('Unprocessable field type - ' . $fieldType);
+            default:
+                trigger_error('Unprocessable field type. Please upgrade amoCRM library.', E_NOTICE);
+                $model = new BaseCustomFieldValuesModel();
+                break;
         }
 
         $values = CustomFieldValueCollectionFactory::createCollection($field);

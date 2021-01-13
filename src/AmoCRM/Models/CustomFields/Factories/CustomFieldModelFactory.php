@@ -107,4 +107,79 @@ class CustomFieldModelFactory
 
         return $model;
     }
+
+    /**
+     * @param string $fieldType
+     *
+     * @return CustomFieldModel
+     * @throws BadTypeException
+     */
+    public static function createEmptyModel(string $fieldType): CustomFieldModel
+    {
+        switch ($fieldType) {
+            case CustomFieldModel::TYPE_BIRTHDAY:
+                $model = new BirthdayCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_CHECKBOX:
+                $model = new CheckboxCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_DATE:
+                $model = new DateCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_DATE_TIME:
+                $model = new DateTimeCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_LEGAL_ENTITY:
+                $model = new LegalEntityCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_MULTISELECT:
+                $model = new MultiselectCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_MULTITEXT:
+                $model = new MultitextCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_NUMERIC:
+                $model = new NumericCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_RADIOBUTTON:
+                $model = new RadiobuttonCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_SELECT:
+                $model = new SelectCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_SMART_ADDRESS:
+                $model = new SmartAddressCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_STREET_ADDRESS:
+                $model = new StreetAddressCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_TEXTAREA:
+                $model = new TextareaCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_TEXT:
+                $model = new TextCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_URL:
+                $model = new UrlCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_ITEMS:
+                $model = new ItemsCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_CATEGORY:
+                $model = new CategoryCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_PRICE:
+                $model = new PriceCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_TRACKING_DATA:
+                $model = new TrackingDataCustomFieldModel();
+                break;
+        }
+
+        if (!isset($model)) {
+            throw new BadTypeException('Unprocessable field type - ' . $fieldType);
+        }
+
+        return $model;
+    }
 }

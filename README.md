@@ -43,6 +43,8 @@ $apiClientFactory = new \AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory($oAuthConfi
 $apiClient = $apiClientFactory->make();
 ```
 
+При использовании фабрики вам не нужно устанавливать колбек onAccessTokenRefresh, при обновлении токена будет вызван метод saveOAuthToken из $oAuthService (\AmoCRM\OAuth\OAuthServiceInterface).
+
 Затем необходимо создать объект (`\League\OAuth2\Client\Token\AccessToken`) Access токена из вашего хранилища токенов и установить его в API клиент.
 
 Также необходимо установить домен аккаунта amoCRM в виде СУБДОМЕН.amocrm.(ru/com).
