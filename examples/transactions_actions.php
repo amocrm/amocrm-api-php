@@ -44,6 +44,7 @@ $transaction
 
 $transactionsCollection->add($transaction);
 
+//Обязательно необходимо указать ID покупателя, к которому будет добавлена транзакция
 $transactionsService = $apiClient->transactions();
 $transactionsService->setCustomerId(1);
 try {
