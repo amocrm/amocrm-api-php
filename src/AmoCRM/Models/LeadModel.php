@@ -898,6 +898,18 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             $this->setRequestId($requestId);
         }
 
+        //Если это создание - то можно передать id контактов для привязки
+        if (is_null($this->getId()) && !is_null($this->getContacts())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['contacts'] = $this->getContacts()->toLeadApi();
+        }
+
+        //Если это создание - то можно передать id компании для привязки
+        if (is_null($this->getId()) && !is_null($this->getCompany())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['companies'][] = [
+                'id' => $this->getCompany()->getId()
+            ];
+        }
+
         $result['request_id'] = $this->getRequestId();
 
         return $result;

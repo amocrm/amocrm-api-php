@@ -7,6 +7,8 @@ use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Collections\NullTagsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Filters\LeadsFilter;
+use AmoCRM\Models\CompanyModel;
+use AmoCRM\Models\ContactModel;
 use AmoCRM\Models\CustomFieldsValues\TextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\NullCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\TextCustomFieldValueCollection;
@@ -45,6 +47,37 @@ try {
     die;
 }
 
+//Создадим сделку с заполненым бюджетом и привязанными контактами и компанией
+$lead = new LeadModel();
+$lead->setName('Название сделки')
+    ->setPrice(54321)
+    ->setContacts(
+        (new ContactsCollection())
+            ->add(
+                (new ContactModel())
+                    ->setId(19346889)
+            )
+            ->add(
+                (new ContactModel())
+                    ->setId(19324717)
+                    ->setIsMain(true)
+            )
+    )
+    ->setCompany(
+        (new CompanyModel())
+            ->setId(19187743)
+    );
+
+$leadsCollection = new LeadsCollection();
+$leadsCollection->add($lead);
+
+try {
+    $leadsCollection = $leadsService->add($leadsCollection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
 //Создадим сделку с заполненым полем типа текст
 $lead = new LeadModel();
 $leadCustomFieldsValues = new CustomFieldsValuesCollection();
@@ -58,8 +91,6 @@ $leadCustomFieldsValues->add($textCustomFieldValueModel);
 $lead->setCustomFieldsValues($leadCustomFieldsValues);
 $lead->setName('Example');
 
-$leadsCollection = new LeadsCollection();
-$leadsCollection->add($lead);
 try {
     $lead = $leadsService->addOne($lead);
 } catch (AmoCRMApiException $e) {

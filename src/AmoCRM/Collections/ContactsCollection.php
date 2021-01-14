@@ -25,4 +25,21 @@ class ContactsCollection extends BaseApiCollection implements HasPagesInterface
     use PagesTrait;
 
     public const ITEM_CLASS = ContactModel::class;
+
+    /**
+     * @return array
+     */
+    public function toLeadApi(): array
+    {
+        $result = [];
+        /** @var ContactModel $item */
+        foreach ($this->data as $item) {
+            $leadContact = $item->toLeadApi();
+            if (!empty($leadContact)) {
+                $result[] = $item->toLeadApi();
+            }
+        }
+
+        return $result;
+    }
 }

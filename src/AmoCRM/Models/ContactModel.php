@@ -714,6 +714,23 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
+     * Формирование данных, которые используются при добавлении сделки с контактами
+     *
+     * @return array
+     */
+    public function toLeadApi(): array
+    {
+        $result = [];
+
+        if (!is_null($this->getId())) {
+            $result['id'] = $this->getId();
+            $result['is_main'] = $this->getIsMain() ?? false;
+        }
+
+        return $result;
+    }
+
+    /**
      * @return array
      */
     public static function getAvailableWith(): array
