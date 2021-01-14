@@ -36,7 +36,7 @@ class ContactsCollection extends BaseApiCollection implements HasPagesInterface
         foreach ($this->data as $item) {
             $leadContact = $item->toLeadApi();
             if (!empty($leadContact)) {
-                $result[] = $item->toLeadApi();
+                $result[] = $leadContact;
             }
         }
 
