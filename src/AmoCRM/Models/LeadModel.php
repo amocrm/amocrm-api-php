@@ -2,6 +2,8 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\AmoCRM\Models\Interfaces\HasCustomFieldsValuesInterface;
+use AmoCRM\AmoCRM\Models\Traits\CustomFieldsValuesGetterTrait;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
@@ -18,10 +20,15 @@ use AmoCRM\Models\Traits\RequestIdTrait;
 
 use function is_null;
 
-class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
+class LeadModel extends BaseApiModel implements
+    TypeAwareInterface,
+    CanBeLinkedInterface,
+    HasIdInterface,
+    HasCustomFieldsValuesInterface
 {
     use RequestIdTrait;
     use GetLinkTrait;
+    use CustomFieldsValuesGetterTrait;
 
     public const LOST_STATUS_ID = 143;
     public const CATALOG_ELEMENTS = 'catalog_elements';
