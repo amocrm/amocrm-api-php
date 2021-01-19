@@ -2,8 +2,11 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\EntitiesServices\Traits\LinkMethodsTrait;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
@@ -13,7 +16,10 @@ use AmoCRM\Collections\Leads\LeadsCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\CompanyModel;
+use AmoCRM\Models\ContactModel;
 use AmoCRM\Models\LeadModel;
+use function is_null;
 
 /**
  * Class Leads
@@ -147,5 +153,84 @@ class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethods
             EntityTypesInterface::CATALOG_ELEMENTS_FULL,
             EntityTypesInterface::COMPANIES,
         ];
+    }
+
+    /**
+     * Добавление коллекции сущностей
+     * @param LeadsCollection $collection
+     *
+     * @return LeadsCollection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function addComplex(LeadsCollection $collection): LeadsCollection
+    {
+        $response = $this->request->post($this->getComplexMethod(), $collection->toComplexApi());
+        $collection = $this->processComplexAction($collection, $response);
+
+        return $collection;
+    }
+
+    /**
+     * Добавление сщуности
+     *
+     * @param LeadModel $model
+     *
+     * @return LeadModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function addOneComplex(LeadModel $model): LeadModel
+    {
+        /** @var LeadsCollection $collection */
+        $collection = new $this->collectionClass();
+        $collection->add($model);
+        $collection = $this->addComplex($collection);
+
+        return $collection->first();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getComplexMethod(): string
+    {
+        return $this->method . '/complex';
+    }
+
+    /**
+     * @param LeadsCollection $collection
+     * @param array $response
+     *
+     * @return LeadsCollection
+     */
+    protected function processComplexAction(LeadsCollection $collection, array $response): LeadsCollection
+    {
+        $resultCollection = new LeadsCollection();
+
+        foreach ($response as $responseLead) {
+            $lead = (new LeadModel())
+                ->setId($responseLead['id'])
+                ->setComplexRequestIds($responseLead['request_id'])
+                ->setIsMerged((bool)$responseLead['merged']);
+
+            if (!is_null($responseLead['contact_id'])) {
+                $contacts = (new ContactsCollection())
+                    ->add(
+                        (new ContactModel())
+                            ->setId($responseLead['contact_id'])
+                    );
+                $lead->setContacts($contacts);
+            }
+
+            if (!is_null($responseLead['company_id'])) {
+                $lead->setCompany((new CompanyModel())
+                    ->setId($responseLead['company_id']));
+            }
+
+            $resultCollection->add($lead);
+        }
+
+        return $resultCollection;
     }
 }

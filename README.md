@@ -567,6 +567,7 @@ Namespace, в котором находятся модели дополните�
 | Цена                | PriceCustomFieldValueModel         | PriceCustomFieldValueCollection         | PriceCustomFieldValuesModel         | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
 | Категория           | CategoryCustomFieldValueModel      | CategoryCustomFieldValueCollection      | CategoryCustomFieldValuesModel      | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
 | Предметы            | ItemsCustomFieldValueModel         | ItemsCustomFieldValueCollection         | ItemsCustomFieldValuesModel         | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
+| Метка               | TrackingDataCustomFieldValueModel  | TrackingDataCustomFieldValueCollection  | TrackingDataCustomFieldValuesModel  | ❌       | ✅     | ❌       | ❌          | ❌      | ❌       |
 
 Пример кода, как создать коллекцию значения полей сущности:
 ```php

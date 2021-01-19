@@ -253,4 +253,17 @@ class ChatsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataI
     {
         return [];
     }
+
+
+    /**
+     * @return array
+     */
+    public function toComplexApi(): array
+    {
+        $result = $this->toApi();
+
+        $result['category'] = BaseUnsortedModel::CATEGORY_CODE_CHATS;
+
+        return $result;
+    }
 }

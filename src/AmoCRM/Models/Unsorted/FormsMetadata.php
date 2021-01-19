@@ -272,4 +272,16 @@ class FormsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataI
 
         return $result;
     }
+
+    /**
+     * @return array
+     */
+    public function toComplexApi(): array
+    {
+        $result = $this->toApi();
+
+        $result['category'] = BaseUnsortedModel::CATEGORY_CODE_FORMS;
+
+        return $result;
+    }
 }

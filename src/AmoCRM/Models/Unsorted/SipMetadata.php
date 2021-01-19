@@ -254,4 +254,16 @@ class SipMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInt
             'is_call_event_needed' => $this->getIsCallEventNeeded() ?? true,
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function toComplexApi(): array
+    {
+        $result = $this->toApi();
+
+        $result['category'] = BaseUnsortedModel::CATEGORY_CODE_SIP;
+
+        return $result;
+    }
 }

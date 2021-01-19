@@ -708,7 +708,9 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
             $this->setRequestId($requestId);
         }
 
-        $result['request_id'] = $this->getRequestId();
+        if (!is_null($this->getRequestId())) {
+            $result['request_id'] = $this->getRequestId();
+        }
 
         return $result;
     }
