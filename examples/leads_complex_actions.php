@@ -70,6 +70,7 @@ $externalData = [
 
 $leadsCollection = new LeadsCollection();
 
+//Создадим модели и заполним ими коллекцию
 foreach ($externalData as $externalLead) {
     $lead = (new LeadModel())
         ->setName($externalLead['name'])
@@ -124,6 +125,7 @@ foreach ($externalData as $externalLead) {
     $leadsCollection->add($lead);
 }
 
+//Создадим сделки
 try {
     $addedLeadsCollection = $apiClient->leads()->addComplex($leadsCollection);
 } catch (AmoCRMApiException $e) {
@@ -133,6 +135,7 @@ try {
 
 /** @var LeadModel $addedLead */
 foreach ($addedLeadsCollection as $addedLead) {
+    //Пройдемся по добавленным сделкам и выведем результат
     $leadId = $addedLead->getId();
     $contactId = $addedLead->getContacts()->first()->getId();
     $companyId = $addedLead->getCompany()->getId();
