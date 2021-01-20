@@ -221,6 +221,21 @@ $leadsService = $apiClient->leads();
 
 Некоторые сервисы имеют специфичные методы, ниже рассмотрим сервисы, которые имеют специфичные методы.
 
+#### Методы доступные в сервисе ```leads```:
+1. addComplex Создать сделки пакетно со связанным контакт и компанией через [комплексный метод](https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add) с поддержкой [контроля дублей](https://www.amocrm.ru/developers/content/crm_platform/duplication-control)
+    1. collection (LeadsCollection) - коллекция моделей создаваемой сущности
+    2. Результатом выполнения будет новая коллекция созданных сущностей
+    ```php
+    addComplex(LeadsCollection $collection);
+    ```
+2. addOneComplex Создать одну сделку со связанным контакт и компанией через [комплексный метод](https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add) с поддержкой [контроля дублей](https://www.amocrm.ru/developers/content/crm_platform/duplication-control)
+    1. collection (LeadsCollection) - коллекция моделей создаваемой сущности
+    2. Результатом выполнения будет новая модель созданной сделки
+    ```php
+    addOneComplex(LeadModel $model);
+    ```
+
+Подробней про использование метода комплексного создания смотрите в [примере](examples/leads_complex_actions.php)
 
 #### Методы доступные в сервисе ```getOAuthClient```:
 1. getAuthorizeUrl получение ссылки на авторизация

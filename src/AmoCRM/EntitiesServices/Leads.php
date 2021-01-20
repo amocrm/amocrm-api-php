@@ -167,9 +167,8 @@ class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethods
     public function addComplex(LeadsCollection $collection): LeadsCollection
     {
         $response = $this->request->post($this->getComplexMethod(), $collection->toComplexApi());
-        $collection = $this->processComplexAction($collection, $response);
 
-        return $collection;
+        return $this->processComplexAction($response);
     }
 
     /**
@@ -200,12 +199,11 @@ class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethods
     }
 
     /**
-     * @param LeadsCollection $collection
      * @param array $response
      *
      * @return LeadsCollection
      */
-    protected function processComplexAction(LeadsCollection $collection, array $response): LeadsCollection
+    protected function processComplexAction(array $response): LeadsCollection
     {
         $resultCollection = new LeadsCollection();
 
