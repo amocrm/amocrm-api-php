@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AmoCRM\AmoCRM\Exceptions;
 
 use AmoCRM\Exceptions\AmoCRMApiException;
@@ -13,4 +15,8 @@ use AmoCRM\Exceptions\AmoCRMApiException;
  */
 class DisposableTokenExpiredException extends AmoCRMApiException
 {
+    public static function create(): self
+    {
+        return new self('Disposable token expired');
+    }
 }
