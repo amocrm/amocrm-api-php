@@ -9,7 +9,7 @@ use AmoCRM\Exceptions\AmoCRMApiException;
 /**
  * Class DisposableTokenInvalidDestinationException
  *
- * Выбрасывается в случае, если истёк был получен неверный адресат
+ * Выбрасывается в случае, если был получен неверный адресат
  *
  * @package AmoCRM\AmoCRM\Exceptions
  */
