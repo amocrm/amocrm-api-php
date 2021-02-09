@@ -7,13 +7,13 @@ namespace AmoCRM\AmoCRM\Exceptions;
 use AmoCRM\Exceptions\AmoCRMApiException;
 
 /**
- * Class DisposableTokenVerificationSignatureException
+ * Class DisposableTokenVerificationFailedException
  *
  * Выбрасывается в случае неверной подписи токена
  *
  * @package AmoCRM\AmoCRM\Exceptions
  */
-class DisposableTokenVerificationSignatureException extends AmoCRMApiException
+class DisposableTokenVerificationFailedException extends AmoCRMApiException
 {
     public static function create(): self
     {

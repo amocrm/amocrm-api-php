@@ -2,7 +2,7 @@
 
 use AmoCRM\AmoCRM\Exceptions\{DisposableTokenExpiredException,
     DisposableTokenInvalidDestinationException,
-    DisposableTokenVerificationSignatureException};
+    DisposableTokenVerificationFailedException};
 
 include_once __DIR__ . '/bootstrap.php';
 
@@ -42,7 +42,7 @@ try {
     // Не прошёл проверку на адресата токена
     printError($e);
     die;
-} catch (DisposableTokenVerificationSignatureException $e) {
+} catch (DisposableTokenVerificationFailedException $e) {
     // Токен не прошел проверку подписи
     printError($e);
     die;

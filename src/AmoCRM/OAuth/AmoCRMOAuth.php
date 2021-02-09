@@ -4,7 +4,7 @@ namespace AmoCRM\OAuth;
 
 use AmoCRM\AmoCRM\Exceptions\DisposableTokenExpiredException;
 use AmoCRM\AmoCRM\Exceptions\DisposableTokenInvalidDestinationException;
-use AmoCRM\AmoCRM\Exceptions\DisposableTokenVerificationSignatureException;
+use AmoCRM\AmoCRM\Exceptions\DisposableTokenVerificationFailedException;
 use AmoCRM\AmoCRM\Models\AccountDomainModel;
 use AmoCRM\AmoCRM\Models\DisposableTokenModel;
 use AmoCRM\Client\AmoCRMApiRequest;
@@ -433,7 +433,7 @@ class AmoCRMOAuth
      * @return DisposableTokenModel
      *
      * @throws DisposableTokenExpiredException
-     * @throws DisposableTokenVerificationSignatureException
+     * @throws DisposableTokenVerificationFailedException
      * @throws DisposableTokenInvalidDestinationException
      *
      * @link https://www.amocrm.ru/developers/content/web_sdk/mechanics
@@ -465,7 +465,7 @@ class AmoCRMOAuth
         } catch (ConstraintViolation $e) {
             switch (true) {
                 case $constraint instanceof SignedWith:
-                    throw DisposableTokenVerificationSignatureException::create();
+                    throw DisposableTokenVerificationFailedException::create();
                 case $constraint instanceof PermittedFor:
                     throw DisposableTokenInvalidDestinationException::create();
                 case $constraint instanceof ValidAt:
