@@ -44,7 +44,9 @@ $transaction
 
 $transactionsCollection->add($transaction);
 
-$transactionsService = $apiClient->transactions(1);
+//Обязательно необходимо указать ID покупателя, к которому будет добавлена транзакция
+$transactionsService = $apiClient->transactions();
+$transactionsService->setCustomerId(1);
 try {
     $transactionsCollection = $transactionsService->add($transactionsCollection);
 } catch (AmoCRMApiException $e) {

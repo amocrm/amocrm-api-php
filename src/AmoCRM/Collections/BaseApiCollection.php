@@ -10,6 +10,11 @@ use InvalidArgumentException;
 use IteratorAggregate;
 use JsonSerializable;
 
+use function array_column;
+use function array_combine;
+use function array_keys;
+use function count;
+
 /**
  * Class BaseApiCollection
  *
@@ -365,5 +370,21 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
             }
             unset($object);
         }
+    }
+
+    /**
+     * @param string $column
+     *
+     * @return array
+     */
+    public function pluck(string $column): array
+    {
+        $data = $this->toArray();
+        $values = array_column($data, $column);
+        if (count($values) !== count($data)) {
+            throw new InvalidArgumentException("Some elements missing keys \"{$column}\"");
+        }
+
+        return array_combine(array_keys($data), $values);
     }
 }

@@ -19,13 +19,13 @@ use AmoCRM\Models\ContactModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method ContactModel getOne($id, array $with = []) : ?ContactModel
- * @method ContactsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?ContactsCollection
- * @method ContactModel addOne(BaseApiModel $model) : ContactModel
- * @method ContactsCollection add(BaseApiCollection $collection) : ContactsCollection
- * @method ContactModel updateOne(BaseApiModel $apiModel) : ContactModel
- * @method ContactsCollection update(BaseApiCollection $collection) : ContactsCollection
- * @method ContactModel syncOne(BaseApiModel $apiModel, $with = []) : ContactModel
+ * @method null|ContactModel getOne($id, array $with = [])
+ * @method null|ContactsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method ContactModel addOne(BaseApiModel $model)
+ * @method ContactsCollection add(BaseApiCollection $collection)
+ * @method ContactModel updateOne(BaseApiModel $apiModel)
+ * @method ContactsCollection update(BaseApiCollection $collection)
+ * @method ContactModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {

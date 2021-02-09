@@ -10,14 +10,14 @@ use AmoCRM\Models\CustomFields\EnumModel;
  *
  * @package AmoCRM\Collections
  *
- * @method EnumModel current() : ?BaseApiModel
- * @method EnumModel last() : ?BaseApiModel
- * @method EnumModel first() : ?BaseApiModel
- * @method EnumModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, EnumModel $value) : BaseApiCollection
- * @method self prepend(EnumModel $value) : BaseApiCollection
- * @method self add(EnumModel $value) : BaseApiCollection
- * @method EnumModel getBy($key, $value) : ?BaseApiModel
+ * @method null|EnumModel current()
+ * @method null|EnumModel last()
+ * @method null|EnumModel first()
+ * @method null|EnumModel offsetGet($offset)
+ * @method CustomFieldEnumsCollection offsetSet($offset, EnumModel $value)
+ * @method CustomFieldEnumsCollection prepend(EnumModel $value)
+ * @method CustomFieldEnumsCollection add(EnumModel $value)
+ * @method null|EnumModel getBy($key, $value)
  */
 class CustomFieldEnumsCollection extends BaseApiCollection
 {

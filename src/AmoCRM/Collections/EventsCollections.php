@@ -11,14 +11,14 @@ use AmoCRM\Models\EventModel;
  *
  * @package AmoCRM\Collections
  *
- * @method EventModel current() : ?BaseApiModel
- * @method EventModel last() : ?BaseApiModel
- * @method EventModel first() : ?BaseApiModel
- * @method EventModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, EventModel $value) : BaseApiCollection
- * @method self prepend(EventModel $value) : BaseApiCollection
- * @method self add(EventModel $value) : BaseApiCollection
- * @method EventModel getBy($key, $value) : ?BaseApiModel
+ * @method null|EventModel current()
+ * @method null|EventModel last()
+ * @method null|EventModel first()
+ * @method null|EventModel offsetGet($offset)
+ * @method EventsCollections offsetSet($offset, EventModel $value)
+ * @method EventsCollections prepend(EventModel $value)
+ * @method EventsCollections add(EventModel $value)
+ * @method null|EventModel getBy($key, $value)
  */
 class EventsCollections extends BaseApiCollection implements HasPagesInterface
 {

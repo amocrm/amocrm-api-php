@@ -21,12 +21,12 @@ use AmoCRM\Models\Customers\Statuses\StatusModel;
  *
  * @package AmoCRM\EntitiesServices\Leads
  *
- * @method StatusModel getOne($id, array $with = []) : ?StatusModel
- * @method StatusesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?StatusesCollection
- * @method StatusModel addOne(BaseApiModel $model) : StatusModel
- * @method StatusesCollection add(BaseApiCollection $collection) : StatusesCollection
- * @method StatusModel updateOne(BaseApiModel $apiModel) : StatusModel
- * @method StatusModel syncOne(BaseApiModel $apiModel, $with = []) : StatusModel
+ * @method null|StatusModel getOne($id, array $with = [])
+ * @method null|StatusesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method StatusModel addOne(BaseApiModel $model)
+ * @method StatusesCollection add(BaseApiCollection $collection)
+ * @method StatusModel updateOne(BaseApiModel $apiModel)
+ * @method StatusModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Statuses extends BaseEntity implements HasDeleteMethodInterface
 {

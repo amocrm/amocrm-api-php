@@ -80,7 +80,7 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     protected $accountId;
 
     /**
-     * @var TagsCollection
+     * @var null|TagsCollection
      */
     protected $tags;
 
@@ -324,11 +324,11 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
     }
 
     /**
-     * @param TagsCollection $tags
+     * @param null|TagsCollection $tags
      *
      * @return self
      */
-    public function setTags(TagsCollection $tags): self
+    public function setTags(?TagsCollection $tags): self
     {
         $this->tags = $tags;
 
@@ -604,7 +604,9 @@ class CompanyModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
             $this->setRequestId($requestId);
         }
 
-        $result['request_id'] = $this->getRequestId();
+        if (!is_null($this->getRequestId())) {
+            $result['request_id'] = $this->getRequestId();
+        }
 
         return $result;
     }

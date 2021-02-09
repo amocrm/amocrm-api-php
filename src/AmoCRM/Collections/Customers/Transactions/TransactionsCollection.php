@@ -10,14 +10,14 @@ use AmoCRM\Models\Customers\Transactions\TransactionModel;
  *
  * @package AmoCRM\Collections\Customers\Transactions
  *
- * @method TransactionModel current() : ?BaseApiModel
- * @method TransactionModel last() : ?BaseApiModel
- * @method TransactionModel first() : ?BaseApiModel
- * @method TransactionModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, TransactionModel $value) : BaseApiCollection
- * @method self prepend(TransactionModel $value) : BaseApiCollection
- * @method self add(TransactionModel $value) : BaseApiCollection
- * @method TransactionModel getBy($key, $value) : ?BaseApiModel
+ * @method null|TransactionModel current()
+ * @method null|TransactionModel last()
+ * @method null|TransactionModel first()
+ * @method null|TransactionModel offsetGet($offset)
+ * @method TransactionsCollection offsetSet($offset, TransactionModel $value)
+ * @method TransactionsCollection prepend(TransactionModel $value)
+ * @method TransactionsCollection add(TransactionModel $value)
+ * @method null|TransactionModel getBy($key, $value)
  */
 class TransactionsCollection extends BaseApiCollection
 {

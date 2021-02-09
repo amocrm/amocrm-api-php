@@ -22,12 +22,12 @@ use AmoCRM\Models\Leads\Pipelines\PipelineModel;
  *
  * @package AmoCRM\EntitiesServices\Leads
  *
- * @method PipelineModel getOne($id, array $with = []) : ?ContactModel
- * @method PipelinesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?PipelinesCollection
- * @method PipelineModel addOne(BaseApiModel $model) : ContactModel
- * @method PipelinesCollection add(BaseApiCollection $collection) : PipelinesCollection
- * @method PipelineModel updateOne(BaseApiModel $apiModel) : ContactModel
- * @method PipelineModel syncOne(BaseApiModel $apiModel, $with = []) : ContactModel
+ * @method null|PipelineModel getOne($id, array $with = [])
+ * @method null|PipelinesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method PipelineModel addOne(BaseApiModel $model)
+ * @method PipelinesCollection add(BaseApiCollection $collection)
+ * @method PipelineModel updateOne(BaseApiModel $apiModel)
+ * @method PipelineModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Pipelines extends BaseEntity implements HasDeleteMethodInterface
 {

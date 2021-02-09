@@ -9,14 +9,14 @@ use AmoCRM\Models\AccountSettings\TaskType;
  *
  * @package AmoCRM\Collections
  *
- * @method TaskType current() : ?BaseApiModel
- * @method TaskType last() : ?BaseApiModel
- * @method TaskType first() : ?BaseApiModel
- * @method TaskType offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, TaskType $value) : BaseApiCollection
- * @method self prepend(TaskType $value) : BaseApiCollection
- * @method self add(TaskType $value) : BaseApiCollection
- * @method TaskType getBy($key, $value) : ?BaseApiModel
+ * @method null|TaskType current()
+ * @method null|TaskType last()
+ * @method null|TaskType first()
+ * @method null|TaskType offsetGet($offset)
+ * @method TaskTypesCollection offsetSet($offset, TaskType $value)
+ * @method TaskTypesCollection prepend(TaskType $value)
+ * @method TaskTypesCollection add(TaskType $value)
+ * @method null|TaskType getBy($key, $value)
  */
 class TaskTypesCollection extends BaseApiCollection
 {

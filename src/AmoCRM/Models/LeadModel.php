@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\EntitiesServices\Unsorted;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiRequest;
@@ -15,6 +16,7 @@ use AmoCRM\Models\Interfaces\TypeAwareInterface;
 use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
 use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
+use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 
 use function is_null;
 
@@ -159,6 +161,30 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
      * @var null|string
      */
     protected $visitorUid;
+
+    /**
+     * Используется при создании сделки в статусе неразобранное через метод комплексного добавления
+     * Если вам необходимо добавить неразобранное без проверки дублей - @see Unsorted
+     *
+     * @var null|UnsortedMetadataInterface
+     */
+    protected $metadata;
+
+    /**
+     * ID запросов для комплексного метода
+     * Доступны только в результирующей модели после вызова комплексного метода добавления
+     *
+     * @var string[]
+     */
+    protected $complexRequestIds;
+
+    /**
+     * Было ли выполнено обновление или нет
+     * Доступны только в результирующей модели после вызова комплексного метода добавления
+     *
+     * @var bool
+     */
+    protected $isMerged;
 
     public function getType(): string
     {
@@ -898,6 +924,46 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             $this->setRequestId($requestId);
         }
 
+        //Если это создание - то можно передать id контактов для привязки
+        if (is_null($this->getId()) && !is_null($this->getContacts())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['contacts'] = $this->getContacts()->toLeadApi();
+        }
+
+        //Если это создание - то можно передать id компании для привязки
+        if (is_null($this->getId()) && !is_null($this->getCompany())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['companies'][] = [
+                'id' => $this->getCompany()->getId()
+            ];
+        }
+
+        $result['request_id'] = $this->getRequestId();
+
+        return $result;
+    }
+
+    /**
+     * @param string|null $requestId
+     * @return array
+     */
+    public function toComplexApi(?string $requestId = "0"): array
+    {
+        $result = $this->toApi($requestId);
+
+        unset($result['id']);
+
+        if (!is_null($this->getContacts())) {
+            $contact = $this->getContacts()->first();
+            $result[AmoCRMApiRequest::EMBEDDED]['contacts'] = [$contact->toApi(null)];
+        }
+
+        if (!is_null($this->getCompany())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['companies'] = [$this->getCompany()->toApi(null)];
+        }
+
+        if (!is_null($this->getMetadata())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['metadata'] = $this->getMetadata()->toComplexApi();
+        }
+
         $result['request_id'] = $this->getRequestId();
 
         return $result;
@@ -968,5 +1034,65 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
         }
 
         return $result;
+    }
+
+    /**
+     * @return UnsortedMetadataInterface|null
+     */
+    public function getMetadata(): ?UnsortedMetadataInterface
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @param UnsortedMetadataInterface|null $metadata
+     *
+     * @return LeadModel
+     */
+    public function setMetadata(?UnsortedMetadataInterface $metadata): LeadModel
+    {
+        $this->metadata = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getComplexRequestIds(): array
+    {
+        return $this->complexRequestIds;
+    }
+
+    /**
+     * @param string[] $complexRequestIds
+     *
+     * @return LeadModel
+     */
+    public function setComplexRequestIds(array $complexRequestIds): LeadModel
+    {
+        $this->complexRequestIds = $complexRequestIds;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMerged(): bool
+    {
+        return $this->isMerged;
+    }
+
+    /**
+     * @param bool $isMerged
+     *
+     * @return LeadModel
+     */
+    public function setIsMerged(bool $isMerged): LeadModel
+    {
+        $this->isMerged = $isMerged;
+
+        return $this;
     }
 }

@@ -17,6 +17,18 @@ class UserModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 
+    /** @var string Информация о роли пользователя */
+    public const ROLE = 'role';
+
+    /** @var string Информация о группе пользователя */
+    public const GROUP = 'group';
+
+    /** @var string amoJo ID пользователя */
+    public const AMOJO_ID = 'amojo_id';
+
+    /** @var string UUID пользователя */
+    public const UUID = 'uuid';
+
     /**
      * @var int|null
      */
@@ -25,7 +37,17 @@ class UserModel extends BaseApiModel implements HasIdInterface
     /**
      * @var string|null
      */
+    protected $uuid;
+
+    /**
+     * @var string|null
+     */
     protected $name;
+
+    /**
+     * @var string|null
+     */
+    protected $amojoId;
 
     /**
      * @var string|null
@@ -75,6 +97,8 @@ class UserModel extends BaseApiModel implements HasIdInterface
             ->setName($user['name'] ?? null)
             ->setEmail($user['email'])
             ->setLang($user['lang'] ?? null)
+            ->setUuid($user['uuid'] ?? null)
+            ->setAmojoId($user['amojo_id'] ?? null)
             ->setRights(RightModel::fromArray($user['rights']));
 
         $groupsCollection = new UsersGroupsCollection();
@@ -102,6 +126,8 @@ class UserModel extends BaseApiModel implements HasIdInterface
             'name' => $this->getName(),
             'email' => $this->getEmail(),
             'lang' => $this->getLang(),
+            'uuid' => $this->getUuid(),
+            'amojo_id' => $this->getAmojoId(),
             'rights' => $this->getRights()->toArray(),
             'roles' => is_null($this->getRoles()) ? null : $this->getRoles()->toArray(),
             'groups' => is_null($this->getGroups()) ? null : $this->getGroups()->toArray(),
@@ -123,6 +149,26 @@ class UserModel extends BaseApiModel implements HasIdInterface
     public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string|null $uuid
+     *
+     * @return UserModel
+     */
+    public function setUuid(?string $uuid): UserModel
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }
@@ -266,6 +312,26 @@ class UserModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getAmojoId(): ?string
+    {
+        return $this->amojoId;
+    }
+
+    /**
+     * @param string|null $amojoId
+     *
+     * @return UserModel
+     */
+    public function setAmojoId(?string $amojoId): UserModel
+    {
+        $this->amojoId = $amojoId;
+
+        return $this;
+    }
+
+    /**
      * @param string|null $requestId
      * @return array
      */
@@ -300,5 +366,18 @@ class UserModel extends BaseApiModel implements HasIdInterface
         $result['request_id'] = $this->getRequestId();
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAvailableWith(): array
+    {
+        return [
+            self::ROLE,
+            self::UUID,
+            self::GROUP,
+            self::AMOJO_ID,
+        ];
     }
 }

@@ -20,11 +20,11 @@ use AmoCRM\Models\CustomFieldGroupModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method CustomFieldGroupModel getOne($id, array $with = []) : ?CustomFieldGroupModel
- * @method CustomFieldGroupsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CustomFieldGroupsCollection
- * @method CustomFieldGroupModel addOne(BaseApiModel $model) : CustomFieldGroupModel
- * @method CustomFieldGroupsCollection add(BaseApiCollection $collection) : CustomFieldGroupsCollection
- * @method CustomFieldGroupModel updateOne(BaseApiModel $apiModel) : CustomFieldGroupModel
+ * @method null|CustomFieldGroupModel getOne($id, array $with = [])
+ * @method null|CustomFieldGroupsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method CustomFieldGroupModel addOne(BaseApiModel $model)
+ * @method CustomFieldGroupsCollection add(BaseApiCollection $collection)
+ * @method CustomFieldGroupModel updateOne(BaseApiModel $apiModel)
  */
 class CustomFieldGroups extends BaseEntityTypeEntity implements HasDeleteMethodInterface
 {

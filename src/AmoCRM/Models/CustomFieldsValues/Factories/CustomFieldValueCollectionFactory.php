@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
+use AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueCollections\TrackingDataCustomFieldValueCollection;
 use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Helpers\CustomFieldHelper;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
@@ -16,6 +17,7 @@ use AmoCRM\Models\CustomFieldsValues\ValueCollections\LegalEntityCustomFieldValu
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\MultiselectCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\MultitextCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\NumericCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\OrgLegalNameCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\PriceCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\RadiobuttonCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\SelectCustomFieldValueCollection;
@@ -96,6 +98,12 @@ class CustomFieldValueCollectionFactory
                 break;
             case CustomFieldModel::TYPE_PRICE:
                 $collection = new PriceCustomFieldValueCollection();
+                break;
+            case CustomFieldModel::TYPE_ORG_LEGAL_NAME:
+                $collection = new OrgLegalNameCustomFieldValueCollection();
+                break;
+            case CustomFieldModel::TYPE_TRACKING_DATA:
+                $collection = new TrackingDataCustomFieldValueCollection();
                 break;
         }
 

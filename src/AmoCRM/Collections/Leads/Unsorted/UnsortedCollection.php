@@ -12,14 +12,14 @@ use AmoCRM\Models\Unsorted\BaseUnsortedModel;
  *
  * @package AmoCRM\Collections\Leads\Unsorted
  *
- * @method BaseUnsortedModel current() : ?BaseApiModel
- * @method BaseUnsortedModel last() : ?BaseApiModel
- * @method BaseUnsortedModel first() : ?BaseApiModel
- * @method BaseUnsortedModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, BaseUnsortedModel $value) : BaseApiCollection
- * @method self prepend(BaseUnsortedModel $value) : BaseApiCollection
- * @method self add(BaseUnsortedModel $value) : BaseApiCollection
- * @method BaseUnsortedModel getBy($key, $value) : ?BaseApiModel
+ * @method null|BaseUnsortedModel current()
+ * @method null|BaseUnsortedModel last()
+ * @method null|BaseUnsortedModel first()
+ * @method null|BaseUnsortedModel offsetGet($offset)
+ * @method UnsortedCollection offsetSet($offset, BaseUnsortedModel $value)
+ * @method UnsortedCollection prepend(BaseUnsortedModel $value)
+ * @method UnsortedCollection add(BaseUnsortedModel $value)
+ * @method null|BaseUnsortedModel getBy($key, $value)
  */
 class UnsortedCollection extends BaseApiCollection implements HasPagesInterface
 {

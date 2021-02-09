@@ -11,18 +11,35 @@ use AmoCRM\Models\ContactModel;
  *
  * @package AmoCRM\Collections
  *
- * @method ContactModel current() : ?BaseApiModel
- * @method ContactModel last() : ?BaseApiModel
- * @method ContactModel first() : ?BaseApiModel
- * @method ContactModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, ContactModel $value) : BaseApiCollection
- * @method self prepend(ContactModel $value) : BaseApiCollection
- * @method self add(ContactModel $value) : BaseApiCollection
- * @method ContactModel getBy($key, $value) : ?BaseApiModel
+ * @method null|ContactModel current()
+ * @method null|ContactModel last()
+ * @method null|ContactModel first()
+ * @method null|ContactModel offsetGet($offset)
+ * @method ContactsCollection offsetSet($offset, ContactModel $value)
+ * @method ContactsCollection prepend(ContactModel $value)
+ * @method ContactsCollection add(ContactModel $value)
+ * @method null|ContactModel getBy($key, $value)
  */
 class ContactsCollection extends BaseApiCollection implements HasPagesInterface
 {
     use PagesTrait;
 
     public const ITEM_CLASS = ContactModel::class;
+
+    /**
+     * @return array
+     */
+    public function toLeadApi(): array
+    {
+        $result = [];
+        /** @var ContactModel $item */
+        foreach ($this->data as $item) {
+            $leadContact = $item->toLeadApi();
+            if (!empty($leadContact)) {
+                $result[] = $leadContact;
+            }
+        }
+
+        return $result;
+    }
 }

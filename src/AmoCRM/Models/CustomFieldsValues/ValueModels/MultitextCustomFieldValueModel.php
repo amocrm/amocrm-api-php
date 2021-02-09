@@ -2,8 +2,6 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
-use function is_null;
-
 /**
  * Class MultitextCustomFieldValueModel
  *
@@ -17,9 +15,9 @@ class MultitextCustomFieldValueModel extends BaseEnumCustomFieldValueModel
     protected $enum;
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getEnum(): string
+    public function getEnum(): ?string
     {
         return $this->enum;
     }
@@ -47,13 +45,6 @@ class MultitextCustomFieldValueModel extends BaseEnumCustomFieldValueModel
 
         $enumId = isset($value['enum_id']) ? (int)$value['enum_id'] : null;
         $enum = isset($value['enum_code']) ? (string)$value['enum_code'] : null;
-        /**
-         * TODO удалить после исправления бага в API
-         * Сейчас API возвращает ключ enum, предположительно с 2.06.2020 значение начнет приходить в ключе enum_code
-         */
-        if (is_null($enum)) {
-            $enum = isset($value['enum']) ? (string)$value['enum'] : null;
-        }
         $value = isset($value['value']) ? $value['value'] : null;
 
         $model

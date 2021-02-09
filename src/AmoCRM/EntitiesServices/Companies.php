@@ -19,13 +19,13 @@ use AmoCRM\Models\CompanyModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method CompanyModel getOne($id, array $with = []) : ?CompanyModel
- * @method CompaniesCollection get(BaseEntityFilter $filter = null, array $with = []) : ?CompaniesCollection
- * @method CompanyModel addOne(BaseApiModel $model) : CompanyModel
- * @method CompaniesCollection add(BaseApiCollection $collection) : CompaniesCollection
- * @method CompanyModel updateOne(BaseApiModel $apiModel) : CompanyModel
- * @method CompaniesCollection update(BaseApiCollection $collection) : CompaniesCollection
- * @method CompanyModel syncOne(BaseApiModel $apiModel, $with = []) : CompanyModel
+ * @method null|CompanyModel getOne($id, array $with = [])
+ * @method null|CompaniesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method CompanyModel addOne(BaseApiModel $model)
+ * @method CompaniesCollection add(BaseApiCollection $collection)
+ * @method CompanyModel updateOne(BaseApiModel $apiModel)
+ * @method CompaniesCollection update(BaseApiCollection $collection)
+ * @method CompanyModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Companies extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {

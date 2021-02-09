@@ -7,7 +7,10 @@ use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
+use AmoCRM\Exceptions\CollectionKeysNotSequentialException;
+use AmoCRM\Exceptions\CollectionAndResponseKeysNotIndenticalException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
+use AmoCRM\Exceptions\StringCollectionKeyException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\ShortLinks\ShortLinkModel;
 
@@ -16,8 +19,8 @@ use AmoCRM\Models\ShortLinks\ShortLinkModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method ShortLinksCollection add(ShortLinksCollection $collection) : BaseApiCollection
- * @method ShortLinkModel addOne(ShortLinkModel $model) : BaseApiModel
+ * @method ShortLinksCollection add(ShortLinksCollection $collection)
+ * @method ShortLinkModel addOne(ShortLinkModel $model)
  */
 class ShortLinks extends BaseEntity
 {
@@ -65,21 +68,76 @@ class ShortLinks extends BaseEntity
     }
 
     /**
+     * Проверка ключей коллекции сущности
+     * Для корректного сопоставления переданных и возвращённых моделей
+     * необходимо убедиться, что коллекция не имеет строковых ключей,
+     * и числовые ключи являются последовательностью [0 .. size-1]
+     *
+     * @param BaseApiCollection
+     *
+     * @throws StringCollectionKeyException
+     * @throws ArrayKeysNotSequentialException
+     */
+    protected function validateCollectionKeys(BaseApiCollection $collection): void
+    {
+        $collectionKeys = $collection->keys();
+
+        $stringKeys = array_filter(
+            $collectionKeys,
+            'is_string'
+        );
+
+        if (!empty($stringKeys)) {
+            throw new StringCollectionKeyException();
+        }
+
+        $collectionKeysCount = count($collectionKeys);
+        $estimatedKeys       = $collectionKeysCount === 0 ?
+                                [] : range(0, $collectionKeysCount - 1);
+
+        if ($collectionKeys !== $estimatedKeys) {
+            throw new CollectionKeysNotSequentialException();
+        }
+    }
+
+    /**
+     * Проверка ключей коллекции и добавление коллекции сущностей
+     * @param BaseApiCollection
+     *
+     * @return BaseApiCollection
+     *
+     * @throws StringCollectionKeyException
+     * @throws ArrayKeysNotSequentialException
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function add(BaseApiCollection $collection): BaseApiCollection
+    {
+        $this->validateCollectionKeys($collection);
+
+        return parent::add($collection);
+    }
+
+    /**
      * @param BaseApiCollection|ShortLinksCollection $collection
      * @param array $response
      *
+     * @throws CollectionAndResponseKeysNotIndenticalException
      * @return BaseApiCollection
      */
     protected function processAction(BaseApiCollection $collection, array $response): BaseApiCollection
     {
         $entities = $this->getEntitiesFromResponse($response);
-        foreach ($entities as $entity) {
-            if (array_key_exists('url', $entity)) {
-                $initialEntity = $collection->getBy('entity_id', $entity['metadata']['entity_id']);
-                if (!empty($initialEntity)) {
-                    $this->processModelAction($initialEntity, $entity);
-                }
-            }
+
+        $collectionKeys = $collection->keys();
+        $entitiesKeys   = array_keys($entities);
+
+        if ($collectionKeys !== $entitiesKeys) {
+            throw new CollectionAndResponseKeysNotIndenticalException();
+        }
+
+        foreach ($entitiesKeys as $key) {
+            $this->processModelAction($collection[$key], $entities[$key]);
         }
 
         return $collection;

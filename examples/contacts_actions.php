@@ -68,7 +68,7 @@ try {
 $links = new LinksCollection();
 $links->add($lead);
 try {
-    $apiClient->contacts()->unlink($contactModel, $links);
+    $apiClient->contacts()->link($contactModel, $links);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;

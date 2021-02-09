@@ -203,4 +203,17 @@ class MailMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataIn
     {
         return [];
     }
+
+
+    /**
+     * @return array
+     */
+    public function toComplexApi(): array
+    {
+        $result = $this->toApi();
+
+        $result['category'] = BaseUnsortedModel::CATEGORY_CODE_MAIL;
+
+        return $result;
+    }
 }

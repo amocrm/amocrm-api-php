@@ -54,7 +54,7 @@ class CallModel extends BaseApiModel implements HasIdInterface
             $this->setId($call['id']);
         }
 
-        if (isset($call['uniq'])) {
+        if (isset($call['uniq']) && is_string($call['uniq'])) {
             $this->setUniq($call['uniq']);
         }
 

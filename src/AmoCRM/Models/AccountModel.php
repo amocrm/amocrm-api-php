@@ -124,6 +124,12 @@ class AccountModel extends BaseApiModel
     /** @var string|null */
     protected $currency;
 
+    /** @var string|null */
+    protected $currencySymbol;
+
+    /** @var bool */
+    protected $isTechnicalAccount;
+
     /**
      * @return int
      */
@@ -318,12 +324,14 @@ class AccountModel extends BaseApiModel
             ->setUpdatedAt($account['updated_at'])
             ->setCurrentUserId((int)$account['current_user_id'])
             ->setCountry((string)$account['country'])
-            ->setCountry((string)$account['currency'])
+            ->setCurrency((string)$account['currency'])
+            ->setCurrencySymbol((string)($account['currency_symbol'] ?? null) ?: null)
             ->setUnsortedOn((bool)$account['is_unsorted_on'])
             ->setMobileFeatureVersion((int)$account['mobile_feature_version'])
             ->setCustomersMode($account['customers_mode'])
             ->setLossReasonsEnabled((bool)$account['is_loss_reason_enabled'])
             ->setHelpbotEnabled((bool)$account['is_helpbot_enabled'])
+            ->setIsTechnicalAccount((bool)$account['is_technical_account'])
             ->setContactNameDisplayOrder((int)$account['contact_name_display_order']);
 
         if (isset($account[self::AMOJO_ID])) {
@@ -392,12 +400,14 @@ class AccountModel extends BaseApiModel
             'current_user_id' => $this->getCurrentUserId(),
             'country' => $this->getCountry(),
             'currency' => $this->getCurrency(),
+            'currency_symbol' => $this->getCurrencySymbol(),
             'is_unsorted_on' => $this->getIsUnsortedOn(),
             'mobile_feature_version' => $this->getMobileFeatureVersion(),
             'customers_mode' => $this->getCustomersMode(),
             'is_loss_reason_enabled' => $this->getIsLossReasonsEnabled(),
             'is_helpbot_enabled' => $this->getIsHelpbotEnabled(),
             'contact_name_display_order' => $this->getContactNameDisplayOrder(),
+            'is_technical_account' => $this->getIsTechnicalAccount(),
         ];
 
         if (!is_null($this->getAmojoId())) {
@@ -695,6 +705,46 @@ class AccountModel extends BaseApiModel
     public function setCurrency(?string $currency): AccountModel
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCurrencySymbol(): ?string
+    {
+        return $this->currencySymbol;
+    }
+
+    /**
+     * @param string|null $currencySymbol
+     *
+     * @return AccountModel
+     */
+    public function setCurrencySymbol(?string $currencySymbol): AccountModel
+    {
+        $this->currencySymbol = $currencySymbol;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsTechnicalAccount(): bool
+    {
+        return $this->isTechnicalAccount;
+    }
+
+    /**
+     * @param bool $isTechnicalAccount
+     *
+     * @return AccountModel
+     */
+    public function setIsTechnicalAccount(bool $isTechnicalAccount): AccountModel
+    {
+        $this->isTechnicalAccount = $isTechnicalAccount;
 
         return $this;
     }

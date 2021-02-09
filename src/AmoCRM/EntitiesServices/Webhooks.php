@@ -18,7 +18,7 @@ use AmoCRM\Models\BaseApiModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method WebhooksCollection get(WebhookModel $filter = null, array $with = []) : ?TasksCollection
+ * @method null|WebhooksCollection get(WebhookModel $filter = null, array $with = [])
  */
 class Webhooks extends BaseEntity
 {

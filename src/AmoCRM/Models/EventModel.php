@@ -19,6 +19,7 @@ class EventModel extends BaseApiModel
     public const CATALOG_ELEMENT_NAME = 'catalog_element_name';
     public const CUSTOMER_NAME = 'customer_name';
     public const CATALOG_NAME = 'catalog_name';
+    public const NOTE = 'note';
 
     /**
      * @var string
@@ -330,6 +331,7 @@ class EventModel extends BaseApiModel
             self::CATALOG_ELEMENT_NAME,
             self::CUSTOMER_NAME,
             self::CATALOG_NAME,
+            self::NOTE,
         ];
     }
 }

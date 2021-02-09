@@ -20,11 +20,11 @@ use AmoCRM\Models\UserModel;
  * Class Users
  *
  * @package AmoCRM\EntitiesServices
- * @method UserModel getOne($id, array $with = []) : ?RoleModel
- * @method UsersCollection get(BaseEntityFilter $filter = null, array $with = []) : ?UsersCollection
- * @method UserModel addOne(BaseApiModel $model) : UserModel
- * @method UsersCollection add(BaseApiCollection $collection) : UsersCollection
- * @method UserModel syncOne(BaseApiModel $apiModel, $with = []) : UserModel
+ * @method null|UserModel getOne($id, array $with = [])
+ * @method null|UsersCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method UserModel addOne(BaseApiModel $model)
+ * @method UsersCollection add(BaseApiCollection $collection)
+ * @method UserModel syncOne(BaseApiModel $apiModel, $with = [])
  */
 class Users extends BaseEntity implements HasPageMethodsInterface
 {

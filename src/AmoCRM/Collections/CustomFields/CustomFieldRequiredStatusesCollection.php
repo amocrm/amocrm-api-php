@@ -10,14 +10,14 @@ use AmoCRM\Models\CustomFields\RequiredStatusModel;
  *
  * @package AmoCRM\Collections
  *
- * @method RequiredStatusModel current() : ?BaseApiModel
- * @method RequiredStatusModel last() : ?BaseApiModel
- * @method RequiredStatusModel first() : ?BaseApiModel
- * @method RequiredStatusModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, RequiredStatusModel $value) : BaseApiCollection
- * @method self prepend(RequiredStatusModel $value) : BaseApiCollection
- * @method self add(RequiredStatusModel $value) : BaseApiCollection
- * @method RequiredStatusModel getBy($key, $value) : ?BaseApiModel
+ * @method null|RequiredStatusModel current()
+ * @method null|RequiredStatusModel last()
+ * @method null|RequiredStatusModel first()
+ * @method null|RequiredStatusModel offsetGet($offset)
+ * @method CustomFieldRequiredStatusesCollection offsetSet($offset, RequiredStatusModel $value)
+ * @method CustomFieldRequiredStatusesCollection prepend(RequiredStatusModel $value)
+ * @method CustomFieldRequiredStatusesCollection add(RequiredStatusModel $value)
+ * @method null|RequiredStatusModel getBy($key, $value)
  */
 class CustomFieldRequiredStatusesCollection extends BaseApiCollection
 {

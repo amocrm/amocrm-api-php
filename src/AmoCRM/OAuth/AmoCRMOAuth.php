@@ -81,9 +81,9 @@ class AmoCRMOAuth
      * AmoCRMOAuth constructor.
      * @param string $clientId
      * @param string $clientSecret
-     * @param string $redirectUri
+     * @param null|string $redirectUri
      */
-    public function __construct(string $clientId, string $clientSecret, string $redirectUri)
+    public function __construct(string $clientId, string $clientSecret, ?string $redirectUri)
     {
         $this->oauthProvider = new AmoCRM(
             [
@@ -178,6 +178,43 @@ class AmoCRMOAuth
         $this->oauthProvider->setBaseDomain($domain);
 
         return $this;
+    }
+
+    /**
+     * Установка протокола
+     * @param string $protocol
+     *
+     * @return $this
+     */
+    public function setProtocol(string $protocol): self
+    {
+        $this->oauthProvider->setProtocol($protocol);
+
+        return $this;
+    }
+
+    /**
+     * Установка адреса перенаправления
+     *
+     * @param string|null $redirectUri
+     *
+     * @return $this
+     */
+    public function setRedirectUri(?string $redirectUri): self
+    {
+        $this->oauthProvider->setRedirectUri($redirectUri);
+
+        return $this;
+    }
+
+    /**
+     * Получаем oAuth провайдера
+     *
+     * @return AmoCRM
+     */
+    public function getOAuthProvider(): AmoCRM
+    {
+        return $this->oauthProvider;
     }
 
     /**
@@ -346,7 +383,7 @@ class AmoCRMOAuth
                 AmoCRMApiRequest::GET_REQUEST,
                 sprintf(
                     '%s%s%s',
-                    $this->oauthProvider->protocol,
+                    $this->oauthProvider->getProtocol(),
                     $this->oauthProvider->getBaseDomain(),
                     '/oauth2/account/subdomain'
                 ),
@@ -403,7 +440,7 @@ class AmoCRMOAuth
 
         $clientBaseUri = new Uri($this->redirectUri);
         $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
-        $validationData = new ValidationData();
+        $validationData = new ValidationData(null, 60);
         $validationData->setAudience($clientBaseUri);
 
         // Проверка на истечение и адресата токена

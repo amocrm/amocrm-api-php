@@ -33,7 +33,9 @@ class AmoCRMApiRequest
 
     public const CONNECT_TIMEOUT = 5;
     public const REQUEST_TIMEOUT = 20;
-    public const USER_AGENT = 'amoCRM-API-Library/1.0';
+    //TODO Do not forget to change this on each release
+    public const LIBRARY_VERSION = '0.4.4';
+    public const USER_AGENT = 'amoCRM-API-Library/' . self::LIBRARY_VERSION;
 
     public const SUCCESS_STATUSES = [
         StatusCodeInterface::STATUS_OK,
@@ -502,7 +504,7 @@ class AmoCRMApiRequest
 
         $this->checkHttpStatus($response, $decodedBody);
 
-        return $decodedBody;
+        return $decodedBody ?? [];
     }
 
     /**
@@ -513,6 +515,7 @@ class AmoCRMApiRequest
         $headers = $this->oAuthClient->getAuthorizationHeaders($this->accessToken);
 
         $headers['User-Agent'] = self::USER_AGENT;
+        $headers['X-Library-Version'] = self::USER_AGENT;
 
         return $headers;
     }

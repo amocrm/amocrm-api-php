@@ -12,14 +12,14 @@ use AmoCRM\Models\Customers\CustomerModel;
  *
  * @package AmoCRM\Collections\Customers
  *
- * @method CustomerModel current() : ?BaseApiModel
- * @method CustomerModel last() : ?BaseApiModel
- * @method CustomerModel first() : ?BaseApiModel
- * @method CustomerModel offsetGet($offset) : ?BaseApiModel
- * @method self offsetSet($offset, CustomerModel $value) : BaseApiCollection
- * @method self prepend(CustomerModel $value) : BaseApiCollection
- * @method self add(CustomerModel $value) : BaseApiCollection
- * @method CustomerModel getBy($key, $value) : ?BaseApiModel
+ * @method null|CustomerModel current()
+ * @method null|CustomerModel last()
+ * @method null|CustomerModel first()
+ * @method null|CustomerModel offsetGet($offset)
+ * @method CustomersCollection offsetSet($offset, CustomerModel $value)
+ * @method CustomersCollection prepend(CustomerModel $value)
+ * @method CustomersCollection add(CustomerModel $value)
+ * @method null|CustomerModel getBy($key, $value)
  */
 class CustomersCollection extends BaseApiCollection implements HasPagesInterface
 {

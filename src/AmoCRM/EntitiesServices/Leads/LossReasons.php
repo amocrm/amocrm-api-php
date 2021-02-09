@@ -21,12 +21,12 @@ use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
  *
  * @package AmoCRM\EntitiesServices\Leads
  *
- * @method LossReasonModel getOne($id, array $with = []) : ?LossReasonModel
- * @method LossReasonsCollection get(BaseEntityFilter $filter = null, array $with = []) : ?LossReasonsCollection
- * @method LossReasonModel addOne(LossReasonModel $model) : LossReasonModel
- * @method LossReasonsCollection add(BaseApiCollection $collection) : LossReasonsCollection
- * @method LossReasonModel updateOne(LossReasonModel $apiModel) : LossReasonModel
- * @method LossReasonModel syncOne(LossReasonModel $apiModel, $with = []) : LossReasonModel
+ * @method null|LossReasonModel getOne($id, array $with = [])
+ * @method null|LossReasonsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method LossReasonModel addOne(LossReasonModel $model)
+ * @method LossReasonsCollection add(BaseApiCollection $collection)
+ * @method LossReasonModel updateOne(LossReasonModel $apiModel)
+ * @method LossReasonModel syncOne(LossReasonModel $apiModel, $with = [])
  */
 class LossReasons extends BaseEntity implements HasDeleteMethodInterface
 {

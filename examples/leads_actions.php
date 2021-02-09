@@ -7,6 +7,8 @@ use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Collections\NullTagsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Filters\LeadsFilter;
+use AmoCRM\Models\CompanyModel;
+use AmoCRM\Models\ContactModel;
 use AmoCRM\Models\CustomFieldsValues\TextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\NullCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\TextCustomFieldValueCollection;
@@ -45,6 +47,37 @@ try {
     die;
 }
 
+//Создадим сделку с заполненым бюджетом и привязанными контактами и компанией
+$lead = new LeadModel();
+$lead->setName('Название сделки')
+    ->setPrice(54321)
+    ->setContacts(
+        (new ContactsCollection())
+            ->add(
+                (new ContactModel())
+                    ->setId(19346889)
+            )
+            ->add(
+                (new ContactModel())
+                    ->setId(19324717)
+                    ->setIsMain(true)
+            )
+    )
+    ->setCompany(
+        (new CompanyModel())
+            ->setId(19187743)
+    );
+
+$leadsCollection = new LeadsCollection();
+$leadsCollection->add($lead);
+
+try {
+    $leadsCollection = $leadsService->add($leadsCollection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
 //Создадим сделку с заполненым полем типа текст
 $lead = new LeadModel();
 $leadCustomFieldsValues = new CustomFieldsValuesCollection();
@@ -58,8 +91,6 @@ $leadCustomFieldsValues->add($textCustomFieldValueModel);
 $lead->setCustomFieldsValues($leadCustomFieldsValues);
 $lead->setName('Example');
 
-$leadsCollection = new LeadsCollection();
-$leadsCollection->add($lead);
 try {
     $lead = $leadsService->addOne($lead);
 } catch (AmoCRMApiException $e) {
@@ -108,18 +139,15 @@ foreach ($leads as $lead) {
     //Получим значение поля по его ID
     if (!empty($customFields)) {
         $textField = $customFields->getBy('fieldId', 269303);
-        $textFieldValues = $textField->getValues();
+        $textFieldValueCollection = $textField->getValues();
     } else {
-        $textField = new CustomFieldsValuesCollection();
+        //Если полей нет
+        $customFields = new CustomFieldsValuesCollection();
+        $textField = (new TextCustomFieldValuesModel())->setFieldId(269303);
+        $textFieldValueCollection = (new TextCustomFieldValueCollection());
+        $customFields->add($textField);
     }
 
-    //Если значения нет, то создадим новый объект поля и добавим его в коллекцию значений
-    if (empty($textFieldValues)) {
-        $textFieldValues = (new TextCustomFieldValuesModel())->setFieldId(269303);
-        $textField->add($textFieldValues);
-    }
-
-    //Установим значение поля
     $textField->setValues(
         (new TextCustomFieldValueCollection())
             ->add(
@@ -132,6 +160,8 @@ foreach ($leads as $lead) {
     $textField->setValues(
         (new NullCustomFieldValueCollection())
     );
+
+    $lead->setCustomFieldsValues($customFields);
 
     //Установим название
     $lead->setName('Example lead');
@@ -168,9 +198,10 @@ if ($leadContacts) {
 }
 
 //Получим элемент, прикрепленный к сделке по его ID
-$element = $lead->getCatalogElementsLinks()->getBy('id', 425909);
+if ($lead->getCatalogElementsLinks()) {
+    $element = $lead->getCatalogElementsLinks()->getBy('id', 425909);
 //Так как по-умолчанию в связи хранится минимум информации, то вызовем метод syncOne - чтобы засинхронить модель с amoCRM
-$syncedElement = $apiClient->catalogElements()->syncOne($element);
+    $syncedElement = $apiClient->catalogElements()->syncOne($element);
 
-var_dump($syncedElement);
-die;
+    var_dump($syncedElement);
+}

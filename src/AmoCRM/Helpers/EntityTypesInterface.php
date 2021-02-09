@@ -5,12 +5,15 @@ namespace AmoCRM\Helpers;
 interface EntityTypesInterface
 {
     public const LEADS = 'leads';
+    public const LEAD = 'lead';
     public const LEADS_PIPELINES = 'pipelines';
     public const LEADS_LOSS_REASONS = 'loss_reasons';
     public const LEADS_STATUSES = 'statuses';
     public const CONTACTS = 'contacts';
+    public const CONTACT = 'contact';
     public const CATALOGS = 'catalogs';
     public const COMPANIES = 'companies';
+    public const COMPANY = 'company';
     public const CUSTOMERS = 'customers';
     public const CUSTOMERS_TRANSACTIONS = 'transactions';
     public const EVENTS = 'events';
@@ -31,6 +34,7 @@ interface EntityTypesInterface
     public const PRODUCTS = 'products';
     public const SETTINGS = 'settings';
     public const SHORT_LINKS = 'short_links';
+    public const LINKS = 'links';
 
 
     public const CUSTOM_FIELDS = 'custom_fields';

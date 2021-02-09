@@ -2,9 +2,13 @@
 
 namespace AmoCRM\Models\Unsorted;
 
-use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use Illuminate\Contracts\Support\Arrayable;
+
+use function array_key_exists;
+use function is_null;
+use function time;
 
 class FormsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInterface
 {
@@ -44,6 +48,11 @@ class FormsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataI
     protected $visitorUid;
 
     /**
+     * @var int|null
+     */
+    protected $formType;
+
+    /**
      * @param array $metadata
      *
      * @return self
@@ -55,10 +64,20 @@ class FormsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataI
         $model->setFormId($metadata['form_id']);
         $model->setFormName($metadata['form_name']);
         $model->setFormPage($metadata['form_page']);
-        $model->setIp($metadata['ip']);
         $model->setFormSentAt($metadata['form_sent_at']);
-        $model->setReferer($metadata['referer']);
-        $model->setVisitorUid($metadata['visitor_uid']);
+
+        if (array_key_exists('ip', $metadata) && !is_null($metadata['ip'])) {
+            $model->setIp($metadata['ip']);
+        }
+        if (array_key_exists('form_type', $metadata) && !is_null($metadata['form_type'])) {
+            $model->setFormType((int)$metadata['form_type']);
+        }
+        if (array_key_exists('referer', $metadata) && !is_null($metadata['referer'])) {
+            $model->setReferer($metadata['referer']);
+        }
+        if (array_key_exists('visitor_uid', $metadata) && !is_null($metadata['visitor_uid'])) {
+            $model->setVisitorUid($metadata['visitor_uid']);
+        }
 
         return $model;
     }
@@ -76,6 +95,7 @@ class FormsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataI
             'form_sent_at' => $this->getFormSentAt(),
             'referer' => $this->getReferer(),
             'visitor_uid' => $this->getVisitorUid(),
+            'form_type' => $this->getFormType(),
         ];
     }
 
@@ -212,20 +232,56 @@ class FormsMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataI
         return $this;
     }
 
+    public function setFormType(int $formType): self
+    {
+        $this->formType = $formType;
+
+        return $this;
+    }
+
+    public function getFormType(): ?int
+    {
+        return $this->formType;
+    }
+
     /**
      * @param string|null $requestId
      * @return array
      */
     public function toApi(?string $requestId = "0"): array
     {
-        return [
-            'form_id' => $this->getFormId(),
-            'form_name' => $this->getFormName(),
-            'form_page' => $this->getFormPage(),
-            'ip' => $this->getIp(),
+        $result = [
+            'form_id'      => $this->getFormId(),
+            'form_name'    => $this->getFormName(),
+            'form_page'    => $this->getFormPage(),
             'form_sent_at' => $this->getFormSentAt() ?? time(),
-            'referer' => $this->getReferer(),
-            'visitor_uid' => $this->getVisitorUid(),
         ];
+
+        if ($ip = $this->getIp()) {
+            $result['ip'] = $ip;
+        }
+        if ($referer = $this->getReferer()) {
+            $result['referer'] = $referer;
+        }
+        if ($formType = $this->getFormType()) {
+            $result['form_type'] = $formType;
+        }
+        if ($visitorUid = $this->getVisitorUid()) {
+            $result['visitor_uid'] = $visitorUid;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function toComplexApi(): array
+    {
+        $result = $this->toApi();
+
+        $result['category'] = BaseUnsortedModel::CATEGORY_CODE_FORMS;
+
+        return $result;
     }
 }
