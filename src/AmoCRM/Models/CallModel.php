@@ -6,6 +6,8 @@ use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\CallTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
 
+use function is_null;
+
 /**
  * Class CallModel
  *
@@ -40,6 +42,31 @@ class CallModel extends BaseApiModel implements HasIdInterface
      * @var BaseApiModel|null
      */
     protected $entity;
+
+    /**
+     * @var int|null
+     */
+    protected $responsibleUserId;
+
+    /**
+     * @var int|null
+     */
+    protected $createdBy;
+
+    /**
+     * @var int|null
+     */
+    protected $updatedBy;
+
+    /**
+     * @var int|null
+     */
+    protected $createdAt;
+
+    /**
+     * @var int|null
+     */
+    protected $updatedAt;
 
     /**
      * @param array $call
@@ -86,6 +113,8 @@ class CallModel extends BaseApiModel implements HasIdInterface
             $this->setCallStatus($call['direction']);
         }
 
+
+
         return $model;
     }
 
@@ -107,6 +136,11 @@ class CallModel extends BaseApiModel implements HasIdInterface
             'entity_id' => $this->getEntityId(),
             'entity_type' => $this->getEntityType(),
             'entity' => $this->getEntity() ? $this->getEntity()->toArray() : null,
+            'responsible_user_id' => $this->getResponsibleUserId(),
+            'created_by' => $this->getCreatedBy(),
+            'updated_by' => $this->getUpdatedBy(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt(),
         ];
     }
 
@@ -120,7 +154,7 @@ class CallModel extends BaseApiModel implements HasIdInterface
             $this->setRequestId($requestId);
         }
 
-        return [
+        $call = [
             'uniq' => $this->getUniq(),
             'duration' => $this->getDuration(),
             'source' => $this->getSource(),
@@ -131,6 +165,28 @@ class CallModel extends BaseApiModel implements HasIdInterface
             'direction' => $this->getDirection(),
             'request_id' => $this->getRequestId(),
         ];
+
+        if ($responsibleUserId = $this->getResponsibleUserId()) {
+            $call['responsible_user_id'] = $responsibleUserId;
+        }
+
+        if ($createdBy = $this->getCreatedBy()) {
+            $call['created_by'] = $createdBy;
+        }
+
+        if ($updatedBy = $this->getUpdatedBy()) {
+            $call['updated_by'] = $updatedBy;
+        }
+
+        if ($createdAt = $this->getCreatedAt()) {
+            $call['created_at'] = $createdAt;
+        }
+
+        if ($updatedAt = $this->getUpdatedAt()) {
+            $call['updated_at'] = $updatedAt;
+        }
+
+        return $call;
     }
 
     /**
@@ -228,6 +284,106 @@ class CallModel extends BaseApiModel implements HasIdInterface
     public function setEntity(?BaseApiModel $entity): CallModel
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getResponsibleUserId(): ?int
+    {
+        return $this->responsibleUserId;
+    }
+
+    /**
+     * @param int $responsibleUserId
+     *
+     * @return CallModel
+     */
+    public function setResponsibleUserId(int $responsibleUserId): CallModel
+    {
+        $this->responsibleUserId = $responsibleUserId;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getCreatedBy(): ?int
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param int $createdBy
+     *
+     * @return CallModel
+     */
+    public function setCreatedBy(int $createdBy): CallModel
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getUpdatedBy(): ?int
+    {
+        return $this->updatedBy;
+    }
+
+    /**
+     * @param int $updatedBy
+     *
+     * @return CallModel
+     */
+    public function setUpdatedBy(int $updatedBy): CallModel
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getCreatedAt(): ?int
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param int $createdAt
+     *
+     * @return CallModel
+     */
+    public function setCreatedAt(int $createdAt): CallModel
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getUpdatedAt(): ?int
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param int $updatedAt
+     *
+     * @return CallModel
+     */
+    public function setUpdatedAt(int $updatedAt): CallModel
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

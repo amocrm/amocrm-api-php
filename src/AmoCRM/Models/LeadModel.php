@@ -1057,9 +1057,9 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
     }
 
     /**
-     * @return string[]
+     * @return null|string[]
      */
-    public function getComplexRequestIds(): array
+    public function getComplexRequestIds(): ?array
     {
         return $this->complexRequestIds;
     }
@@ -1081,7 +1081,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
      */
     public function isMerged(): bool
     {
-        return $this->isMerged;
+        return $this->isMerged ?? false;
     }
 
     /**

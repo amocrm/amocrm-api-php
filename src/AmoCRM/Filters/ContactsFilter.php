@@ -253,7 +253,7 @@ class ContactsFilter extends BaseEntityFilter implements HasPagesInterface, HasO
             }
         }
 
-        $this->customFieldsValues = $customFieldsValues;
+        $this->customFieldsValues = $cfFilter;
 
         return $this;
     }

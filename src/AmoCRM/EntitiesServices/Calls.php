@@ -12,7 +12,6 @@ use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CallModel;
-use AmoCRM\Models\ContactModel;
 use AmoCRM\Models\Factories\EntityFactory;
 
 /**

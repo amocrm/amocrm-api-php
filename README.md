@@ -491,6 +491,7 @@ $leadsService = $apiClient->leads();
 |AmoCRM\Exceptions\InvalidArgumentException          |Передан не верный аргумент                                                                           |
 |AmoCRM\Exceptions\NotAvailableForActionException    |Метод не доступен для вызова                                                                         |
 |AmoCRM\Exceptions\AmoCRMApiPageNotAvailableException|Выбрасывается в случае запроса следующей или предыдущей страницы коллекции, когда страница отстутвует|
+|AmoCRM\Exceptions\AmoCRMMissedTokenException        |Не установлен Access Token для выполнения запроса                                                    |
 
 У выброшенных Exception есть следующие методы:
 1. ```getErrorCode()```

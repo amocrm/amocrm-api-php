@@ -255,7 +255,7 @@ class CustomersFilter extends BaseEntityFilter implements HasPagesInterface, Has
             }
         }
 
-        $this->customFieldsValues = $customFieldsValues;
+        $this->customFieldsValues = $cfFilter;
 
         return $this;
     }
