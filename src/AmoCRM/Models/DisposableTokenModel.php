@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AmoCRM\AmoCRM\Models;
 
 use AmoCRM\Models\BaseApiModel;
+use DateTimeImmutable;
 use Lcobucci\JWT\Token;
 
 /**
@@ -184,13 +185,16 @@ class DisposableTokenModel extends BaseApiModel
     public static function fromJwtToken(Token $jwtToken): self
     {
         $disposableToken = new self();
-        $disposableToken->setTokenUuid($jwtToken->getClaim('jti'))
-            ->setClientUuid($jwtToken->getClaim('client_uuid'))
-            ->setAccountDomain($jwtToken->getClaim('iss'))
-            ->setAccountSubdomain($jwtToken->getClaim('subdomain'))
-            ->setAccountId((int)$jwtToken->getClaim('account_id'))
-            ->setUserId((int)$jwtToken->getClaim('user_id'))
-            ->setExpiresAt((int)$jwtToken->getClaim('exp'));
+        $claims = $jwtToken->claims();
+        /** @var DateTimeImmutable $expiresAt */
+        $expiresAt = $claims->get('exp');
+        $disposableToken->setTokenUuid($claims->get('jti'))
+            ->setClientUuid($claims->get('client_uuid'))
+            ->setAccountDomain($claims->get('iss'))
+            ->setAccountSubdomain($claims->get('subdomain'))
+            ->setAccountId((int)$claims->get('account_id'))
+            ->setUserId((int)$claims->get('user_id'))
+            ->setExpiresAt($expiresAt->getTimestamp());
 
         return $disposableToken;
     }

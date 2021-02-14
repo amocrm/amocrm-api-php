@@ -3,6 +3,7 @@
 namespace AmoCRM\OAuth;
 
 use AmoCRM\AmoCRM\Exceptions\DisposableTokenExpiredException;
+use AmoCRM\AmoCRM\Exceptions\DisposableTokenInvalidDestinationException;
 use AmoCRM\AmoCRM\Exceptions\DisposableTokenVerificationFailedException;
 use AmoCRM\AmoCRM\Models\AccountDomainModel;
 use AmoCRM\AmoCRM\Models\DisposableTokenModel;
@@ -21,16 +22,23 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TooManyRedirectsException;
 use GuzzleHttp\Psr7\Uri;
-use Lcobucci\JWT\Parser;
+use Lcobucci\Clock\FrozenClock;
+use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\ValidationData;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Validation\Constraint;
+use Lcobucci\JWT\Validation\Constraint\PermittedFor;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Constraint\ValidAt;
+use Lcobucci\JWT\Validation\ConstraintViolation;
 use League\OAuth2\Client\Grant\AuthorizationCode;
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
+
+use function sprintf;
 
 /**
  * Class AmoCRMOAuth
@@ -419,34 +427,50 @@ class AmoCRMOAuth
 
     /**
      * Расшифровывает полученный одноразовый токен и возвращает модель
+     *
      * @param string $token
      *
      * @return DisposableTokenModel
+     *
      * @throws DisposableTokenExpiredException
      * @throws DisposableTokenVerificationFailedException
+     * @throws DisposableTokenInvalidDestinationException
      *
      * @link https://www.amocrm.ru/developers/content/web_sdk/mechanics
      */
     public function parseDisposableToken(string $token): DisposableTokenModel
     {
-        $jwtToken = (new Parser())->parse($token);
         $signer = new Sha256();
-
-        // Проверка подписи токена
-        $isVerified = $jwtToken->verify($signer, new Key($this->clientSecret));
-        if (!$isVerified) {
-            throw new DisposableTokenVerificationFailedException('Disposable token verification failed');
-        }
+        $key = InMemory::plainText($this->clientSecret);
 
         $clientBaseUri = new Uri($this->redirectUri);
         $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
-        $validationData = new ValidationData(null, 60);
-        $validationData->setAudience($clientBaseUri);
+        $constraints = [
+            // Проверка подписи
+            new SignedWith($signer, $key),
+            // Проверим наш ли адресат
+            new PermittedFor($clientBaseUri),
+            // Проверка жизни токена, с 4.2 deprecated use LooseValidAt
+            new ValidAt(FrozenClock::fromUTC()),
+        ];
 
-        // Проверка на истечение и адресата токена
-        $isValid = $jwtToken->validate($validationData);
-        if (!$isValid) {
-            throw new DisposableTokenExpiredException('Disposable token expired');
+        $configuration = Configuration::forSymmetricSigner($signer, $key);
+        $jwtToken = $configuration->parser()->parse($token);
+
+        try {
+            /** @var Constraint $constraint */
+            foreach ($constraints as $constraint) {
+                $constraint->assert($jwtToken);
+            }
+        } catch (ConstraintViolation $e) {
+            switch (true) {
+                case $constraint instanceof SignedWith:
+                    throw DisposableTokenVerificationFailedException::create();
+                case $constraint instanceof PermittedFor:
+                    throw DisposableTokenInvalidDestinationException::create();
+                case $constraint instanceof ValidAt:
+                    throw DisposableTokenExpiredException::create();
+            }
         }
 
         return DisposableTokenModel::fromJwtToken($jwtToken);
