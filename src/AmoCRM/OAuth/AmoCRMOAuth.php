@@ -26,6 +26,7 @@ use GuzzleHttp\Psr7\Uri;
 use Lcobucci\Clock\FrozenClock;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Hmac\Sha512;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Validation\Constraint;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
@@ -490,21 +491,23 @@ class AmoCRMOAuth
      * @throws DisposableTokenVerificationFailedException
      * @link https://www.amocrm.ru/developers/content/web_sdk/mechanics
      */
-    public function parseBotDisposableToken(string $token, string $receiverPath): BotDisposableTokenModel
+    public function parseBotDisposableToken(string $token, string $receiverPath = null): BotDisposableTokenModel
     {
-        $signer = new Sha256();
+        $signer = new Sha512();
         $key = InMemory::plainText($this->clientSecret);
 
-        $clientBaseUri = new Uri($receiverPath);
-        $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
         $constraints = [
             // Проверка подписи
             new SignedWith($signer, $key),
-            // Проверим наш ли адресат
-            new PermittedFor($clientBaseUri),
             // Проверка жизни токена, с 4.2 deprecated use LooseValidAt
             new ValidAt(FrozenClock::fromUTC()),
         ];
+
+        if ($receiverPath !== null) {
+            $clientBaseUri = new Uri($receiverPath);
+            $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
+            $constraints[] = new PermittedFor($clientBaseUri); // Проверим наш ли адресат
+        }
 
         $configuration = Configuration::forSymmetricSigner($signer, $key);
         $jwtToken = $configuration->parser()->parse($token);

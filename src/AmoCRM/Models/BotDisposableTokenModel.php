@@ -29,9 +29,6 @@ class BotDisposableTokenModel extends BaseApiModel
     /** @var string */
     protected $accountSubdomain;
 
-    /** @var string */
-    protected $hookUrl;
-
     /** @var int */
     protected $accountId;
 
@@ -150,26 +147,6 @@ class BotDisposableTokenModel extends BaseApiModel
     /**
      * @return string
      */
-    public function getHookUrl(): string
-    {
-        return $this->hookUrl;
-    }
-
-    /**
-     * @param string $hookUrl
-     *
-     * @return BotDisposableTokenModel
-     */
-    public function setHookUrl(string $hookUrl): BotDisposableTokenModel
-    {
-        $this->hookUrl = $hookUrl;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getBotType(): string
     {
         return $this->botType;
@@ -251,7 +228,6 @@ class BotDisposableTokenModel extends BaseApiModel
             ->setAccountSubdomain($claims->get('subdomain'))
             ->setAccountId((int)$claims->get('account_id'))
             ->setEntityId($claims->get('entity_id'))
-            ->setHookUrl($claims->get('aud'))
             ->setEntityType((string)$entityType)
             ->setBotType($claims->get('bot_type'))
             ->setExpiresAt($expiresAt->getTimestamp());
@@ -273,7 +249,6 @@ class BotDisposableTokenModel extends BaseApiModel
             'entity_id' => $this->getEntityId(),
             'entity_type' => $this->getEntityType(),
             'bot_type' => $this->getBotType(),
-            'hook_url' => $this->getHookUrl(),
         ];
     }
 
