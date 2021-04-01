@@ -216,9 +216,9 @@ class BotDisposableTokenModel extends BaseApiModel
         /** @var DateTimeImmutable $expiresAt */
         $expiresAt = $claims->get('exp');
         $entityType = $claims->get('entity_type');
-        if ($entityType === 2) {
+        if ($entityType == 2) {
             $entityType = EntityTypesInterface::LEADS;
-        } elseif ($entityType === 12) {
+        } elseif ($entityType == 12) {
             $entityType = EntityTypesInterface::CUSTOMERS;
         }
 
