@@ -43,6 +43,7 @@ interface EntityTypesInterface
     public const DEFAULT_CATALOG_TYPE_STRING = 'regular';
     public const INVOICES_CATALOG_TYPE_STRING = 'invoices';
     public const PRODUCTS_CATALOG_TYPE_STRING = 'products';
+    public const SUPPLIERS_CATALOG_TYPE_STRING = 'suppliers';
 
     public const MIN_CATALOG_ID = 1000;
 }
