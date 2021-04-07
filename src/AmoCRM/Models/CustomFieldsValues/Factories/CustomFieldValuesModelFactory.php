@@ -106,7 +106,10 @@ class CustomFieldValuesModelFactory
                 $model = new TrackingDataCustomFieldValuesModel();
                 break;
             default:
-                trigger_error('Unprocessable field type. Please upgrade amoCRM library.', E_NOTICE);
+                trigger_error(
+                    "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
+                    E_NOTICE
+                );
                 $model = new BaseCustomFieldValuesModel();
                 break;
         }

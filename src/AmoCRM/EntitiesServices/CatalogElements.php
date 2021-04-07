@@ -2,6 +2,8 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Collections\LinksCollection;
+use AmoCRM\EntitiesServices\Traits\LinkMethodsTrait;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
@@ -27,10 +29,13 @@ use AmoCRM\Models\CatalogElementModel;
  * @method CatalogElementsCollection add(BaseApiCollection $collection)
  * @method CatalogElementModel updateOne(BaseApiModel $apiModel)
  * @method CatalogElementsCollection update(BaseApiCollection $collection)
+ * @method LinksCollection link(BaseApiModel $mainEntity, $linkedEntities)
+ * @method bool unlink(BaseApiModel $mainEntity, $linkedEntities)
  */
-class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterface
+class CatalogElements extends BaseEntityIdEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {
     use PageMethodsTrait;
+    use LinkMethodsTrait;
 
     /**
      * @var string
@@ -163,5 +168,17 @@ class CatalogElements extends BaseEntityIdEntity implements HasPageMethodsInterf
         $this->setEntityId($apiModel->getCatalogId());
 
         return parent::syncOne($apiModel, $with);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAvailableLinkTypes(): array
+    {
+        return [
+            EntityTypesInterface::CONTACTS,
+            EntityTypesInterface::CATALOG_ELEMENTS_FULL,
+            EntityTypesInterface::COMPANIES,
+        ];
     }
 }

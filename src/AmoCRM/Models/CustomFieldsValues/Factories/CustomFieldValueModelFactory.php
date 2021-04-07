@@ -3,7 +3,6 @@
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
 use AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueModels\TrackingDataCustomFieldValueModel;
-use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Helpers\CustomFieldHelper;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\BaseCustomFieldValueModel;
@@ -26,6 +25,8 @@ use AmoCRM\Models\CustomFieldsValues\ValueModels\StreetAdressCustomFieldValueMod
 use AmoCRM\Models\CustomFieldsValues\ValueModels\TextareaCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\TextCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\UrlCustomFieldValueModel;
+use function trigger_error;
+use const E_NOTICE;
 
 /**
  * Class CustomFieldValueModelFactory
@@ -38,7 +39,6 @@ class CustomFieldValueModelFactory
      * @param array $field
      *
      * @return BaseCustomFieldValueModel
-     * @throws BadTypeException
      */
     public static function createModel(array $field): BaseCustomFieldValueModel
     {
@@ -106,12 +106,12 @@ class CustomFieldValueModelFactory
                 $model = new TrackingDataCustomFieldValueModel();
                 break;
             default:
+                trigger_error(
+                    "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
+                    E_NOTICE
+                );
                 $model = new BaseCustomFieldValueModel();
                 break;
-        }
-
-        if (!isset($model)) {
-            throw new BadTypeException('Unprocessable field type - ' . $fieldType);
         }
 
         return $model;

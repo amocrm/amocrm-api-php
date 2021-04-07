@@ -3,7 +3,6 @@
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
 use AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueCollections\TrackingDataCustomFieldValueCollection;
-use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Helpers\CustomFieldHelper;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\BaseCustomFieldValueCollection;
@@ -27,6 +26,10 @@ use AmoCRM\Models\CustomFieldsValues\ValueCollections\TextareaCustomFieldValueCo
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\TextCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\UrlCustomFieldValueCollection;
 
+use function trigger_error;
+
+use const E_NOTICE;
+
 /**
  * Class CustomFieldValueCollectionFactory
  *
@@ -38,7 +41,6 @@ class CustomFieldValueCollectionFactory
      * @param array $field
      *
      * @return BaseCustomFieldValueCollection
-     * @throws BadTypeException
      */
     public static function createCollection(array $field): BaseCustomFieldValueCollection
     {
@@ -105,10 +107,13 @@ class CustomFieldValueCollectionFactory
             case CustomFieldModel::TYPE_TRACKING_DATA:
                 $collection = new TrackingDataCustomFieldValueCollection();
                 break;
-        }
-
-        if (!isset($collection)) {
-            throw new BadTypeException('Unprocessable field type - ' . $fieldType);
+            default:
+                trigger_error(
+                    "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
+                    E_NOTICE
+                );
+                $collection = new BaseCustomFieldValueCollection();
+                break;
         }
 
         foreach ($field['values'] as $value) {
