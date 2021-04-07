@@ -24,6 +24,8 @@ class AccountModel extends BaseApiModel
     public const VERSION = 'version';
     /** @var string Настройки форматов времени */
     public const DATETIME_SETTINGS = 'datetime_settings';
+    /** @var string Язык аккаунта */
+    public const ACCOUNT_LANGUAGE = 'lang';
 
     /** @var string Покупатели недоступны. */
     public const CUSTOMERS_MODE_UNAVAILABLE = 'unavailable';
@@ -129,6 +131,9 @@ class AccountModel extends BaseApiModel
 
     /** @var bool */
     protected $isTechnicalAccount;
+
+    /** @var string */
+    protected $lang;
 
     /**
      * @return int
@@ -381,6 +386,10 @@ class AccountModel extends BaseApiModel
             $accountModel->setTaskTypes($collection);
         }
 
+        if (isset($account[self::ACCOUNT_LANGUAGE])) {
+            $accountModel->setLang($account[self::ACCOUNT_LANGUAGE]);
+        }
+
         return $accountModel;
     }
 
@@ -436,6 +445,10 @@ class AccountModel extends BaseApiModel
 
         if (!is_null($this->getDatetimeSettings())) {
             $result['datetime_settings'] = $this->getDatetimeSettings();
+        }
+
+        if (!is_null($this->getLang())) {
+            $result['lang'] = $this->getLang();
         }
 
         return $result;
@@ -718,6 +731,25 @@ class AccountModel extends BaseApiModel
     }
 
     /**
+     * @return string|null
+     */
+    public function getLang(): ?string
+    {
+        return $this->lang;
+    }
+
+    /**
+     * @param string $lang
+     * @return $this
+     */
+    public function setLang(string $lang): self
+    {
+        $this->lang = $lang;
+
+        return $this;
+    }
+
+    /**
      * @param string|null $currencySymbol
      *
      * @return AccountModel
@@ -762,6 +794,7 @@ class AccountModel extends BaseApiModel
             self::TASK_TYPES,
             self::VERSION,
             self::DATETIME_SETTINGS,
+            self::ACCOUNT_LANGUAGE,
         ];
     }
 
