@@ -170,8 +170,6 @@ class CustomFields extends BaseEntityTypeEntity implements HasDeleteMethodInterf
     /**
      * @param BaseApiModel|CustomFieldModel $apiModel
      * @param array $entity
-     *
-     * @throws BadTypeException
      */
     protected function processModelAction(BaseApiModel &$apiModel, array $entity): void
     {
