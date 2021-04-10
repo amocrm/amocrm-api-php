@@ -23,11 +23,11 @@ class MultitextCustomFieldValueModel extends BaseEnumCustomFieldValueModel
     }
 
     /**
-     * @param string $enum
+     * @param null|string $enum
      *
      * @return MultitextCustomFieldValueModel
      */
-    public function setEnum(string $enum): MultitextCustomFieldValueModel
+    public function setEnum(?string $enum): MultitextCustomFieldValueModel
     {
         $this->enum = $enum;
 

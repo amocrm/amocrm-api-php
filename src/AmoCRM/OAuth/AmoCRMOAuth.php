@@ -482,7 +482,7 @@ class AmoCRMOAuth
      * Расшифровывает полученный одноразовый токен от бота и возвращает модель
      *
      * @param string $token
-     * @param string $receiverPath
+     * @param string|null $receiverPath
      *
      * @return BotDisposableTokenModel
      *
