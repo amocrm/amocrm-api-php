@@ -30,6 +30,7 @@ interface EntityTypesInterface
     public const CUSTOMERS_STATUSES = 'statuses';
     public const WIDGETS = 'widgets';
     public const STATUS_RIGHTS = 'status_rights';
+    public const CATALOG_RIGHTS = 'catalog_rights';
     public const CALLS = 'calls';
     public const PRODUCTS = 'products';
     public const SETTINGS = 'settings';
