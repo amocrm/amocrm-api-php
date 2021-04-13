@@ -24,8 +24,8 @@ class AccountModel extends BaseApiModel
     public const VERSION = 'version';
     /** @var string Настройки форматов времени */
     public const DATETIME_SETTINGS = 'datetime_settings';
-    /** @var string Язык страниц публичных счетов */
-    public const INVOICES_LANGUAGE = 'invoices_lang';
+    /** @var string Настройки для публичных счетов */
+    public const INVOICES_SETTINGS = 'invoices_settings';
 
     /** @var string Покупатели недоступны. */
     public const CUSTOMERS_MODE_UNAVAILABLE = 'unavailable';
@@ -132,8 +132,8 @@ class AccountModel extends BaseApiModel
     /** @var bool */
     protected $isTechnicalAccount;
 
-    /** @var string */
-    protected $invoicesLang;
+    /** @var array */
+    protected $invoicesSettings;
 
     /**
      * @return int
@@ -386,8 +386,8 @@ class AccountModel extends BaseApiModel
             $accountModel->setTaskTypes($collection);
         }
 
-        if (isset($account[self::INVOICES_LANGUAGE])) {
-            $accountModel->setInvoicesLang($account[self::INVOICES_LANGUAGE]);
+        if (isset($account[self::INVOICES_SETTINGS])) {
+            $accountModel->setInvoicesSettings($account[self::INVOICES_SETTINGS]);
         }
 
         return $accountModel;
@@ -447,8 +447,8 @@ class AccountModel extends BaseApiModel
             $result['datetime_settings'] = $this->getDatetimeSettings();
         }
 
-        if (!is_null($this->getInvoicesLang())) {
-            $result['invoices_lang'] = $this->getInvoicesLang();
+        if (!is_null($this->getInvoicesSettings())) {
+            $result['invoices_settings'] = $this->getInvoicesSettings();
         }
 
         return $result;
@@ -731,25 +731,6 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @return string|null
-     */
-    public function getInvoicesLang(): ?string
-    {
-        return $this->invoicesLang;
-    }
-
-    /**
-     * @param string $invoicesLang
-     * @return $this
-     */
-    public function setInvoicesLang(string $invoicesLang): self
-    {
-        $this->invoicesLang = $invoicesLang;
-
-        return $this;
-    }
-
-    /**
      * @param string|null $currencySymbol
      *
      * @return AccountModel
@@ -757,6 +738,25 @@ class AccountModel extends BaseApiModel
     public function setCurrencySymbol(?string $currencySymbol): AccountModel
     {
         $this->currencySymbol = $currencySymbol;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInvoicesSettings(): ?array
+    {
+        return $this->invoicesSettings;
+    }
+
+    /**
+     * @param array $invoicesSettings
+     * @return $this
+     */
+    public function setInvoicesSettings(array $invoicesSettings): self
+    {
+        $this->invoicesSettings = $invoicesSettings;
 
         return $this;
     }
@@ -794,7 +794,7 @@ class AccountModel extends BaseApiModel
             self::TASK_TYPES,
             self::VERSION,
             self::DATETIME_SETTINGS,
-            self::INVOICES_LANGUAGE,
+            self::INVOICES_SETTINGS,
         ];
     }
 
