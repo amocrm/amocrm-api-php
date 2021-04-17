@@ -110,7 +110,7 @@ class CallModel extends BaseApiModel implements HasIdInterface
         }
 
         if (isset($call['direction'])) {
-            $this->setCallStatus($call['direction']);
+            $this->setDirection($call['direction']);
         }
 
 
