@@ -6,10 +6,12 @@ use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Models\BaseApiModel;
 use Illuminate\Contracts\Support\Arrayable;
 
+use function is_scalar;
+
 class SipMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInterface
 {
     /**
-     * @var int|null
+     * @var int|string|null
      */
     protected $from;
 
@@ -93,12 +95,16 @@ class SipMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInt
     }
 
     /**
-     * @param int|null $from
+     * @param int|null|string $from
      * @return SipMetadata
      */
-    public function setFrom(?int $from): SipMetadata
+    public function setFrom($from): SipMetadata
     {
-        $this->from = $from;
+        if (is_scalar($from)) {
+            $this->from = $from;
+        } else {
+            $this->from = null;
+        }
 
         return $this;
     }
