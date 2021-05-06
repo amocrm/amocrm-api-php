@@ -6,6 +6,7 @@ use AmoCRM\AmoCRM\Exceptions\DisposableTokenExpiredException;
 use AmoCRM\AmoCRM\Exceptions\DisposableTokenInvalidDestinationException;
 use AmoCRM\AmoCRM\Exceptions\DisposableTokenVerificationFailedException;
 use AmoCRM\AmoCRM\Models\AccountDomainModel;
+use AmoCRM\AmoCRM\Models\BotDisposableTokenModel;
 use AmoCRM\AmoCRM\Models\DisposableTokenModel;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Exceptions\AmoCRMApiConnectExceptionException;
@@ -25,6 +26,7 @@ use GuzzleHttp\Psr7\Uri;
 use Lcobucci\Clock\FrozenClock;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Hmac\Sha512;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Validation\Constraint;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
@@ -474,5 +476,58 @@ class AmoCRMOAuth
         }
 
         return DisposableTokenModel::fromJwtToken($jwtToken);
+    }
+
+    /**
+     * Расшифровывает полученный одноразовый токен от бота и возвращает модель
+     *
+     * @param string $token
+     * @param string|null $receiverPath
+     *
+     * @return BotDisposableTokenModel
+     *
+     * @throws DisposableTokenExpiredException
+     * @throws DisposableTokenInvalidDestinationException
+     * @throws DisposableTokenVerificationFailedException
+     * @link https://www.amocrm.ru/developers/content/web_sdk/mechanics
+     */
+    public function parseBotDisposableToken(string $token, string $receiverPath = null): BotDisposableTokenModel
+    {
+        $signer = new Sha512();
+        $key = InMemory::plainText($this->clientSecret);
+
+        $constraints = [
+            // Проверка подписи
+            new SignedWith($signer, $key),
+            // Проверка жизни токена, с 4.2 deprecated use LooseValidAt
+            new ValidAt(FrozenClock::fromUTC()),
+        ];
+
+        if ($receiverPath !== null) {
+            $clientBaseUri = new Uri($receiverPath);
+            $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
+            $constraints[] = new PermittedFor($clientBaseUri); // Проверим наш ли адресат
+        }
+
+        $configuration = Configuration::forSymmetricSigner($signer, $key);
+        $jwtToken = $configuration->parser()->parse($token);
+
+        try {
+            /** @var Constraint $constraint */
+            foreach ($constraints as $constraint) {
+                $constraint->assert($jwtToken);
+            }
+        } catch (ConstraintViolation $e) {
+            switch (true) {
+                case $constraint instanceof SignedWith:
+                    throw DisposableTokenVerificationFailedException::create();
+                case $constraint instanceof PermittedFor:
+                    throw DisposableTokenInvalidDestinationException::create();
+                case $constraint instanceof ValidAt:
+                    throw DisposableTokenExpiredException::create();
+            }
+        }
+
+        return BotDisposableTokenModel::fromJwtToken($jwtToken);
     }
 }
