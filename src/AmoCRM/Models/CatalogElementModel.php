@@ -69,6 +69,13 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     protected $quantity;
 
     /**
+     * ID поля типа цена, используется в метаданных при привязке к сущности
+     *
+     * @var int|null
+     */
+    protected $priceId;
+
+    /**
      * @var int|null
      */
     protected $accountId;
@@ -328,6 +335,9 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         if (isset($catalogElement['metadata']['quantity'])) {
             $catalogElementModel->setQuantity($catalogElement['metadata']['quantity']);
         }
+        if (isset($catalogElement['metadata']['price_id'])) {
+            $catalogElementModel->setPriceId($catalogElement['metadata']['price_id']);
+        }
         if (isset($catalogElement['metadata']['catalog_id'])) {
             $catalogElementModel->setCatalogId($catalogElement['metadata']['catalog_id']);
         }
@@ -358,8 +368,9 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
                 : $this->getCustomFieldsValues()->toArray(),
             'account_id' => $this->getAccountId(),
             'metadata'   => [
-                'quantity'   => $this->getQuantity(),
-                'catalog_id'   => $this->getCatalogId(),
+                'quantity' => $this->getQuantity(),
+                'catalog_id' => $this->getCatalogId(),
+                'price_id' => $this->getPriceId(),
             ]
         ];
     }
@@ -421,6 +432,26 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     }
 
     /**
+     * @return int|null
+     */
+    public function getPriceId(): ?int
+    {
+        return $this->priceId;
+    }
+
+    /**
+     * @param int|null $priceId
+     *
+     * @return CatalogElementModel
+     */
+    public function setPriceId(?int $priceId): CatalogElementModel
+    {
+        $this->priceId = $priceId;
+
+        return $this;
+    }
+
+    /**
      * @return array|null
      */
     protected function getMetadataForLink(): ?array
@@ -434,6 +465,8 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         if (!is_null($this->getQuantity())) {
             $result['quantity'] = $this->getQuantity();
         }
+
+        $result['price_id'] = $this->getPriceId();
 
         if (!is_null($this->getCatalogId())) {
             $result['catalog_id'] = $this->getCatalogId();

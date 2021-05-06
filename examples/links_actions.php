@@ -97,6 +97,22 @@ try {
     die;
 }
 
+//Привяжем элемент каталога к сделке с ценой, которая хранится у товаров в доп поле типа ЦЕНА с ID 123456
+$linksCollection = new LinksCollection();
+$linksCollection->add(
+    (new CatalogElementModel())
+        ->setCatalogId(2079)
+        ->setId(174395)
+        ->setQuantity(10)
+        ->setPriceId(123456)
+);
+try {
+    $linksCollection = $apiClient->customers()->link((new LeadModel())->setId(1), $linksCollection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
 
 
 //Привяжем компанию к контакту
