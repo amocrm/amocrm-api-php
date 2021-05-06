@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models;
+namespace AmoCRM\Models;
 
 use AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\Models\BaseApiModel;
 use DateTimeImmutable;
 use Lcobucci\JWT\Token;
 
 /**
  * Class DisposableBotTokenModel
  *
- * @package AmoCRM\AmoCRM\Models
+ * @package AmoCRM\Models
  */
 class BotDisposableTokenModel extends BaseApiModel
 {
