@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Exceptions;
-
-use AmoCRM\Exceptions\AmoCRMApiException;
+namespace AmoCRM\Exceptions;
 
 /**
  * Class DisposableTokenVerificationFailedException
  *
  * Выбрасывается в случае неверной подписи токена
  *
- * @package AmoCRM\AmoCRM\Exceptions
+ * @package AmoCRM\Exceptions
  */
 class DisposableTokenVerificationFailedException extends AmoCRMApiException
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Models\Customers;
+namespace AmoCRM\Models\Customers;
 
 /**
  * Модель для начисления/списания баллов покупателю
  *
- * @package AmoCRM\AmoCRM\Models\Customers
+ * @package AmoCRM\Models\Customers
  */
 class BonusPointsActionModel
 {

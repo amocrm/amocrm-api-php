@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
-use AmoCRM\AmoCRM\Models\CustomFieldsValues\TrackingDataCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\TrackingDataCustomFieldValuesModel;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFieldsValues\BaseCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\BirthdayCustomFieldValuesModel;

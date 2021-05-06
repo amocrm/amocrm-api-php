@@ -1,8 +1,8 @@
 <?php
 
-namespace AmoCRM\AmoCRM\EntitiesServices\Customers;
+namespace AmoCRM\EntitiesServices\Customers;
 
-use AmoCRM\AmoCRM\Models\Customers\BonusPointsActionModel;
+use AmoCRM\Models\Customers\BonusPointsActionModel;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Exceptions\AmoCRMApiException;
@@ -13,7 +13,7 @@ use AmoCRM\Helpers\EntityTypesInterface;
 /**
  * Сервис для списания/начисления бонусных баллов покупателю
  *
- * @package AmoCRM\AmoCRM\EntitiesServices\Customers
+ * @package AmoCRM\EntitiesServices\Customers
  */
 class BonusPoints
 {

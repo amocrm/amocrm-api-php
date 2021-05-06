@@ -1,6 +1,6 @@
 <?php
 
-use AmoCRM\AmoCRM\Exceptions\{DisposableTokenExpiredException,
+use AmoCRM\Exceptions\{DisposableTokenExpiredException,
     DisposableTokenInvalidDestinationException,
     DisposableTokenVerificationFailedException};
 

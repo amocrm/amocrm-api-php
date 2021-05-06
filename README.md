@@ -35,11 +35,11 @@ composer require amocrm/amocrm-api-library
 $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
 ```
 
-Так же предоставляется фабрика для создания объектов `\AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory`.
+Так же предоставляется фабрика для создания объектов `\AmoCRM\Client\AmoCRMApiClientFactory`.
 Для ее использования вам нужно реализовать интерфейс `\AmoCRM\OAuth\OAuthConfigInterface` и `\AmoCRM\OAuth\OAuthServiceInterface`
 
 ```php
-$apiClientFactory = new \AmoCRM\AmoCRM\Client\AmoCRMApiClientFactory($oAuthConfig, $oAuthService);
+$apiClientFactory = new \AmoCRM\Client\AmoCRMApiClientFactory($oAuthConfig, $oAuthService);
 $apiClient = $apiClientFactory->make();
 ```
 

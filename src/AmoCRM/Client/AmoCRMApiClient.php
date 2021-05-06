@@ -2,9 +2,9 @@
 
 namespace AmoCRM\Client;
 
-use AmoCRM\AmoCRM\EntitiesServices\Customers\BonusPoints;
-use AmoCRM\AmoCRM\EntitiesServices\Links;
-use AmoCRM\AmoCRM\EntitiesServices\Products;
+use AmoCRM\EntitiesServices\Customers\BonusPoints;
+use AmoCRM\EntitiesServices\Links;
+use AmoCRM\EntitiesServices\Products;
 use AmoCRM\EntitiesServices\Calls;
 use AmoCRM\EntitiesServices\Customers\Transactions;
 use AmoCRM\EntitiesServices\Leads\LossReasons;

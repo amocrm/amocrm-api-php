@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models;
-
-use AmoCRM\Models\BaseApiModel;
+namespace AmoCRM\Models;
 
 /**
  * Class AccountDomainModel
  *
- * @package AmoCRM\AmoCRM\Models
+ * @package AmoCRM\Models
  */
 class AccountDomainModel extends BaseApiModel
 {
