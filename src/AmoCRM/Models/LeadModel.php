@@ -11,6 +11,7 @@ use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\TagsCollection;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
+use AmoCRM\Models\Interfaces\CanReturnDeletedInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Interfaces\TypeAwareInterface;
 use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
@@ -20,12 +21,17 @@ use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 
 use function is_null;
 
-class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
+class LeadModel extends BaseApiModel implements
+    TypeAwareInterface,
+    CanBeLinkedInterface,
+    HasIdInterface,
+    CanReturnDeletedInterface
 {
     use RequestIdTrait;
     use GetLinkTrait;
 
     public const LOST_STATUS_ID = 143;
+    public const WON_STATUS_ID = 142;
     public const CATALOG_ELEMENTS = 'catalog_elements';
     public const IS_PRICE_BY_ROBOT = 'is_price_modified_by_robot';
     public const LOSS_REASON = 'loss_reason';
@@ -980,6 +986,7 @@ class LeadModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedI
             self::CONTACTS,
             self::SOURCE_ID,
             self::LOSS_REASON,
+            self::ONLY_DELETED,
         ];
     }
 

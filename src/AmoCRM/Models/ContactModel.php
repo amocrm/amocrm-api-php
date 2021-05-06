@@ -6,6 +6,7 @@ use AmoCRM\Collections\SocialProfiles\SocialProfilesCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
+use AmoCRM\Models\Interfaces\CanReturnDeletedInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Interfaces\TypeAwareInterface;
 use AmoCRM\Models\Traits\GetLinkTrait;
@@ -19,7 +20,11 @@ use AmoCRM\Models\Traits\RequestIdTrait;
 
 use function is_null;
 
-class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
+class ContactModel extends BaseApiModel implements
+    TypeAwareInterface,
+    CanBeLinkedInterface,
+    HasIdInterface,
+    CanReturnDeletedInterface
 {
     use RequestIdTrait;
     use GetLinkTrait;
@@ -742,6 +747,7 @@ class ContactModel extends BaseApiModel implements TypeAwareInterface, CanBeLink
             self::CUSTOMERS,
             self::CATALOG_ELEMENTS,
             self::SOCIAL_PROFILES,
+            self::ONLY_DELETED,
         ];
     }
 
