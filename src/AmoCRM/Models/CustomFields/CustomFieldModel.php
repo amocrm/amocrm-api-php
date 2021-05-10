@@ -39,6 +39,7 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     public const TYPE_CATEGORY = 'category';
     public const TYPE_PRICE = 'price';
     public const TYPE_TRACKING_DATA = 'tracking_data';
+    public const TYPE_LINKED_ENTITY = 'linked_entity';
     /** @deprecated */
     public const TYPE_ORG_LEGAL_NAME = 'org_legal_name';
 

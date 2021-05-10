@@ -9,17 +9,34 @@ namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
  */
 class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
 {
-    public const FIELD_SKU            = 'sku';
-    public const FIELD_DESCRIPTION    = 'description';
-    public const FIELD_UNIT_PRICE     = 'unit_price';
-    public const FIELD_QUANTITY       = 'quantity';
-    public const FIELD_UNIT_TYPE      = 'unit_type';
-    public const FIELD_DISCOUNT       = 'discount';
-    public const FIELD_VAT_RATE_ID    = 'vat_rate_id';
-    public const FIELD_EXTERNAL_UID   = 'external_uid';
+    /** Артикул товара */
+    public const FIELD_SKU = 'sku';
+    /** Описание товара */
+    public const FIELD_DESCRIPTION = 'description';
+    /** Цена за единицу товара */
+    public const FIELD_UNIT_PRICE = 'unit_price';
+    /** Количство единиц товара */
+    public const FIELD_QUANTITY = 'quantity';
+    /** Единица измерения товвара */
+    public const FIELD_UNIT_TYPE = 'unit_type';
+    /** Скидка на товар */
+    public const FIELD_DISCOUNT = 'discount';
+    /** Поля подлежит к удалению, хранился ID системы налогооблажения, но больше поле не поддерживается */
+    /** @deprecated */
+    public const FIELD_VAT_RATE_ID = 'vat_rate_id';
+    /** процент НДС */
+    public const FIELD_VAT_RATE_VALUE = 'vat_rate_value';
+    /** ID товара во внешней системе */
+    public const FIELD_EXTERNAL_UID = 'external_uid';
+    /** ID элемента списка товаров amoCRM */
+    public const FIELD_PRODUCT_ID = 'product_id';
+    /** Сколько бонусных баллов будет начислено покупателю, если счет привязан к нему и переходит в статус оплачено */
+    public const FIELD_BONUS_POINTS_PER_PURCHASE = 'bonus_points_per_purchase';
 
-    public const FIELD_DISCOUNT_TYPE_PERCENTAGE  = 'percentage';
-    public const FIELD_DISCOUNT_TYPE_AMOUNT      = 'amount';
+    /** Скдика - процент от стоимости товара */
+    public const FIELD_DISCOUNT_TYPE_PERCENTAGE = 'percentage';
+    /** Скдика - цифра от стоимости товара */
+    public const FIELD_DISCOUNT_TYPE_AMOUNT = 'amount';
 
     /**
      * @var string|int|null
@@ -62,6 +79,19 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     protected $externalUid;
 
     /**
+     * @var int|null
+     */
+    protected $productId;
+
+    /**
+     * @var int|null
+     */
+    protected $vatRateValue;
+
+    /** @var int|null */
+    protected $bonusPointsPerPurchase;
+
+    /**
      * @param int|string|null $value
      *
      * @return BaseCustomFieldValueModel
@@ -90,8 +120,10 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
             ->setUnitType($value['value'][self::FIELD_UNIT_TYPE] ?? null)
             ->setDiscount($discount)
             ->setVatRateId($value['value'][self::FIELD_VAT_RATE_ID] ?? null)
+            ->setVatRateValue($value['value'][self::FIELD_VAT_RATE_VALUE] ?? null)
             ->setExternalUid($value['value'][self::FIELD_EXTERNAL_UID] ?? null)
-
+            ->setProductId($value['value'][self::FIELD_PRODUCT_ID] ?? null)
+            ->setBonusPointsPerPurchase($value['value'][self::FIELD_BONUS_POINTS_PER_PURCHASE] ?? null)
         ;
 
         return $model;
@@ -257,6 +289,66 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getProductId(): ?int
+    {
+        return $this->productId;
+    }
+
+    /**
+     * @param int|null $productId
+     *
+     * @return ItemsCustomFieldValueModel
+     */
+    public function setProductId(?int $productId): ItemsCustomFieldValueModel
+    {
+        $this->productId = $productId;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getVatRateValue(): ?int
+    {
+        return $this->vatRateValue;
+    }
+
+    /**
+     * @param int|null $vatRateValue
+     *
+     * @return ItemsCustomFieldValueModel
+     */
+    public function setVatRateValue(?int $vatRateValue): ItemsCustomFieldValueModel
+    {
+        $this->vatRateValue = $vatRateValue;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getBonusPointsPerPurchase(): ?int
+    {
+        return $this->bonusPointsPerPurchase;
+    }
+
+    /**
+     * @param int|null $bonusPointsPerPurchase
+     *
+     * @return ItemsCustomFieldValueModel
+     */
+    public function setBonusPointsPerPurchase(?int $bonusPointsPerPurchase): ItemsCustomFieldValueModel
+    {
+        $this->bonusPointsPerPurchase = $bonusPointsPerPurchase;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return [
@@ -267,7 +359,10 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
             self::FIELD_UNIT_TYPE => $this->getUnitType(),
             self::FIELD_DISCOUNT => $this->getDiscount(),
             self::FIELD_VAT_RATE_ID => $this->getVatRateId(),
+            self::FIELD_VAT_RATE_VALUE => $this->getVatRateValue(),
             self::FIELD_EXTERNAL_UID => $this->getExternalUid(),
+            self::FIELD_PRODUCT_ID => $this->getProductId(),
+            self::FIELD_BONUS_POINTS_PER_PURCHASE => $this->getBonusPointsPerPurchase(),
         ];
     }
 
