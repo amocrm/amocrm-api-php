@@ -17,6 +17,7 @@ use AmoCRM\Models\AccountSettings\TaskType;
  * @method TaskTypesCollection prepend(TaskType $value)
  * @method TaskTypesCollection add(TaskType $value)
  * @method null|TaskType getBy($key, $value)
+ * @method TaskTypesCollection fromArray($array)
  */
 class TaskTypesCollection extends BaseApiCollection
 {

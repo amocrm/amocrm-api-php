@@ -17,6 +17,7 @@ use AmoCRM\Models\AccountSettings\UsersGroup;
  * @method UsersGroupsCollection prepend(UsersGroup $value)
  * @method UsersGroupsCollection add(UsersGroup $value)
  * @method null|UsersGroup getBy($key, $value)
+ * @method UsersGroupsCollection fromArray($array)
  */
 class UsersGroupsCollection extends BaseApiCollection
 {

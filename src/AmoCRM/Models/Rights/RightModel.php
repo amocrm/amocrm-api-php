@@ -12,10 +12,10 @@ use AmoCRM\Models\BaseApiModel;
  */
 class RightModel extends BaseApiModel
 {
-    public const RIGHTS_DENIED = 'D';
-    public const RIGHTS_FULL = 'A';
-    public const RIGHTS_GROUP = 'G';
-    public const RIGHTS_LINKED = 'L';
+    public const RIGHTS_DENIED = 'D'; //D - Deny
+    public const RIGHTS_FULL = 'A'; //A - Allow
+    public const RIGHTS_GROUP = 'G'; //G - Group
+    public const RIGHTS_LINKED = 'L'; //L - Linked
     public const RIGHTS_ONLY_RESPONSIBLE = 'M'; //M - Main
 
     public const ACTION_ADD = 'add';
@@ -605,7 +605,7 @@ class RightModel extends BaseApiModel
             'mail_access' => $this->getMailAccess(),
             'catalog_rights' => $this->getCatalogRights(),
         ];
-        
+
         if (($catalogAccess = $this->getCatalogAccess()) !== null) {
             $result['catalog_access'] = $catalogAccess;
         }
