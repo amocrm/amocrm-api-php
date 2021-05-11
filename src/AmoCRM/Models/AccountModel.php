@@ -24,6 +24,8 @@ class AccountModel extends BaseApiModel
     public const VERSION = 'version';
     /** @var string Настройки форматов времени */
     public const DATETIME_SETTINGS = 'datetime_settings';
+    /** @var string Настройки для публичных счетов */
+    public const INVOICES_SETTINGS = 'invoices_settings';
 
     /** @var string Покупатели недоступны. */
     public const CUSTOMERS_MODE_UNAVAILABLE = 'unavailable';
@@ -129,6 +131,9 @@ class AccountModel extends BaseApiModel
 
     /** @var bool */
     protected $isTechnicalAccount;
+
+    /** @var array */
+    protected $invoicesSettings;
 
     /**
      * @return int
@@ -381,6 +386,10 @@ class AccountModel extends BaseApiModel
             $accountModel->setTaskTypes($collection);
         }
 
+        if (isset($account[self::INVOICES_SETTINGS])) {
+            $accountModel->setInvoicesSettings($account[self::INVOICES_SETTINGS]);
+        }
+
         return $accountModel;
     }
 
@@ -436,6 +445,10 @@ class AccountModel extends BaseApiModel
 
         if (!is_null($this->getDatetimeSettings())) {
             $result['datetime_settings'] = $this->getDatetimeSettings();
+        }
+
+        if (!is_null($this->getInvoicesSettings())) {
+            $result['invoices_settings'] = $this->getInvoicesSettings();
         }
 
         return $result;
@@ -730,6 +743,25 @@ class AccountModel extends BaseApiModel
     }
 
     /**
+     * @return array
+     */
+    public function getInvoicesSettings(): ?array
+    {
+        return $this->invoicesSettings;
+    }
+
+    /**
+     * @param array $invoicesSettings
+     * @return $this
+     */
+    public function setInvoicesSettings(array $invoicesSettings): self
+    {
+        $this->invoicesSettings = $invoicesSettings;
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function getIsTechnicalAccount(): bool
@@ -762,6 +794,7 @@ class AccountModel extends BaseApiModel
             self::TASK_TYPES,
             self::VERSION,
             self::DATETIME_SETTINGS,
+            self::INVOICES_SETTINGS,
         ];
     }
 
