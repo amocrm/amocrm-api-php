@@ -7,6 +7,7 @@ use AmoCRM\Collections\TaskTypesCollection;
 use AmoCRM\Collections\UsersGroupsCollection;
 use AmoCRM\Models\AccountSettings\AmojoRights;
 use AmoCRM\Models\AccountSettings\DateTimeSettings;
+use AmoCRM\Models\AccountSettings\InvoicesSettings;
 
 class AccountModel extends BaseApiModel
 {
@@ -132,7 +133,7 @@ class AccountModel extends BaseApiModel
     /** @var bool */
     protected $isTechnicalAccount;
 
-    /** @var array */
+    /** @var null|InvoicesSettings */
     protected $invoicesSettings;
 
     /**
@@ -387,7 +388,9 @@ class AccountModel extends BaseApiModel
         }
 
         if (isset($account[self::INVOICES_SETTINGS])) {
-            $accountModel->setInvoicesSettings($account[self::INVOICES_SETTINGS]);
+            $accountModel->setInvoicesSettings(new InvoicesSettings(
+                $account[self::INVOICES_SETTINGS]['lang'] ?? null
+            ));
         }
 
         return $accountModel;
@@ -665,9 +668,9 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getCurrentUserId()
+    public function getCurrentUserId(): ?int
     {
         return $this->currentUserId;
     }
@@ -743,18 +746,18 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @return array
+     * @return null|InvoicesSettings
      */
-    public function getInvoicesSettings(): ?array
+    public function getInvoicesSettings(): ?InvoicesSettings
     {
         return $this->invoicesSettings;
     }
 
     /**
-     * @param array $invoicesSettings
+     * @param InvoicesSettings $invoicesSettings
      * @return $this
      */
-    public function setInvoicesSettings(array $invoicesSettings): self
+    public function setInvoicesSettings(InvoicesSettings $invoicesSettings): self
     {
         $this->invoicesSettings = $invoicesSettings;
 
