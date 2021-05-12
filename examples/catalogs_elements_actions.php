@@ -10,7 +10,7 @@ use AmoCRM\Models\CatalogModel;
 use GuzzleHttp\Exception\ConnectException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . 'bootstrap.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 
@@ -38,8 +38,7 @@ try {
 }
 
 //Получим каталог по названию
-$catalog = $catalogsCollection->getBy('name', 'Каталог');
-
+$catalog = $catalogsCollection->getBy('name', 'Товары');
 
 //Добавим элемент в каталог (Список)
 $catalogElementsCollection = new CatalogElementsCollection();
@@ -70,10 +69,10 @@ try {
 $nikeElement = $catalogElementsCollection->getBy('name', 'Кросовки Nike');
 if ($nikeElement) {
     //Установим кол-во, так как эта модель будет привязана, данное свойство используется только при привязке к сущности
-    $nikeElement->setQuantity(10);
+    $nikeElement->setQuantity(10.22);
     //Получим сделку по ID
     try {
-        $lead = $apiClient->leads()->getOne(5170965);
+        $lead = $apiClient->leads()->getOne(7397517);
     } catch (AmoCRMApiException $e) {
         printError($e);
         die;
