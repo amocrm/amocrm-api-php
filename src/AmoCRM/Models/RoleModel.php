@@ -53,8 +53,12 @@ class RoleModel extends BaseApiModel implements HasIdInterface
 
         $roleModel
             ->setId($role['id'])
-            ->setName($role['name'])
-            ->setRights(RightModel::fromArray($role['rights']));
+            ->setName($role['name']);
+
+        //Права возвращаются только в сервисе ролей, но при этом модель используется и в сервисе пользователей
+        if (isset($role['rights'])) {
+            $roleModel->setRights(RightModel::fromArray($role['rights']));
+        }
 
         $usersCollection = new UsersCollection();
         if (!empty($role[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::USERS])) {
@@ -74,7 +78,7 @@ class RoleModel extends BaseApiModel implements HasIdInterface
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
-            'right' => $this->getRights()->toArray(),
+            'right' => is_null($this->getRights()) ? null : $this->getRights()->toArray(),
             'users' => is_null($this->getUsers()) ? null : $this->getUsers()->toArray(),
         ];
     }
@@ -137,9 +141,9 @@ class RoleModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @return RightModel
+     * @return null|RightModel
      */
-    public function getRights(): RightModel
+    public function getRights(): ?RightModel
     {
         return $this->rights;
     }
