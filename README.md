@@ -520,6 +520,7 @@ $leadsService = $apiClient->leads();
 |```unsorted```                                               |```\AmoCRM\Filters\UnsortedFilter```       |Фильтр для метода \AmoCRM\EntitiesServices\Unsorted::get                                        |✅                          |
 |```unsorted```                                               |```\AmoCRM\Filters\UnsortedSummaryFilter```|Фильтр для метода \AmoCRM\EntitiesServices\Unsorted::summary                                    |❌                          |
 |```webhooks```                                               |```\AmoCRM\Filters\WebhooksFilter```       |Фильтр для метода получения хуков                                                               |❌                          |
+|Сервисы, где необходима постраничная навигация               |```\AmoCRM\Filters\PagesFilter```          |Фильтр, который подходит для любого сервиса, где есть постаничная навигация                     |❌                          |
 
 
 ## Работа с дополнительными полями сущностей
