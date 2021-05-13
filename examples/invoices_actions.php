@@ -2,7 +2,9 @@
 
 use AmoCRM\AmoCRM\Filters\CatalogsFilter;
 use AmoCRM\Models\CustomFieldsValues\LinkedEntityCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\NumericCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\LinkedEntityCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\NumericCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\LinkedEntityCustomFieldValueModel;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Enum\InvoicesCustomFieldsEnums;
@@ -19,6 +21,7 @@ use AmoCRM\Models\CustomFieldsValues\ValueCollections\SelectCustomFieldValueColl
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\TextCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\ItemsCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\LegalEntityCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\NumericCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\SelectCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\TextCustomFieldValueModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
@@ -190,6 +193,20 @@ $itemsCustomFieldValueModel->setValues(
         )
 );
 $invoiceCustomFieldsValues->add($itemsCustomFieldValueModel);
+//Зададим значение поля Итоговая сумма к оплате
+//Отображается в списке счетов,
+//при заходе в карточку счета, стоимость счета будет рассчитана с учетом товаров, ндс и отображена в карточке счета
+//Если передать некорректную сумму, то до редактирования в интерфейсе, через API будет возвращаться некорректная сумма
+$priceCustomFieldValueModel = new NumericCustomFieldValuesModel();
+$priceCustomFieldValueModel->setFieldCode(InvoicesCustomFieldsEnums::PRICE);
+$priceCustomFieldValueModel->setValues(
+    (new NumericCustomFieldValueCollection())
+        ->add(
+            (new NumericCustomFieldValueModel())
+                ->setValue(100)
+        )
+);
+$invoiceCustomFieldsValues->add($priceCustomFieldValueModel);
 //Зададим Тип НДС
 $vatTypeCustomFieldValueModel = new SelectCustomFieldValuesModel();
 $vatTypeCustomFieldValueModel->setFieldCode(InvoicesCustomFieldsEnums::VAT_TYPE);
