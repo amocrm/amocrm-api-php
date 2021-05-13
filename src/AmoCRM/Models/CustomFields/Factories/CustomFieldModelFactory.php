@@ -11,6 +11,7 @@ use AmoCRM\Models\CustomFields\DateCustomFieldModel;
 use AmoCRM\Models\CustomFields\DateTimeCustomFieldModel;
 use AmoCRM\Models\CustomFields\ItemsCustomFieldModel;
 use AmoCRM\Models\CustomFields\LegalEntityCustomFieldModel;
+use AmoCRM\Models\CustomFields\LinkedEntityCustomFieldModel;
 use AmoCRM\Models\CustomFields\MultiselectCustomFieldModel;
 use AmoCRM\Models\CustomFields\MultitextCustomFieldModel;
 use AmoCRM\Models\CustomFields\NumericCustomFieldModel;
@@ -25,7 +26,7 @@ use AmoCRM\Models\CustomFields\UrlCustomFieldModel;
 
 use function trigger_error;
 
-use const E_NOTICE;
+use const E_USER_NOTICE;
 
 /**
  * Class CustomFieldModelFactory
@@ -101,10 +102,13 @@ class CustomFieldModelFactory
             case CustomFieldModel::TYPE_TRACKING_DATA:
                 $model = TrackingDataCustomFieldModel::fromArray($field);
                 break;
+            case CustomFieldModel::TYPE_LINKED_ENTITY:
+                $model = LinkedEntityCustomFieldModel::fromArray($field);
+                break;
             default:
                 trigger_error(
                     "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
-                    E_NOTICE
+                    E_USER_NOTICE
                 );
                 $model = CustomFieldModel::fromArray($field);
                 break;
@@ -178,10 +182,13 @@ class CustomFieldModelFactory
             case CustomFieldModel::TYPE_TRACKING_DATA:
                 $model = new TrackingDataCustomFieldModel();
                 break;
+            case CustomFieldModel::TYPE_LINKED_ENTITY:
+                $model = new LinkedEntityCustomFieldModel();
+                break;
             default:
                 trigger_error(
                     "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
-                    E_NOTICE
+                    E_USER_NOTICE
                 );
                 $model = new CustomFieldModel();
                 break;

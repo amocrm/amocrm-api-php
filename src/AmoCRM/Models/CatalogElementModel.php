@@ -18,6 +18,9 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     use RequestIdTrait;
     use GetLinkTrait;
 
+    /** @var string Ссылка на печатную форму счета с возможностью оплаты */
+    public const INVOICE_LINK = 'invoice_link';
+
     /**
      * @var int|null
      */
@@ -72,6 +75,13 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
      * @var int|null
      */
     protected $accountId;
+
+    /**
+     * Доступен только в каталоге счетов
+     *
+     * @var string|null
+     */
+    protected $invoiceLink;
 
     /**
      * @return null|int
@@ -279,6 +289,26 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     }
 
     /**
+     * @return string|null
+     */
+    public function getInvoiceLink(): ?string
+    {
+        return $this->invoiceLink;
+    }
+
+    /**
+     * @param string|null $invoiceLink
+     *
+     * @return CatalogElementModel
+     */
+    public function setInvoiceLink(?string $invoiceLink): CatalogElementModel
+    {
+        $this->invoiceLink = $invoiceLink;
+
+        return $this;
+    }
+
+    /**
      * @param array $catalogElement
      *
      * @return self
@@ -314,6 +344,10 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         }
         if (array_key_exists('is_deleted', $catalogElement) && !is_null($catalogElement['is_deleted'])) {
             $catalogElementModel->setIsDeleted($catalogElement['is_deleted']);
+        }
+
+        if (array_key_exists('invoice_link', $catalogElement) && !is_null($catalogElement['invoice_link'])) {
+            $catalogElementModel->setInvoiceLink($catalogElement['invoice_link']);
         }
         if (!empty($catalogElement['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
@@ -357,6 +391,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
                 ? null
                 : $this->getCustomFieldsValues()->toArray(),
             'account_id' => $this->getAccountId(),
+            'invoice_link' => $this->getInvoiceLink(),
             'metadata'   => [
                 'quantity'   => $this->getQuantity(),
                 'catalog_id'   => $this->getCatalogId(),
@@ -440,5 +475,15 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         }
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAvailableWith(): array
+    {
+        return [
+            self::INVOICE_LINK,
+        ];
     }
 }

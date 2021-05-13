@@ -10,6 +10,7 @@ use AmoCRM\Models\Traits\RequestIdTrait;
 use InvalidArgumentException;
 
 use function array_key_exists;
+use function is_numeric;
 
 /**
  * Class CustomFieldModel
@@ -39,6 +40,7 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     public const TYPE_CATEGORY = 'category';
     public const TYPE_PRICE = 'price';
     public const TYPE_TRACKING_DATA = 'tracking_data';
+    public const TYPE_LINKED_ENTITY = 'linked_entity';
     /** @deprecated */
     public const TYPE_ORG_LEGAL_NAME = 'org_legal_name';
 
@@ -46,6 +48,10 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
         EntityTypesInterface::LEADS,
         EntityTypesInterface::CONTACTS,
         EntityTypesInterface::COMPANIES,
+    ];
+
+    protected const CAN_HAVE_SEARCH_IN = [
+        self::TYPE_LINKED_ENTITY,
     ];
 
     protected const CAN_BE_API_ONLY = [
@@ -65,6 +71,12 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
 
     protected const CAN_BE_IS_REQUIRED = [
         EntityTypesInterface::CATALOGS,
+    ];
+
+    protected const CAN_BE_SEARCHED_IN = [
+        EntityTypesInterface::CONTACTS,
+        EntityTypesInterface::COMPANIES,
+        EntityTypesInterface::CONTACTS_AND_COMPANIES,
     ];
 
     /**
@@ -149,6 +161,13 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     protected $trackingCallback;
 
     /**
+     * Используется в интерфейсе счета для предложения результатов быстрого поиска
+     * Указывается сущность (contacts, companies или ID каталога), по которой делаем быстрый поиск из карточки счета
+     * @var null|string
+     */
+    protected $searchIn;
+
+    /**
      * @param array $customField
      *
      * @return CustomFieldModel
@@ -207,6 +226,10 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
             $customFieldModel->setTrackingCallback($customField['tracking_callback']);
         }
 
+        if (array_key_exists('search_in', $customField)) {
+            $customFieldModel->setSearchIn($customField['search_in']);
+        }
+
         return $customFieldModel;
     }
 
@@ -226,6 +249,7 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
             'entity_type' => $this->getEntityType(),
             'required_statuses' => $this->getRequiredStatuses(),
             'tracking_callback' => $this->getTrackingCallback(),
+            'search_in' => $this->getSearchIn(),
         ];
     }
 
@@ -349,6 +373,17 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
             && in_array($this->getEntityType(), self::CAN_BE_IS_VISIBLE, true)
         ) {
             $result['is_visible'] = $this->getIsVisible();
+        }
+
+        if (
+            !is_null($this->getSearchIn())
+            && (
+                in_array($this->getSearchIn(), self::CAN_BE_SEARCHED_IN, true)
+                || is_numeric($this->getSearchIn())
+            )
+            && in_array($this->getType(), self::CAN_HAVE_SEARCH_IN, true)
+        ) {
+            $result['search_in'] = $this->getSearchIn();
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
@@ -604,6 +639,26 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     public function setTrackingCallback(?string $trackingCallback): CustomFieldModel
     {
         $this->trackingCallback = $trackingCallback;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSearchIn(): ?string
+    {
+        return $this->searchIn;
+    }
+
+    /**
+     * @param string|null $searchIn
+     *
+     * @return CustomFieldModel
+     */
+    public function setSearchIn(?string $searchIn): CustomFieldModel
+    {
+        $this->searchIn = $searchIn;
 
         return $this;
     }
