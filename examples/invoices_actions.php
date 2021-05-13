@@ -170,7 +170,6 @@ $invoiceCustomFieldsValues->add($legalEntityCustomFieldValueModel);
 //Зададим товары в счете
 $itemsCustomFieldValueModel = new ItemsCustomFieldValuesModel();
 $itemsCustomFieldValueModel->setFieldCode(InvoicesCustomFieldsEnums::ITEMS);
-//bonus_points_per_purchase: 0
 $itemsCustomFieldValueModel->setValues(
     (new ItemsCustomFieldValueCollection())
         ->add(
@@ -187,6 +186,7 @@ $itemsCustomFieldValueModel->setValues(
                     'type' => ItemsCustomFieldValueModel::FIELD_DISCOUNT_TYPE_AMOUNT, //amount - скидка абсолютная, percentage - скидка в процентах от стоимости товара
                     'value' => 15.15 //15 рублей 15 копеек
                 ])
+                ->setBonusPointsPerPurchase(20) //Сколько бонусных баллов будет начислено за покупку
         )
 );
 $invoiceCustomFieldsValues->add($itemsCustomFieldValueModel);
@@ -197,11 +197,6 @@ $vatTypeCustomFieldValueModel->setValues(
     (new SelectCustomFieldValueCollection())
         ->add((new SelectCustomFieldValueModel())->setValue("НДС начисляется поверх стоимости"))
 );
-//Поддержка кодов для enum значений пока не доступна в API
-//$vatTypeCustomFieldValueModel->setValues(
-//    (new SelectCustomFieldValueCollection())
-//        ->add((new SelectCustomFieldValueModel())->setEnumCode(InvoicesCustomFieldsEnums::VAT_NOT_INCLUDED)) //Также можно пережать setValue и текстовое значение поля
-//);
 $invoiceCustomFieldsValues->add($vatTypeCustomFieldValueModel);
 
 //Установим значения в модель и сохраним
