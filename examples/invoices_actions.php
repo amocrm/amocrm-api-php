@@ -1,6 +1,6 @@
 <?php
 
-use AmoCRM\AmoCRM\Filters\CatalogsFilter;
+use AmoCRM\Filters\CatalogsFilter;
 use AmoCRM\Models\CustomFieldsValues\LinkedEntityCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\NumericCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\LinkedEntityCustomFieldValueCollection;
