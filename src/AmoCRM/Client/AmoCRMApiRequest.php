@@ -515,7 +515,8 @@ class AmoCRMApiRequest
         $headers = $this->oAuthClient->getAuthorizationHeaders($this->accessToken);
 
         $headers['User-Agent'] = self::USER_AGENT;
-        $headers['X-Library-Version'] = self::USER_AGENT;
+        $headers['X-Library-Version'] = self::LIBRARY_VERSION;
+        $headers['X-Client-UUID'] = $this->oAuthClient->getOAuthProvider()->getClientId();
 
         return $headers;
     }
