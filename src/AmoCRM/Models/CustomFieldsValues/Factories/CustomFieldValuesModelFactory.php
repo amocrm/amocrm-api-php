@@ -12,6 +12,7 @@ use AmoCRM\Models\CustomFieldsValues\DateCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\DateTimeCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\ItemsCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\LegalEntityCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\LinkedEntityCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\MultiselectCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\MultitextCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\NumericCustomFieldValuesModel;
@@ -105,10 +106,13 @@ class CustomFieldValuesModelFactory
             case CustomFieldModel::TYPE_TRACKING_DATA:
                 $model = new TrackingDataCustomFieldValuesModel();
                 break;
+            case CustomFieldModel::TYPE_LINKED_ENTITY:
+                $model = new LinkedEntityCustomFieldValuesModel();
+                break;
             default:
                 trigger_error(
                     "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
-                    E_NOTICE
+                    E_USER_NOTICE
                 );
                 $model = new BaseCustomFieldValuesModel();
                 break;

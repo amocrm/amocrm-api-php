@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
+use AmoCRM\Models\CustomFieldsValues\ValueModels\LinkedEntityCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\TrackingDataCustomFieldValueModel;
 use AmoCRM\Helpers\CustomFieldHelper;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
@@ -28,7 +29,7 @@ use AmoCRM\Models\CustomFieldsValues\ValueModels\UrlCustomFieldValueModel;
 
 use function trigger_error;
 
-use const E_NOTICE;
+use const E_USER_NOTICE;
 
 /**
  * Class CustomFieldValueModelFactory
@@ -107,10 +108,13 @@ class CustomFieldValueModelFactory
             case CustomFieldModel::TYPE_TRACKING_DATA:
                 $model = new TrackingDataCustomFieldValueModel();
                 break;
+            case CustomFieldModel::TYPE_LINKED_ENTITY:
+                $model = new LinkedEntityCustomFieldValueModel();
+                break;
             default:
                 trigger_error(
                     "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
-                    E_NOTICE
+                    E_USER_NOTICE
                 );
                 $model = new BaseCustomFieldValueModel();
                 break;

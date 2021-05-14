@@ -12,9 +12,10 @@ use AmoCRM\Models\BaseApiModel;
  */
 class RightModel extends BaseApiModel
 {
-    public const RIGHTS_DENIED = 'D';
-    public const RIGHTS_FULL = 'A';
-    public const RIGHTS_GROUP = 'G';
+    public const RIGHTS_DENIED = 'D'; //D - Deny
+    public const RIGHTS_FULL = 'A'; //A - Allow
+    public const RIGHTS_GROUP = 'G'; //G - Group
+    public const RIGHTS_LINKED = 'L'; //L - Linked
     public const RIGHTS_ONLY_RESPONSIBLE = 'M'; //M - Main
 
     public const ACTION_ADD = 'add';
@@ -60,6 +61,13 @@ class RightModel extends BaseApiModel
             self::ACTION_DELETE,
             self::ACTION_EXPORT,
         ],
+        EntityTypesInterface::CATALOG_RIGHTS => [
+            self::ACTION_VIEW,
+            self::ACTION_ADD,
+            self::ACTION_EDIT,
+            self::ACTION_DELETE,
+            self::ACTION_EXPORT,
+        ]
     ];
 
     protected const TYPE_PERMISSIONS = [
@@ -91,6 +99,11 @@ class RightModel extends BaseApiModel
             self::RIGHTS_FULL,
             self::RIGHTS_DENIED,
         ],
+        EntityTypesInterface::CATALOG_RIGHTS => [
+            self::RIGHTS_FULL,
+            self::RIGHTS_LINKED,
+            self::RIGHTS_DENIED,
+        ],
     ];
 
     protected const ACTION_DEPENDENCIES = [
@@ -103,9 +116,10 @@ class RightModel extends BaseApiModel
 
     protected const PERMISSIONS_PRIORITY = [
         self::RIGHTS_FULL => 0,
-        self::RIGHTS_GROUP => 1,
-        self::RIGHTS_ONLY_RESPONSIBLE => 2,
-        self::RIGHTS_DENIED => 3,
+        self::RIGHTS_LINKED => 1,
+        self::RIGHTS_GROUP => 2,
+        self::RIGHTS_ONLY_RESPONSIBLE => 3,
+        self::RIGHTS_DENIED => 4,
     ];
 
     /**
@@ -142,6 +156,11 @@ class RightModel extends BaseApiModel
      * @var array
      */
     protected $statusRights;
+
+    /**
+     * @var array
+     */
+    protected $catalogRights;
 
     /**
      * @var int|null
@@ -270,6 +289,7 @@ class RightModel extends BaseApiModel
 
     /**
      * @return null|bool
+     * @deprecated will be removed in next major version
      */
     public function getCatalogAccess(): ?bool
     {
@@ -280,6 +300,7 @@ class RightModel extends BaseApiModel
      * @param bool $catalogAccess
      *
      * @return RightModel
+     * @deprecated will be removed in next major version
      */
     public function setCatalogAccess(bool $catalogAccess): RightModel
     {
@@ -294,6 +315,11 @@ class RightModel extends BaseApiModel
     public function getStatusRights(): ?array
     {
         return $this->statusRights;
+    }
+
+    public function getCatalogRights(): ?array
+    {
+        return $this->catalogRights;
     }
 
     /**
@@ -315,6 +341,25 @@ class RightModel extends BaseApiModel
         }
 
         $this->statusRights = $result;
+
+        return $this;
+    }
+
+    public function setCatalogRights(array $catalogRights): RightModel
+    {
+        $result = [];
+
+        foreach ($catalogRights as $catalogRight) {
+            $result[] = [
+                'catalog_id' => $catalogRight['catalog_id'] ?? null,
+                'rights'     => $this->completeRightsDependencies(
+                    $catalogRight['rights'],
+                    EntityTypesInterface::CATALOG_RIGHTS
+                ),
+            ];
+        }
+
+        $this->catalogRights = $result;
 
         return $this;
     }
@@ -503,6 +548,10 @@ class RightModel extends BaseApiModel
             $model->setStatusRights($rights['status_rights']);
         }
 
+        if (!empty($rights['catalog_rights'])) {
+            $model->setCatalogRights($rights['catalog_rights']);
+        }
+
         return $model;
     }
 
@@ -519,6 +568,7 @@ class RightModel extends BaseApiModel
             'status_rights' => $this->getStatusRights(),
             'mail_access' => $this->getMailAccess(),
             'catalog_access' => $this->getCatalogAccess(),
+            'catalog_rights' => $this->getCatalogRights(),
         ];
 
         if (!is_null($this->getRoleId())) {
@@ -546,15 +596,21 @@ class RightModel extends BaseApiModel
 
     public function toApi(?string $requestId = "0"): array
     {
-        return [
+        $result = [
             'leads' => $this->getLeadsRights(),
             'contacts' => $this->getContactsRights(),
             'companies' => $this->getCompaniesRights(),
             'tasks' => $this->getTasksRights(),
             'status_rights' => $this->getStatusRights(),
             'mail_access' => $this->getMailAccess(),
-            'catalog_access' => $this->getCatalogAccess(),
+            'catalog_rights' => $this->getCatalogRights(),
         ];
+
+        if (($catalogAccess = $this->getCatalogAccess()) !== null) {
+            $result['catalog_access'] = $catalogAccess;
+        }
+
+        return $result;
     }
 
     public function toUsersApi(?string $requestId = null): array

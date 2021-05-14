@@ -13,6 +13,7 @@ interface EntityTypesInterface
     public const CONTACT = 'contact';
     public const CATALOGS = 'catalogs';
     public const COMPANIES = 'companies';
+    public const CONTACTS_AND_COMPANIES = 'contacts_and_companies';
     public const COMPANY = 'company';
     public const CUSTOMERS = 'customers';
     public const CUSTOMERS_TRANSACTIONS = 'transactions';
@@ -30,6 +31,7 @@ interface EntityTypesInterface
     public const CUSTOMERS_STATUSES = 'statuses';
     public const WIDGETS = 'widgets';
     public const STATUS_RIGHTS = 'status_rights';
+    public const CATALOG_RIGHTS = 'catalog_rights';
     public const CALLS = 'calls';
     public const PRODUCTS = 'products';
     public const SETTINGS = 'settings';

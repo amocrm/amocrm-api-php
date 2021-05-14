@@ -7,6 +7,7 @@ use AmoCRM\Collections\TaskTypesCollection;
 use AmoCRM\Collections\UsersGroupsCollection;
 use AmoCRM\Models\AccountSettings\AmojoRights;
 use AmoCRM\Models\AccountSettings\DateTimeSettings;
+use AmoCRM\Models\AccountSettings\InvoicesSettings;
 
 class AccountModel extends BaseApiModel
 {
@@ -24,6 +25,8 @@ class AccountModel extends BaseApiModel
     public const VERSION = 'version';
     /** @var string Настройки форматов времени */
     public const DATETIME_SETTINGS = 'datetime_settings';
+    /** @var string Настройки для публичных счетов */
+    public const INVOICES_SETTINGS = 'invoices_settings';
 
     /** @var string Покупатели недоступны. */
     public const CUSTOMERS_MODE_UNAVAILABLE = 'unavailable';
@@ -129,6 +132,9 @@ class AccountModel extends BaseApiModel
 
     /** @var bool */
     protected $isTechnicalAccount;
+
+    /** @var null|InvoicesSettings */
+    protected $invoicesSettings;
 
     /**
      * @return int
@@ -381,6 +387,12 @@ class AccountModel extends BaseApiModel
             $accountModel->setTaskTypes($collection);
         }
 
+        if (isset($account[self::INVOICES_SETTINGS])) {
+            $accountModel->setInvoicesSettings(new InvoicesSettings(
+                $account[self::INVOICES_SETTINGS]['lang'] ?? null
+            ));
+        }
+
         return $accountModel;
     }
 
@@ -436,6 +448,10 @@ class AccountModel extends BaseApiModel
 
         if (!is_null($this->getDatetimeSettings())) {
             $result['datetime_settings'] = $this->getDatetimeSettings();
+        }
+
+        if (!is_null($this->getInvoicesSettings())) {
+            $result['invoices_settings'] = $this->getInvoicesSettings();
         }
 
         return $result;
@@ -652,9 +668,9 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getCurrentUserId()
+    public function getCurrentUserId(): ?int
     {
         return $this->currentUserId;
     }
@@ -730,6 +746,25 @@ class AccountModel extends BaseApiModel
     }
 
     /**
+     * @return null|InvoicesSettings
+     */
+    public function getInvoicesSettings(): ?InvoicesSettings
+    {
+        return $this->invoicesSettings;
+    }
+
+    /**
+     * @param InvoicesSettings $invoicesSettings
+     * @return $this
+     */
+    public function setInvoicesSettings(InvoicesSettings $invoicesSettings): self
+    {
+        $this->invoicesSettings = $invoicesSettings;
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function getIsTechnicalAccount(): bool
@@ -762,6 +797,7 @@ class AccountModel extends BaseApiModel
             self::TASK_TYPES,
             self::VERSION,
             self::DATETIME_SETTINGS,
+            self::INVOICES_SETTINGS,
         ];
     }
 

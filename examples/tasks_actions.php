@@ -28,7 +28,7 @@ $apiClient->setAccessToken($accessToken)
 //Создадим задачу
 $tasksCollection = new TasksCollection();
 $task = new TaskModel();
-$task->setTaskTypeId(TaskModel::TASK_TYPE_ID_CALL)
+$task->setTaskTypeId(TaskModel::TASK_TYPE_ID_FOLLOW_UP)
     ->setText('Новая задач')
     ->setCompleteTill(mktime(10, 0, 0, 10, 3, 2020))
     ->setEntityType(EntityTypesInterface::LEADS)
@@ -37,8 +37,9 @@ $task->setTaskTypeId(TaskModel::TASK_TYPE_ID_CALL)
     ->setResponsibleUserId(123);
 $tasksCollection->add($task);
 
+$tasksService = $apiClient->tasks();
 try {
-    $tasksCollection = $apiClient->tasks()->add($tasksCollection);
+    $tasksCollection = $tasksService->add($tasksCollection);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
@@ -51,11 +52,22 @@ $taskToClose->setIsCompleted(true)
 
 try {
     //Получим актуальное состояние задачи и обновим её
-    $taskToClose = $apiClient->tasks()->syncOne($taskToClose);
-    $taskToClose = $apiClient->tasks()->updateOne($taskToClose);
+    $taskToClose = $tasksService->syncOne($taskToClose);
+    $taskToClose = $tasksService->updateOne($taskToClose);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
 }
-
 var_dump($taskToClose->toArray());
+
+
+//Получим задачи с фильтром по типу
+$tasksFilter = new \AmoCRM\Filters\TasksFilter();
+$tasksFilter->setTaskTypeId(TaskModel::TASK_TYPE_ID_MEETING);
+try {
+    $tasksCollection = $tasksService->get($tasksFilter);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+var_dump($tasksCollection->toArray());

@@ -520,6 +520,7 @@ $leadsService = $apiClient->leads();
 |```unsorted```                                               |```\AmoCRM\Filters\UnsortedFilter```       |Фильтр для метода \AmoCRM\EntitiesServices\Unsorted::get                                        |✅                          |
 |```unsorted```                                               |```\AmoCRM\Filters\UnsortedSummaryFilter```|Фильтр для метода \AmoCRM\EntitiesServices\Unsorted::summary                                    |❌                          |
 |```webhooks```                                               |```\AmoCRM\Filters\WebhooksFilter```       |Фильтр для метода получения хуков                                                               |❌                          |
+|Сервисы, где необходима постраничная навигация               |```\AmoCRM\Filters\PagesFilter```          |Фильтр, который подходит для любого сервиса, где есть постаничная навигация                     |❌                          |
 
 
 ## Работа с дополнительными полями сущностей
@@ -585,6 +586,7 @@ Namespace, в котором находятся модели дополните�
 | Категория           | CategoryCustomFieldValueModel      | CategoryCustomFieldValueCollection      | CategoryCustomFieldValuesModel      | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
 | Предметы            | ItemsCustomFieldValueModel         | ItemsCustomFieldValueCollection         | ItemsCustomFieldValuesModel         | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
 | Метка               | TrackingDataCustomFieldValueModel  | TrackingDataCustomFieldValueCollection  | TrackingDataCustomFieldValuesModel  | ❌       | ✅     | ❌       | ❌          | ❌      | ❌       |
+| Связанная сущность  | LinkedEntityCustomFieldValueModel  | LinkedEntityCustomFieldValueCollection  | LinkedEntityCustomFieldValuesModel  | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
 
 Пример кода, как создать коллекцию значения полей сущности:
 ```php
@@ -720,6 +722,8 @@ $lead->setTags((new NullTagsCollection()));
 18. ```\AmoCRM\Models\Customers\CustomerModel``` - константы для аргумента with для сервиса ```customers```
 19. ```\AmoCRM\Models\ContactModel``` - константы для аргумента with для сервиса ```contacts```
 20. ```\AmoCRM\Models\CompanyModel``` - константы для аргумента with для сервиса ```companies```
+21. ```\AmoCRM\Models\CatalogElementModel``` - константы для аргумента with для сервиса ```catalogElements```
+22. ```\AmoCRM\Enum\InvoicesCustomFieldsEnums``` - константы для работы с полями каталога счетов
 
 ## Работа в случае смены субдомена аккаунта
 ```php

@@ -53,7 +53,7 @@ trait PagesFilterTrait
         return $this->limit;
     }
 
-    protected function buildPagesFilter(array $filter): array
+    protected function buildPagesFilter(array $filter = []): array
     {
         if (!is_null($this->getLimit())) {
             $filter['limit'] = $this->getLimit();

@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\LinkedEntityCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\TrackingDataCustomFieldValueCollection;
 use AmoCRM\Helpers\CustomFieldHelper;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
@@ -107,10 +108,13 @@ class CustomFieldValueCollectionFactory
             case CustomFieldModel::TYPE_TRACKING_DATA:
                 $collection = new TrackingDataCustomFieldValueCollection();
                 break;
+            case CustomFieldModel::TYPE_LINKED_ENTITY:
+                $collection = new LinkedEntityCustomFieldValueCollection();
+                break;
             default:
                 trigger_error(
                     "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
-                    E_NOTICE
+                    E_USER_NOTICE
                 );
                 $collection = new BaseCustomFieldValueCollection();
                 break;

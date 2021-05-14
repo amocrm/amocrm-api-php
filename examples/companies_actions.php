@@ -9,7 +9,7 @@ use AmoCRM\Filters\CompaniesFilter;
 use AmoCRM\Models\CompanyModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-include_once __DIR__ . 'bootstrap.php';
+include_once __DIR__ . '/bootstrap.php';
 
 $accessToken = getToken();
 

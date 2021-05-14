@@ -18,6 +18,9 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     use RequestIdTrait;
     use GetLinkTrait;
 
+    /** @var string Ссылка на печатную форму счета с возможностью оплаты */
+    public const INVOICE_LINK = 'invoice_link';
+
     /**
      * @var int|null
      */
@@ -69,9 +72,23 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     protected $quantity;
 
     /**
+     * ID поля типа цена, используется в метаданных при привязке к сущности
+     *
+     * @var int|null
+     */
+    protected $priceId;
+
+    /**
      * @var int|null
      */
     protected $accountId;
+
+    /**
+     * Доступен только в каталоге счетов
+     *
+     * @var string|null
+     */
+    protected $invoiceLink;
 
     /**
      * @return null|int
@@ -279,6 +296,26 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     }
 
     /**
+     * @return string|null
+     */
+    public function getInvoiceLink(): ?string
+    {
+        return $this->invoiceLink;
+    }
+
+    /**
+     * @param string|null $invoiceLink
+     *
+     * @return CatalogElementModel
+     */
+    public function setInvoiceLink(?string $invoiceLink): CatalogElementModel
+    {
+        $this->invoiceLink = $invoiceLink;
+
+        return $this;
+    }
+
+    /**
      * @param array $catalogElement
      *
      * @return self
@@ -315,6 +352,10 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         if (array_key_exists('is_deleted', $catalogElement) && !is_null($catalogElement['is_deleted'])) {
             $catalogElementModel->setIsDeleted($catalogElement['is_deleted']);
         }
+
+        if (array_key_exists('invoice_link', $catalogElement) && !is_null($catalogElement['invoice_link'])) {
+            $catalogElementModel->setInvoiceLink($catalogElement['invoice_link']);
+        }
         if (!empty($catalogElement['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
             $customFieldsValues = $valuesCollection->fromArray($catalogElement['custom_fields_values']);
@@ -327,6 +368,9 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         }
         if (isset($catalogElement['metadata']['quantity'])) {
             $catalogElementModel->setQuantity($catalogElement['metadata']['quantity']);
+        }
+        if (isset($catalogElement['metadata']['price_id'])) {
+            $catalogElementModel->setPriceId($catalogElement['metadata']['price_id']);
         }
         if (isset($catalogElement['metadata']['catalog_id'])) {
             $catalogElementModel->setCatalogId($catalogElement['metadata']['catalog_id']);
@@ -357,9 +401,11 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
                 ? null
                 : $this->getCustomFieldsValues()->toArray(),
             'account_id' => $this->getAccountId(),
+            'invoice_link' => $this->getInvoiceLink(),
             'metadata'   => [
-                'quantity'   => $this->getQuantity(),
-                'catalog_id'   => $this->getCatalogId(),
+                'quantity' => $this->getQuantity(),
+                'catalog_id' => $this->getCatalogId(),
+                'price_id' => $this->getPriceId(),
             ]
         ];
     }
@@ -402,20 +448,48 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     }
 
     /**
-     * @return int|null
+     * @return int|float|null
      */
-    public function getQuantity(): ?int
+    public function getQuantity()
     {
         return $this->quantity;
     }
 
     /**
-     * @param int $quantity
+     * @param int|float $quantity
+     *
+     * @return CatalogElementModel
+     * @throws InvalidArgumentException
+     */
+    public function setQuantity($quantity): CatalogElementModel
+    {
+        if (is_int($quantity) || is_float($quantity)) {
+            $this->quantity = $quantity;
+        } else {
+            throw new InvalidArgumentException('Quantity must be integer or float number');
+        }
+
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPriceId(): ?int
+    {
+        return $this->priceId;
+    }
+
+    /**
+     * @param int|null $priceId
+     *
      * @return CatalogElementModel
      */
-    public function setQuantity(int $quantity): CatalogElementModel
+    public function setPriceId(?int $priceId): CatalogElementModel
     {
-        $this->quantity = $quantity;
+        $this->priceId = $priceId;
 
         return $this;
     }
@@ -435,10 +509,22 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
             $result['quantity'] = $this->getQuantity();
         }
 
+        $result['price_id'] = $this->getPriceId();
+
         if (!is_null($this->getCatalogId())) {
             $result['catalog_id'] = $this->getCatalogId();
         }
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAvailableWith(): array
+    {
+        return [
+            self::INVOICE_LINK,
+        ];
     }
 }
