@@ -782,6 +782,40 @@ try {
     die;
 }
 ```
+Также вы можете распарсить и модель одноразового токена для Salesbot/Marketingbot.
+Для этого необходимо сделать вызов метода parseBotDisposableToken:
+```php
+$token = 'XXX';
+try {
+    /**
+     * Одноразовый токен для ботов, его вы можете получить, сделав вызов widget_request в виджете в боте
+     * Подробнее: @link https://www.amocrm.ru/developers/content/digital_pipeline/salesbot#handler-widget_request
+     *
+     * Данный токен содержит в себе информацию об аккаунте и о сущности, с которой работает бот
+     * Для продолжения бота необходимо сделать запрос на метод, который был получен в теле хука
+     * Подробнее: @link https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-continue  
+     *
+     * Расшифруем пришедший токен и получим модель с информацией
+     * Подробнее: @see BotDisposableTokenModel
+     */
+    $botDisposableTokenModel = $apiClient->getOAuthClient()
+        ->parseBotDisposableToken($token);
+
+    var_dump($botDisposableTokenModel->toArray());
+} catch (DisposableTokenExpiredException $e) {
+    // Время жизни токена истекло
+    printError($e);
+    die;
+} catch (DisposableTokenInvalidDestinationException $e) {
+    // Не прошёл проверку на адресата токена
+    printError($e);
+    die;
+} catch (DisposableTokenVerificationFailedException $e) {
+    // Токен не прошел проверку подписи
+    printError($e);
+    die;
+}
+```
 
 ## Примеры
 В рамках данного репозитория имеется папка examples с различными примерами.
