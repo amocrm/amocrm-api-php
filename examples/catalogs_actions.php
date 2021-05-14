@@ -1,6 +1,6 @@
 <?php
 
-use AmoCRM\AmoCRM\Filters\CatalogsFilter;
+use AmoCRM\Filters\CatalogsFilter;
 use AmoCRM\Collections\CustomFields\CustomFieldNestedCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Helpers\EntityTypesInterface;

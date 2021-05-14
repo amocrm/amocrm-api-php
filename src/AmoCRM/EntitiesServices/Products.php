@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\EntitiesServices;
+namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Models\ProductsSettingsModel;
+use AmoCRM\Models\ProductsSettingsModel;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMApiNoContentException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
@@ -20,7 +19,7 @@ use AmoCRM\Models\BaseApiModel;
  * Class Products
  * Для работы с API товаров, есть только методы настроек
  *
- * @package AmoCRM\AmoCRM\EntitiesServices
+ * @package AmoCRM\EntitiesServices
  */
 class Products extends BaseEntity
 {

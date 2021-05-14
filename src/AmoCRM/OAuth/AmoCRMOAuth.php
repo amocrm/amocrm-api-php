@@ -2,12 +2,12 @@
 
 namespace AmoCRM\OAuth;
 
-use AmoCRM\AmoCRM\Exceptions\DisposableTokenExpiredException;
-use AmoCRM\AmoCRM\Exceptions\DisposableTokenInvalidDestinationException;
-use AmoCRM\AmoCRM\Exceptions\DisposableTokenVerificationFailedException;
-use AmoCRM\AmoCRM\Models\AccountDomainModel;
-use AmoCRM\AmoCRM\Models\BotDisposableTokenModel;
-use AmoCRM\AmoCRM\Models\DisposableTokenModel;
+use AmoCRM\Exceptions\DisposableTokenExpiredException;
+use AmoCRM\Exceptions\DisposableTokenInvalidDestinationException;
+use AmoCRM\Exceptions\DisposableTokenVerificationFailedException;
+use AmoCRM\Models\AccountDomainModel;
+use AmoCRM\Models\BotDisposableTokenModel;
+use AmoCRM\Models\DisposableTokenModel;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Exceptions\AmoCRMApiConnectExceptionException;
 use AmoCRM\Exceptions\AmoCRMApiErrorResponseException;

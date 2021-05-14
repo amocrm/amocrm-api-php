@@ -1,8 +1,6 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueCollections;
-
-use AmoCRM\Models\CustomFieldsValues\ValueCollections\BaseCustomFieldValueCollection;
+namespace AmoCRM\Models\CustomFieldsValues\ValueCollections;
 
 /**
  * Class TrackingDataCustomFieldValueCollection

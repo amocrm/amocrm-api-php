@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models;
-
-use AmoCRM\Models\BaseApiModel;
+namespace AmoCRM\Models;
 
 use function is_null;
 
 /**
  * Class ProductsSettings
  *
- * @package AmoCRM\AmoCRM\Models
+ * @package AmoCRM\Models
  */
 class ProductsSettingsModel extends BaseApiModel
 {

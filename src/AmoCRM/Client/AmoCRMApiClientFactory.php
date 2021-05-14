@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Client;
+namespace AmoCRM\Client;
 
-use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\OAuth\OAuthConfigInterface;
 use AmoCRM\OAuth\OAuthServiceInterface;
 use League\OAuth2\Client\Token\AccessTokenInterface;
@@ -13,7 +12,7 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
  * Создание API клиента, может быть полезно в случае работы с несколькими аккаунтами
  * Class AmoCRMApiClientFactory
  *
- * @package AmoCRM\AmoCRM\Client
+ * @package AmoCRM\Client
  */
 class AmoCRMApiClientFactory
 {

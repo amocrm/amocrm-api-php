@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\CustomFields\Factories;
 
-use AmoCRM\AmoCRM\Models\CustomFields\TrackingDataCustomFieldModel;
+use AmoCRM\Models\CustomFields\TrackingDataCustomFieldModel;
 use AmoCRM\Models\CustomFields\BirthdayCustomFieldModel;
 use AmoCRM\Models\CustomFields\CategoryCustomFieldModel;
 use AmoCRM\Models\CustomFields\CheckboxCustomFieldModel;

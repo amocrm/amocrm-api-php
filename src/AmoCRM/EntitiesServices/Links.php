@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\EntitiesServices;
+namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\LinksCollection;
-use AmoCRM\EntitiesServices\BaseEntityTypeEntity;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\InvalidArgumentException;

@@ -1,8 +1,6 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueModels;
-
-use AmoCRM\Models\CustomFieldsValues\ValueModels\BaseCustomFieldValueModel;
+namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
 /**
  * Class TrackingDataCustomFieldValueModel

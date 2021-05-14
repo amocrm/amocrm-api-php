@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Filters;
-
-use AmoCRM\Filters\BaseEntityFilter;
+namespace AmoCRM\Filters;
 
 use function is_null;
 
