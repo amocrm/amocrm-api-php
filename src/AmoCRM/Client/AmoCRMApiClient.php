@@ -512,7 +512,7 @@ class AmoCRMApiClient
     /**
      * Метод вернет объект транзакций
      *
-     * @deprecated Будет удалено в релизе 0.8 (Ориентировачно осень-зима 2021)
+     * @deprecated Скорее всего будет удалено в релизе 0.8 (Ориентировачно осень-зима 2021)
      * @return Transactions
      * @throws AmoCRMMissedTokenException
      */
