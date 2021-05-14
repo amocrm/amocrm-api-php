@@ -269,6 +269,11 @@ class TasksFilter extends BaseEntityFilter implements HasPagesInterface, HasOrde
             $filter['filter']['is_completed'] = $this->getIsCompleted();
         }
 
+        //todo удалить после перехода всех пользователей на новую версию
+        if (!is_null($this->getTaskTypeId())) {
+            $filter['filter']['task_type'] = $this->getTaskTypeId();
+        }
+
         if (!is_null($this->getTaskTypeId())) {
             $filter['filter']['task_type_id'] = $this->getTaskTypeId();
         }
