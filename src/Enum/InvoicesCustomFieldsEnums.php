@@ -35,7 +35,11 @@ class InvoicesCustomFieldsEnums
     public const VAT_NOT_INCLUDED = 'vat_not_included';
 
     /** @var string Код значения "Оплачен" поля Статус счета */
-    public const BILL_STATUS_PAID = 'paid';
+    public const BILL_STATUS_PAID = 'Оплачен';
     /** @var string Код значения "Создан" поля Статус счета */
-    public const BILL_STATUS_CREATED = 'created';
+    public const BILL_STATUS_CREATED = 'Создан';
+    /** @var string Код значения "Частично оплачен" поля Статус счета */
+    public const BILL_STATUS_PARTIAL_PAID = 'Частично оплачен';
+    /** @var string Код значения "Просмотрен" поля Статус счета */
+    public const BILL_STATUS_VIEWED = "Просмотрен";
 }
