@@ -1,5 +1,6 @@
 <?php
 
+use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Filters\CatalogsFilter;
 use AmoCRM\Models\CustomFieldsValues\LinkedEntityCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\NumericCustomFieldValuesModel;
@@ -24,6 +25,7 @@ use AmoCRM\Models\CustomFieldsValues\ValueModels\LegalEntityCustomFieldValueMode
 use AmoCRM\Models\CustomFieldsValues\ValueModels\NumericCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\SelectCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\TextCustomFieldValueModel;
+use AmoCRM\Models\LeadModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 include_once __DIR__ . '/bootstrap.php';
@@ -222,6 +224,17 @@ $catalogElementsService = $apiClient->catalogElements($invoicesCatalog->getId())
 try {
     $newInvoice = $catalogElementsService->addOne($newInvoice);
     echo 'ID счета - ' . $newInvoice->getId();
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+//Свяжем счет со сделкой с ID 7856057
+$leadsService = $apiClient->leads();
+$lead = (new LeadModel())
+    ->setId(7856057);
+try {
+    $leadsService->link($lead, (new LinksCollection())->add($newInvoice));
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
