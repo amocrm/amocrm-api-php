@@ -25,7 +25,7 @@ class WithEnumCustomFieldModel extends CustomFieldModel
     }
 
     /**
-     * @return CustomFieldEnumsCollection|null
+     * @return CustomFieldEnumsCollection|EnumModel[]|null
      */
     public function getEnums(): ?CustomFieldEnumsCollection
     {
@@ -33,7 +33,7 @@ class WithEnumCustomFieldModel extends CustomFieldModel
     }
 
     /**
-     * @param CustomFieldEnumsCollection|null $enums
+     * @param CustomFieldEnumsCollection|EnumModel[]|null $enums
      *
      * @return WithEnumCustomFieldModel
      */

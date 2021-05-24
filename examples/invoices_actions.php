@@ -223,7 +223,7 @@ $newInvoice->setCustomFieldsValues($invoiceCustomFieldsValues);
 $catalogElementsService = $apiClient->catalogElements($invoicesCatalog->getId());
 try {
     $newInvoice = $catalogElementsService->addOne($newInvoice);
-    echo 'ID счета - ' . $newInvoice->getId();
+    var_dump('ID счета - ' . $newInvoice->getId());
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
@@ -238,4 +238,41 @@ try {
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
+}
+
+//Обновим статус счета, без изменения других полей
+$invoiceForUpdate = (new CatalogElementModel())
+    ->setId($newInvoice->getId())
+    ->setCatalogId($invoicesCatalog->getId())
+    ->setCustomFieldsValues(
+        (new CustomFieldsValuesCollection())
+            ->add(
+                (new SelectCustomFieldValuesModel())
+                    ->setFieldCode(InvoicesCustomFieldsEnums::STATUS)
+                    ->setValues(
+                        (new SelectCustomFieldValueCollection())
+                            ->add((new SelectCustomFieldValueModel())->setValue('Оплачен')) //Текст должен совпадать с одним из значений поля статус
+                    )
+            )
+    );
+
+try {
+    $updatedInvoice = $catalogElementsService->updateOne($invoiceForUpdate);
+    var_dump('ID обновленного счета - ' . $updatedInvoice->getId());
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+//Получим значения поля статус
+$invoicesCfService = $apiClient->customFields(EntityTypesInterface::CATALOGS . ':' . $invoicesCatalog->getId());
+try {
+    $invoicesCfsCollection = $invoicesCfService->get();
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+$invoiceStatusField = $invoicesCfsCollection->getBy('code', InvoicesCustomFieldsEnums::STATUS);
+foreach ($invoiceStatusField->getEnums() as $enum) {
+    var_dump('Значение поля ' . $enum->getValue() . ' с ID ' . $enum->getId());
 }
