@@ -175,13 +175,17 @@ class CustomFieldGroupModel extends BaseApiModel
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     public function getFields(): ?array
     {
         return $this->fields;
     }
 
+    /**
+     * @param array|null $fields
+     * @return $this
+     */
     public function setFields(?array $fields): self
     {
         $this->fields = $fields;
