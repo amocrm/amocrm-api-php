@@ -35,6 +35,11 @@ class CustomFieldGroupModel extends BaseApiModel
     protected $entityType;
 
     /**
+     * @var array
+     */
+    protected $fields;
+
+    /**
      * @param array $customFieldGroup
      *
      * @return self
@@ -52,7 +57,8 @@ class CustomFieldGroupModel extends BaseApiModel
             ->setName($customFieldGroup['name'])
             ->setSort($customFieldGroup['sort'])
             ->setIsPredefined($customFieldGroup['is_predefined'])
-            ->setEntityType($customFieldGroup['entity_type']);
+            ->setEntityType($customFieldGroup['entity_type'])
+            ->setFields($customFieldGroup['fields']);
 
         return $customFieldGroupModel;
     }
@@ -68,6 +74,7 @@ class CustomFieldGroupModel extends BaseApiModel
             'sort' => $this->getSort(),
             'is_predefined' => $this->getIsPredefined(),
             'entity_type' => $this->getEntityType(),
+            'fields' => $this->getFields(),
         ];
     }
 
@@ -168,6 +175,25 @@ class CustomFieldGroupModel extends BaseApiModel
     }
 
     /**
+     * @return array|null
+     */
+    public function getFields(): ?array
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @param array|null $fields
+     * @return $this
+     */
+    public function setFields(?array $fields): self
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    /**
      * @param string|null $requestId
      * @return array
      */
@@ -189,6 +215,10 @@ class CustomFieldGroupModel extends BaseApiModel
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
             $this->setRequestId($requestId);
+        }
+
+        if (null !== $this->getFields()) {
+            $result['fields'] = $this->getFields();
         }
 
         $result['request_id'] = $this->getRequestId();
