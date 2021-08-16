@@ -146,10 +146,14 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
 
     /**
      * @param int $id
+     *
+     * @return NoteModel
      */
-    public function setId(int $id): void
+    public function setId(int $id): NoteModel
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
