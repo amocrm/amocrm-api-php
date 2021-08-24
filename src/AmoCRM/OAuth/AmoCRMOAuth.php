@@ -135,7 +135,13 @@ class AmoCRMOAuth
                 'code' => $code,
             ]);
         } catch (IdentityProviderException $e) {
-            throw new AmoCRMoAuthApiException($e);
+            throw new AmoCRMoAuthApiException(
+                $e->getMessage(),
+                $e->getCode(),
+                [],
+                $e->getResponseBody(),
+                $e
+            );
         }
 
         return $accessToken;
@@ -155,7 +161,13 @@ class AmoCRMOAuth
                 'refresh_token' => $accessToken->getRefreshToken(),
             ]);
         } catch (IdentityProviderException $e) {
-            throw new AmoCRMoAuthApiException($e->getResponseBody());
+            throw new AmoCRMoAuthApiException(
+                $e->getMessage(),
+                $e->getCode(),
+                [],
+                $e->getResponseBody(),
+                $e
+            );
         }
 
         if (is_callable($this->accessTokenRefreshCallback)) {
