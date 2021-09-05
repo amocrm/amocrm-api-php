@@ -12,7 +12,7 @@ use AmoCRM\Models\BaseApiModel;
 class BaseCustomFieldValueModel extends BaseApiModel
 {
     /**
-     * @var int|string|null|array|bool
+     * @var int|string|null|array|bool|object
      */
     protected $value;
 

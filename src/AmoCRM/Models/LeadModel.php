@@ -10,6 +10,7 @@ use AmoCRM\Collections\CatalogElementsCollection;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Collections\TagsCollection;
+use AmoCRM\Models\CustomFieldsValues\BaseCustomFieldValuesModel;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
 use AmoCRM\Models\Interfaces\CanReturnDeletedInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
@@ -599,7 +600,7 @@ class LeadModel extends BaseApiModel implements
     }
 
     /**
-     * @return CustomFieldsValuesCollection|null
+     * @return CustomFieldsValuesCollection|BaseCustomFieldValuesModel[]|null
      */
     public function getCustomFieldsValues(): ?CustomFieldsValuesCollection
     {
