@@ -8,6 +8,8 @@ use AmoCRM\Exceptions\InvalidArgumentException;
  * Class DateCustomFieldsValueModel
  *
  * @package AmoCRM\Models\CustomFieldsValues\ValueModels
+ *
+ * @method DateCustomFieldValueModel fromArray($value)
  */
 class DateCustomFieldValueModel extends BaseCustomFieldValueModel
 {

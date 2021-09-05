@@ -94,11 +94,11 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     /**
      * @param int|string|null $value
      *
-     * @return BaseCustomFieldValueModel
+     * @return ItemsCustomFieldValueModel
      */
     public static function fromArray($value): BaseCustomFieldValueModel
     {
-        $model = new self();
+        $model = new static();
 
         $discount = [
             'type' => isset($value['value'][self::FIELD_DISCOUNT]['type'])

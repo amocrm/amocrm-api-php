@@ -21,12 +21,12 @@ class BaseArrayCustomFieldValueModel extends BaseCustomFieldValueModel
      */
     public static function fromArray($value): BaseCustomFieldValueModel
     {
-        $model = new self();
+        $model = new static();
 
-        $value = isset($value['value']) ? (array)$value['value'] : null;
+        $fieldValue = isset($value['value']) ? (array)$value['value'] : null;
 
         $model
-            ->setValue($value);
+            ->setValue($fieldValue);
 
         return $model;
     }

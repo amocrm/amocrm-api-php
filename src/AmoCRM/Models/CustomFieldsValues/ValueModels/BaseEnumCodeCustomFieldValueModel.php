@@ -26,14 +26,14 @@ class BaseEnumCodeCustomFieldValueModel extends BaseCustomFieldValueModel
      */
     public static function fromArray($value): BaseCustomFieldValueModel
     {
-        $model = new self();
+        $model = new static();
 
         $enumId = isset($value['enum_id']) ? (int)$value['enum_id'] : null;
-        $enumCode = isset($value['enum_code']) ? $value['enum_code'] : null;
-        $value = isset($value['value']) ? $value['value'] : null;
+        $enumCode = $value['enum_code'] ?? null;
+        $fieldValue = $value['value'] ?? null;
 
         $model
-            ->setValue($value)
+            ->setValue($fieldValue)
             ->setEnumId($enumId)
             ->setEnumCode($enumCode);
 
