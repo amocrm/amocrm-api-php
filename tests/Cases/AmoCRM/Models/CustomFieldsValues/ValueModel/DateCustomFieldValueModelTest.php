@@ -5,7 +5,11 @@ namespace Tests\Cases\NoteTypes;
 
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\DateCustomFieldValueModel;
+use Carbon\Carbon;
+use DateTime;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class DateCustomFieldValueModelTest extends TestCase
 {
@@ -22,6 +26,7 @@ final class DateCustomFieldValueModelTest extends TestCase
             [null], // null
             [[123]], // array
             [false], // bool
+            [new stdClass()] //object
         ];
     }
 
@@ -36,7 +41,10 @@ final class DateCustomFieldValueModelTest extends TestCase
             ['next monday'],
             ['Mon, 30 Jun 2014 11:30:00 +0400'],
             ['2020-08-23'],
-            ['0']
+            ['0'],
+            [new Carbon()],
+            [new DateTime()],
+            [Carbon::now()],
         ];
     }
 
@@ -61,7 +69,25 @@ final class DateCustomFieldValueModelTest extends TestCase
     public function testValidDate($date): void
     {
         $dateField = (new DateCustomFieldValueModel())->setValue($date);
+        $value = $dateField->getValue();
+
+        $this->assertInstanceOf(DateTimeInterface::class, $value);
+    }
+
+
+    /**
+     * @dataProvider getValidDates
+     *
+     * @param mixed $date
+     *
+     * @throws InvalidArgumentException
+     */
+    public function testValidDateApi($date): void
+    {
+        $dateField = (new DateCustomFieldValueModel())->setValue($date);
+
         $value = $dateField->toApi()['value'];
-        $this->assertIsInt($value);
+        $dateTime = DateTime::createFromFormat(DateTime::RFC3339, $value);
+        $this->assertInstanceOf(DateTimeInterface::class, $dateTime);
     }
 }
