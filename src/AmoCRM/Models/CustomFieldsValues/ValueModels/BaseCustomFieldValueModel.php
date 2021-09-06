@@ -23,7 +23,7 @@ class BaseCustomFieldValueModel extends BaseApiModel
      */
     public static function fromArray($value): BaseCustomFieldValueModel
     {
-        $model = new self();
+        $model = new static();
 
         $model
             ->setValue($value['value'] ?? null);

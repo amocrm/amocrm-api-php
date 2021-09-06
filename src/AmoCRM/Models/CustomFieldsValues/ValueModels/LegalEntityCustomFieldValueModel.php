@@ -78,7 +78,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
      */
     public static function fromArray($value): BaseCustomFieldValueModel
     {
-        $model = new self();
+        $model = new static();
 
         $model
             ->setName($value['value'][self::NAME] ?? null)

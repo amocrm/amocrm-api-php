@@ -6,6 +6,8 @@ namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
  * Class CheckboxCustomFieldValueModel
  *
  * @package AmoCRM\Models\CustomFieldsValues\ValueModels
+ *
+ * @method CheckboxCustomFieldValueModel fromArray($value)
  */
 class CheckboxCustomFieldValueModel extends BaseCustomFieldValueModel
 {
