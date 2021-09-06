@@ -6,6 +6,7 @@ use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\CustomFieldsValues\Factories\CustomFieldValuesModelFactory;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\BaseCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\BaseCustomFieldValueModel;
 
 /**
  * Class BaseCustomFieldValuesModel
@@ -102,7 +103,7 @@ class BaseCustomFieldValuesModel extends BaseApiModel
     }
 
     /**
-     * @return BaseCustomFieldValueCollection
+     * @return BaseCustomFieldValueCollection|BaseCustomFieldValueModel[]
      */
     public function getValues(): ?BaseCustomFieldValueCollection
     {
