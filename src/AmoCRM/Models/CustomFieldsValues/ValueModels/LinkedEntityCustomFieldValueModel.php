@@ -37,11 +37,11 @@ class LinkedEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /**
      * @param array|null $value
      *
-     * @return BaseCustomFieldValueModel
+     * @return LinkedEntityCustomFieldValueModel
      */
     public static function fromArray($value): BaseCustomFieldValueModel
     {
-        $model = new self();
+        $model = new static();
 
         $model
             ->setName($value['value'][self::NAME] ?? null)

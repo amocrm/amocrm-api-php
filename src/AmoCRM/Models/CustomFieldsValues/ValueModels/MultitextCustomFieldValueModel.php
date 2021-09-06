@@ -37,18 +37,18 @@ class MultitextCustomFieldValueModel extends BaseEnumCustomFieldValueModel
     /**
      * @param array $value
      *
-     * @return BaseCustomFieldValueModel
+     * @return MultitextCustomFieldValueModel
      */
     public static function fromArray($value): BaseCustomFieldValueModel
     {
-        $model = new self();
+        $model = new static();
 
         $enumId = isset($value['enum_id']) ? (int)$value['enum_id'] : null;
         $enum = isset($value['enum_code']) ? (string)$value['enum_code'] : null;
-        $value = isset($value['value']) ? $value['value'] : null;
+        $fieldValue = $value['value'] ?? null;
 
         $model
-            ->setValue($value)
+            ->setValue($fieldValue)
             ->setEnumId($enumId)
             ->setEnum($enum);
 
