@@ -37,7 +37,8 @@ interface EntityTypesInterface
     public const SETTINGS = 'settings';
     public const SHORT_LINKS = 'short_links';
     public const LINKS = 'links';
-
+    public const TALKS = 'talks';
+    public const SUBSCRIPTIONS = 'subscriptions';
 
     public const CUSTOM_FIELDS = 'custom_fields';
     public const CUSTOM_FIELD_GROUPS = 'custom_field_groups';

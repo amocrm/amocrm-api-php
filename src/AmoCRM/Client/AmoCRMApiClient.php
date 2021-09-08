@@ -3,6 +3,7 @@
 namespace AmoCRM\Client;
 
 use AmoCRM\EntitiesServices\Customers\BonusPoints;
+use AmoCRM\EntitiesServices\EntitySubscriptions;
 use AmoCRM\EntitiesServices\Links;
 use AmoCRM\EntitiesServices\Products;
 use AmoCRM\EntitiesServices\Calls;
@@ -25,6 +26,7 @@ use AmoCRM\EntitiesServices\Leads;
 use AmoCRM\EntitiesServices\Roles;
 use AmoCRM\EntitiesServices\Segments;
 use AmoCRM\EntitiesServices\ShortLinks;
+use AmoCRM\EntitiesServices\Talks;
 use AmoCRM\EntitiesServices\Tasks;
 use AmoCRM\EntitiesServices\Unsorted;
 use AmoCRM\EntitiesServices\Users;
@@ -586,6 +588,17 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return  new Products($request);
+    }
+
+    public function talks(): Talks
+    {
+        return new Talks($this->buildRequest());
+    }
+
+    public function entitySubscriptions(string $entityType): EntitySubscriptions
+    {
+        return (new EntitySubscriptions($this->buildRequest()))
+            ->setEntityType($entityType);
     }
 
     /**
