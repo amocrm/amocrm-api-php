@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use AmoCRM\AmoCRM\Models\Talks\TalkCloseActionModel;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -35,7 +36,7 @@ try {
 }
 
 try {
-    $talksService->close($talk->getTalkId());
+    $talksService->close(new TalkCloseActionModel($talk->getTalkId(), true));
 } catch (AmoCRMApiException $exception) {
     printError($exception);
     die;

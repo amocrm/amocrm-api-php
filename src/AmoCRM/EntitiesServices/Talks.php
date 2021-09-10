@@ -3,6 +3,7 @@
 namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\AmoCRM\Models\TalkModel;
+use AmoCRM\AmoCRM\Models\Talks\TalkCloseActionModel;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
@@ -97,18 +98,17 @@ class Talks extends BaseEntity
     /**
      * Закрыть беседу
      *
-     * @param int $talkId
-     * @param bool|null $forceClose
+     * @param TalkCloseActionModel $closeAction
      *
      * @return void
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      * @throws \AmoCRM\Exceptions\AmoCRMApiNoContentException
      */
-    public function close(int $talkId, ?bool $forceClose = null): void
+    public function close(TalkCloseActionModel $closeAction): void
     {
-        $body = $forceClose === null ? [] : ['force_close' => $forceClose];
+        $body = ['force_close' => $closeAction->isForceClose()];
         /** @noinspection UnusedFunctionResultInspection */
-        $this->request->post($this->getMethod() . '/' . $talkId . '/close', $body);
+        $this->request->post($this->getMethod() . '/' . $closeAction->getTalkId() . '/close', $body);
     }
 }

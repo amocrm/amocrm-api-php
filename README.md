@@ -130,39 +130,41 @@ $leadsService = $apiClient->leads();
 
 В данный момент доступны следующие сервисы:
 
-| Сервис            | Цель сервиса                  |
-|-------------------|-------------------------------|
-| notes             | Примечание сущности           |
-| tags              | Теги сущностей                |
-| tasks             | Задачи                        |
-| leads             | Сделки                        |
-| contacts          | Контакты                      |
-| companies         | Компании                      |
-| catalogs          | Каталоги                      |
-| catalogElements   | Элементы каталогов            |
-| customFields      | Пользовательские поля         |
-| customFieldGroups | Группы пользовательских полей |
-| account           | Информация об аккаунте        |
-| roles             | Роли пользователей            |
-| users             | Роли юзеров                   |
-| customersSegments | Сегменты покупателей          |
-| events            | Список событий                |
-| webhooks          | Вебхуки                       | 
-| unsorted          | Неразобранное                 |
-| pipelines         | Воронки сделок                |
-| statuses          | Статусы сделок                |
-| widgets           | Виджеты                       |
-| lossReason        | Причины отказа                |
-| transactions      | Покупки покупателей           |
-| customers         | Покупатели                    |
-| customersStatuses | Сегменты покупателя           |
+| Сервис               | Цель сервиса                  |
+|----------------------|-------------------------------|
+| notes                | Примечание сущности           |
+| tags                 | Теги сущностей                |
+| tasks                | Задачи                        |
+| leads                | Сделки                        |
+| contacts             | Контакты                      |
+| companies            | Компании                      |
+| catalogs             | Каталоги                      |
+| catalogElements      | Элементы каталогов            |
+| customFields         | Пользовательские поля         |
+| customFieldGroups    | Группы пользовательских полей |
+| account              | Информация об аккаунте        |
+| roles                | Роли пользователей            |
+| users                | Роли юзеров                   |
+| customersSegments    | Сегменты покупателей          |
+| events               | Список событий                |
+| webhooks             | Вебхуки                       | 
+| unsorted             | Неразобранное                 |
+| pipelines            | Воронки сделок                |
+| statuses             | Статусы сделок                |
+| widgets              | Виджеты                       |
+| lossReason           | Причины отказа                |
+| transactions         | Покупки покупателей           |
+| customers            | Покупатели                    |
+| customersStatuses    | Сегменты покупателя           |
 | customersBonusPoints | Бонусные баллы покупателя  |
-| calls             | Звонки                        |
-| products          | Товары                        |
-| links             | Массовая привязка сущностей   |
-| shortLinks        | Короткие ссылки               |
-| getOAuthClient    | oAuth сервис                  |
-| getRequest        | Голый запросы                 |
+| calls                | Звонки                        |
+| products             | Товары                        |
+| links                | Массовая привязка сущностей   |
+| shortLinks           | Короткие ссылки               |
+| talks                | Беседы                        |
+| entitySubscriptions  | Подписчики сущности           |
+| getOAuthClient       | oAuth сервис                  |
+| getRequest           | Голый запросы                 |
 
 #### Для большинства сервисов есть базовый набор методов:
 
@@ -362,7 +364,7 @@ $leadsService = $apiClient->leads();
     redeemPoints(BonusPointsActionModel $bonusPointsActionModel)
     ```
 
-#### Методы доступные в сервисе ```notes```:
+#### Методы доступные в сервисе ```notes```, ```entitySubscriptions```:
 1. getByParentId Получение данных по ID родительской сущности
     1. parentId - ID родительской сущности
     2. filter (BaseEntityFilter) - фильтр
@@ -473,6 +475,13 @@ $leadsService = $apiClient->leads();
     updateSettings(ProductsSettingsModel $productsSettings);
     ```
 
+#### Методы, доступные в сервисе ```talks```
+2. close
+   1. model (TalkCloseActionModel) - модель для закрытия беседы
+   2. Результатом выполнения - является закрытие беседы или запуск NPS-бота для последующего закрытия беседы
+    ```php
+    close(TalkCloseActionModel $closeAction)
+    ```
 
 ## Обработка ошибок
 
