@@ -41,4 +41,3 @@ try {
     printError($exception);
     die;
 }
-
