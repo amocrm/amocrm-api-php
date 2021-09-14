@@ -394,7 +394,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
     }
 
     /**
-     * Удаление элементов из коллекции
+     * Удаление объектов из коллекции по параметру объекта
      *
      * @param string $key
      * @param mixed $value
@@ -421,7 +421,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
     }
 
     /**
-     * Удаление первого элемента из коллекции
+     * Удаление первого объекта из коллекции по параметру объекта
      *
      * @param string $key
      * @param mixed $value
