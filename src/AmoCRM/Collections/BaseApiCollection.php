@@ -344,7 +344,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
 
         return $result;
     }
-    
+
     /**
      * Замена объекта в коллекции по параметру объекта
      *
@@ -371,7 +371,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
             unset($object);
         }
     }
-    
+
     /**
      * Разделение коллекции на массив состоящий из коллекций определенной длинны
      *
@@ -380,16 +380,19 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
      */
     public function chunk(int $size): array
     {
-        if ($this->count() < $size) return [$this];
+        if ($this->count() < $size) {
+            return [$this];
+        }
         $result = [new static()];
         foreach ($this->data as $item) {
-            if ((end($result)->count()) >= $size)
+            if ((end($result)->count()) >= $size) {
                 $result[] = new static();
+            }
             end($result)->add($item);
         }
         return $result;
     }
-    
+
     /**
      * Удаление элементов из коллекции
      *
@@ -416,7 +419,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
         }
         return $count;
     }
-    
+
     /**
      * Удаление первого элемента из коллекции
      *
@@ -442,7 +445,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
         }
         return false;
     }
-    
+
     /**
      * @param string $column
      *
