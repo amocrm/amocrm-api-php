@@ -27,6 +27,8 @@ class AccountModel extends BaseApiModel
     public const DATETIME_SETTINGS = 'datetime_settings';
     /** @var string Настройки для публичных счетов */
     public const INVOICES_SETTINGS = 'invoices_settings';
+    /** @var string Настройки для публичных счетов */
+    public const IS_API_FILTER_ENABLED = 'is_api_filter_enabled';
 
     /** @var string Покупатели недоступны. */
     public const CUSTOMERS_MODE_UNAVAILABLE = 'unavailable';
@@ -135,6 +137,9 @@ class AccountModel extends BaseApiModel
 
     /** @var null|InvoicesSettings */
     protected $invoicesSettings;
+
+    /** @var bool */
+    protected $isApiFilterEnabled;
 
     /**
      * @return int
@@ -296,6 +301,25 @@ class AccountModel extends BaseApiModel
     }
 
     /**
+     * @return bool
+     */
+    public function getIsApiFilterEnabled(): bool
+    {
+        return $this->isApiFilterEnabled;
+    }
+
+    /**
+     * @param bool $is_enabled
+     * @return $this
+     */
+    public function setIsApiFilterEnabled(bool $is_enabled): self
+    {
+        $this->isApiFilterEnabled = $is_enabled;
+
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getUuid(): ?string
@@ -393,6 +417,10 @@ class AccountModel extends BaseApiModel
             ));
         }
 
+        if (isset($account[self::IS_API_FILTER_ENABLED])) {
+            $accountModel->setIsApiFilterEnabled($account[self::IS_API_FILTER_ENABLED]);
+        }
+
         return $accountModel;
     }
 
@@ -452,6 +480,10 @@ class AccountModel extends BaseApiModel
 
         if (!is_null($this->getInvoicesSettings())) {
             $result['invoices_settings'] = $this->getInvoicesSettings();
+        }
+
+        if (!is_null($this->getIsApiFilterEnabled())) {
+            $result['is_api_filter_enabled'] = $this->getIsApiFilterEnabled();
         }
 
         return $result;
@@ -798,6 +830,7 @@ class AccountModel extends BaseApiModel
             self::VERSION,
             self::DATETIME_SETTINGS,
             self::INVOICES_SETTINGS,
+            self::IS_API_FILTER_ENABLED
         ];
     }
 
