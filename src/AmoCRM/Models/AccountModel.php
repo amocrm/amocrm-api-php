@@ -27,7 +27,7 @@ class AccountModel extends BaseApiModel
     public const DATETIME_SETTINGS = 'datetime_settings';
     /** @var string Настройки для публичных счетов */
     public const INVOICES_SETTINGS = 'invoices_settings';
-    /** @var string Настройки для публичных счетов */
+    /** @var string Доступ к фильтрации */
     public const IS_API_FILTER_ENABLED = 'is_api_filter_enabled';
 
     /** @var string Покупатели недоступны. */
