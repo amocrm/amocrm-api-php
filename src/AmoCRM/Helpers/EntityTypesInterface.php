@@ -9,6 +9,7 @@ interface EntityTypesInterface
     public const LEADS_PIPELINES = 'pipelines';
     public const LEADS_LOSS_REASONS = 'loss_reasons';
     public const LEADS_STATUSES = 'statuses';
+    public const SOURCES = 'sources';
     public const CONTACTS = 'contacts';
     public const CONTACT = 'contact';
     public const CATALOGS = 'catalogs';

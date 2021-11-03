@@ -2,7 +2,9 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\Customers\BonusPoints;
+use AmoCRM\EntitiesServices\Leads\EntitySources;
 use AmoCRM\EntitiesServices\EntitySubscriptions;
 use AmoCRM\EntitiesServices\Links;
 use AmoCRM\EntitiesServices\Products;
@@ -454,6 +456,18 @@ class AmoCRMApiClient
         return new Pipelines($request);
     }
 
+    /**
+     * Метод вернет объект Источников
+     *
+     * @return EntitySources
+     * @throws AmoCRMMissedTokenException
+     */
+    public function sources(): EntitySources
+    {
+        $request = $this->buildRequest();
+
+        return  new EntitySources($request);
+    }
 
     /**
      * Метод вернет объект статусов
