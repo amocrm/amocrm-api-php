@@ -8,7 +8,6 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class SourceModel extends BaseApiModel implements Arrayable, HasIdInterface
 {
-
     use RequestIdTrait;
 
     /**
@@ -171,5 +170,4 @@ class SourceModel extends BaseApiModel implements Arrayable, HasIdInterface
 
         return $result;
     }
-
 }

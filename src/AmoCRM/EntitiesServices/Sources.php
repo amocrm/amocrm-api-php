@@ -76,8 +76,10 @@ class Sources extends BaseEntity implements HasDeleteMethodInterface
     {
         $entities = [];
 
-        if (isset($response[AmoCRMApiRequest::EMBEDDED])
-            && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::SOURCES])) {
+        if (
+            isset($response[AmoCRMApiRequest::EMBEDDED])
+            && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::SOURCES])
+        ) {
             $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::SOURCES];
         }
 
