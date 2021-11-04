@@ -8,7 +8,7 @@ use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\SourcesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\InvalidArgumentException;
-use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Filters\SourcesFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
@@ -19,9 +19,11 @@ use AmoCRM\Models\SourceModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method null|SourcesCollection get(BaseEntityFilter $filter = null, array $with = [])
- * @method SourceModel addOne(BaseApiModel $model)
- * @method SourcesCollection add(BaseApiCollection $collection)
+ * @method null|SourcesCollection get(SourcesFilter $filter = null, array $with = [])
+ * @method SourceModel addOne(SourceModel $model)
+ * @method SourcesCollection add(SourcesCollection $collection)
+ * @method SourceModel updateOne(SourceModel $model)
+ * @method SourcesCollection update(SourcesCollection $collection)
  */
 class Sources extends BaseEntity implements HasDeleteMethodInterface
 {
