@@ -123,7 +123,7 @@ $sourcesCollection->add($sourceA);
 $sourceB = new SourceModel();
 $sourceB->setName('New SourceB ');
 $sourceB->setExternalId('second-' . uniqid());
-$sourcesCollection->add($source);
+$sourcesCollection->add($sourceB);
 
 try {
     $sourcesService->add($sourcesCollection);
