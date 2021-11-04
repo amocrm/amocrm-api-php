@@ -1,8 +1,8 @@
 <?php
 
-use AmoCRM\Collections\Leads\SourcesCollection;
+use AmoCRM\Collections\SourcesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
-use AmoCRM\Models\Leads\SourceModel;
+use AmoCRM\Models\SourceModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 include_once __DIR__ . '/bootstrap.php';
@@ -24,11 +24,14 @@ $apiClient->setAccessToken($accessToken)
         }
     );
 $r = uniqid();
+$phoneNumber = '+7 (912) 123 12 12' . $r;
 //Создадим источник
 $sourcesCollection = new SourcesCollection();
 $source = new SourceModel();
 $source->setName('New Source');
-$source->setExternalId('+7 (912) 123 12 12'.$r);
+// Внешний код не обязательно должен быть телефоном,
+// просто уникально идентифицируемая строке ( ограничения описаны в документации)
+$source->setExternalId($phoneNumber);
 
 $sourcesCollection->add($source);
 $sourcesService = $apiClient->sources();
@@ -39,7 +42,7 @@ try {
     printError($e);
     die;
 }
-echo "Added source: ";
+echo 'Added source: ';
 var_dump($sourcesCollection->toArray());
 echo PHP_EOL;
 
@@ -52,11 +55,100 @@ try {
     die;
 }
 
+//Найдем источник
+$sourcesFilter = new \AmoCRM\Filters\SourcesFilter();
+$sourcesFilter->setExternalIds((array)$phoneNumber);
 try {
-    $sourcesCollection = $apiClient->sources()->get();
+    $sourcesCollection = $apiClient->sources()->get($sourcesFilter);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
 }
 
+echo 'Updated source: ';
+$source = $sourcesCollection->first();
+var_dump($source->toArray());
+
+
+//Найдем источник по id
+try {
+    $source = $apiClient->sources()->getOne($source->getId());
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+echo 'Source found by Id: ';
+var_dump($source->toArray());
+
+$source->setName('Updated-' . $source->getName());
+try {
+    $source = $apiClient->sources()->updateOne($source);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+echo 'Source found by Id: ';
 var_dump($sourcesCollection->toArray());
+
+
+$isDeleted = false;
+try {
+    $isDeleted = $apiClient->sources()->deleteOne($source);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+printf("Source %d  is %s\n", $source->getId(), $isDeleted ? 'deleted' : 'not deleted');
+
+try {
+    $source = $apiClient->sources()->getOne($source->getId());
+} catch (AmoCRMApiException $e) {
+    if ($e->getErrorCode() === 204) {
+        echo "Really deleted\n";
+    } else {
+        printError($e);
+        die;
+    }
+}
+
+$sourcesCollection = new SourcesCollection();
+$sourceA = new SourceModel();
+$sourceA->setName('New SourceA');
+$sourceA->setExternalId('first-' . uniqid());
+$sourcesCollection->add($sourceA);
+
+$sourceB = new SourceModel();
+$sourceB->setName('New SourceB ');
+$sourceB->setExternalId('second-' . uniqid());
+$sourcesCollection->add($source);
+
+try {
+    $sourcesService->add($sourcesCollection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+printf("Sourceses added: %d, %d\n", $sourceA->getId(), $sourceB->getId());
+
+$isDeleted = false;
+try {
+    $isDeleted = $apiClient->sources()->delete($sourcesCollection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+printf("Sources A & B are %s\n", $isDeleted ? 'deleted' : 'not deleted');
+
+
+try {
+    $existingSourcesCollection = $apiClient->sources()->get();
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+$stillExists = array_intersect([$sourceA->getId(), $sourceB->getId()], $existingSourcesCollection->pluck('id'));
+printf("Sources A & B are %s\n", empty($stillExists) ? 'really deleted' : 'still exists');

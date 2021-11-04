@@ -1,16 +1,18 @@
 <?php
 
-namespace AmoCRM\EntitiesServices\Leads;
+namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Collections\Leads\SourcesCollection;
-use AmoCRM\EntitiesServices\BaseEntity;
+use AmoCRM\Collections\SourcesCollection;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\BaseApiModel;
-use AmoCRM\Models\Leads\SourceModel;
+use AmoCRM\Models\Interfaces\HasIdInterface;
+use AmoCRM\Models\SourceModel;
 
 /**
  * Class EntitySources
@@ -21,7 +23,7 @@ use AmoCRM\Models\Leads\SourceModel;
  * @method SourceModel addOne(BaseApiModel $model)
  * @method SourcesCollection add(BaseApiCollection $collection)
  */
-class EntitySources extends BaseEntity
+class Sources extends BaseEntity implements HasDeleteMethodInterface
 {
 
     /**
@@ -38,6 +40,30 @@ class EntitySources extends BaseEntity
      * @var string
      */
     public const ITEM_CLASS = SourceModel::class;
+
+    public function deleteOne(BaseApiModel $model): bool
+    {
+        if (!$model instanceof HasIdInterface) {
+            throw new InvalidArgumentException('Entity should have getId method');
+        }
+
+        $id = $model->getId();
+
+        if (is_null($id)) {
+            throw new AmoCRMApiException('Empty id in model ' . json_encode($model->toApi(0)));
+        }
+
+        $result = $this->request->delete($this->getMethod() . '/' . $model->getId());
+
+        return $result['result'] ?? false;
+    }
+
+    public function delete(BaseApiCollection $collection): bool
+    {
+        $result = $this->request->delete($this->getMethod(), $collection->toApi());
+        return $result['result'] ?? false;
+    }
+
 
     /**
      * @param array $response

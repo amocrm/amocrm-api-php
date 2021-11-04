@@ -1,10 +1,9 @@
 <?php
 
-namespace AmoCRM\Collections\Leads;
+namespace AmoCRM\Collections;
 
-use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\Traits\EntityApiTrait;
-use AmoCRM\Models\Leads\SourceModel;
+use AmoCRM\Models\SourceModel;
 
 /**
  * Class SourcesCollection

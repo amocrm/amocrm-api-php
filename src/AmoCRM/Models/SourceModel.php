@@ -1,8 +1,7 @@
 <?php
 
-namespace AmoCRM\Models\Leads;
+namespace AmoCRM\Models;
 
-use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use Illuminate\Contracts\Support\Arrayable;
