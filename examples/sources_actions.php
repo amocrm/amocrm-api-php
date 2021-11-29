@@ -3,6 +3,7 @@
 use AmoCRM\Collections\SourcesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\SourceModel;
+use AmoCRM\Models\Sources\SourceServicePageModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 include_once __DIR__ . '/bootstrap.php';
@@ -15,10 +16,10 @@ $apiClient->setAccessToken($accessToken)
         function (AccessTokenInterface $accessToken, string $baseDomain) {
             saveToken(
                 [
-                    'accessToken' => $accessToken->getToken(),
+                    'accessToken'  => $accessToken->getToken(),
                     'refreshToken' => $accessToken->getRefreshToken(),
-                    'expires' => $accessToken->getExpires(),
-                    'baseDomain' => $baseDomain,
+                    'expires'      => $accessToken->getExpires(),
+                    'baseDomain'   => $baseDomain,
                 ]
             );
         }
@@ -32,6 +33,17 @@ $source->setName('New Source');
 // Внешний код не обязательно должен быть телефоном,
 // просто уникально идентифицируемая строке ( ограничения описаны в документации)
 $source->setExternalId($phoneNumber);
+
+// если нужно отображать интеграцию в кнопке whatsapp в crm_plugin добавим сервис
+$page = new SourceServicePageModel();
+$page->setLink('+7912123122');
+$page->setName($source->getName());
+$page->setId($page->getLink());
+
+$whatsappSourceService = new \AmoCRM\Models\Sources\SourceServiceModel();
+$whatsappSourceService->setType(\AmoCRM\AmoCRM\Models\Sources\SourceServiceTypeEnumInterface::TYPE_WHATSAPP);
+$whatsappSourceService->setPages(\AmoCRM\Collections\Sources\SourceServicesPagesCollection::make([$page]));
+$source->setServices(\AmoCRM\Collections\Sources\SourceServicesCollection::make([$whatsappSourceService]));
 
 $sourcesCollection->add($source);
 $sourcesService = $apiClient->sources();
@@ -65,9 +77,8 @@ try {
     die;
 }
 
-echo 'Updated source: ';
 $source = $sourcesCollection->first();
-var_dump($source->toArray());
+printf("Updated source: %s, services: %s\n", $source->getName(), json_encode($source->getServices()->toArray()));
 
 
 //Найдем источник по id
@@ -117,6 +128,7 @@ try {
 $sourcesCollection = new SourcesCollection();
 $sourceA = new SourceModel();
 $sourceA->setName('New SourceA');
+$sourceA->setDefault(true);
 $sourceA->setExternalId('first-' . uniqid());
 $sourcesCollection->add($sourceA);
 
@@ -131,7 +143,19 @@ try {
     printError($e);
     die;
 }
-printf("Sourceses added: %d, %d\n", $sourceA->getId(), $sourceB->getId());
+printf("Sources added: %d, %d\n", $sourceA->getId(), $sourceB->getId());
+
+try {
+    $existingSourcesCollection = $apiClient->sources()->get();
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+$sourceA = $existingSourcesCollection->getBy('id', $sourceA->getId());
+$sourceB = $existingSourcesCollection->getBy('id', $sourceB->getId());
+
+printf("Source A is  %s\n", $sourceA->isDefault() ? 'default' : 'not default');
+printf("Source B is  %s\n", $sourceB->isDefault() ? 'default' : 'not default');
 
 $isDeleted = false;
 try {
