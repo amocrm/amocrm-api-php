@@ -2,27 +2,29 @@
 
 namespace AmoCRM\Client;
 
-use AmoCRM\EntitiesServices\Customers\BonusPoints;
-use AmoCRM\EntitiesServices\EntitySubscriptions;
-use AmoCRM\EntitiesServices\Links;
-use AmoCRM\EntitiesServices\Products;
-use AmoCRM\EntitiesServices\Calls;
-use AmoCRM\EntitiesServices\Customers\Transactions;
-use AmoCRM\EntitiesServices\Leads\LossReasons;
-use AmoCRM\EntitiesServices\Leads\Pipelines;
-use AmoCRM\EntitiesServices\Leads\Statuses;
 use AmoCRM\EntitiesServices\Account;
+use AmoCRM\EntitiesServices\Calls;
 use AmoCRM\EntitiesServices\CatalogElements;
 use AmoCRM\EntitiesServices\Catalogs;
 use AmoCRM\EntitiesServices\Companies;
 use AmoCRM\EntitiesServices\Contacts;
+use AmoCRM\EntitiesServices\Customers\BonusPoints;
 use AmoCRM\EntitiesServices\Customers\Customers;
+use AmoCRM\EntitiesServices\Customers\Statuses as CustomersStatuses;
+use AmoCRM\EntitiesServices\Customers\Transactions;
 use AmoCRM\EntitiesServices\CustomFieldGroups;
 use AmoCRM\EntitiesServices\CustomFields;
 use AmoCRM\EntitiesServices\EntityNotes;
+use AmoCRM\EntitiesServices\Sources;
+use AmoCRM\EntitiesServices\EntitySubscriptions;
 use AmoCRM\EntitiesServices\EntityTags;
 use AmoCRM\EntitiesServices\Events;
 use AmoCRM\EntitiesServices\Leads;
+use AmoCRM\EntitiesServices\Leads\LossReasons;
+use AmoCRM\EntitiesServices\Leads\Pipelines;
+use AmoCRM\EntitiesServices\Leads\Statuses;
+use AmoCRM\EntitiesServices\Links;
+use AmoCRM\EntitiesServices\Products;
 use AmoCRM\EntitiesServices\Roles;
 use AmoCRM\EntitiesServices\Segments;
 use AmoCRM\EntitiesServices\ShortLinks;
@@ -37,7 +39,6 @@ use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use League\OAuth2\Client\Token\AccessToken;
-use AmoCRM\EntitiesServices\Customers\Statuses as CustomersStatuses;
 
 use function is_callable;
 
@@ -454,6 +455,18 @@ class AmoCRMApiClient
         return new Pipelines($request);
     }
 
+    /**
+     * Метод вернет объект Источников
+     *
+     * @return Sources
+     * @throws AmoCRMMissedTokenException
+     */
+    public function sources(): Sources
+    {
+        $request = $this->buildRequest();
+
+        return  new Sources($request);
+    }
 
     /**
      * Метод вернет объект статусов
