@@ -346,7 +346,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
     }
 
     /**
-     * Поиск объекта в коллекции по параметру объекта
+     * Замена объекта в коллекции по параметру объекта
      *
      * @param string $key
      * @param mixed $value
@@ -370,6 +370,80 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
             }
             unset($object);
         }
+    }
+
+    /**
+     * Разделение коллекции на массив состоящий из коллекций определенной длинны
+     *
+     * @param int $size
+     * @return BaseApiCollection[]
+     */
+    public function chunk(int $size): array
+    {
+        if ($this->count() < $size) {
+            return [$this];
+        }
+        $result = [new static()];
+        foreach ($this->data as $item) {
+            if ((end($result)->count()) >= $size) {
+                $result[] = new static();
+            }
+            end($result)->add($item);
+        }
+        return $result;
+    }
+
+    /**
+     * Удаление объектов из коллекции по параметру объекта
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return int count
+     */
+    public function removeBy($key, $value): int
+    {
+        $key = Str::ucfirst(Str::camel($key));
+        $getter = (method_exists(static::ITEM_CLASS, 'get' . $key) ? 'get' . $key : null);
+
+        $count = 0;
+        if ($getter) {
+            foreach ($this->data as &$object) {
+                $fieldValue = $object->$getter();
+
+                if ($fieldValue === $value) {
+                    unset($object);
+                    $count++;
+                }
+            }
+        }
+        return $count;
+    }
+
+    /**
+     * Удаление первого объекта из коллекции по параметру объекта
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function removeFirstBy($key, $value): bool
+    {
+        $key = Str::ucfirst(Str::camel($key));
+        $getter = (method_exists(static::ITEM_CLASS, 'get' . $key) ? 'get' . $key : null);
+
+        if ($getter) {
+            foreach ($this->data as &$object) {
+                $fieldValue = $object->$getter();
+
+                if ($fieldValue === $value) {
+                    unset($object);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
