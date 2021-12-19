@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\CustomFields\Factories;
 
+use AmoCRM\Models\CustomFields\OrgLegalNameCustomFieldModel;
 use AmoCRM\Models\CustomFields\TrackingDataCustomFieldModel;
 use AmoCRM\Models\CustomFields\BirthdayCustomFieldModel;
 use AmoCRM\Models\CustomFields\CategoryCustomFieldModel;
@@ -59,6 +60,9 @@ class CustomFieldModelFactory
                 break;
             case CustomFieldModel::TYPE_LEGAL_ENTITY:
                 $model = LegalEntityCustomFieldModel::fromArray($field);
+                break;
+            case CustomFieldModel::TYPE_ORG_LEGAL_NAME:
+                $model = OrgLegalNameCustomFieldModel::fromArray($field);
                 break;
             case CustomFieldModel::TYPE_MULTISELECT:
                 $model = MultiselectCustomFieldModel::fromArray($field);
