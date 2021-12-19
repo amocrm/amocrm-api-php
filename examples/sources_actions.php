@@ -41,7 +41,7 @@ $page->setName($source->getName());
 $page->setId($page->getLink());
 
 $whatsappSourceService = new \AmoCRM\Models\Sources\SourceServiceModel();
-$whatsappSourceService->setType(\AmoCRM\AmoCRM\Models\Sources\SourceServiceTypeEnumInterface::TYPE_WHATSAPP);
+$whatsappSourceService->setType(\AmoCRM\Enum\Sources\SourceServiceTypeEnum::TYPE_WHATSAPP);
 $whatsappSourceService->setPages(\AmoCRM\Collections\Sources\SourceServicesPagesCollection::make([$page]));
 $source->setServices(\AmoCRM\Collections\Sources\SourceServicesCollection::make([$whatsappSourceService]));
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AmoCRM\Collections;
 
 use AmoCRM\Collections\Traits\EntityApiTrait;

@@ -38,6 +38,7 @@
     "psr-4": {
       "AmoCRM\\": "src/",
       "AmoCRM\\Client\\": "src/AmoCRM/Client",
+      "AmoCRM\\Enum\\": "src/AmoCRM/Enum",
       "AmoCRM\\OAuth\\": "src/AmoCRM/OAuth",
       "AmoCRM\\EntitiesServices\\": "src/AmoCRM/EntitiesServices",
       "AmoCRM\\Exceptions\\": "src/AmoCRM/Exceptions",

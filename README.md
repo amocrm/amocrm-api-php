@@ -161,13 +161,14 @@ $leadsService = $apiClient->leads();
 | transactions         | Покупки покупателей           |
 | customers            | Покупатели                    |
 | customersStatuses    | Сегменты покупателя           |
-| customersBonusPoints | Бонусные баллы покупателя  |
+| customersBonusPoints | Бонусные баллы покупателя     |
 | calls                | Звонки                        |
 | products             | Товары                        |
 | links                | Массовая привязка сущностей   |
 | shortLinks           | Короткие ссылки               |
 | talks                | Беседы                        |
 | sources              | Источники                     |
+| chatTemplates        | Шаблоны чатов                 |
 | entitySubscriptions  | Подписчики сущности           |
 | getOAuthClient       | oAuth сервис                  |
 | getRequest           | Голый запросы                 |
@@ -802,6 +803,8 @@ $lead->setTags((new NullTagsCollection()));
 20. ```\AmoCRM\Models\CompanyModel``` - константы для аргумента with для сервиса ```companies```
 21. ```\AmoCRM\Models\CatalogElementModel``` - константы для аргумента with для сервиса ```catalogElements```
 22. ```\AmoCRM\Enum\InvoicesCustomFieldsEnums``` - константы для работы с полями каталога счетов
+23. ```\AmoCRM\Enum\Chats\Templates\Buttons\ButtonsEnums``` - типы кнопок шаблонов чатов
+24. ```\AmoCRM\Enum\Sources\SourceServiceTypeEnum``` - типы сервисов для источников
 
 ## Работа в случае смены субдомена аккаунта
 ```php

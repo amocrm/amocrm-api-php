@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use AmoCRM\AmoCRM\Models\Talks\TalkCloseActionModel;
+use AmoCRM\Models\Talks\TalkCloseActionModel;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 

@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Models\SubscriptionModel;
+use AmoCRM\Models\SubscriptionModel;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Collections\Interfaces\HasPagesInterface;
 use AmoCRM\Collections\SubscriptionsCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Interfaces\HasParentEntity;

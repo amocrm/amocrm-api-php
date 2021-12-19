@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models;
+namespace AmoCRM\Models;
 
 use AmoCRM\Exceptions\NotAvailableForActionException;
-use AmoCRM\Models\BaseApiModel;
 
 class SubscriptionModel extends BaseApiModel
 {

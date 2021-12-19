@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Models\TalkModel;
-use AmoCRM\AmoCRM\Models\Talks\TalkCloseActionModel;
+use AmoCRM\Models\TalkModel;
+use AmoCRM\Models\Talks\TalkCloseActionModel;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
