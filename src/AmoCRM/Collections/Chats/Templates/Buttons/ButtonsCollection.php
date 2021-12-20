@@ -26,6 +26,11 @@ class ButtonsCollection extends BaseApiCollection
 {
     public const ITEM_CLASS = AbstractButtonModel::class;
 
+    /**
+     * @param array $array
+     *
+     * @return ButtonsCollection
+     */
     public static function fromArray(array $array): BaseApiCollection
     {
         $items = array_map(

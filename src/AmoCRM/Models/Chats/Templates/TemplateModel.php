@@ -239,7 +239,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     /**
      * @return int|null
      */
-    public function getCreatedAt(): ?string
+    public function getCreatedAt(): ?int
     {
         return $this->createdAt;
     }
@@ -249,7 +249,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
      *
      * @return TemplateModel
      */
-    public function setCreatedAt(?string $createdAt): TemplateModel
+    public function setCreatedAt(?int $createdAt): TemplateModel
     {
         $this->createdAt = $createdAt;
 
@@ -259,7 +259,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     /**
      * @return int|null
      */
-    public function getUpdatedAt(): ?string
+    public function getUpdatedAt(): ?int
     {
         return $this->updatedAt;
     }
@@ -269,7 +269,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
      *
      * @return TemplateModel
      */
-    public function setUpdatedAt(?string $updatedAt): TemplateModel
+    public function setUpdatedAt(?int $updatedAt): TemplateModel
     {
         $this->updatedAt = $updatedAt;
 
