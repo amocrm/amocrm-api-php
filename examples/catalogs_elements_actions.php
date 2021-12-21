@@ -53,7 +53,7 @@ try {
 }
 
 
-//Получим элементы из нужного нам катагола, где в названии или полях есть слово кросовки
+//Получим элементы из нужного нам каталога, где в названии или полях есть слово кросовки
 $catalogElementsCollection = new CatalogElementsCollection();
 $catalogElementsService = $apiClient->catalogElements($catalog->getId());
 $catalogElementsFilter = new CatalogElementsFilter();

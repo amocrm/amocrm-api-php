@@ -75,7 +75,7 @@ try {
     die;
 }
 
-//Получим статусы поронки
+//Получим статусы воронки
 try {
     $statusesCollection = $statusesService->get();
 } catch (AmoCRMApiException $e) {

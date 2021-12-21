@@ -42,8 +42,7 @@ try {
 }
 
 //Обновим причину отказа
-/** @var LossReasonModel $lossReasonModel */
-$lossReasonModel = $pipelinesCollection->first();
+$lossReasonModel = $lossReasonsCollection->first();
 $lossReasonModel
     ->setName('Новое название причины отказа');
 
@@ -56,7 +55,7 @@ try {
 
 //Удалим причину отказа
 try {
-    $result = $lossReasonService->deleteOne($pipelineModel);
+    $result = $lossReasonService->deleteOne($lossReasonModel);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;

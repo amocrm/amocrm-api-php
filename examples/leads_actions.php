@@ -50,7 +50,7 @@ try {
     die;
 }
 
-//Создадим сделку с заполненым бюджетом и привязанными контактами и компанией
+//Создадим сделку с заполненным бюджетом и привязанными контактами и компанией
 $lead = new LeadModel();
 $lead->setName('Название сделки')
     ->setPrice(54321)
@@ -81,7 +81,7 @@ try {
     die;
 }
 
-//Создадим сделку с заполненым полем типа текст
+//Создадим сделку с заполненным полем типа текст
 $lead = new LeadModel();
 $leadCustomFieldsValues = new CustomFieldsValuesCollection();
 $textCustomFieldValueModel = new TextCustomFieldValuesModel();

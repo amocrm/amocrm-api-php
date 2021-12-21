@@ -78,7 +78,7 @@ $segmentModel->setCustomFieldsValues(
         )
 );
 
-//Обновим покупателя
+//Обновим сегмент
 try {
     $segmentModel = $segmentsService->updateOne($segmentModel);
 } catch (AmoCRMApiException $e) {

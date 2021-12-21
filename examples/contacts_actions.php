@@ -154,7 +154,7 @@ foreach ($contacts as $contact) {
     $contact->setName('Example contact');
 }
 
-//Сохраним сделку
+//Сохраним контакты
 try {
     $apiClient->contacts()->update($contacts);
 } catch (AmoCRMApiException $e) {

@@ -5,7 +5,7 @@ namespace AmoCRM\Exceptions;
 /**
  * Class AmoCRMoAuthApiException
  *
- * Выбрасывается в случае ошибики при работе с oAuth amoCRM
+ * Выбрасывается в случае ошибки при работе с oAuth amoCRM
  *
  * @package AmoCRM\Exceptions
  */
