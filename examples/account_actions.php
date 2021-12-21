@@ -31,4 +31,3 @@ try {
 } catch (AmoCRMApiException $e) {
     printError($e);
 }
-

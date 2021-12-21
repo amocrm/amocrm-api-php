@@ -42,7 +42,7 @@ $apiClient->setAccessToken($accessToken)
         }
     );
 
-//Добавим звонок неразобранное
+//Добавим звонок в неразобранное
 $sipUnsortedCollection = new SipUnsortedCollection();
 $sipUnsorted = UnsortedModelFactory::createForCategory(BaseUnsortedModel::CATEGORY_CODE_SIP);
 $sipMetadata = new SipMetadata();
