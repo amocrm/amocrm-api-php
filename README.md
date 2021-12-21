@@ -285,7 +285,7 @@ $leadsService = $apiClient->leads();
     setAccessTokenRefreshCallback(callable $function);
     ```
 
-5. getOAuthButton установка callback, который будет вызван при обновлении access токена
+6. getOAuthButton установка callback, который будет вызван при обновлении access токена
     1. options (array)
         1. state (string) состояние приложения
         2. color (string)
@@ -299,7 +299,7 @@ $leadsService = $apiClient->leads();
     getOAuthButton(array $options = []);
     ```
    
-6. exchangeApiKey метод для обмена API ключа на код авторизации
+7. exchangeApiKey метод для обмена API ключа на код авторизации
     1. login - email пользователя, для которого обменивается API ключ
     2. apiKey - API ключ пользователя
     3. Код авторизации будет прислан на указанный в настройках приложения redirect_uri
