@@ -61,6 +61,11 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     protected $isEditable;
 
     /**
+     * @var string|null
+     */
+    protected $externalId;
+
+    /**
      * @param array $template
      *
      * @return self
@@ -97,6 +102,9 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             $model->setIsEditable((bool)$template['is_editable']);
         }
 
+        if (isset($template['external_id'])) {
+            $model->setExternalId($template['external_id']);
+        }
 
         if (isset($template['buttons']) && is_array($template['buttons'])) {
             $model->setButtons(ButtonsCollection::fromArray($template['buttons']));
@@ -119,6 +127,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'created_at' => $this->getCreatedAt(),
             'updated_at' => $this->getUpdatedAt(),
             'is_editable' => $this->getIsEditable(),
+            'external_id' => $this->getExternalId(),
         ];
     }
 
@@ -133,6 +142,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'content' => $this->getContent(),
             'buttons' => $this->getButtons() ? $this->getButtons()->toApi() : null,
             'is_editable' => $this->getIsEditable(),
+            'external_id' => $this->getExternalId(),
         ];
     }
 
@@ -292,6 +302,26 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     public function setIsEditable(?bool $isEditable): TemplateModel
     {
         $this->isEditable = $isEditable;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
+    }
+
+    /**
+     * @param string|null $externalId
+     *
+     * @return TemplateModel
+     */
+    public function setExternalId(?string $externalId): TemplateModel
+    {
+        $this->externalId = $externalId;
 
         return $this;
     }

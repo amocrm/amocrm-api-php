@@ -35,6 +35,7 @@ $chatTemplate = new TemplateModel();
 $chatTemplate
     ->setName('Название шаблона')
     ->setContent('Название сделки - {{lead.name}}')
+    ->setExternalId('qwedsgfsdg-dsgsdg') //Идентификатор шаблона на стороне интеграции
     ->setIsEditable(true);
 
 try {
@@ -77,9 +78,21 @@ try {
 }
 var_dump($chatTemplatesCollection->toArray());
 
+
+// Получим шаблоны по ExternalId
+$templatesFilter = new \AmoCRM\Filters\Chats\TemplatesFilter();
+$templatesFilter->setExternalIds(['qwedsgfsdg-dsgsdg']);
+try {
+    $chatTemplate = $chatTemplatesService->get($templatesFilter)->first();
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+var_dump($chatTemplate->toArray());
+
 // Удалим первый шаблон
 try {
-    $chatTemplatesService->deleteOne($chatTemplatesCollection->first());
+    $chatTemplatesService->deleteOne($chatTemplate);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;

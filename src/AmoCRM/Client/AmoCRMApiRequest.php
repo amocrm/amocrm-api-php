@@ -278,7 +278,6 @@ class AmoCRMApiRequest
      * @return array
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
-     * @throws AmoCRMApiNoContentException
      */
     public function delete(
         string $method,

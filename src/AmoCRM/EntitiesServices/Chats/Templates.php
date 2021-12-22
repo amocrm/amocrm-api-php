@@ -10,8 +10,7 @@ use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
-use AmoCRM\Exceptions\NotAvailableForActionException;
-use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Filters\Chats\TemplatesFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
@@ -27,7 +26,7 @@ use AmoCRM\Models\Chats\Templates\TemplateModel;
  * @package AmoCRM\EntitiesServices\Chats
  *
  * @method null|TemplateModel getOne($id, array $with = [])
- * @method null|TemplatesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|TemplatesCollection get(TemplatesFilter $filter = null, array $with = [])
  * @method TemplateModel updateOne(BaseApiModel $apiModel)
  * @method TemplatesCollection update(BaseApiCollection $collection)
  * @method TemplateModel syncOne(BaseApiModel $apiModel, $with = [])
@@ -168,6 +167,10 @@ class Templates extends BaseEntity implements HasPageMethodsInterface, HasDelete
             $apiModel->setIsEditable((bool)$entity['is_editable']);
         }
 
+        if (isset($entity['external_id'])) {
+            $apiModel->setExternalId($entity['external_id']);
+        }
+
         if (isset($entity['buttons'])) {
             $apiModel->setButtons(ButtonsCollection::fromArray($entity['buttons']));
         }
@@ -189,33 +192,23 @@ class Templates extends BaseEntity implements HasPageMethodsInterface, HasDelete
     }
 
     /**
-     * @param TemplatesCollection|BaseApiCollection $collection
-     *
-     * @return BaseApiCollection
-     * @throws NotAvailableForActionException
-     */
-    public function add(BaseApiCollection $collection): BaseApiCollection
-    {
-        throw new NotAvailableForActionException('This entity supports only addOne method');
-    }
-
-    public function addOne(BaseApiModel $model): BaseApiModel
-    {
-        $response = $this->request->post($this->getMethod(), $model->toApi());
-
-        $collection = $this->processAdd(new TemplatesCollection(), $response);
-
-        return $collection->first();
-    }
-
-    /**
      * @param BaseApiCollection $collection
      *
      * @return bool
-     * @throws NotAvailableForActionException
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
      */
     public function delete(BaseApiCollection $collection): bool
     {
-        throw new NotAvailableForActionException('This entity supports only deleteOne method');
+        $body = array_map(
+            static function ($item) {
+                return ['id' => (int)$item['id']];
+            },
+            $collection->toApi()
+        );
+
+        $result = $this->request->delete($this->getMethod(), $body);
+
+        return $result['result'] ?? false;
     }
 }

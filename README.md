@@ -537,6 +537,7 @@ $leadsService = $apiClient->leads();
 |```unsorted```                                               |```\AmoCRM\Filters\UnsortedSummaryFilter```|Фильтр для метода \AmoCRM\EntitiesServices\Unsorted::summary                                    |❌                          |
 |```webhooks```                                               |```\AmoCRM\Filters\WebhooksFilter```       |Фильтр для метода получения хуков                                                               |❌                          |
 |```sources```                                                |```\AmoCRM\Filters\SourcesFilter```        |Фильтр для метода получения источников `\AmoCRM\EntitiesServices\Sources::get`                  |❌                          |
+|```chatTemplates```                                          |```\AmoCRM\Filters\Chats\TemplatesFilter```|Фильтр для метода получения шаблонов чатов `\AmoCRM\EntitiesServices\Chats\Templates::get`      |❌                          |
 |Сервисы, где необходима постраничная навигация               |```\AmoCRM\Filters\PagesFilter```          |Фильтр, который подходит для любого сервиса, где есть постаничная навигация                     |❌                          |
 
 
