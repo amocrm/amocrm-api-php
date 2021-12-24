@@ -172,6 +172,7 @@ $leadsService = $apiClient->leads();
 | shortLinks           | Короткие ссылки               |
 | talks                | Беседы                        |
 | sources              | Источники                     |
+| chatTemplates        | Шаблоны чатов                 |
 | entitySubscriptions  | Подписчики сущности           |
 | getOAuthClient       | oAuth сервис                  |
 | getRequest           | Голые запросы                 |
@@ -544,6 +545,7 @@ $leadsService = $apiClient->leads();
 |```unsorted```                                               |```\AmoCRM\Filters\UnsortedSummaryFilter```|Фильтр для метода `\AmoCRM\EntitiesServices\Unsorted::summary`                                    |❌                          |
 |```webhooks```                                               |```\AmoCRM\Filters\WebhooksFilter```       |Фильтр для метода получения хуков                                                                 |❌                          |
 |```sources```                                                |```\AmoCRM\Filters\SourcesFilter```        |Фильтр для метода получения источников `\AmoCRM\EntitiesServices\Sources::get`                    |❌                          |
+|```chatTemplates```                                          |```\AmoCRM\Filters\Chats\TemplatesFilter```|Фильтр для метода получения шаблонов чатов `\AmoCRM\EntitiesServices\Chats\Templates::get`        |❌                          |
 |Сервисы, где необходима постраничная навигация               |```\AmoCRM\Filters\PagesFilter```          |Фильтр, который подходит для любого сервиса, где есть постраничная навигация                      |❌                          |
 
 
@@ -817,6 +819,8 @@ $lead->setTags((new NullTagsCollection()));
 20. ```\AmoCRM\Models\CompanyModel``` - константы для аргумента with для сервиса ```companies```
 21. ```\AmoCRM\Models\CatalogElementModel``` - константы для аргумента with для сервиса ```catalogElements```
 22. ```\AmoCRM\Enum\InvoicesCustomFieldsEnums``` - константы для работы с полями каталога счетов
+23. ```\AmoCRM\Enum\Chats\Templates\Buttons\ButtonsEnums``` - типы кнопок шаблонов чатов
+24. ```\AmoCRM\Enum\Sources\SourceServiceTypeEnum``` - типы сервисов для источников
 
 ## Работа в случае смены субдомена аккаунта
 

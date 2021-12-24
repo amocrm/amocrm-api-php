@@ -27,7 +27,7 @@
     "symfony/dotenv": "3.* || 4.* || 5.* || 6.*",
     "fig/http-message-util": "1.*",
     "ramsey/uuid": "^3 || ^4",
-    "lcobucci/jwt": "^3.4 || 4.*",
+    "lcobucci/jwt": "^3.4 || ^4.0.4",
     "nesbot/carbon": "^2.52"
   },
   "require-dev": {
@@ -38,6 +38,7 @@
     "psr-4": {
       "AmoCRM\\": "src/",
       "AmoCRM\\Client\\": "src/AmoCRM/Client",
+      "AmoCRM\\Enum\\": "src/AmoCRM/Enum",
       "AmoCRM\\OAuth\\": "src/AmoCRM/OAuth",
       "AmoCRM\\EntitiesServices\\": "src/AmoCRM/EntitiesServices",
       "AmoCRM\\Exceptions\\": "src/AmoCRM/Exceptions",

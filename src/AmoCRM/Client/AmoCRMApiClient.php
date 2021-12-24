@@ -6,6 +6,7 @@ use AmoCRM\EntitiesServices\Account;
 use AmoCRM\EntitiesServices\Calls;
 use AmoCRM\EntitiesServices\CatalogElements;
 use AmoCRM\EntitiesServices\Catalogs;
+use AmoCRM\EntitiesServices\Chats\Templates;
 use AmoCRM\EntitiesServices\Companies;
 use AmoCRM\EntitiesServices\Contacts;
 use AmoCRM\EntitiesServices\Customers\BonusPoints;
@@ -465,7 +466,20 @@ class AmoCRMApiClient
     {
         $request = $this->buildRequest();
 
-        return  new Sources($request);
+        return new Sources($request);
+    }
+
+    /**
+     * Метод вернет объект шаблонов чатов
+     *
+     * @return Templates
+     * @throws AmoCRMMissedTokenException
+     */
+    public function chatTemplates(): Templates
+    {
+        $request = $this->buildRequest();
+
+        return new Templates($request);
     }
 
     /**
