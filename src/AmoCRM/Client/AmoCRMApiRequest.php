@@ -109,7 +109,7 @@ class AmoCRMApiRequest
     }
 
     /**
-     * Обновляем в библиотеке oAuth аккаунт токен по рефрешу
+     * Обновляем в библиотеке oAuth access токен по refresh
      * @throws AmoCRMoAuthApiException
      */
     private function refreshAccessToken()

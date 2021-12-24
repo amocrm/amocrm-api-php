@@ -6,8 +6,8 @@ use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\NotesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\Factories\NoteFactory;
+use AmoCRM\Models\Interfaces\CallInterface;
 use AmoCRM\Models\NoteType\CallInNote;
-use AmoCRM\Models\NoteType\CallNote;
 use AmoCRM\Models\NoteType\ServiceMessageNote;
 use AmoCRM\Models\NoteType\SmsOutNote;
 use League\OAuth2\Client\Token\AccessTokenInterface;
@@ -43,7 +43,7 @@ $serviceMessageNote->setEntityId(1)
 $callInNote = new CallInNote();
 $callInNote->setEntityId(1)
     ->setPhone('+7912312321')
-    ->setCallStatus(CallNote::CALL_STATUS_SUCCESS_CONVERSATION)
+    ->setCallStatus(CallInterface::CALL_STATUS_SUCCESS_CONVERSATION)
     ->setCallResult('Разговор состоялся')
     ->setDuration(148)
     ->setUniq(Uuid::uuid4())

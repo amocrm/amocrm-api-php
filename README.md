@@ -12,13 +12,16 @@
 ## Оглавление
 - [Установка](#установка)
 - [Начало работы](#начало-работы-и-авторизация)
+- [Подход к работе с библиотекой](#подход-к-работе-с-библиотекой)
 - [Поддерживаемые методы и сервисы](#поддерживаемые-методы-и-сервисы)
-- [Обработка ошибок](#поддерживаемые-методы-и-сервисы)
+- [Обработка ошибок](#обработка-ошибок)
 - [Фильтры](#Фильтры)
 - [Работа с Custom Fields сущностей](#работа-с-дополнительными-полями-сущностей)
 - [Работа с тегами сущностей](#работа-с-тегами-сущностей)
 - [Особенности работы с источниками](#особенности-работы-с-источниками)
 - [Константы](#константы)
+- [Работа в случае смены субдомена аккаунта](#Работа-в-случае-смены-субдомена-аккаунта)
+- [Одноразовые токены интеграций, расшифровка](#одноразовые-токены-интеграций-расшифровка)
 - [Примеры](#примеры)
 
 ## Установка
@@ -31,12 +34,12 @@ composer require amocrm/amocrm-api-library
 
 ## Начало работы и авторизация
 
-Для начала использования вам необходимо создать объект бибилиотеки:
+Для начала использования вам необходимо создать объект библиотеки:
 ```php
 $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
 ```
 
-Так же предоставляется фабрика для создания объектов `\AmoCRM\Client\AmoCRMApiClientFactory`.
+Также предоставляется фабрика для создания объектов `\AmoCRM\Client\AmoCRMApiClientFactory`.
 Для ее использования вам нужно реализовать интерфейс `\AmoCRM\OAuth\OAuthConfigInterface` и `\AmoCRM\OAuth\OAuthServiceInterface`
 
 ```php
@@ -44,7 +47,7 @@ $apiClientFactory = new \AmoCRM\Client\AmoCRMApiClientFactory($oAuthConfig, $oAu
 $apiClient = $apiClientFactory->make();
 ```
 
-При использовании фабрики вам не нужно устанавливать колбек onAccessTokenRefresh, при обновлении токена будет вызван метод saveOAuthToken из $oAuthService (\AmoCRM\OAuth\OAuthServiceInterface).
+При использовании фабрики вам не нужно устанавливать callback onAccessTokenRefresh, при обновлении токена будет вызван метод saveOAuthToken из $oAuthService (\AmoCRM\OAuth\OAuthServiceInterface).
 
 Затем необходимо создать объект (`\League\OAuth2\Client\Token\AccessToken`) Access токена из вашего хранилища токенов и установить его в API клиент.
 
@@ -91,7 +94,7 @@ $authorizationUrl = $apiClient->getOAuthClient()->getAuthorizeUrl([
 header('Location: ' . $authorizationUrl);
 ```
 
-Для получения Access Token можно использовать следующий код в обработчике, который будет находится по адресу, указаному в redirect_uri
+Для получения Access Token можно использовать следующий код в обработчике, который будет находиться по адресу, указанному в redirect_uri
 ```php
 $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code']);
 ```
@@ -99,14 +102,15 @@ $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code'])
 Пример авторизации можно посмотреть в файле examples/get_token.php
 
 ## Подход к работе с библиотекой
+
 В библиотеке используется сервисный подход. Для каждой сущности имеется сервис.
 Для каждого метода имеется свой объект коллекции и модели.
 Работа с данными происходит через коллекции и методы библиотеки.
 
 Модели и коллекции имеют методы ```toArray()``` и ```toApi()```, методы возвращают представление объекта в виде массива и в виде данных, отправляемых в API.
 
-Также для работы с коллекциями имеют следующие методы:
-Также для работы с коллекциями имеют следующие методы:
+Также для работы с коллекциями имеются следующие методы:
+
 1. ```add(BaseApiModel $model): self``` - добавляет модель в конец коллекции.
 2. ```prepend(BaseApiModel $value): self``` - добавляет модель в начало коллекции.
 3. ```all(): array``` - возвращает массив моделей в коллекции.
@@ -118,17 +122,17 @@ $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code'])
 9. ```replaceBy($key, $value, BaseApiModel $replacement): void``` - замена модели по значению ключа.
 10. ```removeBy($key, $value): int``` - удаление моделей по значению ключа, возвращает количество удаленных моделей.
 11. ```removeFirstBy($key, $value): bool``` - удаление первой модели по значению ключа, возвращает true если модель была удалена.
-12. ```chunk(int $size): array``` - разделение коллекции на массив состоящий из коллекций определенной длинны.
+12. ```chunk(int $size): array``` - разделение коллекции на массив состоящий из коллекций определенной длины.
 13. ```pluck(string $column): array``` - получение массива значений моделей коллекции по названию свойства.
 
 При работе с библиотекой необходимо не забывать о лимитах API amoCRM.
 Для оптимальной работы с данными лучше всего создавать/изменять за раз не более 50 сущностей в методах, где есть пакетная обработка.
 
-Нужно не забывать про обработку ошибок, а также не забывать о безопасности хранилища токенов. **Утечка токена грозит потерей досутпа к аккаунту.**
+Нужно не забывать про обработку ошибок, а также не забывать о безопасности хранилища токенов. **Утечка токена грозит потерей доступа к аккаунту.**
 
 ## Поддерживаемые методы и сервисы
 
-Библиотека поддерживает большое количество методов API. Методы сгруппированы и объекты-сервисы. Получить объект сервиса можно вызвав необходимый метод у библиотеки, например:
+Библиотека поддерживает большое количество методов API. Методы сгруппированы в объекты-сервисы. Получить объект сервиса можно вызвав необходимый метод у библиотеки, например:
 ```php
 $leadsService = $apiClient->leads();
 ```
@@ -171,7 +175,7 @@ $leadsService = $apiClient->leads();
 | chatTemplates        | Шаблоны чатов                 |
 | entitySubscriptions  | Подписчики сущности           |
 | getOAuthClient       | oAuth сервис                  |
-| getRequest           | Голый запросы                 |
+| getRequest           | Голые запросы                 |
 
 #### Для большинства сервисов есть базовый набор методов:
 
@@ -245,26 +249,26 @@ $leadsService = $apiClient->leads();
     addOneComplex(LeadModel $model);
     ```
 
-Подробней про использование метода комплексного создания смотрите в [примере](examples/leads_complex_actions.php)
+Подробнее про использование метода комплексного создания смотрите в [примере](examples/leads_complex_actions.php)
 
 #### Методы доступные в сервисе ```getOAuthClient```:
 1. getAuthorizeUrl получение ссылки на авторизация
     1. options (array)
         1. state (string) состояние приложения
-    2. Результатом выполнения будет строка с ссылкой на авторизация приложения
+    2. Результатом выполнения будет строка со ссылкой на авторизация приложения
     ```php
     getAuthorizeUrl(array $options = []);
     ```
    
-2. getAccessTokenByCode получение аксес токена по коду авторизации
+2. getAccessTokenByCode получение access токена по коду авторизации
     1. code (string) код авторизации
     2. Результатом выполнения будет объект (AccessTokenInterface)
     ```php
     getAccessTokenByCode(string $code);
     ```
    
-3. getAccessTokenByRefreshToken получение аксес токена по рефреш токену
-    1. accessToken (AccessTokenInterface) объект аксес токена
+3. getAccessTokenByRefreshToken получение access токена по refresh токену
+    1. accessToken (AccessTokenInterface) объект access токена
     2. Результатом выполнения будет объект (AccessTokenInterface)
     ```php
     getAccessTokenByRefreshToken(AccessTokenInterface $accessToken);
@@ -276,13 +280,13 @@ $leadsService = $apiClient->leads();
     setBaseDomain(string $domain);
     ```
 
-5. setAccessTokenRefreshCallback установка callback, который будет вызван при обновлении аксес токена
+5. setAccessTokenRefreshCallback установка callback, который будет вызван при обновлении access токена
     1. function (callable)
     ```php
     setAccessTokenRefreshCallback(callable $function);
     ```
 
-5. getOAuthButton установка callback, который будет вызван при обновлении аксес токена
+6. getOAuthButton установка callback, который будет вызван при обновлении access токена
     1. options (array)
         1. state (string) состояние приложения
         2. color (string)
@@ -296,7 +300,7 @@ $leadsService = $apiClient->leads();
     getOAuthButton(array $options = []);
     ```
    
-6. exchangeApiKey метод для обмена API ключа на код авторизации
+7. exchangeApiKey метод для обмена API ключа на код авторизации
     1. login - email пользователя, для которого обменивается API ключ
     2. apiKey - API ключ пользователя
     3. Код авторизации будет прислан на указанный в настройках приложения redirect_uri
@@ -304,8 +308,8 @@ $leadsService = $apiClient->leads();
     exchangeApiKey(string $login, string $apiKey);
     ```
 
-
 #### Методы связей доступны в сервисах ```leads```, ```contacts```, ```companies```, ```customers```:
+
 1. link Привязать сущность
     1. model (BaseApiModel) - модель главной сущности
     2. links (LinksCollection|LinkModel) - коллекция или модель связи
@@ -330,8 +334,8 @@ $leadsService = $apiClient->leads();
     unlink(BaseApiModel $model, $linkedEntities);
     ```
 
-
 #### Методы удаления доступны в сервисах ```transactions```, ```lossReasons```, ```statuses```, ```pipelines```, ```customFields```, ```customFieldsGroups```, ```roles```, ```customersStatuses```:
+
 1. delete
     1. model (BaseApiModel) - модель сущности
     2. Результатом выполнения является bool значение
@@ -438,6 +442,7 @@ $leadsService = $apiClient->leads();
    
 
 #### Методы доступные в сервисе ```webhooks```
+
 1. subscribe
     1. model (WebhookModel) - модель вебхука
     2. Результатом выполнения является модель WebhookModel
@@ -454,6 +459,7 @@ $leadsService = $apiClient->leads();
 
 
 #### Методы доступные в сервисе ```widgets```
+
 1. install
     1. model (WidgetModel) - модель виджета
     2. Результатом выполнения является модель WidgetModel
@@ -469,6 +475,7 @@ $leadsService = $apiClient->leads();
     ```
  
 #### Методы доступные в сервисе ```products```
+
 1. settings
     1. Результатом выполнения является модель ProductsSettingsModel
     ```php
@@ -483,7 +490,8 @@ $leadsService = $apiClient->leads();
     ```
 
 #### Методы, доступные в сервисе ```talks```
-2. close
+
+1. close
    1. model (TalkCloseActionModel) - модель для закрытия беседы
    2. Результатом выполнения - является закрытие беседы или запуск NPS-бота для последующего закрытия беседы
     ```php
@@ -495,19 +503,19 @@ $leadsService = $apiClient->leads();
 Вызов методов библиотеки может выбрасывать ошибки типа ```AmoCRMApiException```.
 В данные момент доступны следующие типы ошибок, они все наследуют AmoCRMApiException:
 
-|Тип                                                 |Условия                                                                                              |
-|----------------------------------------------------|-----------------------------------------------------------------------------------------------------|
-|AmoCRM\Exceptions\AmoCRMApiConnectExceptionException|Подключение к серверу не было выполнено                                                              |
-|AmoCRM\Exceptions\AmoCRMApiErrorResponseException   |Сервер вернул ошибку на выполняемый запрос                                                           |
-|AmoCRM\Exceptions\AmoCRMApiHttpClientException      |Произошла ошибка http клиента                                                                        |
-|AmoCRM\Exceptions\AmoCRMApiNoContentException       |Сервер вернул код 204 без результата, ничего страшного не произошло, просто нет данных на ваш запрос |
-|AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException|Слишком много редиректов (в нормальном режиме не выкидывается)                                       |
-|AmoCRM\Exceptions\AmoCRMoAuthApiException           |Ошибка в oAuth клиенте                                                                               |
-|AmoCRM\Exceptions\BadTypeException                  |Передан не верный тип данных                                                                         |
-|AmoCRM\Exceptions\InvalidArgumentException          |Передан не верный аргумент                                                                           |
-|AmoCRM\Exceptions\NotAvailableForActionException    |Метод не доступен для вызова                                                                         |
-|AmoCRM\Exceptions\AmoCRMApiPageNotAvailableException|Выбрасывается в случае запроса следующей или предыдущей страницы коллекции, когда страница отстутвует|
-|AmoCRM\Exceptions\AmoCRMMissedTokenException        |Не установлен Access Token для выполнения запроса                                                    |
+|Тип                                                 |Условия                                                                                               |
+|----------------------------------------------------|------------------------------------------------------------------------------------------------------|
+|AmoCRM\Exceptions\AmoCRMApiConnectExceptionException|Подключение к серверу не было выполнено                                                               |
+|AmoCRM\Exceptions\AmoCRMApiErrorResponseException   |Сервер вернул ошибку на выполняемый запрос                                                            |
+|AmoCRM\Exceptions\AmoCRMApiHttpClientException      |Произошла ошибка http клиента                                                                         |
+|AmoCRM\Exceptions\AmoCRMApiNoContentException       |Сервер вернул код 204 без результата, ничего страшного не произошло, просто нет данных на ваш запрос  |
+|AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException|Слишком много редиректов (в нормальном режиме не выкидывается)                                        |
+|AmoCRM\Exceptions\AmoCRMoAuthApiException           |Ошибка в oAuth клиенте                                                                                |
+|AmoCRM\Exceptions\BadTypeException                  |Передан неверный тип данных                                                                          |
+|AmoCRM\Exceptions\InvalidArgumentException          |Передан неверный аргумент                                                                            |
+|AmoCRM\Exceptions\NotAvailableForActionException    |Метод не доступен для вызова                                                                          |
+|AmoCRM\Exceptions\AmoCRMApiPageNotAvailableException|Выбрасывается в случае запроса следующей или предыдущей страницы коллекции, когда страница отсутствует|
+|AmoCRM\Exceptions\AmoCRMMissedTokenException        |Не установлен Access Token для выполнения запроса                                                     |
 
 У выброшенных Exception есть следующие методы:
 1. ```getErrorCode()```
@@ -515,30 +523,30 @@ $leadsService = $apiClient->leads();
 3. ```getLastRequestInfo()```
 4. ```getDescription()```
 
-У ошибки типа AmoCRMApiErrorResponseException есть метод ```getValidationErrors()```, который вернет ошибки валидации входящих данных.
+У ошибки типа AmoCRMApiErrorResponseException есть метод ```getValidationErrors()```, который вернет ошибки валидации входных данных.
 
 ## Фильтры
 
 В данный момент библиотека поддерживает фильтры для следующих сервисов:
 
-|Сервис                                                       |Фильтр                                     |Особенности                                                                                     |Поддерживает ли сортировку?|
-|-------------------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------------------------------|---------------------------|
-|```catalogElements```                                        |```\AmoCRM\Filters\CatalogElementsFilter```|Доступен в ограниченном виде, в будущих версиях будет расширен                                  |❌                          |
-|```companies```                                              |```\AmoCRM\Filters\CompaniesFilter```      |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API   |✅                          |
-|```contacts```                                               |```\AmoCRM\Filters\ContactsFilter```       |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API   |✅                          |
-|```customers```                                              |```\AmoCRM\Filters\CustomersFilter```      |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API   |✅                          |
-|```leads```                                                  |```\AmoCRM\Filters\LeadsFilter```          |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API   |✅                          |
-|```events```                                                 |```\AmoCRM\Filters\EventsFilter```         |Фильтр для списка событий                                                                       |❌                          |
-|```leads```, ```contacts```, ```customers```, ```companies```|```\AmoCRM\Filters\LinksFilter```          |Фильтр для получения связей для метода \AmoCRM\EntitiesServices\HasLinkMethodInterface::getLinks|❌                          |
-|```notes```                                                  |```\AmoCRM\Filters\NotesFilter```          |Фильтра для \AmoCRM\EntitiesServices\EntityNotes::get                                           |✅                          |
-|```tags```                                                   |```\AmoCRM\Filters\TagsFilter```           |Фильтр для \AmoCRM\EntitiesServices\EntityTags::get                                             |❌                          |
-|```tasks```                                                  |```\AmoCRM\Filters\TasksFilter```          |Фильтр для метода \AmoCRM\EntitiesServices\Tasks::get                                           |✅                          |
-|```unsorted```                                               |```\AmoCRM\Filters\UnsortedFilter```       |Фильтр для метода \AmoCRM\EntitiesServices\Unsorted::get                                        |✅                          |
-|```unsorted```                                               |```\AmoCRM\Filters\UnsortedSummaryFilter```|Фильтр для метода \AmoCRM\EntitiesServices\Unsorted::summary                                    |❌                          |
-|```webhooks```                                               |```\AmoCRM\Filters\WebhooksFilter```       |Фильтр для метода получения хуков                                                               |❌                          |
-|```sources```                                                |```\AmoCRM\Filters\SourcesFilter```        |Фильтр для метода получения источников `\AmoCRM\EntitiesServices\Sources::get`                  |❌                          |
-|```chatTemplates```                                          |```\AmoCRM\Filters\Chats\TemplatesFilter```|Фильтр для метода получения шаблонов чатов `\AmoCRM\EntitiesServices\Chats\Templates::get`      |❌                          |
-|Сервисы, где необходима постраничная навигация               |```\AmoCRM\Filters\PagesFilter```          |Фильтр, который подходит для любого сервиса, где есть постаничная навигация                     |❌                          |
+|Сервис                                                       |Фильтр                                     |Особенности                                                                                       |Поддерживает ли сортировку? |
+|-------------------------------------------------------------|-------------------------------------------|--------------------------------------------------------------------------------------------------|----------------------------|
+|```catalogElements```                                        |```\AmoCRM\Filters\CatalogElementsFilter```|Доступен в ограниченном виде, в будущих версиях будет расширен                                    |❌                          |
+|```companies```                                              |```\AmoCRM\Filters\CompaniesFilter```      |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API     |✅                          |
+|```contacts```                                               |```\AmoCRM\Filters\ContactsFilter```       |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API     |✅                          |
+|```customers```                                              |```\AmoCRM\Filters\CustomersFilter```      |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API     |✅                          |
+|```leads```                                                  |```\AmoCRM\Filters\LeadsFilter```          |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API     |✅                          |
+|```events```                                                 |```\AmoCRM\Filters\EventsFilter```         |Фильтр для списка событий                                                                         |❌                          |
+|```leads```, ```contacts```, ```customers```, ```companies```|```\AmoCRM\Filters\LinksFilter```          |Фильтр для получения связей для метода `\AmoCRM\EntitiesServices\HasLinkMethodInterface::getLinks`|❌                          |
+|```notes```                                                  |```\AmoCRM\Filters\NotesFilter```          |Фильтра для `\AmoCRM\EntitiesServices\EntityNotes::get`                                           |✅                          |
+|```tags```                                                   |```\AmoCRM\Filters\TagsFilter```           |Фильтр для `\AmoCRM\EntitiesServices\EntityTags::get`                                             |❌                          |
+|```tasks```                                                  |```\AmoCRM\Filters\TasksFilter```          |Фильтр для метода `\AmoCRM\EntitiesServices\Tasks::get`                                           |✅                          |
+|```unsorted```                                               |```\AmoCRM\Filters\UnsortedFilter```       |Фильтр для метода `\AmoCRM\EntitiesServices\Unsorted::get`                                        |✅                          |
+|```unsorted```                                               |```\AmoCRM\Filters\UnsortedSummaryFilter```|Фильтр для метода `\AmoCRM\EntitiesServices\Unsorted::summary`                                    |❌                          |
+|```webhooks```                                               |```\AmoCRM\Filters\WebhooksFilter```       |Фильтр для метода получения хуков                                                                 |❌                          |
+|```sources```                                                |```\AmoCRM\Filters\SourcesFilter```        |Фильтр для метода получения источников `\AmoCRM\EntitiesServices\Sources::get`                    |❌                          |
+|```chatTemplates```                                          |```\AmoCRM\Filters\Chats\TemplatesFilter```|Фильтр для метода получения шаблонов чатов `\AmoCRM\EntitiesServices\Chats\Templates::get`        |❌                          |
+|Сервисы, где необходима постраничная навигация               |```\AmoCRM\Filters\PagesFilter```          |Фильтр, который подходит для любого сервиса, где есть постраничная навигация                      |❌                          |
 
 
 ## Работа с дополнительными полями сущностей
@@ -551,7 +559,7 @@ $leadsService = $apiClient->leads();
 5. ```catalogElements```
 6. ```segments```
 
-У моделей, который возвращаются у этих сервисов, поля можно получить через метод ```getCustomFieldsValues()```.
+У моделей, которые возвращаются этими сервисами, поля можно получить через метод ```getCustomFieldsValues()```.
 На вызов данного метода возвращается объект ```CustomFieldsValuesCollection``` или ```null```, 
 если значений полей нет.
 
@@ -572,7 +580,9 @@ $leadsService = $apiClient->leads();
 #### Схема отношений объектов:
 
 ```CustomFieldsValuesCollection 1 <---> n BaseCustomFieldValuesModel```
+
 ```BaseCustomFieldValuesModel::getValues() 1 <---> 1 BaseCustomFieldValueCollection```
+
 ```BaseCustomFieldValueCollection 1 <---> n BaseCustomFieldValueModel```
 
 #### Для разных типов полей мы уже подготовили разные модели и коллекции:
@@ -624,7 +634,7 @@ $textCustomFieldValuesModel->setValues(
 );
 //Добавим значение в коллекцию полей сущности
 $leadCustomFieldsValues->add($textCustomFieldValuesModel);
-//Установим сущности эти поля
+//Установим в сущности эти поля
 $lead->setCustomFieldsValues($leadCustomFieldsValues);
 ``` 
 
@@ -657,6 +667,7 @@ $lead->setCustomFieldsValues($leadCustomFieldsValues);
 
 Теги доступны как отдельный сервис ```tags```.
 При создании данного сервиса, вы указываете тип сущности, с тегами которой вы будете работать.
+
 В данный момент доступны:
 1. EntityTypesInterface::LEADS,
 2. EntityTypesInterface::CONTACTS,
@@ -714,7 +725,9 @@ $lead->setId(1);
 //Удалим теги
 $lead->setTags((new NullTagsCollection()));
 ```
-##Особенности работы с источниками
+
+## Особенности работы с источниками
+
 На данный момент источники созданные интеграциями учитываются только при создании неразобранного из чатов.
 
 При добавлении источника обязательными полями являются `external_id`, `name` интеграция может создать в аккаунте
@@ -722,8 +735,7 @@ $lead->setTags((new NullTagsCollection()));
 и при повторном создании с тем же `external_id` crm может вернуть `id` раннее удаленного источника. Поэтому не стоит 
 на стороне интеграции формировать первичный ключ из поля `id`.
 
-Что бы источник отображался в кнопке whatsapp CRM Plugin необходимо указать поле источника `services`
-с таким содержиммым:
+Чтобы источник отображался в кнопке whatsapp CRM Plugin необходимо указать поле источника `services` с таким содержимым:
 ```json
  [
    {
@@ -739,35 +751,38 @@ $lead->setTags((new NullTagsCollection()));
 ]
 
 ```
-Что бы правильно сформировать поле `services` можно воспользоваться моделью ```\AmoCRM\Collections\Sources\SourceServicesCollection```
+Чтобы правильно сформировать поле `services` можно воспользоваться моделью ```\AmoCRM\Collections\Sources\SourceServicesCollection```
 
 ### Источник по-умолчанию
-Источник по-умолчанию (с полем `default=true`) может быть только один или отсуствовать совсем. При отсутствии источника
+
+Источник по-умолчанию (с полем `default=true`) может быть только один или отсутствовать совсем. При отсутствии источника
 по-умолчанию в сделках будет указан источник АПИ-интеграция с названием интеграции (как при создании неразобранного через АПИ).
 
-Что бы сменить источник по-умолчанию достаточно нужному источнику проставить поле `default=true`, у предыдушего источника
+Чтобы сменить источник по-умолчанию, достаточно нужному источнику проставить поле `default=true`, у предыдущего источника
 поле default будет выставлено в `default=false`. Но при удалении источника по-умолчанию интеграция сама должна указать 
 новый источник по-умолчанию.
 
 ### Миграция интеграции на множественные источники (для интеграций с чатами)
+
 Источник по-умолчанию может быть использован интеграцией при переходе на множественные источники, особенно если
 интеграция поддерживает опцию написать первым. 
 
 К примеру исходное состояние:  
-   Есть аккаунта с подключенной интеграцией с чатами,  эта интеграция поддерживает только 1 источник. 
+   Есть аккаунт с подключенной интеграцией с чатами, эта интеграция поддерживает только 1 источник. 
    На данный момент нам не важно как была установлена интеграция: через DP или маркетплейс.
 
 Интеграция начинает внедрение поддержки множественных источников, логически разобьем на этапы:  
+
 **1 этап**   
 Интеграция умеет работать с АПИ источниками (но не отправляет и не принимает источник в сообщениях amojo). 
-Добавляет источник по-умолчанию который логически соответствует источнику, который использовался когда не было поддержки нескольких источников. Теперь crm будет присылать в сообщениях `external_id` этого источника для всех чатов которые явно 
+Добавляет источник по-умолчанию, который логически соответствует источнику, использовавшемуся когда не было поддержки нескольких источников. Теперь crm будет присылать в сообщениях `external_id` этого источника для всех чатов которые явно 
 не закреплены за конкретным источником.
 
 **2 этап**  
-Интеграция умеет работать с источниками и при отправке сообщений от клиента (при создании чата) указывает external_id
+Интеграция умеет работать с источниками и при отправке сообщений от клиента (при создании чата) указывает `external_id`
 Все чаты с новыми сообщениями становятся размеченными по источнику. 
 
-Так же интеграция теперь обрабатывает источник и учитывает его при отправке сообщения от менеджера, в том числе при начале чата с клиентом ( опция "написать первым").
+Так же интеграция теперь обрабатывает источник и учитывает его при отправке сообщения от менеджера, в том числе при начале чата с клиентом (опция "написать первым").
 
 **3 этап**  
 Интеграция позволяет администратору аккаунта добавить (через интеграцию) второй и последующие источники.
@@ -808,6 +823,7 @@ $lead->setTags((new NullTagsCollection()));
 24. ```\AmoCRM\Enum\Sources\SourceServiceTypeEnum``` - типы сервисов для источников
 
 ## Работа в случае смены субдомена аккаунта
+
 ```php
 /**
  * Получим модель с информацией о домене аккаунта по access_token
@@ -865,7 +881,7 @@ try {
 }
 ```
 Также вы можете распарсить и модель одноразового токена для Salesbot/Marketingbot.
-Для этого необходимо сделать вызов метода parseBotDisposableToken:
+Для этого необходимо сделать вызов метода `parseBotDisposableToken`:
 ```php
 $token = 'XXX';
 try {
@@ -900,6 +916,7 @@ try {
 ```
 
 ## Примеры
+
 В рамках данного репозитория имеется папка examples с различными примерами.
 
 Для их работы необходимо добавить в неё файл .env со следующим содержимым, указав ваши значения:
@@ -909,9 +926,9 @@ CLIENT_SECRET="Секретный ключ интеграции"
 CLIENT_REDIRECT_URI="https://example.com/examples/get_token.php (Важно обратить внимание, что он должен содержать в себе точно тот адрес, который был указан при создании интеграции)"
 ```
 
-Затем вы можете поднять локальный сервер командой ```composer serve```. После конфигурацию необходимо перейти в браузере на страницу
+Затем вы можете поднять локальный сервер командой ```composer serve```. После конфигурации необходимо перейти в браузере на страницу
 ```http://localhost:8181/examples/get_token.php``` для получения Access Token.
-Для получения доступа к вашему локальному серверу из вне можно использовать сервис ngrok.io. 
+Для получения доступа к вашему локальному серверу извне можно использовать сервис ngrok.io. 
 
 После авторизации вы можете проверить работу примеров, обращаясь к ним из браузера. Стоит отметить, что для корректной работы примеров
 необходимо проверить ID сущностей в них.
@@ -919,9 +936,9 @@ CLIENT_REDIRECT_URI="https://example.com/examples/get_token.php (Важно об
 ## Работа с Issues
 Если вы столкнулись с проблемой при работе с библиотекой, вы можете составить Issue, который будет рассмотрен при первой возможности.
 
-При составлении, детально опишите проблему, приложите примеры кода, а также ответы на запросы из getLastRequestInfo.
+При составлении, детально опишите проблему, приложите примеры кода, а также ответы на запросы из `getLastRequestInfo`.
 
-Не забывайте удалять из примеров значимые данные, которые не должны быть достоянием общественности.
+Не забывайте удалять из примеров значимые данные, которые не должны стать достоянием общественности.
 
 Также могут быть рассмотрены пожелания по улучшению библиотеки.
 

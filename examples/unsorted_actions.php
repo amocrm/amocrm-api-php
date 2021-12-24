@@ -1,5 +1,6 @@
 <?php
 
+use AmoCRM\Filters\BaseRangeFilter;
 use AmoCRM\Filters\Interfaces\HasOrderInterface;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\CustomFieldsValues\MultitextCustomFieldValuesModel;
@@ -41,7 +42,7 @@ $apiClient->setAccessToken($accessToken)
         }
     );
 
-//Добавим неразорбанное звонок
+//Добавим звонок в неразобранное
 $sipUnsortedCollection = new SipUnsortedCollection();
 $sipUnsorted = UnsortedModelFactory::createForCategory(BaseUnsortedModel::CATEGORY_CODE_SIP);
 $sipMetadata = new SipMetadata();
@@ -83,7 +84,7 @@ try {
     die;
 }
 
-//Добавим неразобранное форму
+//Добавим в неразобранное форму
 $formsUnsortedCollection = new FormsUnsortedCollection();
 $formUnsorted = new FormUnsortedModel();
 $formMetadata = new FormsMetadata();
@@ -167,7 +168,9 @@ try {
 try {
     $unsortedSummaryFilter = new UnsortedSummaryFilter();
     $unsortedSummaryFilter
-        ->setCreatedAt([time() - 10 * 24 * 60 * 60, time()]);
+        ->setCreatedAt((new BaseRangeFilter())
+            ->setFrom(time() - 10 * 24 * 60 * 60)
+            ->setTo(time()));
     $unsortedSummary = $unsortedService->summary($unsortedSummaryFilter);
 } catch (AmoCRMApiException $e) {
     printError($e);

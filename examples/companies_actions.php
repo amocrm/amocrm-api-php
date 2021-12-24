@@ -41,7 +41,7 @@ try {
     die;
 }
 
-//Получим сделку по ID, сделку и првяжем компанию к сделке
+//Получим сделку по ID, сделку и привяжем компанию к сделке
 try {
     $lead = $apiClient->leads()->getOne(3916883);
 } catch (AmoCRMApiException $e) {
@@ -52,7 +52,7 @@ try {
 $links = new LinksCollection();
 $links->add($lead);
 
-//Получим элементы из нужного нам катагола, где в названии или полях есть слово кросовки
+//Получим элементы из нужного нам каталога, где в названии или полях есть слово кросовки
 $catalogElementsCollection = new CatalogElementsCollection();
 $catalogElementsService = $apiClient->catalogElements(1001);
 $catalogElementsFilter = new CatalogElementsFilter();
