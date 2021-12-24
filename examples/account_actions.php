@@ -27,8 +27,7 @@ $apiClient->setAccessToken($accessToken)
 //Получим свойства аккаунта со всеми доступными свойствами
 try {
     $account = $apiClient->account()->getCurrent(AccountModel::getAvailableWith());
+    var_dump($account->toArray());
 } catch (AmoCRMApiException $e) {
     printError($e);
 }
-
-var_dump($account->toArray());

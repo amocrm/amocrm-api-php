@@ -181,11 +181,11 @@ $itemsCustomFieldValueModel->setValues(
             (new ItemsCustomFieldValueModel())
                 ->setDescription('Описание товара')
                 ->setExternalUid('ID товара во внешней учетной системе')
-                //->setProductId('ID товара в списке товаров в amoCRM') //Необзятальное поле
+                //->setProductId('ID товара в списке товаров в amoCRM') //Необязательное поле
                 ->setQuantity(10) //количество
                 ->setSku('Артикул товара')
                 ->setUnitPrice(150) //цена за единицу товара
-                ->setUnitType('кг') //единица измерения товвара
+                ->setUnitType('кг') //единица измерения товара
                 ->setVatRateValue(20) //НДС 20%
                 ->setDiscount([
                     'type' => ItemsCustomFieldValueModel::FIELD_DISCOUNT_TYPE_AMOUNT, //amount - скидка абсолютная, percentage - скидка в процентах от стоимости товара

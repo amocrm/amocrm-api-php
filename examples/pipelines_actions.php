@@ -47,7 +47,7 @@ $statusesCollection->add(
 );
 
 $pipeline
-    ->setName('Новая главная поронка')
+    ->setName('Новая главная воронка')
     ->setIsMain(true)
     ->setStatuses($statusesCollection);
 

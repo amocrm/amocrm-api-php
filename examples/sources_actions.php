@@ -1,8 +1,12 @@
 <?php
 
+use AmoCRM\AmoCRM\Models\Sources\SourceServiceTypeEnumInterface;
+use AmoCRM\Collections\Sources\SourceServicesCollection;
+use AmoCRM\Collections\Sources\SourceServicesPagesCollection;
 use AmoCRM\Collections\SourcesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\SourceModel;
+use AmoCRM\Models\Sources\SourceServiceModel;
 use AmoCRM\Models\Sources\SourceServicePageModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -31,7 +35,7 @@ $sourcesCollection = new SourcesCollection();
 $source = new SourceModel();
 $source->setName('New Source');
 // Внешний код не обязательно должен быть телефоном,
-// просто уникально идентифицируемая строке ( ограничения описаны в документации)
+// просто уникально идентифицируемая строке (ограничения описаны в документации)
 $source->setExternalId($phoneNumber);
 
 // если нужно отображать интеграцию в кнопке whatsapp в crm_plugin добавим сервис
@@ -40,10 +44,10 @@ $page->setLink('+7912123122');
 $page->setName($source->getName());
 $page->setId($page->getLink());
 
-$whatsappSourceService = new \AmoCRM\Models\Sources\SourceServiceModel();
-$whatsappSourceService->setType(\AmoCRM\AmoCRM\Models\Sources\SourceServiceTypeEnumInterface::TYPE_WHATSAPP);
-$whatsappSourceService->setPages(\AmoCRM\Collections\Sources\SourceServicesPagesCollection::make([$page]));
-$source->setServices(\AmoCRM\Collections\Sources\SourceServicesCollection::make([$whatsappSourceService]));
+$whatsappSourceService = new SourceServiceModel();
+$whatsappSourceService->setType(SourceServiceTypeEnumInterface::TYPE_WHATSAPP);
+$whatsappSourceService->setPages(SourceServicesPagesCollection::make([$page]));
+$source->setServices(SourceServicesCollection::make([$whatsappSourceService]));
 
 $sourcesCollection->add($source);
 $sourcesService = $apiClient->sources();
@@ -83,6 +87,7 @@ printf("Updated source: %s, services: %s\n", $source->getName(), json_encode($so
 
 //Найдем источник по id
 try {
+    /** @var SourceModel|null $source */
     $source = $apiClient->sources()->getOne($source->getId());
 } catch (AmoCRMApiException $e) {
     printError($e);
