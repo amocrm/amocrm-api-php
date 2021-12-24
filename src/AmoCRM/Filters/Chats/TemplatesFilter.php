@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AmoCRM\Filters\Chats;
+
+use AmoCRM\Filters\BaseEntityFilter;
 
 class TemplatesFilter extends BaseEntityFilter
 {

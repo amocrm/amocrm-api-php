@@ -41,7 +41,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     protected $content;
 
     /**
-     * @var ButtonsCollection|null
+     * @var ButtonsCollection
      */
     protected $buttons;
 
@@ -106,9 +106,11 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             $model->setExternalId($template['external_id']);
         }
 
-        if (isset($template['buttons']) && is_array($template['buttons'])) {
-            $model->setButtons(ButtonsCollection::fromArray($template['buttons']));
-        }
+        $buttonsCollection = isset($template['buttons']) && !empty($template['buttons']) && is_array($template['buttons'])
+            ? ButtonsCollection::fromArray($template['buttons'])
+            : new ButtonsCollection();
+
+        $model->setButtons($buttonsCollection);
 
         return $model;
     }
@@ -128,6 +130,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'updated_at' => $this->getUpdatedAt(),
             'is_editable' => $this->getIsEditable(),
             'external_id' => $this->getExternalId(),
+            'request_id' => $this->getRequestId(),
         ];
     }
 
@@ -137,12 +140,17 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
      */
     public function toApi(?string $requestId = "0"): array
     {
+        if (is_null($this->getRequestId()) && !is_null($requestId)) {
+            $this->setRequestId($requestId);
+        }
+
         return [
             'name' => $this->getName(),
             'content' => $this->getContent(),
             'buttons' => $this->getButtons() ? $this->getButtons()->toApi() : null,
             'is_editable' => $this->getIsEditable(),
             'external_id' => $this->getExternalId(),
+            'request_id' => $this->getRequestId(),
         ];
     }
 

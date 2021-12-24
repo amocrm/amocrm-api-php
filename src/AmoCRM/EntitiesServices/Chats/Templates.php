@@ -107,18 +107,21 @@ class Templates extends BaseEntity implements HasPageMethodsInterface, HasDelete
 
         if (isset($entities['id'])) {
             $entity = $entities;
-            if (array_key_exists('id', $entity)) {
-                $initialEntity = $collection->getBy('id', $entity['id']);
-                if ($initialEntity !== null) {
-                    $this->processModelAction($initialEntity, $entity);
-                } else {
-                    $newEntity = TemplateModel::fromArray($entity);
-                    $collection->add($newEntity);
-                }
+            $initialEntity = $collection->getBy('id', $entity['id']);
+            if ($initialEntity !== null) {
+                $this->processModelAction($initialEntity, $entity);
+            } else {
+                $newEntity = TemplateModel::fromArray($entity);
+                $collection->add($newEntity);
             }
         } else {
             foreach ($entities as $entity) {
-                if (array_key_exists('id', $entity)) {
+                if (array_key_exists('request_id', $entity)) {
+                    $initialEntity = $collection->getBy('requestId', $entity['request_id']);
+                    if ($initialEntity !== null) {
+                        $this->processModelAction($initialEntity, $entity);
+                    }
+                } elseif (array_key_exists('id', $entity)) {
                     $initialEntity = $collection->getBy('id', $entity['id']);
                     if ($initialEntity !== null) {
                         $this->processModelAction($initialEntity, $entity);
@@ -171,9 +174,11 @@ class Templates extends BaseEntity implements HasPageMethodsInterface, HasDelete
             $apiModel->setExternalId($entity['external_id']);
         }
 
-        if (isset($entity['buttons'])) {
-            $apiModel->setButtons(ButtonsCollection::fromArray($entity['buttons']));
-        }
+        $buttonsCollection = isset($entity['buttons']) && !empty($entity['buttons']) && is_array($entity['buttons'])
+            ? ButtonsCollection::fromArray($entity['buttons'])
+            : new ButtonsCollection();
+
+        $apiModel->setButtons($buttonsCollection);
     }
 
     /**
