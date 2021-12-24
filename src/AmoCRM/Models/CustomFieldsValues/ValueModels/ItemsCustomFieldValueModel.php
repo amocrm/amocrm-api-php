@@ -54,7 +54,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     protected $unitPrice;
 
     /**
-     * @var int|null
+     * @var float|null
      */
     protected $quantity;
 
@@ -190,19 +190,19 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     }
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getQuantity(): ?int
+    public function getQuantity(): ?float
     {
         return $this->quantity;
     }
 
     /**
-     * @param int|null $quantity
+     * @param float|null $quantity
      *
      * @return ItemsCustomFieldValueModel
      */
-    public function setQuantity(?int $quantity): ItemsCustomFieldValueModel
+    public function setQuantity(?float $quantity): ItemsCustomFieldValueModel
     {
         $this->quantity = $quantity;
 
