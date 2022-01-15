@@ -19,6 +19,7 @@ use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
 use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
+use AmoCRM\Models\ContactModel;
 
 use function is_null;
 
@@ -625,6 +626,17 @@ class LeadModel extends BaseApiModel implements
     public function getContacts(): ?ContactsCollection
     {
         return $this->contacts;
+    }
+
+    /**
+     * @return ContactModel|null
+     */
+    public function getMainContact(): ?ContactModel
+    {
+        if($this->contacts) {
+            return $this->contacts->getBy('isMain', true);
+        }
+        return null;
     }
 
     /**
