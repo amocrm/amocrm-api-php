@@ -301,9 +301,9 @@ class AccountModel extends BaseApiModel
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getIsApiFilterEnabled(): bool
+    public function getIsApiFilterEnabled(): ?bool
     {
         return $this->isApiFilterEnabled;
     }
