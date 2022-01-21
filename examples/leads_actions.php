@@ -233,3 +233,41 @@ if ($lead->getCatalogElementsLinks()) {
 
     var_dump($syncedElement);
 }
+
+// Рассмотрим кейс создания источника и создания сделки с этим источником
+// ID источника на вашей стороне
+$sourceExternalId = 'my-integration-super-id';
+// Создадим источник
+$source = new \AmoCRM\Models\SourceModel();
+$source->setName('My super source')
+    ->setExternalId($sourceExternalId)
+    ->setPipelineId(4913583);
+
+$sourcesService = $apiClient->sources();
+
+try {
+    $source = $sourcesService->addOne($source);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+echo 'Added source: ';
+var_dump($source->toArray());
+echo PHP_EOL;
+
+
+$lead = new LeadModel();
+$lead->setName('Название сделки')
+    ->setPrice(54321)
+    ->setSourceExternalId($sourceExternalId);
+
+try {
+    $lead = $leadsService->addOne($lead);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+echo 'Added lead: ';
+var_dump($lead->toArray());
+echo PHP_EOL;

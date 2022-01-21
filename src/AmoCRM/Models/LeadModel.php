@@ -136,6 +136,11 @@ class LeadModel extends BaseApiModel implements
     protected $sourceId;
 
     /**
+     * @var string|null
+     */
+    protected $sourceExternalId = null;
+
+    /**
      * @var CustomFieldsValuesCollection|null
      */
     protected $customFieldsValues;
@@ -955,6 +960,14 @@ class LeadModel extends BaseApiModel implements
             ];
         }
 
+        // Источник можно передать только при создании
+        if (is_null($this->getId()) && !is_null($this->getSourceExternalId())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['source'] = [
+                'type' => 'widget',
+                'external_id' => $this->getSourceExternalId(),
+            ];
+        }
+
         $result['request_id'] = $this->getRequestId();
 
         return $result;
@@ -981,6 +994,13 @@ class LeadModel extends BaseApiModel implements
 
         if (!is_null($this->getMetadata())) {
             $result[AmoCRMApiRequest::EMBEDDED]['metadata'] = $this->getMetadata()->toComplexApi();
+        }
+
+        if (is_null($this->getId()) && !is_null($this->getSourceExternalId())) {
+            $result[AmoCRMApiRequest::EMBEDDED]['source'] = [
+                'type' => 'widget',
+                'external_id' => $this->getSourceExternalId(),
+            ];
         }
 
         $result['request_id'] = $this->getRequestId();
@@ -1112,6 +1132,26 @@ class LeadModel extends BaseApiModel implements
     public function setIsMerged(bool $isMerged): LeadModel
     {
         $this->isMerged = $isMerged;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSourceExternalId(): ?string
+    {
+        return $this->sourceExternalId;
+    }
+
+    /**
+     * @param string|null $sourceExternalId
+     *
+     * @return LeadModel
+     */
+    public function setSourceExternalId(?string $sourceExternalId): LeadModel
+    {
+        $this->sourceExternalId = $sourceExternalId;
 
         return $this;
     }
