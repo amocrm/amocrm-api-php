@@ -40,6 +40,7 @@ interface EntityTypesInterface
     public const LINKS = 'links';
     public const TALKS = 'talks';
     public const SUBSCRIPTIONS = 'subscriptions';
+    public const CURRENCIES = 'currencies';
 
     public const CUSTOM_FIELDS = 'custom_fields';
     public const CUSTOM_FIELD_GROUPS = 'custom_field_groups';

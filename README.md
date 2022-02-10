@@ -22,6 +22,7 @@
 - [Константы](#константы)
 - [Работа в случае смены субдомена аккаунта](#Работа-в-случае-смены-субдомена-аккаунта)
 - [Одноразовые токены интеграций, расшифровка](#одноразовые-токены-интеграций-расшифровка)
+- [Работа с валютами](#работа-с-валютами)
 - [Примеры](#примеры)
 
 ## Установка
@@ -910,6 +911,37 @@ try {
     die;
 } catch (DisposableTokenVerificationFailedException $e) {
     // Токен не прошел проверку подписи
+    printError($e);
+    die;
+}
+```
+
+## Работа с валютами
+
+```php
+/** @var AmoCRMApiClient $apiClient */
+
+# Получим сервис для работы с валютами
+$service = $apiClient->currencies();
+
+# Получение списка валют
+try {
+    $collection = $service->get();
+    var_dump($collection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+# Получение списка валют с фильтром
+$filter = new CurrenciesFilter();
+$filter->setLimit(50);
+$filter->setPage(2);
+
+try {
+    $collection = $service->get($filter);
+    var_dump($collection);
+} catch (AmoCRMApiException $e) {
     printError($e);
     die;
 }
