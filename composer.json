@@ -27,7 +27,7 @@
     "symfony/dotenv": "3.* || 4.* || 5.* || 6.*",
     "fig/http-message-util": "1.*",
     "ramsey/uuid": "^3 || ^4",
-    "lcobucci/jwt": "^3.4 || ^4.0.4",
+    "lcobucci/jwt": "^3.4.6 || ^4.0.4",
     "nesbot/carbon": "^2.52"
   },
   "require-dev": {
