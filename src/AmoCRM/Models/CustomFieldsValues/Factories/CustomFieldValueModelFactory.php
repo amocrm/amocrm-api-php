@@ -3,6 +3,7 @@
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
 use AmoCRM\Models\CustomFieldsValues\ValueModels\LinkedEntityCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\MonetaryCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\TrackingDataCustomFieldValueModel;
 use AmoCRM\Helpers\CustomFieldHelper;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
@@ -110,6 +111,9 @@ class CustomFieldValueModelFactory
                 break;
             case CustomFieldModel::TYPE_LINKED_ENTITY:
                 $model = new LinkedEntityCustomFieldValueModel();
+                break;
+            case CustomFieldModel::TYPE_MONETARY:
+                $model = new MonetaryCustomFieldValueModel();
                 break;
             default:
                 trigger_error(

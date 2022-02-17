@@ -43,6 +43,8 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     public const TYPE_LINKED_ENTITY = 'linked_entity';
     /** @deprecated */
     public const TYPE_ORG_LEGAL_NAME = 'org_legal_name';
+    /** @var string Тип денежного поля */
+    public const TYPE_MONETARY = 'monetary';
 
     protected const CAN_HAVE_REQUIRED_STATUSES = [
         EntityTypesInterface::LEADS,
