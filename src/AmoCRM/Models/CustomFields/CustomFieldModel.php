@@ -250,6 +250,7 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
             'required_statuses' => $this->getRequiredStatuses(),
             'tracking_callback' => $this->getTrackingCallback(),
             'search_in' => $this->getSearchIn(),
+            'account_id' => $this->getAccountId(),
         ];
     }
 
