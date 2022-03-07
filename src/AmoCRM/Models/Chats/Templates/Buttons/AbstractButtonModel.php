@@ -7,7 +7,7 @@ namespace AmoCRM\Models\Chats\Templates\Buttons;
 use AmoCRM\Enum\Chats\Templates\Buttons\ButtonsEnums;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 /**
  * Class AbstractButtonModel

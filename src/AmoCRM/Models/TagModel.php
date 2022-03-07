@@ -5,7 +5,7 @@ namespace AmoCRM\Models;
 use AmoCRM\Models\Interfaces\EntityApiInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class TagModel extends BaseApiModel implements Arrayable, HasIdInterface, EntityApiInterface
 {

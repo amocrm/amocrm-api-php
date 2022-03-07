@@ -3,7 +3,7 @@
 namespace AmoCRM\Models\AccountSettings;
 
 use AmoCRM\Models\BaseApiModel;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class TaskType extends BaseApiModel implements Arrayable
 {

@@ -4,7 +4,7 @@ namespace AmoCRM\Models\CustomFields;
 
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 use function is_null;
 use function preg_match;

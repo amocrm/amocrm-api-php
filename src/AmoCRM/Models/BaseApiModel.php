@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models;
 
-use Illuminate\Support\Str;
+use AmoCRM\Support\Str;
 
 use function is_callable;
 

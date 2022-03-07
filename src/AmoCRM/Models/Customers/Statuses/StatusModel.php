@@ -5,7 +5,7 @@ namespace AmoCRM\Models\Customers\Statuses;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
 {

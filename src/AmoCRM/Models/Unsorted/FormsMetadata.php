@@ -4,7 +4,7 @@ namespace AmoCRM\Models\Unsorted;
 
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 use function array_key_exists;
 use function is_null;

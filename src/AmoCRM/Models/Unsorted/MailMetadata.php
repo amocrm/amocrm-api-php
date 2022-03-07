@@ -4,7 +4,7 @@ namespace AmoCRM\Models\Unsorted;
 
 use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
 use AmoCRM\Models\BaseApiModel;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class MailMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInterface
 {

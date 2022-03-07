@@ -9,7 +9,7 @@ use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Leads\Pipelines\Statuses\StatusModel;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
 {

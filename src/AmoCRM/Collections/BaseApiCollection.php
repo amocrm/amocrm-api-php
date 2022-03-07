@@ -5,7 +5,7 @@ namespace AmoCRM\Collections;
 use AmoCRM\Models\BaseApiModel;
 use ArrayAccess;
 use ArrayIterator;
-use Illuminate\Support\Str;
+use AmoCRM\Support\Str;
 use InvalidArgumentException;
 use IteratorAggregate;
 use JsonSerializable;

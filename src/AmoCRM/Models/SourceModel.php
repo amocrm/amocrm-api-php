@@ -5,7 +5,7 @@ namespace AmoCRM\Models;
 use AmoCRM\Collections\Sources\SourceServicesCollection;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class SourceModel extends BaseApiModel implements Arrayable, HasIdInterface
 {

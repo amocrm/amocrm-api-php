@@ -5,7 +5,7 @@ namespace AmoCRM\Models;
 use AmoCRM\Models\Factories\NoteFactory;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 /**
  * Class NoteModel

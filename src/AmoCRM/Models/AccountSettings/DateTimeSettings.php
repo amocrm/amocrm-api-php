@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\AccountSettings;
 
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class DateTimeSettings implements Arrayable
 {
