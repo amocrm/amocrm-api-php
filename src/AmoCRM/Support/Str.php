@@ -4,21 +4,21 @@ namespace AmoCRM\Support;
 
 class Str
 {
-	/**
+    /**
      * The cache of camel-cased words.
      *
      * @var array
      */
     protected static $camelCache = [];
 
-	/**
+    /**
      * The cache of studly-cased words.
      *
      * @var array
      */
     protected static $studlyCache = [];
 
-	/**
+    /**
      * Convert the given string to upper-case.
      *
      * @param  string  $value
@@ -29,7 +29,7 @@ class Str
         return mb_strtoupper($value, 'UTF-8');
     }
 
-	/**
+    /**
      * Returns the portion of the string specified by the start and length parameters.
      *
      * @param  string  $string
@@ -42,7 +42,7 @@ class Str
         return mb_substr($string, $start, $length, 'UTF-8');
     }
 
-	/**
+    /**
      * Make a string's first character uppercase.
      *
      * @param  string  $string
@@ -50,10 +50,10 @@ class Str
      */
     public static function ucfirst($string)
     {
-        return static::upper(static::substr($string, 0, 1)).static::substr($string, 1);
+        return static::upper(static::substr($string, 0, 1)) . static::substr($string, 1);
     }
 
-	/**
+    /**
      * Convert a value to studly caps case.
      *
      * @param  string  $value
@@ -76,7 +76,7 @@ class Str
         return static::$studlyCache[$key] = implode($studlyWords);
     }
 
-	/**
+    /**
      * Convert a value to camel case.
      *
      * @param  string  $value
@@ -91,7 +91,7 @@ class Str
         return static::$camelCache[$value] = lcfirst(static::studly($value));
     }
 
-	/**
+    /**
      * Replace the given value in the given string.
      *
      * @param  string|string[]  $search
