@@ -408,11 +408,11 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
 
         $count = 0;
         if ($getter) {
-            foreach ($this->data as &$object) {
+            foreach ($this->data as $dataKey => $object) {
                 $fieldValue = $object->$getter();
 
                 if ($fieldValue === $value) {
-                    unset($object);
+                    $this->offsetUnset($dataKey);
                     $count++;
                 }
             }
@@ -434,11 +434,11 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
         $getter = (method_exists(static::ITEM_CLASS, 'get' . $key) ? 'get' . $key : null);
 
         if ($getter) {
-            foreach ($this->data as &$object) {
+            foreach ($this->data as $dataKey => $object) {
                 $fieldValue = $object->$getter();
 
                 if ($fieldValue === $value) {
-                    unset($object);
+                    $this->offsetUnset($dataKey);
                     return true;
                 }
             }
