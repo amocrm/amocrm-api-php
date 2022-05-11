@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\AmoCRM\EntitiesServices\Currencies;
 use AmoCRM\EntitiesServices\Account;
 use AmoCRM\EntitiesServices\Calls;
 use AmoCRM\EntitiesServices\CatalogElements;
@@ -614,7 +615,7 @@ class AmoCRMApiClient
     {
         $request = $this->buildRequest();
 
-        return  new Products($request);
+        return new Products($request);
     }
 
     public function talks(): Talks
@@ -646,5 +647,17 @@ class AmoCRMApiClient
     public function isAccessTokenSet(): bool
     {
         return $this->accessToken !== null;
+    }
+
+    /**
+     * Метод вернет объект валют
+     *
+     * @since Release Spring 2022
+     * @return Currencies
+     * @throws AmoCRMMissedTokenException
+     */
+    public function currencies(): Currencies
+    {
+        return new Currencies($this->buildRequest());
     }
 }
