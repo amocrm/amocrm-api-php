@@ -38,7 +38,7 @@ class AmoCRMApiClientTest extends TestCase
      */
     private $apiClient;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->apiClient = new AmoCRMApiClient('xxx', 'xxx', 'xxx');
         $this->apiClient->setAccessToken(new AccessToken([

@@ -11,7 +11,7 @@ class LeadsFilterTest extends TestCase
      */
     private $leadsFilter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->leadsFilter = new LeadsFilter();
     }

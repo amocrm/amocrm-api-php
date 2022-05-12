@@ -113,6 +113,9 @@ class CustomFieldValuesModelFactory
             case CustomFieldModel::TYPE_MONETARY:
                 $model = new MonetaryCustomFieldValuesModel();
                 break;
+            case CustomFieldModel::TYPE_CHAINED_LIST:
+                $model = new MonetaryCustomFieldValuesModel();
+                break;
             default:
                 trigger_error(
                     "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
