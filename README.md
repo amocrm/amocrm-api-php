@@ -617,6 +617,7 @@ Namespace, в котором находятся модели дополните�
 | Метка               | TrackingDataCustomFieldValueModel  | TrackingDataCustomFieldValueCollection  | TrackingDataCustomFieldValuesModel  |    ❌    |   ✅    |    ❌     |     ❌      |    ❌    |    ❌    |
 | Связанная сущность  | LinkedEntityCustomFieldValueModel  | LinkedEntityCustomFieldValueCollection  | LinkedEntityCustomFieldValuesModel  |    ❌    |   ❌    |    ❌     |     ❌      |    ✅    |    ❌    |
 | Денежное            | MonetaryCustomFieldModel           | MonetaryCustomFieldValueCollection      | MonetaryCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |    ❌    |    ❌    |
+| Каталоги и списки   | ChainedListCustomFieldModel        | ChainedListCustomFieldValueCollection   | ChainedListCustomFieldValuesModel   |    ❌    |   ✅    |    ❌     |     ✅      |    ❌    |    ❌    |
 
 Пример кода, как создать коллекцию значения полей сущности:
 ```php
