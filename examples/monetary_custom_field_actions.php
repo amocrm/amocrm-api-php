@@ -2,7 +2,7 @@
 
 /** @since Release Spring 2022 */
 
-use AmoCRM\AmoCRM\Models\CustomFields\MonetaryCustomFieldModel;
+use AmoCRM\Models\CustomFields\MonetaryCustomFieldModel;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Filters\LeadsFilter;
@@ -105,7 +105,7 @@ try {
 $monetaryValuesModel = new \AmoCRM\Models\CustomFieldsValues\MonetaryCustomFieldValuesModel();
 $monetaryValuesModel->setFieldId($monetaryCf->getId());
 $monetaryValuesModel->setValues(
-    (new \AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueCollections\MonetaryCustomFieldValueCollection())->add(
+    (new \AmoCRM\Models\CustomFieldsValues\ValueCollections\MonetaryCustomFieldValueCollection())->add(
         (new \AmoCRM\Models\CustomFieldsValues\ValueModels\MonetaryCustomFieldValueModel())->setValue(100)
     )
 );

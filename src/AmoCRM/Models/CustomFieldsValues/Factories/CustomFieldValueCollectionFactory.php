@@ -2,8 +2,8 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
-use AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueCollections\ChainedListCustomFieldValueCollection;
-use AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueCollections\MonetaryCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\ChainedListCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\MonetaryCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\LinkedEntityCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\TrackingDataCustomFieldValueCollection;
 use AmoCRM\Helpers\CustomFieldHelper;

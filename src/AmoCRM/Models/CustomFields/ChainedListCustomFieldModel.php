@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models\CustomFields;
-
-use AmoCRM\Models\CustomFields\CustomFieldModel;
+namespace AmoCRM\Models\CustomFields;
 
 /**
  * Модель поля вложенных списков

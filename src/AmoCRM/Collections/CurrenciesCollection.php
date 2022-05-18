@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Collections;
+namespace AmoCRM\Collections;
 
-use AmoCRM\AmoCRM\Models\CurrencyModel;
-use AmoCRM\Collections\BaseApiCollection;
+use AmoCRM\Models\CurrencyModel;
 use AmoCRM\Collections\Interfaces\HasPagesInterface;
 use AmoCRM\Collections\Traits\PagesTrait;
 
