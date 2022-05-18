@@ -821,6 +821,7 @@ $lead->setTags((new NullTagsCollection()));
 22. ```\AmoCRM\Enum\InvoicesCustomFieldsEnums``` - константы для работы с полями каталога счетов
 23. ```\AmoCRM\Enum\Chats\Templates\Buttons\ButtonsEnums``` - типы кнопок шаблонов чатов
 24. ```\AmoCRM\Enum\Sources\SourceServiceTypeEnum``` - типы сервисов для источников
+25. ```\AmoCRM\Enum\Tags\TagColorsEnum``` - возможные цвета для тегов
 
 ## Работа в случае смены субдомена аккаунта
 

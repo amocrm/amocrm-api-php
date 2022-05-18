@@ -1,5 +1,6 @@
 <?php
 
+use AmoCRM\Enum\Tags\TagColorsEnum;
 use AmoCRM\Filters\TagsFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\Leads\LeadsCollection;
@@ -28,10 +29,11 @@ $apiClient->setAccessToken($accessToken)
         }
     );
 
-//Создадим тег
+//Создадим тег с цветом (цвета можно задавать только у тегов сделок)
 $tagsCollection = new TagsCollection();
 $tag = new TagModel();
 $tag->setName('новый тег');
+$tag->setColor(TagColorsEnum::LAPIS_LAZULI);
 $tagsCollection->add($tag);
 $tagsService = $apiClient->tags(EntityTypesInterface::LEADS);
 

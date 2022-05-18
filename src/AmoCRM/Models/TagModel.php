@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AmoCRM\Models;
 
+use AmoCRM\Enum\Tags\TagColorsEnum;
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\Interfaces\EntityApiInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use Illuminate\Contracts\Support\Arrayable;
+
+use function in_array;
 
 class TagModel extends BaseApiModel implements Arrayable, HasIdInterface, EntityApiInterface
 {
@@ -22,9 +28,15 @@ class TagModel extends BaseApiModel implements Arrayable, HasIdInterface, Entity
     protected $name;
 
     /**
+     * @var string|null
+     */
+    protected $color;
+
+    /**
      * @param array $tag
      *
      * @return self
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $tag): self
     {
@@ -32,6 +44,12 @@ class TagModel extends BaseApiModel implements Arrayable, HasIdInterface, Entity
 
         $model->setId($tag['id']);
         $model->setName($tag['name']);
+        if (isset($tag['color'])) {
+            if (!in_array($tag['color'], TagColorsEnum::getAll(), true)) {
+                throw new InvalidArgumentException('Invalid tag color');
+            }
+            $model->setColor($tag['color']);
+        }
 
         return $model;
     }
@@ -44,6 +62,7 @@ class TagModel extends BaseApiModel implements Arrayable, HasIdInterface, Entity
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
+            'color' => $this->getColor(),
         ];
     }
 
@@ -88,6 +107,26 @@ class TagModel extends BaseApiModel implements Arrayable, HasIdInterface, Entity
     }
 
     /**
+     * @return string|null
+     */
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string|null $color
+     *
+     * @return TagModel
+     */
+    public function setColor(?string $color): TagModel
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
      * @param string|null $requestId
      * @return array
      */
@@ -101,6 +140,10 @@ class TagModel extends BaseApiModel implements Arrayable, HasIdInterface, Entity
 
         if (!is_null($this->getId())) {
             $result['id'] = $this->getId();
+        }
+
+        if (!is_null($this->getColor())) {
+            $result['color'] = $this->getColor();
         }
 
         if (is_null($this->getRequestId()) && !is_null($requestId)) {

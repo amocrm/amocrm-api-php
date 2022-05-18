@@ -15,6 +15,8 @@ use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\TagModel;
 
+use function array_key_exists;
+
 /**
  * Class EntityTags
  *
@@ -136,7 +138,11 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
      */
     public function update(BaseApiCollection $collection): BaseApiCollection
     {
-        throw new NotAvailableForActionException('This entity supports only updateOne method');
+        if ($this->entityType === EntityTypesInterface::LEADS) {
+            return parent::update($collection);
+        }
+
+        throw new NotAvailableForActionException('This entity can not be updated');
     }
 
 
@@ -148,7 +154,11 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
      */
     public function updateOne(BaseApiModel $apiModel): BaseApiModel
     {
-        throw new NotAvailableForActionException('Method not available for this entity');
+        if ($this->entityType === EntityTypesInterface::LEADS) {
+            return parent::updateOne($apiModel);
+        }
+
+        throw new NotAvailableForActionException('This entity can not be updated');
     }
 
     /**
@@ -175,7 +185,14 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
         foreach ($entities as $entity) {
             if (array_key_exists('request_id', $entity)) {
                 $initialEntity = $collection->getBy('requestId', $entity['request_id']);
-                if (!empty($initialEntity)) {
+                if ($initialEntity !== null) {
+                    $this->processModelAction($initialEntity, $entity);
+                }
+            }
+
+            if (array_key_exists('id', $entity)) {
+                $initialEntity = $collection->getBy('id', $entity['id']);
+                if ($initialEntity !== null) {
                     $this->processModelAction($initialEntity, $entity);
                 }
             }
@@ -196,6 +213,10 @@ class EntityTags extends BaseEntityTypeEntity implements HasPageMethodsInterface
 
         if (isset($entity['name'])) {
             $apiModel->setName($entity['name']);
+        }
+
+        if (array_key_exists('color', $entity)) {
+            $apiModel->setColor($entity['color']);
         }
     }
 }
