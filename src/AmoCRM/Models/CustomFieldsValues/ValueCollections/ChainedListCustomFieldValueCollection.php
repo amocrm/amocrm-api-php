@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueCollections;
+namespace AmoCRM\Models\CustomFieldsValues\ValueCollections;
 
-use AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueModels\ChainedListCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\ChainedListCustomFieldValueModel;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
-use AmoCRM\Models\CustomFieldsValues\ValueCollections\BaseCustomFieldValueCollection;
 
 use function array_map;
 

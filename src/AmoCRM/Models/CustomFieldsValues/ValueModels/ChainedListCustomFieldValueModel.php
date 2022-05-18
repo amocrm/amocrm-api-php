@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueModels;
-
-use AmoCRM\Models\CustomFieldsValues\ValueModels\BaseCustomFieldValueModel;
+namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
 /**
  * @since Release Spring 2022

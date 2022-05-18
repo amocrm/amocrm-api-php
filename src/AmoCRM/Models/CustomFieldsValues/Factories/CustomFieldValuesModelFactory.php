@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
-use AmoCRM\AmoCRM\Models\CustomFieldsValues\ChainedListCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\ChainedListCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\MonetaryCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\TrackingDataCustomFieldValuesModel;
 use AmoCRM\Models\CustomFields\CustomFieldModel;

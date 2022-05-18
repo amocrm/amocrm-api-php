@@ -2,10 +2,10 @@
 
 /** @since Release Spring 2022 */
 
-use AmoCRM\AmoCRM\Models\CustomFields\ChainedListCustomFieldModel;
-use AmoCRM\AmoCRM\Models\CustomFields\ChainedLists;
-use AmoCRM\AmoCRM\Models\CustomFieldsValues\ChainedListCustomFieldValuesModel;
-use AmoCRM\AmoCRM\Models\CustomFieldsValues\ValueCollections\ChainedListCustomFieldValueCollection;
+use AmoCRM\Models\CustomFields\ChainedListCustomFieldModel;
+use AmoCRM\Models\CustomFields\ChainedLists;
+use AmoCRM\Models\CustomFieldsValues\ChainedListCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\ChainedListCustomFieldValueCollection;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;

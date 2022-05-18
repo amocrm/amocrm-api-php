@@ -2,7 +2,7 @@
 
 /** @since Release Spring 2022 */
 
-use AmoCRM\AmoCRM\Filters\CurrenciesFilter;
+use AmoCRM\Filters\CurrenciesFilter;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
