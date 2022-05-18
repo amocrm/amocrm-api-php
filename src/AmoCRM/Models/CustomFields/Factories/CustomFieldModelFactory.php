@@ -2,6 +2,8 @@
 
 namespace AmoCRM\Models\CustomFields\Factories;
 
+use AmoCRM\AmoCRM\Models\CustomFields\ChainedListCustomFieldModel;
+use AmoCRM\AmoCRM\Models\CustomFields\MonetaryCustomFieldModel;
 use AmoCRM\Models\CustomFields\OrgLegalNameCustomFieldModel;
 use AmoCRM\Models\CustomFields\TrackingDataCustomFieldModel;
 use AmoCRM\Models\CustomFields\BirthdayCustomFieldModel;
@@ -109,6 +111,12 @@ class CustomFieldModelFactory
             case CustomFieldModel::TYPE_LINKED_ENTITY:
                 $model = LinkedEntityCustomFieldModel::fromArray($field);
                 break;
+            case CustomFieldModel::TYPE_MONETARY:
+                $model = MonetaryCustomFieldModel::fromArray($field);
+                break;
+            case CustomFieldModel::TYPE_CHAINED_LIST:
+                $model = ChainedListCustomFieldModel::fromArray($field);
+                break;
             default:
                 trigger_error(
                     "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
@@ -188,6 +196,12 @@ class CustomFieldModelFactory
                 break;
             case CustomFieldModel::TYPE_LINKED_ENTITY:
                 $model = new LinkedEntityCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_MONETARY:
+                $model = new MonetaryCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_CHAINED_LIST:
+                $model = new ChainedListCustomFieldModel();
                 break;
             default:
                 trigger_error(
