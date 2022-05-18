@@ -3,7 +3,7 @@
 namespace AmoCRM\Models\Widgets;
 
 use AmoCRM\Models\BaseApiModel;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class SettingTemplateModel extends BaseApiModel implements Arrayable
 {

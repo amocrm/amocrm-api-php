@@ -6,7 +6,7 @@ use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\CompaniesCollection;
 use AmoCRM\Collections\ContactsCollection;
 use AmoCRM\Collections\Leads\LeadsCollection;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 /**
  * Class AcceptUnsortedModel

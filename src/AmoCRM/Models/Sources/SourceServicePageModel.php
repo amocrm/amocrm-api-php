@@ -3,7 +3,7 @@
 namespace AmoCRM\Models\Sources;
 
 use AmoCRM\Models\BaseApiModel;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class SourceServicePageModel extends BaseApiModel implements Arrayable
 {

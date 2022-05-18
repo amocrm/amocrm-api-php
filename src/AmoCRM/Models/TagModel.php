@@ -9,7 +9,7 @@ use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\Interfaces\EntityApiInterface;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 use function in_array;
 

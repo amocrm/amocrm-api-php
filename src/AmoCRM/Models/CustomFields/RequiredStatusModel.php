@@ -3,7 +3,7 @@
 namespace AmoCRM\Models\CustomFields;
 
 use AmoCRM\Models\BaseApiModel;
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 /**
  * Class RequiredStatusModel

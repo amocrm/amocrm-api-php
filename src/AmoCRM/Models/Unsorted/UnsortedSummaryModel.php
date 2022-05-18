@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Models\Unsorted;
 
-use Illuminate\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Arrayable;
 
 class UnsortedSummaryModel implements Arrayable
 {
