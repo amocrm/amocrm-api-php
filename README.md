@@ -22,6 +22,7 @@
 - [Константы](#константы)
 - [Работа в случае смены субдомена аккаунта](#Работа-в-случае-смены-субдомена-аккаунта)
 - [Одноразовые токены интеграций, расшифровка](#одноразовые-токены-интеграций-расшифровка)
+- [Работа с валютами](#работа-с-валютами)
 - [Примеры](#примеры)
 
 ## Установка
@@ -593,28 +594,30 @@ Namespace, в котором находятся коллекции моделе�
 
 Namespace, в котором находятся модели дополнительных полей - ```\AmoCRM\Models\CustomFieldsValues```
 
-| Тип поля            | Модель значения                    | Коллекция моделей значений              | Модель доп поля                     | Контакт | Сделка | Компания | Покупатель | Каталог | Сегмент |
-|---------------------|------------------------------------|-----------------------------------------|-------------------------------------|:-------:|:------:|:--------:|:----------:|:-------:|:-------:|
-| Текст               | TextCustomFieldValueModel          | TextCustomFieldValueCollection          | TextCustomFieldValuesModel          | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Число               | NumericCustomFieldValueModel       | NumericCustomFieldValueCollection       | NumericCustomFieldValuesModel       | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Флаг                | CheckboxCustomFieldValueModel      | CheckboxCustomFieldValueCollection      | CheckboxCustomFieldValuesModel      | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Список              | SelectCustomFieldValueModel        | SelectCustomFieldValueCollection        | SelectCustomFieldValuesModel        | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Мультисписок        | MultiselectCustomFieldValueModel   | MultiselectCustomFieldValueCollection   | MultiSelectCustomFieldValuesModel   | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Мультитекст         | MultitextCustomFieldValueModel     | MultitextCustomFieldValueCollection     | MultitextCustomFieldValuesModel     | ✅       | ❌     | ❌       | ❌          | ❌      | ❌       |
-| Дата                | DateCustomFieldValueModel          | DateCustomFieldValueCollection          | DateCustomFieldValuesModel          | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Ссылка              | UrlCustomFieldValueModel           | UrlCustomFieldValueCollection           | UrlCustomFieldValuesModel           | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Дата и время        | DateTimeCustomFieldValueModel      | DateTimeCustomFieldValueCollection      | DateTimeCustomFieldValuesModel      | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Текстовая область   | TextareaCustomFieldValueModel      | TextareaCustomFieldValueCollection      | TextareaCustomFieldValuesModel      | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Переключатель       | RadiobuttonCustomFieldValueModel   | RadiobuttonCustomFieldValueCollection   | RadiobuttonCustomFieldValuesModel   | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Короткий адрес      | StreetAddressCustomFieldValueModel | StreetAddressCustomFieldValueCollection | StreetAddressCustomFieldValuesModel | ✅       | ✅     | ✅       | ✅          | ✅      | ✅       |
-| Адрес               | SmartAddressCustomFieldValueModel  | SmartAddressCustomFieldValueCollection  | SmartAddressCustomFieldValuesModel  | ✅       | ✅     | ✅       | ❌          | ❌      | ❌       |
-| День рождения       | BirthdayCustomFieldValueModel      | BirthdayCustomFieldValueCollection      | BirthdayCustomFieldValuesModel      | ✅       | ✅     | ✅       | ❌          | ❌      | ❌       |
-| Юр. лицо            | LegalEntityCustomFieldValueModel   | LegalEntityCustomFieldValueCollection   | LegalEntityCustomFieldValuesModel   | ✅       | ✅     | ✅       | ❌          | ❌      | ❌       |
-| Цена                | PriceCustomFieldValueModel         | PriceCustomFieldValueCollection         | PriceCustomFieldValuesModel         | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
-| Категория           | CategoryCustomFieldValueModel      | CategoryCustomFieldValueCollection      | CategoryCustomFieldValuesModel      | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
-| Предметы            | ItemsCustomFieldValueModel         | ItemsCustomFieldValueCollection         | ItemsCustomFieldValuesModel         | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
-| Метка               | TrackingDataCustomFieldValueModel  | TrackingDataCustomFieldValueCollection  | TrackingDataCustomFieldValuesModel  | ❌       | ✅     | ❌       | ❌          | ❌      | ❌       |
-| Связанная сущность  | LinkedEntityCustomFieldValueModel  | LinkedEntityCustomFieldValueCollection  | LinkedEntityCustomFieldValuesModel  | ❌       | ❌     | ❌       | ❌          | ✅      | ❌       |
+| Тип поля                 | Модель значения                    | Коллекция моделей значений              | Модель доп поля                     | Контакт | Сделка | Компания | Покупатель | Каталог | Сегмент |
+|--------------------------|------------------------------------|-----------------------------------------|-------------------------------------|:-------:|:------:|:--------:|:----------:|:-------:|:-------:|
+| Текст                    | TextCustomFieldValueModel          | TextCustomFieldValueCollection          | TextCustomFieldValuesModel          |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Число                    | NumericCustomFieldValueModel       | NumericCustomFieldValueCollection       | NumericCustomFieldValuesModel       |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Флаг                     | CheckboxCustomFieldValueModel      | CheckboxCustomFieldValueCollection      | CheckboxCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Список                   | SelectCustomFieldValueModel        | SelectCustomFieldValueCollection        | SelectCustomFieldValuesModel        |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Мультисписок             | MultiselectCustomFieldValueModel   | MultiselectCustomFieldValueCollection   | MultiSelectCustomFieldValuesModel   |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Мультитекст              | MultitextCustomFieldValueModel     | MultitextCustomFieldValueCollection     | MultitextCustomFieldValuesModel     |    ✅    |   ❌    |    ❌     |     ❌      |    ❌    |    ❌    |
+| Дата                     | DateCustomFieldValueModel          | DateCustomFieldValueCollection          | DateCustomFieldValuesModel          |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Ссылка                   | UrlCustomFieldValueModel           | UrlCustomFieldValueCollection           | UrlCustomFieldValuesModel           |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Дата и время             | DateTimeCustomFieldValueModel      | DateTimeCustomFieldValueCollection      | DateTimeCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Текстовая область        | TextareaCustomFieldValueModel      | TextareaCustomFieldValueCollection      | TextareaCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Переключатель            | RadiobuttonCustomFieldValueModel   | RadiobuttonCustomFieldValueCollection   | RadiobuttonCustomFieldValuesModel   |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Короткий адрес           | StreetAddressCustomFieldValueModel | StreetAddressCustomFieldValueCollection | StreetAddressCustomFieldValuesModel |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
+| Адрес                    | SmartAddressCustomFieldValueModel  | SmartAddressCustomFieldValueCollection  | SmartAddressCustomFieldValuesModel  |    ✅    |   ✅    |    ✅     |     ❌      |    ❌    |    ❌    |
+| День рождения            | BirthdayCustomFieldValueModel      | BirthdayCustomFieldValueCollection      | BirthdayCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ❌      |    ❌    |    ❌    |
+| Юр. лицо                 | LegalEntityCustomFieldValueModel   | LegalEntityCustomFieldValueCollection   | LegalEntityCustomFieldValuesModel   |    ✅    |   ✅    |    ✅     |     ❌      |    ❌    |    ❌    |
+| Цена                     | PriceCustomFieldValueModel         | PriceCustomFieldValueCollection         | PriceCustomFieldValuesModel         |    ❌    |   ❌    |    ❌     |     ❌      |    ✅    |    ❌    |
+| Категория                | CategoryCustomFieldValueModel      | CategoryCustomFieldValueCollection      | CategoryCustomFieldValuesModel      |    ❌    |   ❌    |    ❌     |     ❌      |    ✅    |    ❌    |
+| Предметы                 | ItemsCustomFieldValueModel         | ItemsCustomFieldValueCollection         | ItemsCustomFieldValuesModel         |    ❌    |   ❌    |    ❌     |     ❌      |    ✅    |    ❌    |
+| Метка                    | TrackingDataCustomFieldValueModel  | TrackingDataCustomFieldValueCollection  | TrackingDataCustomFieldValuesModel  |    ❌    |   ✅    |    ❌     |     ❌      |    ❌    |    ❌    |
+| Связь с другим элементом | LinkedEntityCustomFieldValueModel  | LinkedEntityCustomFieldValueCollection  | LinkedEntityCustomFieldValuesModel  |    ❌    |   ❌    |    ❌     |     ❌      |    ✅    |    ❌    |
+| Денежное                 | MonetaryCustomFieldModel           | MonetaryCustomFieldValueCollection      | MonetaryCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |    ❌    |    ❌    |
+| Каталоги и списки        | ChainedListCustomFieldModel        | ChainedListCustomFieldValueCollection   | ChainedListCustomFieldValuesModel   |    ❌    |   ✅    |    ❌     |     ✅      |    ❌    |    ❌    |
 
 Пример кода, как создать коллекцию значения полей сущности:
 ```php
@@ -910,6 +913,37 @@ try {
     die;
 } catch (DisposableTokenVerificationFailedException $e) {
     // Токен не прошел проверку подписи
+    printError($e);
+    die;
+}
+```
+
+## Работа с валютами
+
+```php
+/** @var AmoCRMApiClient $apiClient */
+
+# Получим сервис для работы с валютами
+$service = $apiClient->currencies();
+
+# Получение списка валют
+try {
+    $collection = $service->get();
+    var_dump($collection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+# Получение списка валют с фильтром
+$filter = new CurrenciesFilter();
+$filter->setLimit(50);
+$filter->setPage(2);
+
+try {
+    $collection = $service->get($filter);
+    var_dump($collection);
+} catch (AmoCRMApiException $e) {
     printError($e);
     die;
 }
