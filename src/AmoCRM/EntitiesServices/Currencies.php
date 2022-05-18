@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\EntitiesServices;
+namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Collections\CurrenciesCollection;
-use AmoCRM\AmoCRM\Filters\CurrenciesFilter;
-use AmoCRM\AmoCRM\Models\CurrencyModel;
+use AmoCRM\Collections\CurrenciesCollection;
+use AmoCRM\Filters\CurrenciesFilter;
+use AmoCRM\Models\CurrencyModel;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Exceptions\NotAvailableForActionException;

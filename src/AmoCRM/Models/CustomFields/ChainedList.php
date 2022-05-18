@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models\CustomFields;
+namespace AmoCRM\Models\CustomFields;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;

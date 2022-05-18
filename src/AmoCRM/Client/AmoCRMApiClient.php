@@ -2,7 +2,7 @@
 
 namespace AmoCRM\Client;
 
-use AmoCRM\AmoCRM\EntitiesServices\Currencies;
+use AmoCRM\EntitiesServices\Currencies;
 use AmoCRM\EntitiesServices\Account;
 use AmoCRM\EntitiesServices\Calls;
 use AmoCRM\EntitiesServices\CatalogElements;

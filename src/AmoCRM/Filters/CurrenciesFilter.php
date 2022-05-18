@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Filters;
-
-use AmoCRM\Filters\PagesFilter;
+namespace AmoCRM\Filters;
 
 /**
  * @since Release Spring 2022

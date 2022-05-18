@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models;
-
-use AmoCRM\Models\BaseApiModel;
+namespace AmoCRM\Models;
 
 /**
  * @since Release Spring 2022
