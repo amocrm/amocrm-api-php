@@ -47,6 +47,8 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     public const TYPE_MONETARY = 'monetary';
     /** @var string Тип связанного списка */
     public const TYPE_CHAINED_LIST = 'chained_list';
+    /** @var string Поле "Файл" */
+    public const TYPE_FILE = 'file';
 
     protected const CAN_HAVE_REQUIRED_STATUSES = [
         EntityTypesInterface::LEADS,

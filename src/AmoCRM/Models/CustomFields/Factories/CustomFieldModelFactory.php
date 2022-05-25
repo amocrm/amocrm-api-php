@@ -3,6 +3,7 @@
 namespace AmoCRM\Models\CustomFields\Factories;
 
 use AmoCRM\Models\CustomFields\ChainedListCustomFieldModel;
+use AmoCRM\Models\CustomFields\FileCustomFieldModel;
 use AmoCRM\Models\CustomFields\MonetaryCustomFieldModel;
 use AmoCRM\Models\CustomFields\OrgLegalNameCustomFieldModel;
 use AmoCRM\Models\CustomFields\TrackingDataCustomFieldModel;
@@ -117,6 +118,9 @@ class CustomFieldModelFactory
             case CustomFieldModel::TYPE_CHAINED_LIST:
                 $model = ChainedListCustomFieldModel::fromArray($field);
                 break;
+            case CustomFieldModel::TYPE_FILE:
+                $model = FileCustomFieldModel::fromArray($field);
+                break;
             default:
                 trigger_error(
                     "Unprocessable field type '{$fieldType}'. Please upgrade amoCRM library.",
@@ -202,6 +206,9 @@ class CustomFieldModelFactory
                 break;
             case CustomFieldModel::TYPE_CHAINED_LIST:
                 $model = new ChainedListCustomFieldModel();
+                break;
+            case CustomFieldModel::TYPE_FILE:
+                $model = new FileCustomFieldModel();
                 break;
             default:
                 trigger_error(

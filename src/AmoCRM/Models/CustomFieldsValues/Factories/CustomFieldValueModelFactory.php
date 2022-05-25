@@ -3,6 +3,7 @@
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
 use AmoCRM\Models\CustomFieldsValues\ValueModels\ChainedListCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\FileCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\LinkedEntityCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\MonetaryCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\TrackingDataCustomFieldValueModel;
@@ -118,6 +119,9 @@ class CustomFieldValueModelFactory
                 break;
             case CustomFieldModel::TYPE_CHAINED_LIST:
                 $model = new ChainedListCustomFieldValueModel();
+                break;
+            case CustomFieldModel::TYPE_FILE:
+                $model = new FileCustomFieldValueModel();
                 break;
             default:
                 trigger_error(
