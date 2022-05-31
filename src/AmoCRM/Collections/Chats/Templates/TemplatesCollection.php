@@ -18,7 +18,7 @@ use AmoCRM\Models\Chats\Templates\TemplateModel;
  * @method null|TemplateModel last()
  * @method null|TemplateModel first()
  * @method null|TemplateModel offsetGet($offset)
- * @method TemplatesCollection offsetSet($offset, TemplateModel $value)
+ * @method void offsetSet($offset, TemplateModel $value)
  * @method TemplatesCollection prepend(TemplateModel $value)
  * @method TemplatesCollection add(TemplateModel $value)
  * @method null|TemplateModel getBy($key, $value)

@@ -9,6 +9,7 @@ use AmoCRM\Support\Str;
 use InvalidArgumentException;
 use IteratorAggregate;
 use JsonSerializable;
+use Traversable;
 
 use function array_column;
 use function array_combine;
@@ -108,13 +109,12 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
     /**
      * @param string|int $offset
      * @param BaseApiModel $value
-     * @return $this
+     *
+     * @return void
      */
-    public function offsetSet($offset, $value): self
+    public function offsetSet($offset, $value): void
     {
         $this->data[$offset] = $this->checkItem($value);
-
-        return $this;
     }
 
     /**
@@ -179,13 +179,11 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
      *
      * @param string|int $offset
      *
-     * @return $this
+     * @return void
      */
-    public function offsetUnset($offset): self
+    public function offsetUnset($offset): void
     {
         unset($this->data[$offset]);
-
-        return $this;
     }
 
     /**
@@ -313,7 +311,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
      *
      * @return ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->data);
     }

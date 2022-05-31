@@ -13,7 +13,7 @@ use AmoCRM\Models\WebhookModel;
  * @method null|WebhookModel last()
  * @method null|WebhookModel first()
  * @method null|WebhookModel offsetGet($offset)
- * @method WebhooksCollection offsetSet($offset, WebhookModel $value)
+ * @method void offsetSet($offset, WebhookModel $value)
  * @method WebhooksCollection prepend(WebhookModel $value)
  * @method WebhooksCollection add(WebhookModel $value)
  * @method null|WebhookModel getBy($key, $value)

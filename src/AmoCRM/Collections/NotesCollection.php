@@ -16,7 +16,7 @@ use AmoCRM\Models\NoteModel;
  * @method null|NoteModel last()
  * @method null|NoteModel first()
  * @method null|NoteModel offsetGet($offset)
- * @method NotesCollection offsetSet($offset, NoteModel $value)
+ * @method void offsetSet($offset, NoteModel $value)
  * @method NotesCollection prepend(NoteModel $value)
  * @method NotesCollection add(NoteModel $value)
  * @method null|NoteModel getBy($key, $value)

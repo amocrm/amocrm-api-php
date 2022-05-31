@@ -17,7 +17,7 @@ use AmoCRM\Models\Chats\Templates\Buttons\AbstractButtonModel;
  * @method null|AbstractButtonModel last()
  * @method null|AbstractButtonModel first()
  * @method null|AbstractButtonModel offsetGet($offset)
- * @method ButtonsCollection offsetSet($offset, AbstractButtonModel $value)
+ * @method void offsetSet($offset, AbstractButtonModel $value)
  * @method ButtonsCollection prepend(AbstractButtonModel $value)
  * @method ButtonsCollection add(AbstractButtonModel $value)
  * @method null|AbstractButtonModel getBy($key, $value)

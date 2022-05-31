@@ -14,7 +14,7 @@ use AmoCRM\Models\Widgets\SettingTemplateModel;
  * @method null|SettingTemplateModel last()
  * @method null|SettingTemplateModel first()
  * @method null|SettingTemplateModel offsetGet($offset)
- * @method SettingsTemplatesCollection offsetSet($offset, SettingTemplateModel $value)
+ * @method void offsetSet($offset, SettingTemplateModel $value)
  * @method SettingsTemplatesCollection prepend(SettingTemplateModel $value)
  * @method SettingsTemplatesCollection add(SettingTemplateModel $value)
  * @method null|SettingTemplateModel getBy($key, $value)

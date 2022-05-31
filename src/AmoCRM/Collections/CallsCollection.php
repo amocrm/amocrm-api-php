@@ -15,7 +15,7 @@ use AmoCRM\Models\CallModel;
  * @method null|CallModel last()
  * @method null|CallModel first()
  * @method null|CallModel offsetGet($offset)
- * @method CallsCollection offsetSet($offset, CallModel $value)
+ * @method void offsetSet($offset, CallModel $value)
  * @method CallsCollection prepend(CallModel $value)
  * @method CallsCollection add(CallModel $value)
  * @method null|CallModel getBy($key, $value)

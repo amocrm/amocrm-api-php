@@ -14,7 +14,7 @@ use AmoCRM\Models\SocialProfiles\SocialProfileModel;
  * @method null|SocialProfileModel last()
  * @method null|SocialProfileModel first()
  * @method null|SocialProfileModel offsetGet($offset)
- * @method SocialProfilesCollection offsetSet($offset, SocialProfileModel $value)
+ * @method void offsetSet($offset, SocialProfileModel $value)
  * @method SocialProfilesCollection prepend(SocialProfileModel $value)
  * @method SocialProfilesCollection add(SocialProfileModel $value)
  * @method null|SocialProfileModel getBy($key, $value)

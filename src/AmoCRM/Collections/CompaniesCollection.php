@@ -15,7 +15,7 @@ use AmoCRM\Models\CompanyModel;
  * @method null|CompanyModel last()
  * @method null|CompanyModel first()
  * @method null|CompanyModel offsetGet($offset)
- * @method CompaniesCollection offsetSet($offset, CompanyModel $value)
+ * @method void offsetSet($offset, CompanyModel $value)
  * @method CompaniesCollection prepend(CompanyModel $value)
  * @method CompaniesCollection add(CompanyModel $value)
  * @method null|CompanyModel getBy($key, $value)

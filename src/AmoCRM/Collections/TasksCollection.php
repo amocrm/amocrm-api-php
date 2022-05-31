@@ -15,7 +15,7 @@ use AmoCRM\Models\TaskModel;
  * @method null|TaskModel last()
  * @method null|TaskModel first()
  * @method null|TaskModel offsetGet($offset)
- * @method TasksCollection offsetSet($offset, TaskModel $value)
+ * @method void offsetSet($offset, TaskModel $value)
  * @method TasksCollection prepend(TaskModel $value)
  * @method TasksCollection add(TaskModel $value)
  * @method null|TaskModel getBy($key, $value)

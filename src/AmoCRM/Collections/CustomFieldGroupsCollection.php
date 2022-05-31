@@ -13,7 +13,7 @@ use AmoCRM\Models\CustomFieldGroupModel;
  * @method null|CustomFieldGroupModel last()
  * @method null|CustomFieldGroupModel first()
  * @method null|CustomFieldGroupModel offsetGet($offset)
- * @method CustomFieldGroupsCollection offsetSet($offset, CustomFieldGroupModel $value)
+ * @method void offsetSet($offset, CustomFieldGroupModel $value)
  * @method CustomFieldGroupsCollection prepend(CustomFieldGroupModel $value)
  * @method CustomFieldGroupsCollection add(CustomFieldGroupModel $value)
  * @method null|CustomFieldGroupModel getBy($key, $value)

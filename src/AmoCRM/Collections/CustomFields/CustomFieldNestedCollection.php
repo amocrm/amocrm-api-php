@@ -14,7 +14,7 @@ use AmoCRM\Models\CustomFields\NestedModel;
  * @method null|NestedModel last()
  * @method null|NestedModel first()
  * @method null|NestedModel offsetGet($offset)
- * @method CustomFieldNestedCollection offsetSet($offset, NestedModel $value)
+ * @method void offsetSet($offset, NestedModel $value)
  * @method CustomFieldNestedCollection prepend(NestedModel $value)
  * @method CustomFieldNestedCollection add(NestedModel $value)
  * @method null|NestedModel getBy($key, $value)

@@ -18,7 +18,7 @@ use AmoCRM\Collections\Traits\PagesTrait;
  * @method null|CurrencyModel last()
  * @method null|CurrencyModel first()
  * @method null|CurrencyModel offsetGet($offset)
- * @method self offsetSet($offset, CurrencyModel $value)
+ * @method void offsetSet($offset, CurrencyModel $value)
  * @method self prepend(CurrencyModel $value)
  * @method self add(CurrencyModel $value)
  * @method null|CurrencyModel getBy($key, $value)

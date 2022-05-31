@@ -16,7 +16,7 @@ use AmoCRM\Models\TagModel;
  * @method null|TagModel last()
  * @method null|TagModel first()
  * @method null|TagModel offsetGet($offset)
- * @method TagsCollection offsetSet($offset, TagModel $value)
+ * @method void offsetSet($offset, TagModel $value)
  * @method TagsCollection prepend(TagModel $value)
  * @method TagsCollection add(TagModel $value)
  * @method null|TagModel getBy($key, $value)

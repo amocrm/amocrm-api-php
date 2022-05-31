@@ -14,7 +14,7 @@ use AmoCRM\Models\RoleModel;
  * @method null|SubscriptionModel last()
  * @method null|SubscriptionModel first()
  * @method null|SubscriptionModel offsetGet($offset)
- * @method self offsetSet($offset, RoleModel $value)
+ * @method void offsetSet($offset, RoleModel $value)
  * @method self prepend(RoleModel $value)
  * @method self add(RoleModel $value)
  * @method null|SubscriptionModel getBy($key, $value)

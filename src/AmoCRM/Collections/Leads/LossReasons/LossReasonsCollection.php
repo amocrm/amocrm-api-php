@@ -14,7 +14,7 @@ use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
  * @method null|LossReasonModel last()
  * @method null|LossReasonModel first()
  * @method null|LossReasonModel offsetGet($offset)
- * @method LossReasonsCollection offsetSet($offset, LossReasonModel $value)
+ * @method void offsetSet($offset, LossReasonModel $value)
  * @method LossReasonsCollection prepend(LossReasonModel $value)
  * @method LossReasonsCollection add(LossReasonModel $value)
  * @method null|LossReasonModel getBy($key, $value)

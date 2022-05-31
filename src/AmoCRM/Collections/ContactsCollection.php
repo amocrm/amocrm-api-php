@@ -15,7 +15,7 @@ use AmoCRM\Models\ContactModel;
  * @method null|ContactModel last()
  * @method null|ContactModel first()
  * @method null|ContactModel offsetGet($offset)
- * @method ContactsCollection offsetSet($offset, ContactModel $value)
+ * @method void offsetSet($offset, ContactModel $value)
  * @method ContactsCollection prepend(ContactModel $value)
  * @method ContactsCollection add(ContactModel $value)
  * @method null|ContactModel getBy($key, $value)

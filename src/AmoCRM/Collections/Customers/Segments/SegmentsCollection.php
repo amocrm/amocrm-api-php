@@ -17,7 +17,7 @@ use AmoCRM\Models\Customers\Segments\SegmentModel;
  * @method null|SegmentModel last()
  * @method null|SegmentModel first()
  * @method null|SegmentModel offsetGet($offset)
- * @method SegmentsCollection offsetSet($offset, SegmentModel $value)
+ * @method void offsetSet($offset, SegmentModel $value)
  * @method SegmentsCollection prepend(SegmentModel $value)
  * @method SegmentsCollection add(SegmentModel $value)
  * @method null|SegmentModel getBy($key, $value)

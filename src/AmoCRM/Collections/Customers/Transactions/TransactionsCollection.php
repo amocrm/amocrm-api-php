@@ -14,7 +14,7 @@ use AmoCRM\Models\Customers\Transactions\TransactionModel;
  * @method null|TransactionModel last()
  * @method null|TransactionModel first()
  * @method null|TransactionModel offsetGet($offset)
- * @method TransactionsCollection offsetSet($offset, TransactionModel $value)
+ * @method void offsetSet($offset, TransactionModel $value)
  * @method TransactionsCollection prepend(TransactionModel $value)
  * @method TransactionsCollection add(TransactionModel $value)
  * @method null|TransactionModel getBy($key, $value)

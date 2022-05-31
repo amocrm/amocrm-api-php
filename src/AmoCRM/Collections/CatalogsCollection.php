@@ -15,7 +15,7 @@ use AmoCRM\Models\CatalogModel;
  * @method null|CatalogModel last()
  * @method null|CatalogModel first()
  * @method null|CatalogModel offsetGet($offset)
- * @method CatalogsCollection offsetSet($offset, CatalogModel $value)
+ * @method void offsetSet($offset, CatalogModel $value)
  * @method CatalogsCollection prepend(CatalogModel $value)
  * @method CatalogsCollection add(CatalogModel $value)
  * @method null|CatalogModel getBy($key, $value)
