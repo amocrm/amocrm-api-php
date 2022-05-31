@@ -15,7 +15,7 @@ use AmoCRM\Models\RoleModel;
  * @method null|RoleModel last()
  * @method null|RoleModel first()
  * @method null|RoleModel offsetGet($offset)
- * @method RolesCollection offsetSet($offset, RoleModel $value)
+ * @method void offsetSet($offset, RoleModel $value)
  * @method RolesCollection prepend(RoleModel $value)
  * @method RolesCollection add(RoleModel $value)
  * @method null|RoleModel getBy($key, $value)

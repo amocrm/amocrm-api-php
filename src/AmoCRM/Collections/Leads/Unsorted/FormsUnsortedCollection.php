@@ -14,7 +14,7 @@ use AmoCRM\Models\Unsorted\FormUnsortedModel;
  * @method null|FormUnsortedModel last()
  * @method null|FormUnsortedModel first()
  * @method null|FormUnsortedModel offsetGet($offset)
- * @method FormsUnsortedCollection offsetSet($offset, FormUnsortedModel $value)
+ * @method void offsetSet($offset, FormUnsortedModel $value)
  * @method FormsUnsortedCollection prepend(FormUnsortedModel $value)
  * @method FormsUnsortedCollection add(FormUnsortedModel $value)
  * @method null|FormUnsortedModel getBy($key, $value)

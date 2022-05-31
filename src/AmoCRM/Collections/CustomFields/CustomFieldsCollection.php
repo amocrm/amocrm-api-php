@@ -19,7 +19,7 @@ use AmoCRM\Models\CustomFields\WithEnumCustomFieldModel;
  * @method null|CustomFieldModel last()
  * @method null|CustomFieldModel first()
  * @method null|CustomFieldModel offsetGet($offset)
- * @method CustomFieldsCollection offsetSet($offset, CustomFieldModel $value)
+ * @method void offsetSet($offset, CustomFieldModel $value)
  * @method CustomFieldsCollection prepend(CustomFieldModel $value)
  * @method CustomFieldsCollection add(CustomFieldModel $value)
  * @method null|CustomFieldModel|WithEnumCustomFieldModel getBy($key, $value)

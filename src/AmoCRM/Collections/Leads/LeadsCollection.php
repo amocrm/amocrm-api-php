@@ -16,7 +16,7 @@ use AmoCRM\Models\LeadModel;
  * @method null|LeadModel last()
  * @method null|LeadModel first()
  * @method null|LeadModel offsetGet($offset)
- * @method LeadsCollection offsetSet($offset, LeadModel $value)
+ * @method void offsetSet($offset, LeadModel $value)
  * @method LeadsCollection prepend(LeadModel $value)
  * @method LeadsCollection add(LeadModel $value)
  * @method null|LeadModel getBy($key, $value)

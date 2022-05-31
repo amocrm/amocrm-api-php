@@ -16,7 +16,7 @@ use AmoCRM\Models\Customers\CustomerModel;
  * @method null|CustomerModel last()
  * @method null|CustomerModel first()
  * @method null|CustomerModel offsetGet($offset)
- * @method CustomersCollection offsetSet($offset, CustomerModel $value)
+ * @method void offsetSet($offset, CustomerModel $value)
  * @method CustomersCollection prepend(CustomerModel $value)
  * @method CustomersCollection add(CustomerModel $value)
  * @method null|CustomerModel getBy($key, $value)

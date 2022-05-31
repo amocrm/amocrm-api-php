@@ -14,7 +14,7 @@ use AmoCRM\Models\CustomFields\RequiredStatusModel;
  * @method null|RequiredStatusModel last()
  * @method null|RequiredStatusModel first()
  * @method null|RequiredStatusModel offsetGet($offset)
- * @method CustomFieldRequiredStatusesCollection offsetSet($offset, RequiredStatusModel $value)
+ * @method void offsetSet($offset, RequiredStatusModel $value)
  * @method CustomFieldRequiredStatusesCollection prepend(RequiredStatusModel $value)
  * @method CustomFieldRequiredStatusesCollection add(RequiredStatusModel $value)
  * @method null|RequiredStatusModel getBy($key, $value)

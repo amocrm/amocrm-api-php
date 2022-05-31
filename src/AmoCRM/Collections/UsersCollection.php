@@ -15,7 +15,7 @@ use AmoCRM\Models\UserModel;
  * @method null|UserModel last()
  * @method null|UserModel first()
  * @method null|UserModel offsetGet($offset)
- * @method UsersCollection offsetSet($offset, UserModel $value)
+ * @method void offsetSet($offset, UserModel $value)
  * @method UsersCollection prepend(UserModel $value)
  * @method UsersCollection add(UserModel $value)
  * @method null|UserModel getBy($key, $value)

@@ -14,7 +14,7 @@ use AmoCRM\Models\ShortLinks\ShortLinkModel;
  * @method null|ShortLinkModel last()
  * @method null|ShortLinkModel first()
  * @method null|ShortLinkModel offsetGet($offset)
- * @method ShortLinksCollection offsetSet($offset, ShortLinkModel $value)
+ * @method void offsetSet($offset, ShortLinkModel $value)
  * @method ShortLinksCollection prepend(ShortLinkModel $value)
  * @method ShortLinksCollection add(ShortLinkModel $value)
  * @method null|ShortLinkModel getBy($key, $value)

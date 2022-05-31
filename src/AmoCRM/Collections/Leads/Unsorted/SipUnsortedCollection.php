@@ -14,7 +14,7 @@ use AmoCRM\Models\Unsorted\SipUnsortedModel;
  * @method null|SipUnsortedModel last()
  * @method null|SipUnsortedModel first()
  * @method null|SipUnsortedModel offsetGet($offset)
- * @method SipUnsortedCollection offsetSet($offset, SipUnsortedModel $value)
+ * @method void offsetSet($offset, SipUnsortedModel $value)
  * @method SipUnsortedCollection prepend(SipUnsortedModel $value)
  * @method SipUnsortedCollection add(SipUnsortedModel $value)
  * @method null|SipUnsortedModel getBy($key, $value)

@@ -16,7 +16,7 @@ use AmoCRM\Models\Unsorted\BaseUnsortedModel;
  * @method null|BaseUnsortedModel last()
  * @method null|BaseUnsortedModel first()
  * @method null|BaseUnsortedModel offsetGet($offset)
- * @method UnsortedCollection offsetSet($offset, BaseUnsortedModel $value)
+ * @method void offsetSet($offset, BaseUnsortedModel $value)
  * @method UnsortedCollection prepend(BaseUnsortedModel $value)
  * @method UnsortedCollection add(BaseUnsortedModel $value)
  * @method null|BaseUnsortedModel getBy($key, $value)

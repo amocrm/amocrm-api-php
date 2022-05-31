@@ -15,7 +15,7 @@ use AmoCRM\Models\LinkModel;
  * @method null|LinkModel last()
  * @method null|LinkModel first()
  * @method null|LinkModel offsetGet($offset)
- * @method LinksCollection offsetSet($offset, LinkModel $value)
+ * @method void offsetSet($offset, LinkModel $value)
  * @method LinksCollection prepend(LinkModel $value)
  * @method LinksCollection add(CanBeLinkedInterface|LinkModel $value)
  * @method null|LinkModel getBy($key, $value)

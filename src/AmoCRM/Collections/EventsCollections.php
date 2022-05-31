@@ -15,7 +15,7 @@ use AmoCRM\Models\EventModel;
  * @method null|EventModel last()
  * @method null|EventModel first()
  * @method null|EventModel offsetGet($offset)
- * @method EventsCollections offsetSet($offset, EventModel $value)
+ * @method void offsetSet($offset, EventModel $value)
  * @method EventsCollections prepend(EventModel $value)
  * @method EventsCollections add(EventModel $value)
  * @method null|EventModel getBy($key, $value)
