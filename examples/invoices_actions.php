@@ -1,5 +1,6 @@
 <?php
 
+use AmoCRM\AmoCRM\Enum\Invoices\BillStatusEnumCode;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Filters\CatalogsFilter;
 use AmoCRM\Models\CustomFieldsValues\LinkedEntityCustomFieldValuesModel;
@@ -81,6 +82,20 @@ $customFieldValues = $invoice->getCustomFieldsValues();
 //Получим значение поля Статус
 if ($statusValue = $customFieldValues->getBy('fieldCode', InvoicesCustomFieldsEnums::STATUS)) {
     var_dump($statusValue->getValues()->first()->getValue());
+
+    // обновим статус счета на "Частично оплачен"
+    $statusCustomFieldValueModel = new SelectCustomFieldValuesModel();
+    $statusCustomFieldValueModel->setFieldCode(InvoicesCustomFieldsEnums::STATUS);
+    $statusCustomFieldValueModel->setValues(
+        (new SelectCustomFieldValueCollection())
+            ->add((new SelectCustomFieldValueModel())->setEnumCode(BillStatusEnumCode::PARTIALLY_PAID))
+    );
+
+    $apiClient->catalogElements($invoicesCatalog->getId())->updateOne(
+        $invoice->setCustomFieldsValues(
+            (new CustomFieldsValuesCollection())->add($statusCustomFieldValueModel)
+        )
+    );
 }
 //Получим значение поля Юр. лицо
 if ($legalEntityValue = $customFieldValues->getBy('fieldCode', InvoicesCustomFieldsEnums::LEGAL_ENTITY)) {

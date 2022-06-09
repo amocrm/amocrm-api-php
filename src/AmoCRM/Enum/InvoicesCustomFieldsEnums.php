@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AmoCRM\Enum;
 
+use AmoCRM\AmoCRM\Enum\Invoices\BillStatusEnumCode;
+
 class InvoicesCustomFieldsEnums
 {
     /**
@@ -34,8 +36,17 @@ class InvoicesCustomFieldsEnums
     /** @var string Код значения "НДС начисляется поверх стоимости" поля Тип НДС */
     public const VAT_NOT_INCLUDED = 'vat_not_included';
 
-    /** @var string Код значения "Оплачен" поля Статус счета */
+    /**
+     * @var string Код значения "Оплачен" поля Статус счета
+     *
+     * @deprecated используйте {@see BillStatusEnumCode} Будет удален в следующих обновлениях
+     */
     public const BILL_STATUS_PAID = 'paid';
-    /** @var string Код значения "Создан" поля Статус счета */
+
+    /**
+     * @var string Код значения "Создан" поля Статус счета
+     *
+     * @deprecated используйте {@see BillStatusEnumCode} Будет удален в следующих обновлениях
+     */
     public const BILL_STATUS_CREATED = 'created';
 }
