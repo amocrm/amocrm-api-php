@@ -84,6 +84,7 @@ if ($statusValue = $customFieldValues->getBy('fieldCode', InvoicesCustomFieldsEn
     var_dump($statusValue->getValues()->first()->getValue());
 
     // обновим статус счета на "Частично оплачен"
+    // подробнее о статусах смотрите в examples/custom_field_select_actions.php
     $statusCustomFieldValueModel = new SelectCustomFieldValuesModel();
     $statusCustomFieldValueModel->setFieldCode(InvoicesCustomFieldsEnums::STATUS);
     $statusCustomFieldValueModel->setValues(

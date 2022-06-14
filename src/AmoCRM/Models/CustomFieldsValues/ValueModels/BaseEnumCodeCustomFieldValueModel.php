@@ -80,22 +80,6 @@ class BaseEnumCodeCustomFieldValueModel extends BaseCustomFieldValueModel
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasEnumId(): bool
-    {
-        return $this->enumId !== null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasEnumCode(): bool
-    {
-        return $this->enumCode !== null;
-    }
-
     public function toArray(): array
     {
         return [
