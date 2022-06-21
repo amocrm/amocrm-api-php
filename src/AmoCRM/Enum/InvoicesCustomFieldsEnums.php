@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AmoCRM\Enum;
 
-use AmoCRM\AmoCRM\Enum\Invoices\BillStatusEnumCode;
+use AmoCRM\Enum\Invoices\BillStatusEnumCode;
 
 class InvoicesCustomFieldsEnums
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Enum\Invoices;
+namespace AmoCRM\Enum\Invoices;
 
 use AmoCRM\Helpers\EntityTypesInterface;
 

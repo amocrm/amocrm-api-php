@@ -1,6 +1,6 @@
 <?php
 
-use AmoCRM\AmoCRM\Enum\Invoices\BillStatusEnumCode;
+use AmoCRM\Enum\Invoices\BillStatusEnumCode;
 use AmoCRM\Collections\LinksCollection;
 use AmoCRM\Filters\CatalogsFilter;
 use AmoCRM\Models\CustomFieldsValues\LinkedEntityCustomFieldValuesModel;

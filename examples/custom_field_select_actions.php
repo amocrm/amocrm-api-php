@@ -2,7 +2,7 @@
 
 /** @since Release Spring 2022 */
 
-use AmoCRM\AmoCRM\Enum\Invoices\BillStatusEnumCode;
+use AmoCRM\Enum\Invoices\BillStatusEnumCode;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Collections\CustomFields\CustomFieldEnumsCollection;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
