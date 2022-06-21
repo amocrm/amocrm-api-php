@@ -45,7 +45,7 @@ class EnumModel extends BaseApiModel implements Arrayable
             ->setId($enum['id'])
             ->setValue($enum['value'])
             ->setSort($enum['sort'])
-            ->setCode($enum['code'])
+            ->setCode($enum['code'] ?? null)
         ;
 
         return $model;
@@ -126,10 +126,14 @@ class EnumModel extends BaseApiModel implements Arrayable
 
     /**
      * @param null|string $code
+     *
+     * @return EnumModel
      */
-    public function setCode(?string $code): void
+    public function setCode(?string $code): EnumModel
     {
         $this->code = $code;
+
+        return $this;
     }
 
     /**
