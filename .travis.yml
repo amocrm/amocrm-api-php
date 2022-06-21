@@ -26,3 +26,5 @@ jobs:
   include:
     - stage: style check
       script: composer run style:check
+    - stage: unit tests
+      script: composer run test
