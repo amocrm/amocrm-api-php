@@ -87,9 +87,9 @@ class SipMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInt
     }
 
     /**
-     * @return int|null
+     * @return int|string|null
      */
-    public function getFrom(): ?int
+    public function getFrom()
     {
         return $this->from;
     }
@@ -100,11 +100,7 @@ class SipMetadata extends BaseApiModel implements Arrayable, UnsortedMetadataInt
      */
     public function setFrom($from): SipMetadata
     {
-        if (is_scalar($from)) {
-            $this->from = $from;
-        } else {
-            $this->from = null;
-        }
+        $this->from = is_string($from) || is_int($from) ? $from : null;
 
         return $this;
     }
