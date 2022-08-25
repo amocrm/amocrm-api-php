@@ -134,6 +134,11 @@ class ContactModel extends BaseApiModel implements
      */
     protected $socialProfiles = null;
 
+    /**
+     * @var bool
+     */
+    protected $isUnsorted = false;
+
     public function getType(): string
     {
         return EntityTypesInterface::CONTACTS;
@@ -574,6 +579,10 @@ class ContactModel extends BaseApiModel implements
             $contactModel->setClosestTaskAt($contact['closest_task_at'] > 0 ? (int)$contact['closest_task_at'] : null);
         }
 
+        if (!empty($contact['is_unsorted'])) {
+            $contactModel->setIsUnsorted((bool)$contact['is_unsorted']);
+        }
+
         if (!empty($contact[AmoCRMApiRequest::EMBEDDED]['tags'])) {
             $tagsCollection = new TagsCollection();
             $tagsCollection = $tagsCollection->fromArray($contact[AmoCRMApiRequest::EMBEDDED]['tags']);
@@ -632,6 +641,7 @@ class ContactModel extends BaseApiModel implements
                 ? null
                 : $this->getCustomFieldsValues()->toArray(),
             'account_id' => $this->getAccountId(),
+            'is_unsorted' => $this->isUnsorted(),
         ];
 
         if (!is_null($this->getId())) {
@@ -768,6 +778,22 @@ class ContactModel extends BaseApiModel implements
         $this->isMain = $isMain;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnsorted(): bool
+    {
+        return $this->isUnsorted;
+    }
+
+    /**
+     * @param bool $isUnsorted
+     */
+    public function setIsUnsorted(bool $isUnsorted): void
+    {
+        $this->isUnsorted = $isUnsorted;
     }
 
     /**
