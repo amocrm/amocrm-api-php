@@ -791,9 +791,11 @@ class ContactModel extends BaseApiModel implements
     /**
      * @param bool $isUnsorted
      */
-    public function setIsUnsorted(bool $isUnsorted): void
+    public function setIsUnsorted(bool $isUnsorted): ContactModel
     {
         $this->isUnsorted = $isUnsorted;
+
+        return $this;
     }
 
     /**
