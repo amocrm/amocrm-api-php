@@ -32,6 +32,8 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     public const FIELD_PRODUCT_ID = 'product_id';
     /** Сколько бонусных баллов будет начислено покупателю, если счет привязан к нему и переходит в статус оплачено */
     public const FIELD_BONUS_POINTS_PER_PURCHASE = 'bonus_points_per_purchase';
+    /** Некая доп. информация, относящаяся к товару в рамках заказа */
+    public const FIELD_METADATA = 'metadata';
 
     /** Скдика - процент от стоимости товара */
     public const FIELD_DISCOUNT_TYPE_PERCENTAGE = 'percentage';
@@ -90,6 +92,9 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
 
     /** @var int|null */
     protected $bonusPointsPerPurchase;
+
+    /** @var array|null */
+    protected $metadata;
 
     /**
      * @param int|string|null $value
@@ -349,6 +354,18 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
         return $this;
     }
 
+    public function getMetadata(): ?array
+    {
+        return $this->metadata;
+    }
+
+    public function setMetadata(?array $metadata): ItemsCustomFieldValueModel
+    {
+        $this->metadata = $metadata;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return [
@@ -363,6 +380,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
             self::FIELD_EXTERNAL_UID => $this->getExternalUid(),
             self::FIELD_PRODUCT_ID => $this->getProductId(),
             self::FIELD_BONUS_POINTS_PER_PURCHASE => $this->getBonusPointsPerPurchase(),
+            self::FIELD_METADATA => $this->getMetadata(),
         ];
     }
 
