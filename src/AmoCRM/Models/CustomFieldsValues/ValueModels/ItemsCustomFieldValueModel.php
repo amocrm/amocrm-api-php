@@ -129,6 +129,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
             ->setExternalUid($value['value'][self::FIELD_EXTERNAL_UID] ?? null)
             ->setProductId($value['value'][self::FIELD_PRODUCT_ID] ?? null)
             ->setBonusPointsPerPurchase($value['value'][self::FIELD_BONUS_POINTS_PER_PURCHASE] ?? null)
+            ->setMetadata($value['value'][self::FIELD_METADATA] ?? null)
         ;
 
         return $model;
