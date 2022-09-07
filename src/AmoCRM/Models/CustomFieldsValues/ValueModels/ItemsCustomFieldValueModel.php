@@ -2,6 +2,8 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
+use function in_array;
+
 /**
  * Class ItemsCustomFieldValueModel
  *
@@ -104,32 +106,33 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     public static function fromArray($value): BaseCustomFieldValueModel
     {
         $model = new static();
+        $val = $value['value'] ?? $value;
 
         $discount = [
-            'type' => isset($value['value'][self::FIELD_DISCOUNT]['type'])
-                && in_array(
-                    $value['value'][self::FIELD_DISCOUNT]['type'],
-                    [
-                        self::FIELD_DISCOUNT_TYPE_AMOUNT,
-                        self::FIELD_DISCOUNT_TYPE_PERCENTAGE,
-                    ]
-                ) ? $value['value'][self::FIELD_DISCOUNT]['type'] : null,
-            'value' => $value['value'][self::FIELD_DISCOUNT]['value'] ?? null,
+            'type' => isset($val[self::FIELD_DISCOUNT]['type'])
+            && in_array(
+                $val[self::FIELD_DISCOUNT]['type'],
+                [
+                    self::FIELD_DISCOUNT_TYPE_AMOUNT,
+                    self::FIELD_DISCOUNT_TYPE_PERCENTAGE,
+                ]
+            ) ? $val[self::FIELD_DISCOUNT]['type'] : null,
+            'value' => $val[self::FIELD_DISCOUNT]['value'] ?? null,
         ];
 
         $model
-            ->setSku($value['value'][self::FIELD_SKU] ?? null)
-            ->setDescription($value['value'][self::FIELD_DESCRIPTION] ?? null)
-            ->setUnitPrice($value['value'][self::FIELD_UNIT_PRICE] ?? null)
-            ->setQuantity($value['value'][self::FIELD_QUANTITY] ?? null)
-            ->setUnitType($value['value'][self::FIELD_UNIT_TYPE] ?? null)
+            ->setSku($val[self::FIELD_SKU] ?? null)
+            ->setDescription($val[self::FIELD_DESCRIPTION] ?? null)
+            ->setUnitPrice($val[self::FIELD_UNIT_PRICE] ?? null)
+            ->setQuantity($val[self::FIELD_QUANTITY] ?? null)
+            ->setUnitType($val[self::FIELD_UNIT_TYPE] ?? null)
             ->setDiscount($discount)
-            ->setVatRateId($value['value'][self::FIELD_VAT_RATE_ID] ?? null)
-            ->setVatRateValue($value['value'][self::FIELD_VAT_RATE_VALUE] ?? null)
-            ->setExternalUid($value['value'][self::FIELD_EXTERNAL_UID] ?? null)
-            ->setProductId($value['value'][self::FIELD_PRODUCT_ID] ?? null)
-            ->setBonusPointsPerPurchase($value['value'][self::FIELD_BONUS_POINTS_PER_PURCHASE] ?? null)
-            ->setMetadata($value['value'][self::FIELD_METADATA] ?? null)
+            ->setVatRateId($val[self::FIELD_VAT_RATE_ID] ?? null)
+            ->setVatRateValue($val[self::FIELD_VAT_RATE_VALUE] ?? null)
+            ->setExternalUid($val[self::FIELD_EXTERNAL_UID] ?? null)
+            ->setProductId($val[self::FIELD_PRODUCT_ID] ?? null)
+            ->setBonusPointsPerPurchase($val[self::FIELD_BONUS_POINTS_PER_PURCHASE] ?? null)
+            ->setMetadata($val[self::FIELD_METADATA] ?? null)
         ;
 
         return $model;
