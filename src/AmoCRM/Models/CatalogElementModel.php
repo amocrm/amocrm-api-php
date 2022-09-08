@@ -57,6 +57,11 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     protected $updatedAt;
 
     /**
+     * @var bool
+     */
+    protected $needUpdateUpdatedAt = false;
+
+    /**
      * @var CustomFieldsValuesCollection|null
      */
     protected $customFieldsValues;
@@ -226,6 +231,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     public function setUpdatedAt(?int $timestamp): self
     {
         $this->updatedAt = $timestamp;
+        $this->needUpdateUpdatedAt = true;
 
         return $this;
     }
@@ -432,6 +438,10 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
 
         if (!is_null($this->getCreatedAt())) {
             $result['created_at'] = $this->getCreatedAt();
+        }
+
+        if ($this->needUpdateUpdatedAt && !is_null($this->getUpdatedAt())) {
+            $result['updated_at'] = $this->getUpdatedAt();
         }
 
         if (!is_null($this->getCustomFieldsValues())) {
