@@ -32,6 +32,11 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     protected $name;
 
     /**
+     * @var null|int
+     */
+    protected $currencyId;
+
+    /**
      * @var int
      */
     protected $catalogId;
@@ -55,11 +60,6 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
      * @var null|int
      */
     protected $updatedAt;
-
-    /**
-     * @var bool
-     */
-    protected $needUpdateUpdatedAt = false;
 
     /**
      * @var CustomFieldsValuesCollection|null
@@ -133,6 +133,26 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @param int|null $currencyId
+     *
+     * @return self
+     */
+    public function setCurrencyId(?int $currencyId): self
+    {
+        $this->currencyId = $currencyId;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCurrencyId(): ?int
+    {
+        return $this->currencyId;
     }
 
     /**
@@ -231,7 +251,6 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     public function setUpdatedAt(?int $timestamp): self
     {
         $this->updatedAt = $timestamp;
-        $this->needUpdateUpdatedAt = true;
 
         return $this;
     }
@@ -346,6 +365,9 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         if (array_key_exists('updated_by', $catalogElement) && !is_null($catalogElement['updated_by'])) {
             $catalogElementModel->setUpdatedBy((int)$catalogElement['updated_by']);
         }
+        if (array_key_exists('currency_id', $catalogElement) && !is_null($catalogElement['currency_id'])) {
+            $catalogElementModel->setCurrencyId((int)$catalogElement['currency_id']);
+        }
         if (!empty($catalogElement['created_at'])) {
             $catalogElementModel->setCreatedAt($catalogElement['created_at']);
         }
@@ -397,6 +419,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         return [
             'id'   => $this->getId(),
             'name' => $this->getName(),
+            'currency_id' => $this->getCurrencyId(),
             'created_by' => $this->getCreatedBy(),
             'updated_by' => $this->getUpdatedBy(),
             'created_at' => $this->getCreatedAt(),
@@ -424,6 +447,10 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
             $result['id'] = $this->getId();
         }
 
+        if (!is_null($this->getCurrencyId())) {
+            $result['currency_id'] = $this->getCurrencyId();
+        }
+
         if (!is_null($this->getName())) {
             $result['name'] = $this->getName();
         }
@@ -440,15 +467,11 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
             $result['created_at'] = $this->getCreatedAt();
         }
 
-        if ($this->needUpdateUpdatedAt && !is_null($this->getUpdatedAt())) {
-            $result['updated_at'] = $this->getUpdatedAt();
-        }
-
         if (!is_null($this->getCustomFieldsValues())) {
             $result['custom_fields_values'] = $this->getCustomFieldsValues()->toApi();
         }
 
-        if (is_null($this->getRequestId()) && !is_null($requestId)) {
+        if (!is_null($requestId) && is_null($this->getRequestId())) {
             $this->setRequestId($requestId);
         }
 
@@ -473,9 +496,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
      */
     public function setQuantity($quantity): CatalogElementModel
     {
-        if (is_int($quantity) || is_float($quantity)) {
-            $this->quantity = $quantity;
-        } else {
+        if (!is_int($quantity) && !is_float($quantity)) {
             throw new InvalidArgumentException('Quantity must be integer or float number');
         }
 
