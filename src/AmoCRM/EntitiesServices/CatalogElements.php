@@ -180,9 +180,8 @@ class CatalogElements extends BaseEntityIdEntity implements HasLinkMethodInterfa
     protected function getAvailableLinkTypes(): array
     {
         return [
-            EntityTypesInterface::CONTACTS,
-            EntityTypesInterface::CATALOG_ELEMENTS_FULL,
-            EntityTypesInterface::COMPANIES,
+            EntityTypesInterface::LEADS,
+            EntityTypesInterface::CUSTOMERS,
         ];
     }
 }
