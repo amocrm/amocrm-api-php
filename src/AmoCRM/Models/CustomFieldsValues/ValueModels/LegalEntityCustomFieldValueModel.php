@@ -80,15 +80,16 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     {
         $model = new static();
 
+        $val = $value['value'] ?? $value;
         $model
-            ->setName($value['value'][self::NAME] ?? null)
-            ->setLegalEntityType($value['value'][self::LEGAL_ENTITY_TYPE] ?? null)
-            ->setVatId($value['value'][self::VAT_ID] ?? null)
-            ->setTaxRegistrationReasonCode($value['value'][self::TAX_REG_REASON_CODE] ?? null)
-            ->setAddress($value['value'][self::ADDRESS] ?? null)
-            ->setKpp($value['value'][self::KPP] ?? null)
-            ->setBankCode($value['value'][self::BANK_CODE] ?? null)
-            ->setExternalUid($value['value'][self::EXTERNAL_UID] ?? null)
+            ->setName($val[self::NAME] ?? null)
+            ->setLegalEntityType($val[self::LEGAL_ENTITY_TYPE] ?? null)
+            ->setVatId($val[self::VAT_ID] ?? null)
+            ->setTaxRegistrationReasonCode($val[self::TAX_REG_REASON_CODE] ?? null)
+            ->setAddress($val[self::ADDRESS] ?? null)
+            ->setKpp($val[self::KPP] ?? null)
+            ->setBankCode($val[self::BANK_CODE] ?? null)
+            ->setExternalUid($val[self::EXTERNAL_UID] ?? null)
         ;
 
         return $model;

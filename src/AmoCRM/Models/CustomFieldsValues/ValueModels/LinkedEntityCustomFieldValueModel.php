@@ -42,12 +42,13 @@ class LinkedEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     public static function fromArray($value): BaseCustomFieldValueModel
     {
         $model = new static();
+        $val = $value['value'] ?? $value;
 
         $model
-            ->setName($value['value'][self::NAME] ?? null)
-            ->setEntityId($value['value'][self::ENTITY_ID] ?? null)
-            ->setEntityType($value['value'][self::ENTITY_TYPE] ?? null)
-            ->setCatalogId($value['value'][self::CATALOG_ID] ?? null);
+            ->setName($val[self::NAME] ?? null)
+            ->setEntityId($val[self::ENTITY_ID] ?? null)
+            ->setEntityType($val[self::ENTITY_TYPE] ?? null)
+            ->setCatalogId($val[self::CATALOG_ID] ?? null);
 
         return $model;
     }
