@@ -28,11 +28,11 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /** Идентификатор юр лица во внешней учетной системе */
     public const EXTERNAL_UID = 'external_uid';
     /** УНП */
-    public const UNP = 'UNP';
+    public const UNP = 'unp';
     /** БИН */
-    public const BIN = 'BIN';
+    public const BIN = 'bin';
     /** ЕГРПОУ */
-    public const EGRPOU = 'EGRPOU';
+    public const EGRPOU = 'egrpou';
 
     /** Частное лицо */
     public const LEGAL_ENTITY_TYPE_SOLE_PROPRIETORSHIP = 1;
