@@ -19,12 +19,20 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     public const TAX_REG_REASON_CODE = 'tax_registration_reason_code';
     /** Адрес юр лица */
     public const ADDRESS = 'address';
+    /** Фактический адрес юр лица */
+    public const REAL_ADDRESS = 'real_address';
     /** КПП */
     public const KPP = 'kpp';
     /** БИК */
     public const BANK_CODE = 'bank_code';
     /** Идентификатор юр лица во внешней учетной системе */
     public const EXTERNAL_UID = 'external_uid';
+    /** УНП */
+    public const UNP = 'UNP';
+    /** БИН */
+    public const BIN = 'BIN';
+    /** ЕГРПОУ */
+    public const EGRPOU = 'EGRPOU';
 
     /** Частное лицо */
     public const LEGAL_ENTITY_TYPE_SOLE_PROPRIETORSHIP = 1;
@@ -69,6 +77,26 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /**
      * @var string|null
      */
+    protected $unp;
+
+    /**
+     * @var string|null
+     */
+    protected $bin;
+
+    /**
+     * @var string|null
+     */
+    protected $egrpou;
+
+    /**
+     * @var string|null
+     */
+    protected $realAddress;
+
+    /**
+     * @var string|null
+     */
     protected $externalUid;
 
     /**
@@ -90,7 +118,12 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             ->setKpp($val[self::KPP] ?? null)
             ->setBankCode($val[self::BANK_CODE] ?? null)
             ->setExternalUid($val[self::EXTERNAL_UID] ?? null)
+            ->setUnp($val[self::UNP] ?? null)
+            ->setRealAddress($val[self::REAL_ADDRESS] ?? null)
+            ->setBin($val[self::BIN] ?? null)
+            ->setEgrpou($val[self::EGRPOU] ?? null)
         ;
+
 
         return $model;
     }
@@ -255,6 +288,54 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
         return $this;
     }
 
+    public function getUnp(): ?string
+    {
+        return $this->unp;
+    }
+
+    public function setUnp(?string $unp): LegalEntityCustomFieldValueModel
+    {
+        $this->unp = $unp;
+
+        return $this;
+    }
+
+    public function getBin(): ?string
+    {
+        return $this->bin;
+    }
+
+    public function setBin(?string $bin): LegalEntityCustomFieldValueModel
+    {
+        $this->bin = $bin;
+
+        return $this;
+    }
+
+    public function getEgrpou(): ?string
+    {
+        return $this->egrpou;
+    }
+
+    public function setEgrpou(?string $egrpou): LegalEntityCustomFieldValueModel
+    {
+        $this->egrpou = $egrpou;
+
+        return $this;
+    }
+
+    public function getRealAddress(): ?string
+    {
+        return $this->realAddress;
+    }
+
+    public function setRealAddress(?string $realAddress): LegalEntityCustomFieldValueModel
+    {
+        $this->realAddress = $realAddress;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return [
@@ -266,6 +347,10 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::KPP => $this->getKpp(),
             self::BANK_CODE => $this->getBankCode(),
             self::EXTERNAL_UID => $this->getExternalUid(),
+            self::UNP => $this->getUnp(),
+            self::REAL_ADDRESS => $this->getRealAddress(),
+            self::BIN => $this->getBin(),
+            self::EGRPOU => $this->getEgrpou(),
         ];
     }
 
