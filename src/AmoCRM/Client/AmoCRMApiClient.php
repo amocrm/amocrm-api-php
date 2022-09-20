@@ -97,6 +97,11 @@ class AmoCRMApiClient
         return $this;
     }
 
+    public function getAccessToken(): ?AccessToken
+    {
+        return $this->accessToken;
+    }
+
     /**
      * Устанавливаем базовый домен аккаунта в amoCRM, который будет использован при запросах
      * @param string $domain
