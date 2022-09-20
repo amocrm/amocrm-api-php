@@ -625,7 +625,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
             ->setUpdatedByType($file['updated_by']['type'])
             ->setDeletedAt($file['deleted_at'])
             ->setDeletedBy($file['deleted_by'])
-            ->setHasMultipleVersions($file['has_multiple_version'])
+            ->setHasMultipleVersions($file['has_multiple_versions'] ?? false)
             ->setIsTrashed($file['is_trashed'])
             ->setExtension($file['metadata']['extension'])
             ->setMimeType($file['metadata']['mime_type'])
