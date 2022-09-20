@@ -66,6 +66,11 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     protected $externalId;
 
     /**
+     * @var AttachmentModel|null
+     */
+    protected $attachment;
+
+    /**
      * @param array $template
      *
      * @return self
@@ -112,6 +117,12 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
 
         $model->setButtons($buttonsCollection);
 
+        $attachmentModel = isset($template['attachment']) && !empty($template['attachment']) && is_array($template['attachment'])
+            ? AttachmentModel::fromArray($template['attachment'])
+            : null;
+
+        $model->setAttachment($attachmentModel);
+
         return $model;
     }
 
@@ -129,6 +140,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'created_at' => $this->getCreatedAt(),
             'updated_at' => $this->getUpdatedAt(),
             'is_editable' => $this->getIsEditable(),
+            'attachment' => $this->getAttachment() ? $this->getAttachment()->toArray() : null,
             'external_id' => $this->getExternalId(),
             'request_id' => $this->getRequestId(),
         ];
@@ -151,6 +163,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'is_editable' => $this->getIsEditable(),
             'external_id' => $this->getExternalId(),
             'request_id' => $this->getRequestId(),
+            'attachment' => $this->getAttachment() ? $this->getAttachment()->toApi() : null,
         ];
     }
 
@@ -330,6 +343,26 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     public function setExternalId(?string $externalId): TemplateModel
     {
         $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * @return AttachmentModel|null
+     */
+    public function getAttachment(): ?AttachmentModel
+    {
+        return $this->attachment;
+    }
+
+    /**
+     * @param AttachmentModel|null $attachment
+     *
+     * @return TemplateModel
+     */
+    public function setAttachment(?AttachmentModel $attachment): TemplateModel
+    {
+        $this->attachment = $attachment;
 
         return $this;
     }

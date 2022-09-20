@@ -17,6 +17,7 @@ use AmoCRM\EntitiesServices\Customers\Transactions;
 use AmoCRM\EntitiesServices\CustomFieldGroups;
 use AmoCRM\EntitiesServices\CustomFields;
 use AmoCRM\EntitiesServices\EntityNotes;
+use AmoCRM\EntitiesServices\Files;
 use AmoCRM\EntitiesServices\Sources;
 use AmoCRM\EntitiesServices\EntitySubscriptions;
 use AmoCRM\EntitiesServices\EntityTags;
@@ -52,6 +53,7 @@ use function is_callable;
 class AmoCRMApiClient
 {
     public const API_VERSION = 4;
+    public const DRIVE_API_VERSION = 'v1.0';
 
     /**
      * @var AmoCRMOAuth
@@ -363,6 +365,22 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Account($request);
+    }
+
+    /**
+     * Метод вернет объект аккаунта
+     *
+     * @param string|null $domain
+     *
+     * @return Files
+     * @throws AmoCRMMissedTokenException
+     */
+    public function files(?string $domain = null): Files
+    {
+        $request = $this->buildRequest();
+        $request->setRequestDomain($domain ?? 'https://drive.amocrm.');
+
+        return new Files($request);
     }
 
     /**

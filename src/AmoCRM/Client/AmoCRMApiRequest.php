@@ -34,7 +34,7 @@ class AmoCRMApiRequest
     public const CONNECT_TIMEOUT = 5;
     public const REQUEST_TIMEOUT = 20;
     //TODO Do not forget to change this on each release
-    public const LIBRARY_VERSION = '0.7.0';
+    public const LIBRARY_VERSION = '0.15.0';
     public const USER_AGENT = 'amoCRM-API-Library/' . self::LIBRARY_VERSION;
 
     public const SUCCESS_STATUSES = [
@@ -72,7 +72,7 @@ class AmoCRMApiRequest
     private $lastHttpMethod;
 
     /**
-     * @var array
+     * @var array|mixed
      */
     private $lastBody = [];
 
@@ -95,6 +95,9 @@ class AmoCRMApiRequest
      * @var string|null
      */
     private $lastRequestId;
+
+    /** @var string|null */
+    private $requestDomain = null;
 
     /**
      * AmoCRMApiRequest constructor.
@@ -120,7 +123,7 @@ class AmoCRMApiRequest
 
     /**
      * @param string $method
-     * @param array $body
+     * @param array|mixed $body
      * @param array $queryParams
      * @param array $headers
      * @param bool $needToRefresh
@@ -132,10 +135,11 @@ class AmoCRMApiRequest
      */
     public function post(
         string $method,
-        array $body = [],
+        $body = [],
         array $queryParams = [],
         array $headers = [],
-        bool $needToRefresh = false
+        bool $needToRefresh = false,
+        bool $isFullPath = false
     ): array {
         if ($this->accessToken->hasExpired()) {
             $needToRefresh = true;
@@ -148,22 +152,29 @@ class AmoCRMApiRequest
         $headers = array_merge($headers, $this->getBaseHeaders());
 
         $this->lastHttpMethod = self::POST_REQUEST;
-        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastMethod = $isFullPath ? $method : $this->getUrl() . $method;
         $this->lastBody = $body;
         $this->lastQueryParams = $queryParams;
+
+        $requestOptions = [
+            'connect_timeout' => self::CONNECT_TIMEOUT,
+            'headers' => $headers,
+            'http_errors' => false,
+            'query' => $queryParams,
+            'timeout' => self::REQUEST_TIMEOUT,
+        ];
+
+        if (is_array($body)) {
+            $requestOptions['json'] = $body;
+        } else {
+            $requestOptions['body'] = $body;
+        }
 
         try {
             $response = $this->httpClient->request(
                 self::POST_REQUEST,
-                $this->oAuthClient->getAccountUrl() . $method,
-                [
-                    'json' => $body,
-                    'connect_timeout' => self::CONNECT_TIMEOUT,
-                    'headers' => $headers,
-                    'http_errors' => false,
-                    'query' => $queryParams,
-                    'timeout' => self::REQUEST_TIMEOUT,
-                ]
+                $isFullPath ? $method : $this->getUrl() . $method,
+                $requestOptions
             );
         } catch (ConnectException $e) {
             throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
@@ -223,14 +234,14 @@ class AmoCRMApiRequest
         $headers = array_merge($headers, $this->getBaseHeaders());
 
         $this->lastHttpMethod = self::PATCH_REQUEST;
-        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastMethod = $this->getUrl() . $method;
         $this->lastBody = $body;
         $this->lastQueryParams = $queryParams;
 
         try {
             $response = $this->httpClient->request(
                 self::PATCH_REQUEST,
-                $this->oAuthClient->getAccountUrl() . $method,
+                $this->getUrl() . $method,
                 [
                     RequestOptions::JSON => $body,
                     RequestOptions::CONNECT_TIMEOUT => self::CONNECT_TIMEOUT,
@@ -297,14 +308,14 @@ class AmoCRMApiRequest
         $headers = array_merge($headers, $this->getBaseHeaders());
 
         $this->lastHttpMethod = self::DELETE_REQUEST;
-        $this->lastMethod = $this->oAuthClient->getAccountUrl() . $method;
+        $this->lastMethod = $this->getUrl() . $method;
         $this->lastBody = $body;
         $this->lastQueryParams = $queryParams;
 
         try {
             $response = $this->httpClient->request(
                 self::DELETE_REQUEST,
-                $this->oAuthClient->getAccountUrl() . $method,
+                $this->getUrl() . $method,
                 [
                     RequestOptions::JSON => $body,
                     RequestOptions::CONNECT_TIMEOUT => self::CONNECT_TIMEOUT,
@@ -369,22 +380,16 @@ class AmoCRMApiRequest
         }
 
         $headers = array_merge($headers, $this->getBaseHeaders());
-        $method = $this->oAuthClient->getAccountUrl() .
-            str_replace(
-                $this->oAuthClient->getAccountUrl(),
-                '',
-                $method
-            );
 
         $this->lastHttpMethod = self::GET_REQUEST;
-        $this->lastMethod = $method;
+        $this->lastMethod = $this->getUrl() . $method;
         $this->lastBody = [];
         $this->lastQueryParams = $queryParams;
 
         try {
             $response = $this->httpClient->request(
                 self::GET_REQUEST,
-                $method,
+                $this->getUrl() . $method,
                 [
                     'connect_timeout' => self::CONNECT_TIMEOUT,
                     'headers' => $headers,
@@ -575,6 +580,29 @@ $.ajax({
 
         $requestHttpMethod = $this->lastHttpMethod;
 
-        return 'curl "' . $url . '" -X "' . $requestHttpMethod . '" -d"' . http_build_query($this->lastBody) . '"';
+        $data = is_array($this->lastBody) ? http_build_query($this->lastBody) : $this->lastBody;
+
+        return 'curl "' . $url . '" -X "' . $requestHttpMethod . '" -d"' . $data . '"';
+    }
+
+    private function getRequestDomain(): ?string
+    {
+        return $this->requestDomain;
+    }
+
+    public function setRequestDomain(?string $requestDomain): void
+    {
+        if ($requestDomain !== null && $requestDomain[strlen($requestDomain) - 1] === '.') {
+            $hostExploded = explode(".", parse_url($this->oAuthClient->getAccountUrl(), PHP_URL_HOST));
+            $tld = end($hostExploded);
+            $requestDomain .= $tld;
+        }
+
+        $this->requestDomain = $requestDomain;
+    }
+
+    private function getUrl(): string
+    {
+        return !is_null($this->getRequestDomain()) ? $this->getRequestDomain() . '/' : $this->oAuthClient->getAccountUrl();
     }
 }

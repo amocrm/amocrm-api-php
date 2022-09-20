@@ -13,6 +13,7 @@ interface EntityTypesInterface
     public const CONTACTS = 'contacts';
     public const CONTACT = 'contact';
     public const CATALOGS = 'catalogs';
+    public const FILES = 'files';
     public const COMPANIES = 'companies';
     public const CONTACTS_AND_COMPANIES = 'contacts_and_companies';
     public const COMPANY = 'company';
