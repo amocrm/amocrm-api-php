@@ -16,6 +16,12 @@ class FileUploadModel extends BaseApiModel implements Arrayable
     /** @var string|null */
     protected $fileUuid;
 
+    /** @var int|null */
+    protected $createdBy;
+
+    /** @var string|null */
+    protected $createdByType;
+
     /**
      * @return string
      */
@@ -76,17 +82,73 @@ class FileUploadModel extends BaseApiModel implements Arrayable
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getCreatedBy(): ?int
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param int|null $createdBy
+     *
+     * @return FileUploadModel
+     */
+    public function setCreatedBy(?int $createdBy): FileUploadModel
+    {
+        $this->createdBy = $createdBy;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCreatedByType(): ?string
+    {
+        return $this->createdByType;
+    }
+
+    /**
+     * @param string|null $createdByType
+     *
+     * @return FileUploadModel
+     */
+    public function setCreatedByType(?string $createdByType): FileUploadModel
+    {
+        $this->createdByType = $createdByType;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return [
             'local_path' => $this->getLocalPath(),
             'name' => $this->getName(),
             'file_uuid' => $this->getFileUuid(),
+            'created_by' => [
+                'id' => $this->getCreatedBy(),
+                'type' => $this->getCreatedByType(),
+            ]
         ];
     }
 
     public function toApi(?string $requestId = "0"): array
     {
-        return $this->toArray();
+        $result = [
+            'local_path' => $this->getLocalPath(),
+            'name' => $this->getName(),
+            'file_uuid' => $this->getFileUuid(),
+        ];
+
+        if (!is_null($this->getCreatedByType()) && !is_null($this->getCreatedBy())) {
+            $result['created_by'] = [
+                'id' => $this->getCreatedBy(),
+                'type' =>  $this->getCreatedByType(),
+            ];
+        }
+
+        return $result;
     }
 }

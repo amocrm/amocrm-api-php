@@ -94,6 +94,13 @@ class Files extends BaseEntity implements HasPageMethodsInterface, HasDeleteMeth
             $body['file_uuid'] = $model->getFileUuid();
         }
 
+        if (!is_null($model->getCreatedByType()) && !is_null($model->getCreatedBy())) {
+            $body['created_by'] = [
+                'id' => $model->getCreatedBy(),
+                'type' => $model->getCreatedByType(),
+            ];
+        }
+
         $response = $this->request->post($this->method . '/sessions', $body);
 
         $uploadUrl = $response['upload_url'];
