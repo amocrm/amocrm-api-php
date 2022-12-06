@@ -33,6 +33,10 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     public const BIN = 'bin';
     /** ЕГРПОУ */
     public const EGRPOU = 'egrpou';
+	/** МФО */
+	public const MFO = 'mfo';
+	/** Р/С */
+	public const RS = 'rs';
 
     /** Частное лицо */
     public const LEGAL_ENTITY_TYPE_SOLE_PROPRIETORSHIP = 1;
@@ -93,6 +97,16 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
      * @var string|null
      */
     protected $realAddress;
+	
+	/**
+	 * @var string|null
+	 */
+	protected $mfo;
+	
+	/**
+	 * @var string|null
+	 */
+	protected $rs;
 
     /**
      * @var string|null
@@ -122,6 +136,8 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             ->setRealAddress($val[self::REAL_ADDRESS] ?? null)
             ->setBin($val[self::BIN] ?? null)
             ->setEgrpou($val[self::EGRPOU] ?? null)
+            ->setMfo($val[self::MFO] ?? null)
+            ->setRs($val[self::RS] ?? null)
         ;
 
 
@@ -323,6 +339,30 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
 
         return $this;
     }
+	
+	public function getMfo(): ?string
+	{
+		return $this->mfo;
+	}
+	
+	public function setMfo(?string $mfo): LegalEntityCustomFieldValueModel
+	{
+		$this->mfo = $mfo;
+		
+		return $this;
+	}
+	
+	public function getRs(): ?string
+	{
+		return $this->rs;
+	}
+	
+	public function setRs(?string $rs): LegalEntityCustomFieldValueModel
+	{
+		$this->rs = $rs;
+		
+		return $this;
+	}
 
     public function getRealAddress(): ?string
     {
@@ -351,6 +391,8 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::REAL_ADDRESS => $this->getRealAddress(),
             self::BIN => $this->getBin(),
             self::EGRPOU => $this->getEgrpou(),
+            self::MFO => $this->getMfo(),
+            self::RS => $this->getRs(),
         ];
     }
 
