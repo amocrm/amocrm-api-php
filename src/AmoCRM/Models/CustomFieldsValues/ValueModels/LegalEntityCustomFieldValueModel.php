@@ -36,7 +36,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
 	/** МФО */
 	public const MFO = 'mfo';
 	/** Р/С */
-	public const RS = 'rs';
+	public const GIRO = 'giro';
 
     /** Частное лицо */
     public const LEGAL_ENTITY_TYPE_SOLE_PROPRIETORSHIP = 1;
@@ -106,7 +106,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
 	/**
 	 * @var string|null
 	 */
-	protected $rs;
+	protected $giro;
 
     /**
      * @var string|null
@@ -137,7 +137,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             ->setBin($val[self::BIN] ?? null)
             ->setEgrpou($val[self::EGRPOU] ?? null)
             ->setMfo($val[self::MFO] ?? null)
-            ->setRs($val[self::RS] ?? null)
+            ->setGiro($val[self::GIRO] ?? null)
         ;
 
 
@@ -352,14 +352,14 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
 		return $this;
 	}
 	
-	public function getRs(): ?string
+	public function getGiro(): ?string
 	{
-		return $this->rs;
+		return $this->giro;
 	}
 	
-	public function setRs(?string $rs): LegalEntityCustomFieldValueModel
+	public function setGiro(?string $giro): LegalEntityCustomFieldValueModel
 	{
-		$this->rs = $rs;
+		$this->giro = $giro;
 		
 		return $this;
 	}
@@ -392,7 +392,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::BIN => $this->getBin(),
             self::EGRPOU => $this->getEgrpou(),
             self::MFO => $this->getMfo(),
-            self::RS => $this->getRs(),
+            self::GIRO => $this->getGiro(),
         ];
     }
 
