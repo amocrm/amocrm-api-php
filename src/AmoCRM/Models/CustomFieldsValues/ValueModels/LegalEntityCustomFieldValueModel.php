@@ -33,10 +33,10 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     public const BIN = 'bin';
     /** ЕГРПОУ */
     public const EGRPOU = 'egrpou';
-	/** МФО */
-	public const MFO = 'mfo';
-	/** Р/С */
-	public const GIRO = 'giro';
+    /** МФО */
+    public const MFO = 'mfo';
+    /** Р/С */
+    public const GIRO = 'giro';
 
     /** Частное лицо */
     public const LEGAL_ENTITY_TYPE_SOLE_PROPRIETORSHIP = 1;
@@ -98,15 +98,15 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
      */
     protected $realAddress;
 	
-	/**
-	 * @var string|null
-	 */
-	protected $mfo;
-	
-	/**
-	 * @var string|null
-	 */
-	protected $giro;
+    /**
+     * @var string|null
+     */
+    protected $mfo;
+
+    /**
+     * @var string|null
+     */
+    protected $giro;
 
     /**
      * @var string|null
@@ -340,29 +340,29 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
         return $this;
     }
 	
-	public function getMfo(): ?string
-	{
-		return $this->mfo;
-	}
-	
-	public function setMfo(?string $mfo): LegalEntityCustomFieldValueModel
-	{
-		$this->mfo = $mfo;
-		
-		return $this;
-	}
-	
-	public function getGiro(): ?string
-	{
-		return $this->giro;
-	}
-	
-	public function setGiro(?string $giro): LegalEntityCustomFieldValueModel
-	{
-		$this->giro = $giro;
-		
-		return $this;
-	}
+    public function getMfo(): ?string
+    {
+        return $this->mfo;
+    }
+
+    public function setMfo(?string $mfo): LegalEntityCustomFieldValueModel
+    {
+        $this->mfo = $mfo;
+
+        return $this;
+    }
+
+    public function getGiro(): ?string
+    {
+        return $this->giro;
+    }
+
+    public function setGiro(?string $giro): LegalEntityCustomFieldValueModel
+    {
+        $this->giro = $giro;
+
+        return $this;
+    }
 
     public function getRealAddress(): ?string
     {
