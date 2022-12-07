@@ -36,7 +36,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /** МФО */
     public const MFO = 'mfo';
     /** Р/С */
-    public const GIRO = 'giro';
+    public const BANK_ACCOUNT_NUMBER = 'bank_account_number';
 
     /** Частное лицо */
     public const LEGAL_ENTITY_TYPE_SOLE_PROPRIETORSHIP = 1;
@@ -106,7 +106,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /**
      * @var string|null
      */
-    protected $giro;
+    protected $bank_account_number;
 
     /**
      * @var string|null
@@ -137,7 +137,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             ->setBin($val[self::BIN] ?? null)
             ->setEgrpou($val[self::EGRPOU] ?? null)
             ->setMfo($val[self::MFO] ?? null)
-            ->setGiro($val[self::GIRO] ?? null)
+            ->setBankAccountNumber($val[self::BANK_ACCOUNT_NUMBER] ?? null)
         ;
 
 
@@ -352,14 +352,14 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
         return $this;
     }
 
-    public function getGiro(): ?string
+    public function getBankAccountNumber(): ?string
     {
-        return $this->giro;
+        return $this->bank_account_number;
     }
 
-    public function setGiro(?string $giro): LegalEntityCustomFieldValueModel
+    public function setBankAccountNumber(?string $bank_account_number): LegalEntityCustomFieldValueModel
     {
-        $this->giro = $giro;
+        $this->bank_account_number = $bank_account_number;
 
         return $this;
     }
@@ -392,7 +392,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::BIN => $this->getBin(),
             self::EGRPOU => $this->getEgrpou(),
             self::MFO => $this->getMfo(),
-            self::GIRO => $this->getGiro(),
+            self::BANK_ACCOUNT_NUMBER => $this->getBankAccountNumber(),
         ];
     }
 
