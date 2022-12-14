@@ -625,7 +625,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
             throw new InvalidArgumentException('File id/uuid is empty in ' . json_encode($file));
         }
 
-        $isDeleted = empty($file['deleted_by']['id']) && empty($file['deleted_by']['type']);
+        $isDeleted = !empty($file['deleted_by']['id']) || !empty($file['deleted_by']['type']);
         $fileModel = new self();
         $fileModel->setId((int)$file['id'])
             ->setVersionUuid($file['version_uuid'])
