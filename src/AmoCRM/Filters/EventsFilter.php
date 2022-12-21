@@ -238,11 +238,11 @@ class EventsFilter extends BaseEntityFilter implements HasPagesInterface
         }
 
         if (!is_null($this->getCreatedBy())) {
-            $filter['filter']['created_by'] = implode(',', $this->getCreatedBy());
+            $filter['filter']['created_by'] = $this->getCreatedBy();
         }
 
         if (!is_null($this->getCreatedAt())) {
-            $filter['filter']['created_at'] = implode(',', $this->getCreatedAt());
+            $filter['filter']['created_at'] = $this->getCreatedAt();
         }
 
         if (!is_null($this->getEntityIds())) {
