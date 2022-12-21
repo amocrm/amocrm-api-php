@@ -145,6 +145,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
         }
 
         return [
+            'id' => $this->getId(),
             'name' => $this->getName(),
             'content' => $this->getContent(),
             'buttons' => $this->getButtons() ? $this->getButtons()->toApi() : null,
