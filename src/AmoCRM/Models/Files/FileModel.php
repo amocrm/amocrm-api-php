@@ -109,6 +109,11 @@ class FileModel extends BaseApiModel implements HasIdInterface
     protected $deletedBy;
 
     /**
+     * @var string|null
+     */
+    protected $deletedByType;
+
+    /**
      * @var bool|null
      */
     protected $hasMultipleVersions;
@@ -456,6 +461,18 @@ class FileModel extends BaseApiModel implements HasIdInterface
         return $this;
     }
 
+    public function getDeletedByType(): ?string
+    {
+        return $this->deletedByType;
+    }
+
+    public function setDeletedByType(?string $deletedByType): FileModel
+    {
+        $this->deletedByType = $deletedByType;
+
+        return $this;
+    }
+
     /**
      * @return bool|null
      */
@@ -608,8 +625,8 @@ class FileModel extends BaseApiModel implements HasIdInterface
             throw new InvalidArgumentException('File id/uuid is empty in ' . json_encode($file));
         }
 
+        $isDeleted = !empty($file['deleted_by']['id']) || !empty($file['deleted_by']['type']);
         $fileModel = new self();
-
         $fileModel->setId((int)$file['id'])
             ->setVersionUuid($file['version_uuid'])
             ->setName($file['name'])
@@ -624,7 +641,8 @@ class FileModel extends BaseApiModel implements HasIdInterface
             ->setUpdatedBy($file['updated_by']['id'])
             ->setUpdatedByType($file['updated_by']['type'])
             ->setDeletedAt($file['deleted_at'])
-            ->setDeletedBy($file['deleted_by'])
+            ->setDeletedBy($isDeleted ? (int)$file['deleted_by']['id'] : null)
+            ->setDeletedByType($isDeleted ? (string)$file['deleted_by']['type'] : null)
             ->setHasMultipleVersions($file['has_multiple_versions'] ?? false)
             ->setIsTrashed($file['is_trashed'])
             ->setExtension($file['metadata']['extension'])
@@ -632,7 +650,6 @@ class FileModel extends BaseApiModel implements HasIdInterface
             ->setSanitizedName($file['sanitized_name'])
             ->setSourceId($file['source_id'])
             ->setType($file['type']);
-
 
         return $fileModel;
     }
@@ -661,7 +678,12 @@ class FileModel extends BaseApiModel implements HasIdInterface
                 'type' => $this->getUpdatedByType(),
             ],
             'deleted_at' => $this->getDeletedAt(),
-            'deleted_by' => $this->getDeletedBy(),
+            'deleted_by' => empty($this->getDeletedBy()) && empty($this->getDeletedByType())
+                ? null
+                : [
+                    'id' => $this->getDeletedBy(),
+                    'type' => $this->getDeletedByType(),
+                ],
             'has_multiple_version' => $this->getHasMultipleVersions(),
             'is_trashed' => $this->getIsTrashed(),
             'extension' => $this->getExtension(),
