@@ -32,7 +32,7 @@ if (!isset($_GET['code'])) {
         header('Location: ' . $authorizationUrl);
         die;
     }
-} elseif (empty($_GET['state']) || empty($_SESSION['oauth2state']) || ($_GET['state'] !== $_SESSION['oauth2state'])) {
+} elseif (!isset($_GET['from_widget']) && (empty($_GET['state']) || empty($_SESSION['oauth2state']) || ($_GET['state'] !== $_SESSION['oauth2state']))) {
     unset($_SESSION['oauth2state']);
     exit('Invalid state');
 }
