@@ -28,6 +28,8 @@ $apiClient->setAccessToken($accessToken)
 //Сервис групп полей
 try {
     $customFieldGroupsService = $apiClient->customFieldGroups(EntityTypesInterface::LEADS);
+    // Пример для списков
+//    $customFieldGroupsService = $apiClient->customFieldGroups(EntityTypesInterface::CATALOGS . ':' . $catalogId);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
