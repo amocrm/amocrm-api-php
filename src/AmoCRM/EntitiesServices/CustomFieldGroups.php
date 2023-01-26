@@ -59,7 +59,12 @@ class CustomFieldGroups extends BaseEntityTypeEntity implements HasDeleteMethodI
         ];
 
         if (!in_array($entityType, $availableEntities, true)) {
-            throw new InvalidArgumentException('Entity is not supported by this method');
+            preg_match("/" . EntityTypesInterface::CATALOGS . ":(\d+)/", $entityType, $matches);
+            if (isset($matches[1]) && (int)$matches[1] > EntityTypesInterface::MIN_CATALOG_ID) {
+                $entityType = EntityTypesInterface::CATALOGS . '/' . (int)$matches[1];
+            } else {
+                throw new InvalidArgumentException('Entity is not supported by this method');
+            }
         }
 
         return $entityType;

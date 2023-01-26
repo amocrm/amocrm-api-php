@@ -29,8 +29,6 @@ use AmoCRM\Models\CatalogElementModel;
  * @method CatalogElementsCollection add(BaseApiCollection $collection)
  * @method CatalogElementModel updateOne(BaseApiModel $apiModel)
  * @method CatalogElementsCollection update(BaseApiCollection $collection)
- * @method LinksCollection link(BaseApiModel $mainEntity, $linkedEntities)
- * @method bool unlink(BaseApiModel $mainEntity, $linkedEntities)
  */
 class CatalogElements extends BaseEntityIdEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {

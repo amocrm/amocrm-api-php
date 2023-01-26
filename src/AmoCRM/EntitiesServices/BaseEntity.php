@@ -102,7 +102,7 @@ abstract class BaseEntity
         $collection = new $this->collectionClass();
         $entities = $this->getEntitiesFromResponse($response);
 
-        $collection = !empty($entities) ? $collection->fromArray($entities) : null;
+        $collection = !empty($entities) ? $collection::fromArray($entities) : null;
 
         if (method_exists($collection, 'setNextPageLink') && isset($response['_links']['next']['href'])) {
             $collection->setNextPageLink($response['_links']['next']['href']);

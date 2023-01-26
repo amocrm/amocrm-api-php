@@ -312,12 +312,23 @@ class AmoCRMApiClientTest extends TestCase
             $this->apiClient->customFieldGroups(EntityTypesInterface::CUSTOMERS)
         );
 
+        $this->assertInstanceOf(
+            CustomFieldGroups::class,
+            $this->apiClient->customFieldGroups(EntityTypesInterface::CATALOGS . ':2000')
+        );
+
         $this->assertInstanceOf(CustomFieldGroups::class, $this->apiClient->customFieldGroups());
 
         $this->expectException(InvalidArgumentException::class);
         $this->assertInstanceOf(
             CustomFieldGroups::class,
             $this->apiClient->customFieldGroups(EntityTypesInterface::TASKS)
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->assertInstanceOf(
+            CustomFields::class,
+            $this->apiClient->customFieldGroups(EntityTypesInterface::CATALOGS . ':' . EntityTypesInterface::MIN_CATALOG_ID)
         );
     }
 

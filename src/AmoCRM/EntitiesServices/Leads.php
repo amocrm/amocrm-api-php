@@ -3,7 +3,6 @@
 namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\Collections\ContactsCollection;
-use AmoCRM\Collections\LinksCollection;
 use AmoCRM\EntitiesServices\Traits\LinkMethodsTrait;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
@@ -34,8 +33,6 @@ use function is_null;
  * @method LeadModel updateOne(BaseApiModel $apiModel)
  * @method LeadsCollection update(BaseApiCollection $collection)
  * @method LeadModel syncOne(BaseApiModel $apiModel, $with = [])
- * @method LinksCollection link(BaseApiModel $mainEntity, $linkedEntities)
- * @method bool unlink(BaseApiModel $mainEntity, $linkedEntities)
  */
 class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethodsInterface
 {
@@ -64,13 +61,7 @@ class Leads extends BaseEntity implements HasLinkMethodInterface, HasPageMethods
      */
     protected function getEntitiesFromResponse(array $response): array
     {
-        $entities = [];
-
-        if (isset($response[AmoCRMApiRequest::EMBEDDED]) && isset($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS])) {
-            $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS];
-        }
-
-        return $entities;
+        return $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::LEADS] ?? [];
     }
 
     /**
