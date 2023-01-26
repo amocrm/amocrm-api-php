@@ -79,7 +79,6 @@ $uploadModel->setName('Название файла123.txt')
 
 try {
     $file = $apiClient->files()->uploadOne($uploadModel);
-    var_dump($file->toArray());
 } catch (AmoCRMApiException $e) {
     printError($e);
 }
@@ -129,7 +128,7 @@ $chatTemplate
     ->setAttachment(
         (new AttachmentModel())
             ->setName($file->getName())
-            ->setUuid($file->getUuid())
+            ->setId($file->getUuid())
             ->setType(TypesEnum::TYPE_PICTURE)
     );
 
@@ -147,7 +146,6 @@ $noteModel->setEntityId(20285255)
     ->setFileName($file->getNameWithExtension()) // название файла, которое будет отображаться в примечании
     ->setVersionUuid($file->getVersionUuid())
     ->setFileUuid($file->getUuid());
-//    ->setOriginalName($file->getNameWithExtension()); // оригинальное название файла, можно не передвать, будет использован fileName, если передать, будет использоваться оно для отображения, но скачиваться будет с тем названием, которое передали в название файла, при его загрузке
 
 try {
     $leadNotesService = $apiClient->notes(EntityTypesInterface::LEADS);

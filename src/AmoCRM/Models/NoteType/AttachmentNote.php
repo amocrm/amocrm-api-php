@@ -3,7 +3,6 @@
 namespace AmoCRM\Models\NoteType;
 
 use AmoCRM\Models\Factories\NoteFactory;
-use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Models\NoteModel;
 
 class AttachmentNote extends NoteModel
@@ -98,7 +97,6 @@ class AttachmentNote extends NoteModel
         $result = parent::toApi($requestId);
 
         $result['params'] = [
-            'original_name' => $this->getOriginalName(),
             'version_uuid' => $this->getVersionUuid(),
             'file_uuid' => $this->getFileUuid(),
             'file_name' => $this->getFileName(),
