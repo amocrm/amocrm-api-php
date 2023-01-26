@@ -29,6 +29,8 @@ class AccountModel extends BaseApiModel
     public const INVOICES_SETTINGS = 'invoices_settings';
     /** @var string Доступ к фильтрации */
     public const IS_API_FILTER_ENABLED = 'is_api_filter_enabled';
+    /** @var string Адрес драйва (сервис файлов) */
+    public const DRIVE_URL = 'drive_url';
 
     /** @var string Покупатели недоступны. */
     public const CUSTOMERS_MODE_UNAVAILABLE = 'unavailable';
@@ -140,6 +142,9 @@ class AccountModel extends BaseApiModel
 
     /** @var bool */
     protected $isApiFilterEnabled;
+
+    /** @var null|string */
+    protected $driveUrl;
 
     /**
      * @return int
@@ -322,6 +327,22 @@ class AccountModel extends BaseApiModel
     /**
      * @return string|null
      */
+    public function getDriveUrl(): ?string
+    {
+        return $this->driveUrl;
+    }
+
+    /**
+     * @param string|null $driveUrl
+     */
+    public function setDriveUrl(?string $driveUrl): void
+    {
+        $this->driveUrl = $driveUrl;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getUuid(): ?string
     {
         return $this->uuid;
@@ -421,6 +442,10 @@ class AccountModel extends BaseApiModel
             $accountModel->setIsApiFilterEnabled($account[self::IS_API_FILTER_ENABLED]);
         }
 
+        if (isset($account[self::DRIVE_URL])) {
+            $accountModel->setDriveUrl($account[self::DRIVE_URL]);
+        }
+
         return $accountModel;
     }
 
@@ -458,7 +483,7 @@ class AccountModel extends BaseApiModel
             $result['uuid'] = $this->getUuid();
         }
 
-        if (!is_null($this->getAmojoRights())) {
+        if ($this->getAmojoRights()) {
             $result['amojo_rights'] = $this->getAmojoRights()->toArray();
         }
 
@@ -484,6 +509,10 @@ class AccountModel extends BaseApiModel
 
         if (!is_null($this->getIsApiFilterEnabled())) {
             $result['is_api_filter_enabled'] = $this->getIsApiFilterEnabled();
+        }
+
+        if (!is_null($this->getDriveUrl())) {
+            $result['drive_url'] = $this->getDriveUrl();
         }
 
         return $result;

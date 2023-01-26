@@ -20,10 +20,14 @@ class FileCustomFieldValueModel extends BaseCustomFieldValueModel
 
     /**
      * @param null|string $fileUuid
+     *
+     * @return FileCustomFieldValueModel
      */
-    public function setFileUuid(?string $fileUuid): void
+    public function setFileUuid(?string $fileUuid): self
     {
         $this->fileUuid = $fileUuid;
+
+        return $this;
     }
 
     /**
@@ -36,10 +40,14 @@ class FileCustomFieldValueModel extends BaseCustomFieldValueModel
 
     /**
      * @param null|string $versionUuid
+     *
+     * @return FileCustomFieldValueModel
      */
-    public function setVersionUuid(?string $versionUuid): void
+    public function setVersionUuid(?string $versionUuid): self
     {
         $this->versionUuid = $versionUuid;
+
+        return $this;
     }
 
     /**
@@ -52,10 +60,14 @@ class FileCustomFieldValueModel extends BaseCustomFieldValueModel
 
     /**
      * @param null|string $fileName
+     *
+     * @return FileCustomFieldValueModel
      */
-    public function setFileName(?string $fileName): void
+    public function setFileName(?string $fileName): self
     {
         $this->fileName = $fileName;
+
+        return $this;
     }
 
     /**
@@ -68,10 +80,14 @@ class FileCustomFieldValueModel extends BaseCustomFieldValueModel
 
     /**
      * @param null|int $fileSize
+     *
+     * @return FileCustomFieldValueModel
      */
-    public function setFileSize(?int $fileSize): void
+    public function setFileSize(?int $fileSize): self
     {
         $this->fileSize = $fileSize;
+
+        return $this;
     }
 
     /**

@@ -18,7 +18,22 @@ class AttachmentNote extends NoteModel
     /**
      * @var null|string
      */
-    protected $attachment;
+    protected $fileUuid;
+
+    /**
+     * @var null|string
+     */
+    protected $fileName;
+
+    /**
+     * @var null|string
+     */
+    protected $versionUuid;
+
+    /**
+     * @var null|bool
+     */
+    protected $isDriveAttachment;
 
     public function getNoteType(): string
     {
@@ -32,14 +47,27 @@ class AttachmentNote extends NoteModel
      */
     public function fromArray(array $note): NoteModel
     {
+        /** @var self $model */
         $model = parent::fromArray($note);
 
         if (isset($note['params']['original_name'])) {
             $model->setOriginalName($note['params']['original_name']);
         }
 
-        if (isset($note['params']['attachment'])) {
-            $model->setAttachment($note['params']['attachment']);
+        if (isset($note['params']['is_drive_attachment'])) {
+            $model->setIsDriveAttachment($note['params']['is_drive_attachment']);
+        }
+
+        if (isset($note['params']['file_uuid'])) {
+            $model->setFileUuid($note['params']['file_uuid']);
+        }
+
+        if (isset($note['params']['version_uuid'])) {
+            $model->setVersionUuid($note['params']['version_uuid']);
+        }
+
+        if (isset($note['params']['file_name'])) {
+            $model->setFileName($note['params']['file_name']);
         }
 
         return $model;
@@ -53,7 +81,10 @@ class AttachmentNote extends NoteModel
         $result = parent::toArray();
 
         $result['params']['original_name'] = $this->getOriginalName();
-        $result['params']['attachment'] = $this->getAttachment();
+        $result['params']['version_uuid'] = $this->getVersionUuid();
+        $result['params']['file_uuid'] = $this->getFileUuid();
+        $result['params']['file_name'] = $this->getFileName();
+        $result['params']['is_drive_attachment'] = $this->getIsDriveAttachment();
 
         return $result;
     }
@@ -61,11 +92,19 @@ class AttachmentNote extends NoteModel
     /**
      * @param string|null $requestId
      * @return array
-     * @throws NotAvailableForActionException
      */
     public function toApi(?string $requestId = "0"): array
     {
-        throw new NotAvailableForActionException();
+        $result = parent::toApi($requestId);
+
+        $result['params'] = [
+            'original_name' => $this->getOriginalName(),
+            'version_uuid' => $this->getVersionUuid(),
+            'file_uuid' => $this->getFileUuid(),
+            'file_name' => $this->getFileName(),
+        ];
+
+        return $result;
     }
 
     /**
@@ -90,18 +129,79 @@ class AttachmentNote extends NoteModel
     /**
      * @return string|null
      */
-    public function getAttachment(): ?string
+    public function getFileUuid(): ?string
     {
-        return $this->attachment;
+        return $this->fileUuid;
     }
 
     /**
-     * @param string|null $attachment
+     * @param string|null $fileUuid
+     *
      * @return AttachmentNote
      */
-    public function setAttachment(?string $attachment): AttachmentNote
+    public function setFileUuid(?string $fileUuid): AttachmentNote
     {
-        $this->attachment = $attachment;
+        $this->fileUuid = $fileUuid;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFileName(): ?string
+    {
+        return $this->fileName;
+    }
+
+    /**
+     * @param string|null $fileName
+     *
+     * @return AttachmentNote
+     */
+    public function setFileName(?string $fileName): AttachmentNote
+    {
+        $this->fileName = $fileName;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVersionUuid(): ?string
+    {
+        return $this->versionUuid;
+    }
+
+    /**
+     * @param string|null $versionUuid
+     *
+     * @return AttachmentNote
+     */
+    public function setVersionUuid(?string $versionUuid): AttachmentNote
+    {
+        $this->versionUuid = $versionUuid;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsDriveAttachment(): ?bool
+    {
+        return $this->isDriveAttachment;
+    }
+
+    /**
+     * @param bool|null $isDriveAttachment
+     *
+     * @return AttachmentNote
+     */
+    public function setIsDriveAttachment(?bool $isDriveAttachment): AttachmentNote
+    {
+        $this->isDriveAttachment = $isDriveAttachment;
 
         return $this;
     }
