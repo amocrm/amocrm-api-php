@@ -149,6 +149,19 @@ class FileModel extends BaseApiModel implements HasIdInterface
     protected $type;
 
     /**
+     * @var array|null
+     */
+    protected $previews;
+
+    /**
+     * @return array|null
+     */
+    public function getPreviews()
+    {
+        return $this->previews;
+    }
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -402,6 +415,17 @@ class FileModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
+     * @param array|null
+     * 
+     * @return FileModel
+     */
+    public function setPreviews(array $previews): FileModel
+    {
+        $this->previews = $previews;
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getUpdatedByType(): ?string
@@ -649,6 +673,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
             ->setMimeType($file['metadata']['mime_type'])
             ->setSanitizedName($file['sanitized_name'])
             ->setSourceId($file['source_id'])
+            ->setPreviews($file['previews'])
             ->setType($file['type']);
 
         return $fileModel;
@@ -687,6 +712,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
             'has_multiple_version' => $this->getHasMultipleVersions(),
             'is_trashed' => $this->getIsTrashed(),
             'extension' => $this->getExtension(),
+            'previews' => $this->getPreviews(),
             'mime_type' => $this->getMimeType(),
             'sanitized_name' => $this->getSanitizedName(),
             'source_id' => $this->getSourceId(),
