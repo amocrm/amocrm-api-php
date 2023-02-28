@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\Models;
+namespace AmoCRM\AmoCRM\Models\Files;
+
+use AmoCRM\Models\BaseApiModel;
 
 /**
  * @since Release Spring 2022
@@ -24,6 +26,7 @@ class FilePreviewModel extends BaseApiModel
      */
     protected $height;
 
+    
     /**
      * @param string $downloadLink
      */
@@ -80,9 +83,9 @@ class FilePreviewModel extends BaseApiModel
     public static function fromArray(array $previews): self
     {
         $preview = new self();
-        $preview->setDownloadLink($previews[0]['download_link']);
-        $preview->setWidth($previews[0]['width']);
-        $preview->setHeight($previews[0]['height']);
+        $preview->setDownloadLink($previews['download_link']);
+        $preview->setWidth($previews['width']);
+        $preview->setHeight($previews['height']);
 
         return $preview;
     }
@@ -93,11 +96,9 @@ class FilePreviewModel extends BaseApiModel
     public function toArray(): array
     {
         return [
-            [
                 'download_link' => $this->getDownloadLink(),
                 'width' => $this->getWidth(),
                 'height' => $this->getHeight(),
-            ]
         ];
     }
 
