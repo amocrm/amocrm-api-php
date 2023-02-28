@@ -112,16 +112,16 @@ class FileUploadModel extends BaseApiModel implements Arrayable
     public function setWithPreview(?bool $withPreview): FileUploadModel
     {
         $this->withPreview = $withPreview;
+        
         return $this;
     }
 
      /**
-     * @return FileUploadModel
+     * @return bool|null
      */
     public function getWithPreview(): ?bool
     {
         return $this->withPreview;
-        
     }
 
     /**

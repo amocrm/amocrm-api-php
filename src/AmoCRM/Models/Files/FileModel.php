@@ -4,6 +4,7 @@ namespace AmoCRM\AmoCRM\Models\Files;
 
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\FilePreviewModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 
@@ -154,11 +155,14 @@ class FileModel extends BaseApiModel implements HasIdInterface
     protected $previews;
 
     /**
-     * @return array|null
+     * @return FilePreviewModel
      */
-    public function getPreviews()
+    public function getPreviews(): FilePreviewModel
     {
-        return $this->previews;
+        $model = new FilePreviewModel();
+        $model->fromArray($this->previews);
+
+        return $model;
     }
 
     /**
@@ -415,13 +419,14 @@ class FileModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @param array|null
+     * @param array
      * 
      * @return FileModel
      */
     public function setPreviews(array $previews): FileModel
     {
         $this->previews = $previews;
+
         return $this;
     }
 
@@ -712,7 +717,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
             'has_multiple_version' => $this->getHasMultipleVersions(),
             'is_trashed' => $this->getIsTrashed(),
             'extension' => $this->getExtension(),
-            'previews' => $this->getPreviews(),
+            'previews' => $this->getPreviews()->toArray(),
             'mime_type' => $this->getMimeType(),
             'sanitized_name' => $this->getSanitizedName(),
             'source_id' => $this->getSourceId(),
