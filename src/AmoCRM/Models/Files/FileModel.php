@@ -5,7 +5,6 @@ namespace AmoCRM\AmoCRM\Models\Files;
 use AmoCRM\Collections\FilesPreviewsCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
-use AmoCRM\Models\Files\FilePreviewModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
 
