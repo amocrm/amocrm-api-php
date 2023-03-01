@@ -96,9 +96,9 @@ class FilePreviewModel extends BaseApiModel
     public function toArray(): array
     {
         return [
-                'download_link' => $this->getDownloadLink(),
-                'width' => $this->getWidth(),
-                'height' => $this->getHeight(),
+            'download_link' => $this->getDownloadLink(),
+            'width' => $this->getWidth(),
+            'height' => $this->getHeight(),
         ];
     }
 

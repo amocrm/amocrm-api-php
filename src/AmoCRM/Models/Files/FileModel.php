@@ -715,7 +715,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
             'has_multiple_version' => $this->getHasMultipleVersions(),
             'is_trashed' => $this->getIsTrashed(),
             'extension' => $this->getExtension(),
-            'previews' => $this->getPreviews()->toArray(),
+            'previews' => $this->getPreviews(),
             'mime_type' => $this->getMimeType(),
             'sanitized_name' => $this->getSanitizedName(),
             'source_id' => $this->getSourceId(),
