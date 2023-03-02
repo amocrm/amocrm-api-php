@@ -22,8 +22,8 @@ class FileUploadModel extends BaseApiModel implements Arrayable
     /** @var string|null */
     protected $createdByType;
 
-    /** @var bool|null */
-    protected $withPreview;
+    /** @var bool */
+    protected $withPreview = false;
 
     /**
      * @return string

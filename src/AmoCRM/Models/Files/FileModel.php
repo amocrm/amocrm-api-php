@@ -2,6 +2,7 @@
 
 namespace AmoCRM\AmoCRM\Models\Files;
 
+use AmoCRM\Collections\FilePreviewsCollection;
 use AmoCRM\Collections\FilesPreviewsCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
@@ -150,14 +151,14 @@ class FileModel extends BaseApiModel implements HasIdInterface
     protected $type;
 
     /**
-     * @var FilesPreviewsCollection|null
+     * @var FilePreviewsCollection|null
      */
     protected $previews;
 
     /**
-     * @return FilesPreviewsCollection|null
+     * @return FilePreviewsCollection|null
      */
-    public function getPreviews(): ?FilesPreviewsCollection
+    public function getPreviews(): ?FilePreviewsCollection
     {
         return $this->previews;
     }
@@ -416,11 +417,11 @@ class FileModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @param FilesPreviewsCollection|null
+     * @param FilePreviewsCollection|null
      * 
      * @return FileModel
      */
-    public function setPreviews(?FilesPreviewsCollection $previews): FileModel
+    public function setPreviews(?FilePreviewsCollection $previews): FileModel
     {
         $this->previews = $previews;
 
@@ -675,7 +676,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
             ->setMimeType($file['metadata']['mime_type'])
             ->setSanitizedName($file['sanitized_name'])
             ->setSourceId($file['source_id'])
-            ->setPreviews($file['previews'] ? FilesPreviewsCollection::fromArray($file['previews']) : null)
+            ->setPreviews($file['previews'] ? FilePreviewsCollection::fromArray($file['previews']) : null)
             ->setType($file['type']);
 
         return $fileModel;

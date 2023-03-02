@@ -23,7 +23,7 @@ use AmoCRM\Collections\Traits\PagesTrait;
  * @method FilesPreviewsCollection add(FilePreviewModel $value)
  * @method null|FilePreviewModel getBy($key, $value)
  */
-class FilesPreviewsCollection extends BaseApiCollection implements HasPagesInterface
+class FilePreviewsCollection extends BaseApiCollection implements HasPagesInterface
 {
     use PagesTrait;
 

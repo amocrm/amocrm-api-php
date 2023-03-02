@@ -6,9 +6,6 @@ namespace AmoCRM\AmoCRM\Models\Files;
 
 use AmoCRM\Models\BaseApiModel;
 
-/**
- * @since Release Spring 2022
- */
 class FilePreviewModel extends BaseApiModel
 {
     /**
@@ -107,7 +104,7 @@ class FilePreviewModel extends BaseApiModel
      *
      * @return array
      */
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return $this->toArray();
     }
