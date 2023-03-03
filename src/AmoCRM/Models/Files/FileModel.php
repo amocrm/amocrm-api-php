@@ -2,6 +2,7 @@
 
 namespace AmoCRM\AmoCRM\Models\Files;
 
+use AmoCRM\Collections\FilePreviewsCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
@@ -147,6 +148,19 @@ class FileModel extends BaseApiModel implements HasIdInterface
      * @var string|null
      */
     protected $type;
+
+    /**
+     * @var FilePreviewsCollection|null
+     */
+    protected $previews;
+
+    /**
+     * @return FilePreviewsCollection|null
+     */
+    public function getPreviews(): ?FilePreviewsCollection
+    {
+        return $this->previews;
+    }
 
     /**
      * @return int|null
@@ -402,6 +416,18 @@ class FileModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
+     * @param FilePreviewsCollection|null $previews
+     * 
+     * @return FileModel
+     */
+    public function setPreviews(?FilePreviewsCollection $previews): FileModel
+    {
+        $this->previews = $previews;
+
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getUpdatedByType(): ?string
@@ -649,6 +675,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
             ->setMimeType($file['metadata']['mime_type'])
             ->setSanitizedName($file['sanitized_name'])
             ->setSourceId($file['source_id'])
+            ->setPreviews($file['previews'] ? FilePreviewsCollection::fromArray($file['previews']) : null)
             ->setType($file['type']);
 
         return $fileModel;
@@ -687,6 +714,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
             'has_multiple_version' => $this->getHasMultipleVersions(),
             'is_trashed' => $this->getIsTrashed(),
             'extension' => $this->getExtension(),
+            'previews' => $this->getPreviews(),
             'mime_type' => $this->getMimeType(),
             'sanitized_name' => $this->getSanitizedName(),
             'source_id' => $this->getSourceId(),

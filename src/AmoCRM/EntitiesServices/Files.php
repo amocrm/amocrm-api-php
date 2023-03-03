@@ -90,6 +90,10 @@ class Files extends BaseEntity implements HasPageMethodsInterface, HasDeleteMeth
             'content_type' => $contentType,
         ];
 
+        if ($model->isWithPreview()) {
+            $body['with_preview'] = $model->isWithPreview();
+        }
+
         if (!empty($model->getFileUuid())) {
             $body['file_uuid'] = $model->getFileUuid();
         }
