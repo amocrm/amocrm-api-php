@@ -11,17 +11,17 @@ class FilePreviewModel extends BaseApiModel
     /**
      * @var string ссылка для загрузки превью
      */
-    protected $downloadLink;
+    protected $downloadLink = '';
 
     /**
      * @var int ширина
      */
-    protected $width;
+    protected $width = 0;
 
     /**
      * @var int высота
      */
-    protected $height;
+    protected $height = 0;
 
     
     /**

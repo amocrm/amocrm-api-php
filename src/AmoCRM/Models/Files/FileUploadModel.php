@@ -105,11 +105,11 @@ class FileUploadModel extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @param bool|null $withPreview
+     * @param bool $withPreview
      *
      * @return FileUploadModel
      */
-    public function setWithPreview(?bool $withPreview): FileUploadModel
+    public function setWithPreview(bool $withPreview): FileUploadModel
     {
         $this->withPreview = $withPreview;
         
@@ -117,9 +117,9 @@ class FileUploadModel extends BaseApiModel implements Arrayable
     }
 
      /**
-     * @return bool|null
+     * @return bool
      */
-    public function getWithPreview(): ?bool
+    public function isWithPreview(): bool
     {
         return $this->withPreview;
     }
@@ -154,7 +154,7 @@ class FileUploadModel extends BaseApiModel implements Arrayable
                 'id' => $this->getCreatedBy(),
                 'type' => $this->getCreatedByType(),
             ],
-            'with_preview' => $this->getWithPreview(),
+            'with_preview' => $this->isWithPreview(),
         ];
     }
 
@@ -164,7 +164,7 @@ class FileUploadModel extends BaseApiModel implements Arrayable
             'local_path' => $this->getLocalPath(),
             'name' => $this->getName(),
             'file_uuid' => $this->getFileUuid(),
-            'with_preview' => $this->getWithPreview(),
+            'with_preview' => $this->isWithPreview(),
         ];
 
         if (!is_null($this->getCreatedByType()) && !is_null($this->getCreatedBy())) {
