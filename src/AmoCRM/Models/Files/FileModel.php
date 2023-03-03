@@ -3,7 +3,6 @@
 namespace AmoCRM\AmoCRM\Models\Files;
 
 use AmoCRM\Collections\FilePreviewsCollection;
-use AmoCRM\Collections\FilesPreviewsCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
@@ -417,7 +416,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
-     * @param FilePreviewsCollection|null
+     * @param FilePreviewsCollection|null $previews
      * 
      * @return FileModel
      */

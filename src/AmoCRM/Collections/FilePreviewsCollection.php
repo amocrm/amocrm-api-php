@@ -10,7 +10,7 @@ use AmoCRM\Collections\Interfaces\HasPagesInterface;
 use AmoCRM\Collections\Traits\PagesTrait;
 
 /**
- * Class FilesPreviewsCollection
+ * Class FilePreviewsCollection
  *
  * @package AmoCRM\Collections
  *
@@ -19,8 +19,8 @@ use AmoCRM\Collections\Traits\PagesTrait;
  * @method null|FilePreviewModel first()
  * @method null|FilePreviewModel offsetGet($offset)
  * @method void offsetSet($offset, FilePreviewModel $value)
- * @method FilesPreviewsCollection prepend(FilePreviewModel $value)
- * @method FilesPreviewsCollection add(FilePreviewModel $value)
+ * @method FilePreviewsCollection prepend(FilePreviewModel $value)
+ * @method FilePreviewsCollection add(FilePreviewModel $value)
  * @method null|FilePreviewModel getBy($key, $value)
  */
 class FilePreviewsCollection extends BaseApiCollection implements HasPagesInterface
