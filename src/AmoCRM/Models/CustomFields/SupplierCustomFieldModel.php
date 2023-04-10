@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace AmoCRM\Models\CustomFields;
 
-use AmoCRM\Models\CustomFields\CustomFieldModel;
-
 /**
  * Class SupplierCustomFieldModel
  *
