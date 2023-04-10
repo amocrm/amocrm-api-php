@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
+use AmoCRM\Models\CatalogElementModel;
+
 /**
  * Class SupplierCustomFieldValueModel
  *
@@ -18,31 +20,43 @@ class SupplierCustomFieldValueModel extends BaseArrayCustomFieldValueModel
 
     /**
      * @var string Название поставщика. Заполняется только при передаче флага with = filled_suppliers_fields
+     *
+     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
      */
     public const NAME = 'name';
 
     /**
      * @var string ИНН. Заполняется только при передаче флага with = filled_suppliers_fields
+     *
+     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
      */
     public const VAT_ID = 'vat_id';
 
     /**
      * @var string КПП. Заполняется только при передаче флага with = filled_suppliers_fields
+     *
+     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
      */
     public const KPP = 'kpp';
 
     /**
      * @var string ОГРН / ОГРНИП. Заполняется только при передаче флага with = filled_suppliers_fields
+     *
+     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
      */
     public const TAX_REG_REASON_CODE = 'tax_registration_reason_code';
 
     /**
      * @var string БИК. Заполняется только при передаче флага with = filled_suppliers_fields
+     *
+     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
      */
     public const BANK_CODE = 'bank_code';
 
     /**
      * @var string Адрес. Заполняется только при передаче флага with = filled_suppliers_fields
+     *
+     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
      */
     public const ADDRESS = 'address';
 
