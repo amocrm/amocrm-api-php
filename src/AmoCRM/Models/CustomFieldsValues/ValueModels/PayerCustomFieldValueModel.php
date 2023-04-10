@@ -47,6 +47,51 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     public const ENTITY_ID = 'entity_id';
 
     /**
+     * @var string БИК
+     */
+    public const BANK_CODE = 'bank_code';
+
+    /**
+     * @var string УНП - ИНН в Беларуси
+     */
+    public const UNP = 'unp';
+
+    /**
+     * @var string БИН - ИНН в Казахстане
+     */
+    public const BIN = 'bin';
+
+    /**
+     * @var string ЕГРПОУ - ИНН в Украине
+     */
+    public const EGRPOU = 'egrpou';
+
+    /**
+     * @var string Фактический адрес
+     */
+    public const REAL_ADDRESS = 'real_address';
+
+    /**
+     * @var string МФО
+     */
+    public const MFO = 'mfo';
+
+    /**
+     * @var string Расчетный счет
+     */
+    public const BANK_ACCOUNT_NUMBER = 'bank_account_number';
+
+    /**
+     * @var string ОКЭД
+     */
+    public const OKED = 'oked';
+
+    /**
+     * @var string Директор
+     */
+    public const DIRECTOR = 'director';
+
+    /**
      * @var string|null
      */
     protected $name;
@@ -82,6 +127,51 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     protected $entityId;
 
     /**
+     * @var string|null
+     */
+    protected $bankCode;
+
+    /**
+     * @var string|null
+     */
+    protected $unp;
+
+    /**
+     * @var string|null
+     */
+    protected $bin;
+
+    /**
+     * @var string|null
+     */
+    protected $egrpou;
+
+    /**
+     * @var string|null
+     */
+    protected $realAddress;
+
+    /**
+     * @var string|null
+     */
+    protected $mfo;
+
+    /**
+     * @var string|null
+     */
+    protected $bankAccountNumber;
+
+    /**
+     * @var string|null
+     */
+    protected $oked;
+
+    /**
+     * @var string|null
+     */
+    protected $director;
+
+    /**
      * @param array|null $value
      *
      * @return BaseCustomFieldValueModel
@@ -97,7 +187,16 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             ->setTaxRegistrationReasonCode($val[self::TAX_REG_REASON_CODE] ?? null)
             ->setAddress($val[self::ADDRESS] ?? null)
             ->setEntityType($val[self::ENTITY_TYPE] ?? null)
-            ->setEntityId($val[self::ENTITY_ID] ?? null);
+            ->setEntityId($val[self::ENTITY_ID] ?? null)
+            ->setBankCode($val[self::BANK_CODE] ?? null)
+            ->setUnp($val[self::UNP] ?? null)
+            ->setBin($val[self::BIN] ?? null)
+            ->setEgrpou($val[self::EGRPOU] ?? null)
+            ->setRealAddress($val[self::REAL_ADDRESS] ?? null)
+            ->setMfo($val[self::MFO] ?? null)
+            ->setBankAccountNumber($val[self::BANK_ACCOUNT_NUMBER] ?? null)
+            ->setOked($val[self::OKED] ?? null)
+            ->setDirector($val[self::DIRECTOR] ?? null);
 
         return $model;
     }
@@ -243,6 +342,186 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     }
 
     /**
+     * @return string|null
+     */
+    public function getBankCode(): ?string
+    {
+        return $this->bankCode;
+    }
+
+    /**
+     * @param string|null $bankCode
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setBankCode(?string $bankCode): PayerCustomFieldValueModel
+    {
+        $this->bankCode = $bankCode;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUnp(): ?string
+    {
+        return $this->unp;
+    }
+
+    /**
+     * @param string|null $unp
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setUnp(?string $unp): PayerCustomFieldValueModel
+    {
+        $this->unp = $unp;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBin(): ?string
+    {
+        return $this->bin;
+    }
+
+    /**
+     * @param string|null $bin
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setBin(?string $bin): PayerCustomFieldValueModel
+    {
+        $this->bin = $bin;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEgrpou(): ?string
+    {
+        return $this->egrpou;
+    }
+
+    /**
+     * @param string|null $egrpou
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setEgrpou(?string $egrpou): PayerCustomFieldValueModel
+    {
+        $this->egrpou = $egrpou;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRealAddress(): ?string
+    {
+        return $this->realAddress;
+    }
+
+    /**
+     * @param string|null $realAddress
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setRealAddress(?string $realAddress): PayerCustomFieldValueModel
+    {
+        $this->realAddress = $realAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMfo(): ?string
+    {
+        return $this->mfo;
+    }
+
+    /**
+     * @param string|null $mfo
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setMfo(?string $mfo): PayerCustomFieldValueModel
+    {
+        $this->mfo = $mfo;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBankAccountNumber(): ?string
+    {
+        return $this->bankAccountNumber;
+    }
+
+    /**
+     * @param string|null $bankAccountNumber
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setBankAccountNumber(?string $bankAccountNumber): PayerCustomFieldValueModel
+    {
+        $this->bankAccountNumber = $bankAccountNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOked(): ?string
+    {
+        return $this->oked;
+    }
+
+    /**
+     * @param string|null $oked
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setOked(?string $oked): PayerCustomFieldValueModel
+    {
+        $this->oked = $oked;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDirector(): ?string
+    {
+        return $this->director;
+    }
+
+    /**
+     * @param string|null $director
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setDirector(?string $director): PayerCustomFieldValueModel
+    {
+        $this->director = $director;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -255,6 +534,15 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::ADDRESS => $this->getAddress(),
             self::ENTITY_TYPE => $this->getEntityType(),
             self::ENTITY_ID => $this->getEntityId(),
+            self::BANK_CODE => $this->getBankCode(),
+            self::UNP => $this->getUnp(),
+            self::BIN => $this->getBin(),
+            self::EGRPOU => $this->getEgrpou(),
+            self::REAL_ADDRESS => $this->getRealAddress(),
+            self::MFO => $this->getMfo(),
+            self::BANK_ACCOUNT_NUMBER => $this->getBankAccountNumber(),
+            self::OKED => $this->getOked(),
+            self::DIRECTOR => $this->getDirector(),
         ];
     }
 
