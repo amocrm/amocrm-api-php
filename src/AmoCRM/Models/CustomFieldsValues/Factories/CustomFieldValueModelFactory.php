@@ -6,6 +6,8 @@ use AmoCRM\Models\CustomFieldsValues\ValueModels\ChainedListCustomFieldValueMode
 use AmoCRM\Models\CustomFieldsValues\ValueModels\FileCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\LinkedEntityCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\MonetaryCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\PayerCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\SupplierCustomFieldValueModel;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\TrackingDataCustomFieldValueModel;
 use AmoCRM\Helpers\CustomFieldHelper;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
@@ -122,6 +124,12 @@ class CustomFieldValueModelFactory
                 break;
             case CustomFieldModel::TYPE_FILE:
                 $model = new FileCustomFieldValueModel();
+                break;
+            case CustomFieldModel::TYPE_PAYER:
+                $model = new PayerCustomFieldValueModel();
+                break;
+            case CustomFieldModel::TYPE_SUPPLIER:
+                $model = new SupplierCustomFieldValueModel();
                 break;
             default:
                 trigger_error(

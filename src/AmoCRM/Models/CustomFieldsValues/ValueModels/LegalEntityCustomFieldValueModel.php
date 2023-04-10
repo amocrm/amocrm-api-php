@@ -9,7 +9,7 @@ namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
  */
 class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
 {
-    /** Имя юр лицы */
+    /** Имя юр лица */
     public const NAME = 'name';
     /** Тип юр лица */
     public const LEGAL_ENTITY_TYPE = 'entity_type';
@@ -110,7 +110,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /**
      * @var string|null
      */
-    protected $bank_account_number;
+    protected $bankAccountNumber;
     
     /**
      * @var string|null
@@ -370,12 +370,12 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
 
     public function getBankAccountNumber(): ?string
     {
-        return $this->bank_account_number;
+        return $this->bankAccountNumber;
     }
 
-    public function setBankAccountNumber(?string $bank_account_number): LegalEntityCustomFieldValueModel
+    public function setBankAccountNumber(?string $bankAccountNumber): LegalEntityCustomFieldValueModel
     {
-        $this->bank_account_number = $bank_account_number;
+        $this->bankAccountNumber = $bankAccountNumber;
 
         return $this;
     }

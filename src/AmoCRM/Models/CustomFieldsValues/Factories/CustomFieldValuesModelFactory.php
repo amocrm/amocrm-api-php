@@ -5,6 +5,8 @@ namespace AmoCRM\Models\CustomFieldsValues\Factories;
 use AmoCRM\Models\CustomFieldsValues\ChainedListCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\FileCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\MonetaryCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\PayerCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\SupplierCustomFieldValuesModel;
 use AmoCRM\Models\CustomFieldsValues\TrackingDataCustomFieldValuesModel;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFieldsValues\BaseCustomFieldValuesModel;
@@ -120,6 +122,12 @@ class CustomFieldValuesModelFactory
                 break;
             case CustomFieldModel::TYPE_FILE:
                 $model = new FileCustomFieldValuesModel();
+                break;
+            case CustomFieldModel::TYPE_PAYER:
+                $model = new PayerCustomFieldValuesModel();
+                break;
+            case CustomFieldModel::TYPE_SUPPLIER:
+                $model = new SupplierCustomFieldValuesModel();
                 break;
             default:
                 trigger_error(

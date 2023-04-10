@@ -16,6 +16,8 @@ class InvoicesCustomFieldsEnums
     public const STATUS = 'BILL_STATUS';
     /** @var string Юр. лицо */
     public const LEGAL_ENTITY = 'LEGAL_ENTITY';
+    /** @var string Поставщик */
+    public const SUPPLIER = 'SUPPLIER';
     /** @var string Плательщик */
     public const PAYER = 'PAYER';
     /** @var string Позиции счета */
