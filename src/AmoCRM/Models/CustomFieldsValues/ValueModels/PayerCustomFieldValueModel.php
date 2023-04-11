@@ -29,7 +29,7 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /**
      * @var string ОГРН / ОГРНИП
      */
-    public const TAX_REG_REASON_CODE = 'tax_registrarion_reason_code';
+    public const TAX_REG_REASON_CODE = 'tax_registration_reason_code';
 
     /**
      * @var string Адрес
