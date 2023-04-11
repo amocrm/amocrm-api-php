@@ -25,7 +25,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
      * @var string Заполненные значения для кастомных полей с типом "Поставщик".
      * Актуально только для каталогов счетов/покупок, в других каталогах такого поля нет.
      */
-    public const FILLED_SUPPLIER_FIELDS = 'filled_supplier_fields';
+    public const SUPPLIER_FIELD_VALUES = 'supplier_field_values';
 
     /**
      * @var int|null
@@ -572,7 +572,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     {
         return [
             self::INVOICE_LINK,
-            self::FILLED_SUPPLIER_FIELDS,
+            self::SUPPLIER_FIELD_VALUES,
         ];
     }
 }

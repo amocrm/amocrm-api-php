@@ -21,42 +21,42 @@ class SupplierCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /**
      * @var string Название поставщика. Заполняется только при передаче флага with = filled_suppliers_fields
      *
-     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
+     * @see CatalogElementModel::SUPPLIER_FIELD_VALUES
      */
     public const NAME = 'name';
 
     /**
      * @var string ИНН. Заполняется только при передаче флага with = filled_suppliers_fields
      *
-     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
+     * @see CatalogElementModel::SUPPLIER_FIELD_VALUES
      */
     public const VAT_ID = 'vat_id';
 
     /**
      * @var string КПП. Заполняется только при передаче флага with = filled_suppliers_fields
      *
-     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
+     * @see CatalogElementModel::SUPPLIER_FIELD_VALUES
      */
     public const KPP = 'kpp';
 
     /**
      * @var string ОГРН / ОГРНИП. Заполняется только при передаче флага with = filled_suppliers_fields
      *
-     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
+     * @see CatalogElementModel::SUPPLIER_FIELD_VALUES
      */
     public const TAX_REG_REASON_CODE = 'tax_registration_reason_code';
 
     /**
      * @var string БИК. Заполняется только при передаче флага with = filled_suppliers_fields
      *
-     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
+     * @see CatalogElementModel::SUPPLIER_FIELD_VALUES
      */
     public const BANK_CODE = 'bank_code';
 
     /**
      * @var string Адрес. Заполняется только при передаче флага with = filled_suppliers_fields
      *
-     * @see CatalogElementModel::FILLED_SUPPLIER_FIELDS
+     * @see CatalogElementModel::SUPPLIER_FIELD_VALUES
      */
     public const ADDRESS = 'address';
 
