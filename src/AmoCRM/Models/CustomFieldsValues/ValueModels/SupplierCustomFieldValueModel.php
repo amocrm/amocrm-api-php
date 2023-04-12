@@ -106,6 +106,7 @@ class SupplierCustomFieldValueModel extends BaseArrayCustomFieldValueModel
         $val = $value['value'] ?? $value;
 
         $model->setEntityId($val[self::ENTITY_ID])
+            ->setName($val[self::NAME] ?? null)
             ->setVatId($val[self::VAT_ID] ?? null)
             ->setKpp($val[self::KPP] ?? null)
             ->setTaxRegistrationReasonCode($val[self::TAX_REG_REASON_CODE] ?? null)
