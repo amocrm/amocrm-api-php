@@ -61,6 +61,13 @@ class SupplierCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     public const ADDRESS = 'address';
 
     /**
+     * @var string Расчетный счет. Заполняется только при передаче флага with = filled_suppliers_fields
+     *
+     * @see CatalogElementModel::SUPPLIER_FIELD_VALUES
+     */
+    public const BANK_ACCOUNT_NUMBER = 'bank_account_number';
+
+    /**
      * @var int
      */
     protected $entityId;
@@ -96,6 +103,11 @@ class SupplierCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     protected $address;
 
     /**
+     * @var string|null
+     */
+    protected $bankAccountNumber;
+
+    /**
      * @param array|null $value
      *
      * @return BaseCustomFieldValueModel
@@ -111,7 +123,8 @@ class SupplierCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             ->setKpp($val[self::KPP] ?? null)
             ->setTaxRegistrationReasonCode($val[self::TAX_REG_REASON_CODE] ?? null)
             ->setBankCode($val[self::BANK_CODE] ?? null)
-            ->setAddress($val[self::ADDRESS] ?? null);
+            ->setAddress($val[self::ADDRESS] ?? null)
+            ->setBankAccountNumber($val[self::BANK_ACCOUNT_NUMBER] ?? null);
 
         return $model;
     }
@@ -257,6 +270,26 @@ class SupplierCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     }
 
     /**
+     * @return string|null
+     */
+    public function getBankAccountNumber(): ?string
+    {
+        return $this->bankAccountNumber;
+    }
+
+    /**
+     * @param string|null $bankAccountNumber
+     *
+     * @return SupplierCustomFieldValueModel
+     */
+    protected function setBankAccountNumber(?string $bankAccountNumber): SupplierCustomFieldValueModel
+    {
+        $this->bankAccountNumber = $bankAccountNumber;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -269,6 +302,7 @@ class SupplierCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::TAX_REG_REASON_CODE => $this->getTaxRegistrationReasonCode(),
             self::BANK_CODE => $this->getBankCode(),
             self::ADDRESS => $this->getAddress(),
+            self::BANK_ACCOUNT_NUMBER => $this->getBankAccountNumber(),
         ];
     }
 
