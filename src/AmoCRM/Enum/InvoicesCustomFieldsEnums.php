@@ -9,7 +9,7 @@ use AmoCRM\Enum\Invoices\BillStatusEnumCode;
 class InvoicesCustomFieldsEnums
 {
     /**
-     * Ниже представлены контсанты с кодами полей списка счетов, которые есть во всех новых списках.
+     * Ниже представлены константы с кодами полей списка счетов, которые есть во всех новых списках.
      * Важно отметить, что поля могут быть удалены из интерфейса!
      */
     /** @var string Статус счета */
@@ -24,6 +24,8 @@ class InvoicesCustomFieldsEnums
     public const ITEMS = 'ITEMS';
     /** @var string Тип НДС */
     public const VAT_TYPE = 'BILL_VAT_TYPE';
+    /** @var string Причина отсутствия НДС */
+    public const REASON_FOR_NO_VAT = 'BILL_REASON_FOR_NO_VAT';
     /** @var string Дата оплаты */
     public const PAYMENT_DATE = 'BILL_PAYMENT_DATE';
     /** @var string Комментарий */
