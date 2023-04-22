@@ -34,6 +34,7 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
     public const CATALOG_ELEMENTS = 'catalog_elements';
     public const CONTACTS = 'contacts';
     public const COMPANIES = 'companies';
+    public const GROUP_ID = 'group_id';
 
     /**
      * @var int
@@ -149,6 +150,9 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
      * @var CatalogElementsCollection|null
      */
     protected $catalogElementsLinks = null;
+
+    /** @var int|null */
+    protected $groupId = null;
 
     public function getType(): string
     {
@@ -595,6 +599,15 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
         return $this;
     }
 
+    public function getGroupId(): ?int
+    {
+        return $this->groupId;
+    }
+
+    public function setGroupId(?int $groupId): void
+    {
+        $this->groupId = $groupId;
+    }
 
     /**
      * @param array $customer
@@ -708,6 +721,10 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
             $customerModel->setAccountId((int)$customer['account_id']);
         }
 
+        if (array_key_exists('group_id', $customer) && !is_null($customer['group_id'])) {
+            $customerModel->setGroupId((int)$customer['group_id']);
+        }
+
         return $customerModel;
     }
 
@@ -757,6 +774,10 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
 
         if (!is_null($this->getSegments())) {
             $result['segments'] = $this->getSegments()->toArray();
+        }
+
+        if (!is_null($this->getGroupId())) {
+            $result['group_id'] = $this->getGroupId();
         }
 
         return $result;
@@ -840,6 +861,7 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
             self::CATALOG_ELEMENTS,
             self::COMPANIES,
             self::CONTACTS,
+            self::GROUP_ID,
         ];
     }
 
