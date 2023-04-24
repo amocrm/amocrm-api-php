@@ -859,7 +859,8 @@ class AccountModel extends BaseApiModel
             self::VERSION,
             self::DATETIME_SETTINGS,
             self::INVOICES_SETTINGS,
-            self::IS_API_FILTER_ENABLED
+            self::IS_API_FILTER_ENABLED,
+            self::DRIVE_URL
         ];
     }
 
