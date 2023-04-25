@@ -17,6 +17,9 @@ use AmoCRM\Contracts\Support\Arrayable;
 class AttachmentModel extends BaseApiModel implements Arrayable
 {
     /** @var string */
+    protected $id;
+
+    /** @var string */
     protected $uuid;
 
     /** @var string */
@@ -39,7 +42,7 @@ class AttachmentModel extends BaseApiModel implements Arrayable
 
 
         $model = new self();
-        $model->setUuid($attachment['uuid'])
+        $model->setId($attachment['id'])
             ->setName($attachment['name'])
             ->setType($attachment['type']);
 
@@ -118,9 +121,28 @@ class AttachmentModel extends BaseApiModel implements Arrayable
     public function toArray(): array
     {
         return [
-            'id' => $this->getUuid(),
+            'id' => $this->getId(),
             'name' => $this->getName(),
             'type' => $this->getType(),
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     * @return AttachmentModel
+     */
+    public function setId(string $id): AttachmentModel
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }
