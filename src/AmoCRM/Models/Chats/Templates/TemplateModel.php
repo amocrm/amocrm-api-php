@@ -168,8 +168,8 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             $model->setWabaExamples($template['waba_examples']);
         }
 
-        if (isset($template['reviews']) && is_array($template['reviews'])) {
-            $model->setReviews(ReviewsCollection::fromArray($template['reviews']));
+        if (isset($template['_embedded']['reviews']) && is_array($template['_embedded']['reviews'])) {
+            $model->setReviews(ReviewsCollection::fromArray($template['_embedded']['reviews']));
         }
 
         return $model;
