@@ -12,6 +12,9 @@ use function sprintf;
 
 class FileModel extends BaseApiModel implements HasIdInterface
 {
+    public const DELETED = 'deleted';
+    public const UNBILLED = 'unbilled';
+
     use RequestIdTrait;
 
     /**
@@ -779,6 +782,9 @@ class FileModel extends BaseApiModel implements HasIdInterface
      */
     public static function getAvailableWith(): array
     {
-        return [];
+        return [
+            self::DELETED,
+            self::UNBILLED,
+        ];
     }
 }
