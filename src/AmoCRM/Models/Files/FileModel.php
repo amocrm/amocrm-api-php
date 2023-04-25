@@ -779,6 +779,9 @@ class FileModel extends BaseApiModel implements HasIdInterface
      */
     public static function getAvailableWith(): array
     {
-        return [];
+        return [
+            'deleted',
+            'unbilled',
+        ];
     }
 }
