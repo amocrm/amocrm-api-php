@@ -19,6 +19,11 @@ class SourceServiceModel extends BaseApiModel implements Arrayable
      */
     protected $pages;
 
+    /**
+     * @var SourceServiceParams|null
+     */
+    protected $params;
+
 
     public static function fromArray(array $data): self
     {
@@ -26,6 +31,9 @@ class SourceServiceModel extends BaseApiModel implements Arrayable
 
         $service->setType($data['type'] ?? '');
         $service->setPages(SourceServicesPagesCollection::fromArray((array)($data['pages'] ?? [])));
+        if (!empty($data['params'])) {
+            $service->setParams(SourceServiceParams::fromArray((array)$data['params']));
+        }
 
         return $service;
     }
@@ -35,6 +43,7 @@ class SourceServiceModel extends BaseApiModel implements Arrayable
         return [
             'type'  => $this->getType(),
             'pages' => $this->getPages()->toArray(),
+            'params' => $this->getParams()->toArray(),
         ];
     }
 
@@ -77,5 +86,21 @@ class SourceServiceModel extends BaseApiModel implements Arrayable
     public function setPages(SourceServicesPagesCollection $pages): void
     {
         $this->pages = $pages;
+    }
+
+    /**
+     * @return SourceServiceParams|null
+     */
+    public function getParams(): ?SourceServiceParams
+    {
+        return $this->params;
+    }
+
+    /**
+     * @param SourceServiceParams|null $params
+     */
+    public function setParams(?SourceServiceParams $params): void
+    {
+        $this->params = $params;
     }
 }

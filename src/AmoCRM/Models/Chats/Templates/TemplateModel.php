@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AmoCRM\Models\Chats\Templates;
 
 use AmoCRM\Collections\Chats\Templates\Buttons\ButtonsCollection;
+use AmoCRM\Collections\Chats\Templates\ReviewsCollection;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
@@ -19,6 +20,10 @@ use function is_array;
 class TemplateModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
+
+    const TYPE_AMOCRM = 'amocrm';
+
+    const TYPE_WABA = 'waba';
 
     /**
      * @var int|null
@@ -70,6 +75,26 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
      */
     protected $attachment;
 
+    /** @var string|null */
+    protected $wabaCategory = null;
+
+    /** @var string|null */
+    protected $wabaLanguage = null;
+
+    /** @var string|null */
+    protected $wabaFooter = null;
+
+    /** @var string */
+    protected $type = self::TYPE_AMOCRM;
+
+    /** @var array|null */
+    protected $wabaExamples = null;
+
+    /**
+     * @var ReviewsCollection|null
+     */
+    protected $reviews = null;
+
     /**
      * @param array $template
      *
@@ -80,11 +105,11 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
         $model = new static();
 
         if (isset($template['id'])) {
-            $model->setId($template['id']);
+            $model->setId((int)$template['id']);
         }
 
         if (isset($template['account_id'])) {
-            $model->setAccountId($template['account_id']);
+            $model->setAccountId((int)$template['account_id']);
         }
 
         if (isset($template['name'])) {
@@ -96,11 +121,11 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
         }
 
         if (isset($template['created_at'])) {
-            $model->setCreatedAt($template['created_at']);
+            $model->setCreatedAt((int)$template['created_at']);
         }
 
         if (isset($template['updated_at'])) {
-            $model->setUpdatedAt($template['updated_at']);
+            $model->setUpdatedAt((int)$template['updated_at']);
         }
 
         if (isset($template['is_editable'])) {
@@ -123,6 +148,30 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
 
         $model->setAttachment($attachmentModel);
 
+        if (isset($template['type'])) {
+            $model->setType($template['type']);
+        }
+
+        if (isset($template['waba_footer'])) {
+            $model->setWabaFooter($template['waba_footer']);
+        }
+
+        if (isset($template['waba_language'])) {
+            $model->setWabaLanguage($template['waba_language']);
+        }
+
+        if (isset($template['waba_category'])) {
+            $model->setWabaCategory($template['waba_category']);
+        }
+
+        if (isset($template['waba_examples'])) {
+            $model->setWabaExamples($template['waba_examples']);
+        }
+
+        if (isset($template['_embedded']['reviews']) && is_array($template['_embedded']['reviews'])) {
+            $model->setReviews(ReviewsCollection::fromArray($template['_embedded']['reviews']));
+        }
+
         return $model;
     }
 
@@ -143,6 +192,12 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'attachment' => $this->getAttachment() ? $this->getAttachment()->toArray() : null,
             'external_id' => $this->getExternalId(),
             'request_id' => $this->getRequestId(),
+            'type' => $this->getType(),
+            'waba_footer' => $this->getWabaFooter(),
+            'waba_category' => $this->getWabaCategory(),
+            'waba_language' => $this->getWabaLanguage(),
+            'waba_examples' => $this->getWabaExamples(),
+            'reviews' => $this->getReviews() ? $this->getReviews()->toArray() : null
         ];
     }
 
@@ -365,5 +420,118 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
         $this->attachment = $attachment;
 
         return $this;
+    }
+
+    /**
+     * @param string|null $wabaCategory
+     * @return TemplateModel
+     */
+    public function setWabaCategory(?string $wabaCategory): TemplateModel
+    {
+        $this->wabaCategory = $wabaCategory;
+        return $this;
+    }
+
+    /**
+     * @param string|null $wabaLanguage
+     * @return TemplateModel
+     */
+    public function setWabaLanguage(?string $wabaLanguage): TemplateModel
+    {
+        $this->wabaLanguage = $wabaLanguage;
+        return $this;
+    }
+
+    /**
+     * @param string|null $wabaFooter
+     * @return TemplateModel
+     */
+    public function setWabaFooter(?string $wabaFooter): TemplateModel
+    {
+        $this->wabaFooter = $wabaFooter;
+        return $this;
+    }
+
+    /**
+     * @param string $type
+     * @return TemplateModel
+     */
+    public function setType(string $type): TemplateModel
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @param array|null $examples
+     * @return TemplateModel
+     */
+    public function setWabaExamples(?array $examples): TemplateModel
+    {
+        $this->wabaExamples = $examples;
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getWabaExamples(): ?array
+    {
+        return $this->wabaExamples;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWabaCategory(): ?string
+    {
+        return $this->wabaCategory;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWabaLanguage(): ?string
+    {
+        return $this->wabaLanguage;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWabaFooter(): ?string
+    {
+        return $this->wabaFooter;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param ReviewsCollection|null $reviews
+     * @return TemplateModel
+     */
+    public function setReviews(?ReviewsCollection $reviews): TemplateModel
+    {
+        $this->reviews = $reviews;
+        return $this;
+    }
+
+    /**
+     * @return ReviewsCollection|null
+     */
+    public function getReviews(): ?ReviewsCollection
+    {
+        return $this->reviews;
+    }
+
+    public static function getAvailableWith(): array
+    {
+        return ['reviews'];
     }
 }
