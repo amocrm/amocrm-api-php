@@ -529,4 +529,9 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     {
         return $this->reviews;
     }
+
+    public static function getAvailableWith(): array
+    {
+        return ['reviews'];
+    }
 }
