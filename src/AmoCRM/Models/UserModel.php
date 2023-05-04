@@ -140,7 +140,7 @@ class UserModel extends BaseApiModel implements HasIdInterface
             'rights' => $this->getRights()->toArray(),
             'roles' => is_null($this->getRoles()) ? null : $this->getRoles()->toArray(),
             'groups' => is_null($this->getGroups()) ? null : $this->getGroups()->toArray(),
-            self::USER_RANK => is_null($this->getRank()) ? null : $this->getRank()
+            self::USER_RANK => $this->getRank()
         ];
     }
 

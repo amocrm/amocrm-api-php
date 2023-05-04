@@ -5,6 +5,7 @@ namespace AmoCRM\Models\Leads\Pipelines\Statuses;
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Interfaces\HasIdInterface;
 use AmoCRM\Models\Traits\RequestIdTrait;
+use AmoCRM\Collections\Leads\Pipelines\Statuses\StatusesDescriptionsCollection;
 use AmoCRM\Contracts\Support\Arrayable;
 
 class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
@@ -18,6 +19,8 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
         '#f9deff','#f3beff','#ccc8f9','#eb93ff','#f2f3f4',
         '#e6e8ea',
     ];
+
+    public const DESCRIPTIONS = 'descriptions';
 
     /**
      * @var int|null
@@ -60,6 +63,11 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
     protected $pipelineId;
 
     /**
+     * @var StatusesDescriptionsCollection|null
+     */
+    protected $descriptions = null;
+
+    /**
      * @param array $status
      *
      * @return self
@@ -76,6 +84,14 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
         $model->setPipelineId($status['pipeline_id']);
         $model->setColor($status['color']);
         $model->setType($status['type']);
+
+        $descriptions = null;
+
+        if (!empty($status[self::DESCRIPTIONS])) {
+            $descriptions = StatusesDescriptionsCollection::fromArray((array)$status[self::DESCRIPTIONS]);
+        }
+
+        $model->setDescriptions($descriptions);
 
         return $model;
     }
@@ -94,6 +110,7 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
             'color' => $this->getColor(),
             'is_editable' => $this->getIsEditable(),
             'pipeline_id' => $this->getPipelineId(),
+            self::DESCRIPTIONS => is_null($this->getDescriptions()) ? null : $this->getDescriptions()->toArray()
         ];
     }
 
@@ -258,6 +275,26 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
     }
 
     /**
+     * @return StatusesDescriptionsCollection|null
+     */
+    public function getDescriptions(): ?StatusesDescriptionsCollection
+    {
+        return $this->descriptions;
+    }
+
+    /**
+     * @param StatusesDescriptionsCollection|null
+     *
+     * @return StatusModel
+     */
+    public function setDescriptions(?StatusesDescriptionsCollection $descriptions): StatusModel
+    {
+        $this->descriptions = $descriptions;
+
+        return $this;
+    }
+
+    /**
      * @param string|null $requestId
      * @return array
      */
@@ -285,8 +322,20 @@ class StatusModel extends BaseApiModel implements Arrayable, HasIdInterface
             $this->setRequestId($requestId);
         }
 
+        if (!is_null($this->getDescriptions())) {
+            $result[self::DESCRIPTIONS] = $this->getDescriptions()->toApi();
+        }
+
         $result['request_id'] = $this->getRequestId();
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAvailableWith(): array
+    {
+        return [self::DESCRIPTIONS];
     }
 }
