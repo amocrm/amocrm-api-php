@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices\Leads;
 
+use AmoCRM\Collections\Leads\Pipelines\Statuses\StatusesDescriptionsCollection;
 use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -133,6 +134,12 @@ class Statuses extends BaseEntityIdEntity implements HasDeleteMethodInterface
 
         if (array_key_exists('color', $entity)) {
             $apiModel->setColor($entity['color']);
+        }
+
+        if (!empty($entity[StatusModel::DESCRIPTIONS])) {
+            $apiModel->setDescriptions(StatusesDescriptionsCollection::fromArray(
+                (array)$entity[StatusModel::DESCRIPTIONS]
+            ));
         }
     }
 
