@@ -8,6 +8,16 @@ use AmoCRM\Contracts\Support\Arrayable;
 
 class StatusDescriptionModel extends BaseApiModel implements Arrayable, HasIdInterface
 {
+    public const LEVEL_NEWBIE = 'newbie';
+    public const LEVEL_CANDIDATE = 'candidate';
+    public const LEVEL_MASTER = 'master';
+
+    public const LEVELS = [
+        self::LEVEL_NEWBIE,
+        self::LEVEL_CANDIDATE,
+        self::LEVEL_MASTER
+    ];
+
     /**
      * @var int|null
      */
