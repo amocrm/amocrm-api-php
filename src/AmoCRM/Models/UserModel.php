@@ -17,6 +17,16 @@ class UserModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 
+    public const RANK_NEWBIE = 'newbie';
+    public const RANK_CANDIDATE = 'candidate';
+    public const RANK_MASTER = 'master';
+
+    public const USER_RANKS = [
+        self::RANK_NEWBIE,
+        self::RANK_CANDIDATE,
+        self::RANK_MASTER
+    ];
+
     /** @var string Информация о роли пользователя */
     public const ROLE = 'role';
 
@@ -140,7 +150,7 @@ class UserModel extends BaseApiModel implements HasIdInterface
             'rights' => $this->getRights()->toArray(),
             'roles' => is_null($this->getRoles()) ? null : $this->getRoles()->toArray(),
             'groups' => is_null($this->getGroups()) ? null : $this->getGroups()->toArray(),
-            self::USER_RANK => is_null($this->getRank()) ? null : $this->getRank()
+            self::USER_RANK => $this->getRank()
         ];
     }
 
