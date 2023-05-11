@@ -211,7 +211,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             $this->setRequestId($requestId);
         }
 
-        return [
+        $result = [
             'name' => $this->getName(),
             'content' => $this->getContent(),
             'buttons' => $this->getButtons() ? $this->getButtons()->toApi() : null,
@@ -220,6 +220,12 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'request_id' => $this->getRequestId(),
             'attachment' => $this->getAttachment() ? $this->getAttachment()->toApi() : null,
         ];
+
+        if ($this->getId() !== null) {
+            $result['id'] = $this->getId();
+        }
+
+        return $result;
     }
 
     /**

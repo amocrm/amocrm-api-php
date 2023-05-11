@@ -68,16 +68,28 @@ class AccountModel extends BaseApiModel
     /** @var string */
     protected $name;
 
-    /** @var int */
+    /**
+     * @var int
+     * @deprecated
+     */
     protected $createdAt;
 
-    /** @var int */
+    /**
+     * @var int
+     * @deprecated
+     */
     protected $updatedAt;
 
-    /** @var int */
+    /**
+     * @var int
+     * @deprecated
+     */
     protected $updatedBy;
 
-    /** @var int */
+    /**
+     * @var int
+     * @deprecated
+     */
     protected $createdBy;
 
     /** @var string */
