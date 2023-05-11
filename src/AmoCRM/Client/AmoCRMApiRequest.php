@@ -34,7 +34,7 @@ class AmoCRMApiRequest
     public const CONNECT_TIMEOUT = 5;
     public const REQUEST_TIMEOUT = 20;
     //TODO Do not forget to change this on each release
-    public const LIBRARY_VERSION = '0.15.0';
+    public const LIBRARY_VERSION = '1.0.0';
     public const USER_AGENT = 'amoCRM-API-Library/' . self::LIBRARY_VERSION;
 
     public const SUCCESS_STATUSES = [
@@ -382,14 +382,20 @@ class AmoCRMApiRequest
         $headers = array_merge($headers, $this->getBaseHeaders());
 
         $this->lastHttpMethod = self::GET_REQUEST;
-        $this->lastMethod = $this->getUrl() . $method;
+        $method = $this->getUrl() .
+            str_replace(
+                $this->getUrl(),
+                '',
+                $method
+            );
+        $this->lastMethod = $method;
         $this->lastBody = [];
         $this->lastQueryParams = $queryParams;
 
         try {
             $response = $this->httpClient->request(
                 self::GET_REQUEST,
-                $this->getUrl() . $method,
+                $method,
                 [
                     'connect_timeout' => self::CONNECT_TIMEOUT,
                     'headers' => $headers,
