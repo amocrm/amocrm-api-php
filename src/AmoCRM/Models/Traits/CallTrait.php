@@ -42,6 +42,16 @@ trait CallTrait
     protected $callStatus;
 
     /**
+     * Для входящего - кто получил звонок (для отображения в интерфейсе)
+     * Для исходящего - кто совершил звонок (для отображения в интерфейсе)
+     *
+     * Можно передать id пользователя или имя (будет зафиксировано)
+     *
+     * @var string|int|null
+     */
+    protected $callResponsible;
+
+    /**
      * @return string|null
      */
     public function getUniq(): ?string
@@ -174,6 +184,26 @@ trait CallTrait
         }
 
         $this->callStatus = $callStatus;
+
+        return $this;
+    }
+
+    /**
+     * @return int|string|null
+     */
+    public function getCallResponsible()
+    {
+        return $this->callResponsible;
+    }
+
+    /**
+     * @param int|string|null $callResponsible
+     *
+     * @return self
+     */
+    public function setCallResponsible($callResponsible): self
+    {
+        $this->callResponsible = $callResponsible;
 
         return $this;
     }

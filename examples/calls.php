@@ -28,13 +28,14 @@ $apiClient->setAccessToken($accessToken)
 //Добавим входящий звонок
 $call = new CallModel();
 $call
-    ->setPhone('+7912312321')
+    ->setPhone('+7912312321') // кто звонил
     ->setCallStatus(CallInterface::CALL_STATUS_SUCCESS_CONVERSATION)
     ->setCallResult('Разговор состоялся')
     ->setDuration(148)
     ->setUniq(Uuid::uuid4())
     ->setSource('integration name')
     ->setDirection(CallInterface::CALL_DIRECTION_IN)
+    ->setCallResponsible('+79161234567') // кому звонили, можно id пользователя, или строку
     ->setLink('https://example.test/test.mp3');
 
 try {

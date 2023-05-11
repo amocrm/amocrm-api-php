@@ -11,35 +11,6 @@ abstract class CallNote extends NoteModel
 {
     use CallTrait;
 
-    /** @deprecated */
-    public const CALL_STATUS_LEAVE_MESSAGE = 1;
-    /** @deprecated */
-    public const CALL_STATUS_SUCCESS_RECALL = 2;
-    /** @deprecated */
-    public const CALL_STATUS_SUCCESS_NOT_IN_STOCK = 3;
-    /** @deprecated */
-    public const CALL_STATUS_SUCCESS_CONVERSATION = 4;
-    /** @deprecated */
-    public const CALL_STATUS_FAIL_WRONG_NUMBER = 5;
-    /** @deprecated */
-    public const CALL_STATUS_FAIL_NOT_PHONED = 6;
-    /** @deprecated */
-    public const CALL_STATUS_FAIL_BUSY = 7;
-    /** @deprecated */
-    public const CALL_STATUS_UNDEFINED = 8;
-
-    /** @deprecated */
-    protected const AVAILABLE_CALL_STATUSES = [
-        self::CALL_STATUS_LEAVE_MESSAGE,
-        self::CALL_STATUS_SUCCESS_RECALL,
-        self::CALL_STATUS_SUCCESS_NOT_IN_STOCK,
-        self::CALL_STATUS_SUCCESS_CONVERSATION,
-        self::CALL_STATUS_FAIL_WRONG_NUMBER,
-        self::CALL_STATUS_FAIL_NOT_PHONED,
-        self::CALL_STATUS_FAIL_BUSY,
-        self::CALL_STATUS_UNDEFINED,
-    ];
-
     /**
      * @param array $note
      *
@@ -47,6 +18,7 @@ abstract class CallNote extends NoteModel
      */
     public function fromArray(array $note): NoteModel
     {
+        /** @var CallNote $model */
         $model = parent::fromArray($note);
 
         if (isset($note['params']['uniq']) && is_string($note['params']['uniq'])) {
@@ -77,6 +49,10 @@ abstract class CallNote extends NoteModel
             $model->setCallStatus($note['params']['call_status']);
         }
 
+        if (isset($note['params']['call_responsible'])) {
+            $model->setCallResponsible($note['params']['call_responsible']);
+        }
+
         return $model;
     }
 
@@ -95,6 +71,7 @@ abstract class CallNote extends NoteModel
             'phone' => $this->getPhone(),
             'call_result' => $this->getCallResult(),
             'call_status' => $this->getCallStatus(),
+            'call_responsible' => $this->getCallResponsible(),
         ];
 
         return $result;
@@ -116,6 +93,7 @@ abstract class CallNote extends NoteModel
             'phone' => $this->getPhone(),
             'call_result' => $this->getCallResult(),
             'call_status' => $this->getCallStatus(),
+            'call_responsible' => $this->getCallResponsible(),
         ];
 
         return $result;

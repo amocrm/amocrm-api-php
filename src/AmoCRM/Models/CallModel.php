@@ -113,7 +113,9 @@ class CallModel extends BaseApiModel implements HasIdInterface
             $this->setDirection($call['direction']);
         }
 
-
+        if (isset($call['call_responsible'])) {
+            $this->setCallResponsible($call['call_responsible']);
+        }
 
         return $model;
     }
@@ -132,6 +134,7 @@ class CallModel extends BaseApiModel implements HasIdInterface
             'phone' => $this->getPhone(),
             'call_result' => $this->getCallResult(),
             'call_status' => $this->getCallStatus(),
+            'call_responsible' => $this->getCallResponsible(),
             'direction' => $this->getDirection(),
             'entity_id' => $this->getEntityId(),
             'entity_type' => $this->getEntityType(),
@@ -166,8 +169,16 @@ class CallModel extends BaseApiModel implements HasIdInterface
             'request_id' => $this->getRequestId(),
         ];
 
+        // Кто может работать с событием, например, удалять
         if ($responsibleUserId = $this->getResponsibleUserId()) {
             $call['responsible_user_id'] = $responsibleUserId;
+        }
+
+        // Кто отображается
+        // Для входящего - кто получил звонок (для отображения в интерфейсе)
+        // Для исходящего - кто совершил звонок (для отображения в интерфейсе)
+        if ($callResponsible = $this->getCallResponsible()) {
+            $call['call_responsible'] = $callResponsible;
         }
 
         if ($createdBy = $this->getCreatedBy()) {
