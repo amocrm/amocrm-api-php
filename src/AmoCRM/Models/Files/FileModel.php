@@ -420,7 +420,7 @@ class FileModel extends BaseApiModel implements HasIdInterface
 
     /**
      * @param FilePreviewsCollection|null $previews
-     * 
+     *
      * @return FileModel
      */
     public function setPreviews(?FilePreviewsCollection $previews): FileModel

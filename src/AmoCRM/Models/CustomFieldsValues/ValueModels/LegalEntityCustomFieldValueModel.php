@@ -101,7 +101,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
      * @var string|null
      */
     protected $realAddress;
-	
+
     /**
      * @var string|null
      */
@@ -111,12 +111,12 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
      * @var string|null
      */
     protected $bankAccountNumber;
-    
+
     /**
      * @var string|null
      */
     protected $oked;
-    
+
     /**
      * @var string|null
      */
@@ -355,7 +355,7 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
 
         return $this;
     }
-	
+
     public function getMfo(): ?string
     {
         return $this->mfo;
@@ -379,28 +379,28 @@ class LegalEntityCustomFieldValueModel extends BaseArrayCustomFieldValueModel
 
         return $this;
     }
-    
+
     public function getOked(): ?string
     {
         return $this->oked;
     }
-    
+
     public function setOked(?string $oked): LegalEntityCustomFieldValueModel
     {
         $this->oked = $oked;
-        
+
         return $this;
     }
-    
+
     public function getDirector(): ?string
     {
         return $this->director;
     }
-    
+
     public function setDirector(?string $director): LegalEntityCustomFieldValueModel
     {
         $this->director = $director;
-        
+
         return $this;
     }
 

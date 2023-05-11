@@ -23,7 +23,7 @@ class FilePreviewModel extends BaseApiModel
      */
     protected $height = 0;
 
-    
+
     /**
      * @param string $downloadLink
      */
@@ -59,7 +59,7 @@ class FilePreviewModel extends BaseApiModel
     /**
      * @return int
      */
-    public function getWidth(): int 
+    public function getWidth(): int
     {
         return $this->width;
     }
@@ -67,7 +67,7 @@ class FilePreviewModel extends BaseApiModel
     /**
      * @return int
      */
-    public function getHeight(): int 
+    public function getHeight(): int
     {
         return $this->height;
     }

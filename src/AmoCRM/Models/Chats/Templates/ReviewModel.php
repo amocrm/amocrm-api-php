@@ -39,8 +39,8 @@ class ReviewModel extends BaseApiModel
         }
 
         return $model;
-
     }
+
     public function toArray(): array
     {
         return [
