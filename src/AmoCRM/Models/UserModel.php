@@ -17,6 +17,16 @@ class UserModel extends BaseApiModel implements HasIdInterface
 {
     use RequestIdTrait;
 
+    public const RANK_NEWBIE = 'newbie';
+    public const RANK_CANDIDATE = 'candidate';
+    public const RANK_MASTER = 'master';
+
+    public const USER_RANKS = [
+        self::RANK_NEWBIE,
+        self::RANK_CANDIDATE,
+        self::RANK_MASTER
+    ];
+
     /** @var string Информация о роли пользователя */
     public const ROLE = 'role';
 
@@ -28,6 +38,9 @@ class UserModel extends BaseApiModel implements HasIdInterface
 
     /** @var string UUID пользователя */
     public const UUID = 'uuid';
+
+    /** @var string Ранг пользователя */
+    public const USER_RANK = 'user_rank';
 
     /**
      * @var int|null
@@ -80,6 +93,11 @@ class UserModel extends BaseApiModel implements HasIdInterface
     protected $password;
 
     /**
+     * @var string|null
+     */
+    protected $rank;
+
+    /**
      * @param array $user
      *
      * @return self
@@ -99,6 +117,7 @@ class UserModel extends BaseApiModel implements HasIdInterface
             ->setLang($user['lang'] ?? null)
             ->setUuid($user['uuid'] ?? null)
             ->setAmojoId($user['amojo_id'] ?? null)
+            ->setRank($user[self::USER_RANK] ?? null)
             ->setRights(RightModel::fromArray($user['rights']));
 
         $groupsCollection = new UsersGroupsCollection();
@@ -131,6 +150,7 @@ class UserModel extends BaseApiModel implements HasIdInterface
             'rights' => $this->getRights()->toArray(),
             'roles' => is_null($this->getRoles()) ? null : $this->getRoles()->toArray(),
             'groups' => is_null($this->getGroups()) ? null : $this->getGroups()->toArray(),
+            self::USER_RANK => $this->getRank()
         ];
     }
 
@@ -332,6 +352,26 @@ class UserModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getRank(): ?string
+    {
+        return $this->rank;
+    }
+
+    /**
+     * @param string|null $rank
+     *
+     * @return UserModel
+     */
+    public function setRank(?string $rank): UserModel
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    /**
      * @param string|null $requestId
      * @return array
      */
@@ -378,6 +418,7 @@ class UserModel extends BaseApiModel implements HasIdInterface
             self::UUID,
             self::GROUP,
             self::AMOJO_ID,
+            self::USER_RANK
         ];
     }
 }

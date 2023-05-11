@@ -2,10 +2,12 @@
 
 namespace AmoCRM\Models\CustomFieldsValues\Factories;
 
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\SupplierCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\ChainedListCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\FileCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\MonetaryCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\LinkedEntityCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\PayerCustomFieldValueCollection;
 use AmoCRM\Models\CustomFieldsValues\ValueCollections\TrackingDataCustomFieldValueCollection;
 use AmoCRM\Helpers\CustomFieldHelper;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
@@ -122,6 +124,12 @@ class CustomFieldValueCollectionFactory
                 break;
             case CustomFieldModel::TYPE_FILE:
                 $collection = new FileCustomFieldValueCollection();
+                break;
+            case CustomFieldModel::TYPE_PAYER:
+                $collection = new PayerCustomFieldValueCollection();
+                break;
+            case CustomFieldModel::TYPE_SUPPLIER:
+                $collection = new SupplierCustomFieldValueCollection();
                 break;
             default:
                 trigger_error(

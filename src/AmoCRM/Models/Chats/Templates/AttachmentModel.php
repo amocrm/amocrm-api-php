@@ -20,6 +20,9 @@ class AttachmentModel extends BaseApiModel implements Arrayable
     protected $id;
 
     /** @var string */
+    protected $id;
+
+    /** @var string */
     protected $name;
 
     /** @var string */
@@ -121,5 +124,24 @@ class AttachmentModel extends BaseApiModel implements Arrayable
             'name' => $this->getName(),
             'type' => $this->getType(),
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     * @return AttachmentModel
+     */
+    public function setId(string $id): AttachmentModel
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

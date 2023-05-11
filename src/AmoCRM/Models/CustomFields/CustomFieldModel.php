@@ -49,6 +49,10 @@ class CustomFieldModel extends BaseApiModel implements HasIdInterface
     public const TYPE_CHAINED_LIST = 'chained_list';
     /** @var string Поле "Файл" */
     public const TYPE_FILE = 'file';
+    /** @var string Поле "Плательщик", доступно только в счетах/покупках */
+    public const TYPE_PAYER = 'payer';
+    /** @var string Поле "Поставщик", доступно только в счетах/покупках */
+    public const TYPE_SUPPLIER = 'supplier';
 
     protected const CAN_HAVE_REQUIRED_STATUSES = [
         EntityTypesInterface::LEADS,
