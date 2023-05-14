@@ -20,6 +20,7 @@ use function in_array;
  * @method CustomFieldsValuesCollection prepend(BaseCustomFieldValuesModel $value)
  * @method CustomFieldsValuesCollection add(BaseCustomFieldValuesModel $value)
  * @method null|BaseCustomFieldValuesModel getBy($key, $value)
+ * @method static CustomFieldsValuesCollection fromArray(array $value)
  */
 class CustomFieldsValuesCollection extends BaseApiCollection
 {

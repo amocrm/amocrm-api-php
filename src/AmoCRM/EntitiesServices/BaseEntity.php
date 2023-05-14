@@ -189,9 +189,8 @@ abstract class BaseEntity
     public function add(BaseApiCollection $collection): BaseApiCollection
     {
         $response = $this->request->post($this->getMethod(), $collection->toApi());
-        $collection = $this->processAdd($collection, $response);
 
-        return $collection;
+        return $this->processAdd($collection, $response);
     }
 
     /**

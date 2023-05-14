@@ -398,7 +398,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
         }
         if (!empty($catalogElement['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
-            $customFieldsValues = $valuesCollection->fromArray($catalogElement['custom_fields_values']);
+            $customFieldsValues = $valuesCollection::fromArray($catalogElement['custom_fields_values']);
             $catalogElementModel->setCustomFieldsValues($customFieldsValues);
         }
 
@@ -428,10 +428,9 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
      */
     public function toArray(): array
     {
-        return [
+        $result = [
             'id'   => $this->getId(),
             'name' => $this->getName(),
-            'currency_id' => $this->getCurrencyId(),
             'created_by' => $this->getCreatedBy(),
             'updated_by' => $this->getUpdatedBy(),
             'created_at' => $this->getCreatedAt(),
@@ -449,6 +448,12 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
                 'price_id' => $this->getPriceId(),
             ]
         ];
+
+        if (!is_null($this->getCurrencyId())) {
+            $result['currency_id'] = $this->getCurrencyId();
+        }
+
+        return $result;
     }
 
     public function toApi(?string $requestId = "0"): array

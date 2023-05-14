@@ -2,10 +2,9 @@
 
 namespace AmoCRM\Collections;
 
-use AmoCRM\AmoCRM\Models\Files\FileModel;
+use AmoCRM\Models\Files\FileModel;
 use AmoCRM\Collections\Interfaces\HasPagesInterface;
 use AmoCRM\Collections\Traits\PagesTrait;
-use AmoCRM\Models\BaseApiModel;
 
 /**
  * Class FilesCollection

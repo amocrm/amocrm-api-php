@@ -19,7 +19,6 @@ use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
 use AmoCRM\Models\Traits\GetLinkTrait;
 use AmoCRM\Models\Traits\RequestIdTrait;
 use AmoCRM\Models\Unsorted\Interfaces\UnsortedMetadataInterface;
-use AmoCRM\Models\ContactModel;
 
 use function is_null;
 

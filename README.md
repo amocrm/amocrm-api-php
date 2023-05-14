@@ -85,6 +85,7 @@ $apiClient->getOAuthClient()->getOAuthButton(
             ]
         );
 ```
+
 2. Отправив пользователя на страницу авторизации
 ```php
 $authorizationUrl = $apiClient->getOAuthClient()->getAuthorizeUrl([
@@ -177,6 +178,8 @@ $leadsService = $apiClient->leads();
 | entitySubscriptions  | Подписчики сущности           |
 | getOAuthClient       | oAuth сервис                  |
 | getRequest           | Голые запросы                 |
+| files                | Файлы                         |
+| entityFiles          | Связь файлов с сущностями     |
 
 #### Для большинства сервисов есть базовый набор методов:
 
@@ -227,7 +230,7 @@ $leadsService = $apiClient->leads();
 7. syncOne Синхронизировать одну модель с сервером:
     1. model (BaseApiModel) - коллекция моделей создаваемой сущности
     2. with (array) - массив параметров with, которые поддерживает модель сервиса
-    4. Результатом выполнения будет коллекция моделей сущности
+    3. Результатом выполнения будет коллекция моделей сущности
     ```php
     syncOne(BaseApiModel $model, $with = []);
     ```
@@ -335,7 +338,7 @@ $leadsService = $apiClient->leads();
     unlink(BaseApiModel $model, $linkedEntities);
     ```
 
-#### Методы удаления доступны в сервисах ```transactions```, ```lossReasons```, ```statuses```, ```pipelines```, ```customFields```, ```customFieldsGroups```, ```roles```, ```customersStatuses```:
+#### Методы удаления доступны в сервисах ```transactions```, ```lossReasons```, ```statuses```, ```pipelines```, ```customFields```, ```customFieldsGroups```, ```roles```, ```customersStatuses```, ```entityFiles```, ```files```:
 
 1. delete
     1. model (BaseApiModel) - модель сущности
@@ -351,12 +354,11 @@ $leadsService = $apiClient->leads();
     deleteOne(BaseApiModel $model);
     ```
 
-
 #### Методы доступные в сервисе ```customers```:
 1. setMode Смена режима покупателей (периодические покупки или сегментация). Если покупатели выключены - то они будут включены.
     1. mode (string) - тип режима (periodicity или segments)
-    1. isEnabled (bool) - включен ли функционал покупателей, по-умолчанию - true
-    2. Результатом выполнения является строка названия включенного режима или null в случае отключения функционала
+    2. isEnabled (bool) - включен ли функционал покупателей, по-умолчанию - true
+    3. Результатом выполнения является строка названия включенного режима или null в случае отключения функционала
     ```php
     setMode(string $mode, bool $isEnabled = true);
     ```
@@ -385,7 +387,6 @@ $leadsService = $apiClient->leads();
    getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = []);
     ```
 
-
 #### Методы доступные в сервисе ```account```
 1. getCurrent
     1. with (array) - массив параметров with, которые поддерживает модель сервиса
@@ -393,7 +394,6 @@ $leadsService = $apiClient->leads();
     ```php
     getCurrent(array $with = []);
     ```
-   
 
 #### Методы доступные в сервисе ```unsorted```
 1. addOne Создать одну сущность:
@@ -413,7 +413,7 @@ $leadsService = $apiClient->leads();
 3. link
     1. model (BaseApiModel) - модель неразобранного
     2. body (array) - массив дополнительной информации для привязки 
-    2. Результатом выполнения будет модель LinkUnsortedModel
+    3. Результатом выполнения будет модель LinkUnsortedModel
     ```php
     link(BaseApiModel $unsortedModel, $body = []);
     ```
@@ -421,7 +421,7 @@ $leadsService = $apiClient->leads();
 4. accept
     1. model (BaseApiModel) - модель неразобранного
     2. body (array) - массив дополнительной информации для принятия 
-    2. Результатом выполнения будет модель AcceptUnsortedModel
+    3. Результатом выполнения будет модель AcceptUnsortedModel
     ```php
     accept(BaseApiModel $unsortedModel, $body = []);
     ```
@@ -429,7 +429,7 @@ $leadsService = $apiClient->leads();
 5. decline
     1. model (BaseApiModel) - модель неразобранного
     2. body (array) - массив дополнительной информации для отклонения 
-    2. Результатом выполнения будет модель DeclineUnsortedModel
+    3. Результатом выполнения будет модель DeclineUnsortedModel
     ```php
     decline(BaseApiModel $unsortedModel, $body = []);
     ```
@@ -440,10 +440,8 @@ $leadsService = $apiClient->leads();
     ```php
     summary(BaseEntityFilter $filter);
     ```
-   
 
 #### Методы доступные в сервисе ```webhooks```
-
 1. subscribe
     1. model (WebhookModel) - модель вебхука
     2. Результатом выполнения является модель WebhookModel
@@ -458,9 +456,7 @@ $leadsService = $apiClient->leads();
     unsubscribe(WebhookModel $webhookModel);
     ```
 
-
 #### Методы доступные в сервисе ```widgets```
-
 1. install
     1. model (WidgetModel) - модель виджета
     2. Результатом выполнения является модель WidgetModel
@@ -474,9 +470,8 @@ $leadsService = $apiClient->leads();
     ```php
     uninstall(WidgetModel $widgetModel);
     ```
- 
-#### Методы доступные в сервисе ```products```
 
+#### Методы доступные в сервисе ```products```
 1. settings
     1. Результатом выполнения является модель ProductsSettingsModel
     ```php
@@ -491,7 +486,6 @@ $leadsService = $apiClient->leads();
     ```
 
 #### Методы, доступные в сервисе ```talks```
-
 1. close
    1. model (TalkCloseActionModel) - модель для закрытия беседы
    2. Результатом выполнения - является закрытие беседы или запуск NPS-бота для последующего закрытия беседы
@@ -499,24 +493,33 @@ $leadsService = $apiClient->leads();
     close(TalkCloseActionModel $closeAction)
     ```
 
+#### Методы, доступные в сервисе ```files```
+1. uploadOne
+   1. model (FileUploadModel) - модель файла для загрузки
+   2. Результатом выполнения является модель FileModel
+    ```php
+    uploadOne(FileUploadModel $model);
+    ```
+
+
 ## Обработка ошибок
 
 Вызов методов библиотеки может выбрасывать ошибки типа ```AmoCRMApiException```.
 В данные момент доступны следующие типы ошибок, они все наследуют AmoCRMApiException:
 
-|Тип                                                 |Условия                                                                                               |
-|----------------------------------------------------|------------------------------------------------------------------------------------------------------|
-|AmoCRM\Exceptions\AmoCRMApiConnectExceptionException|Подключение к серверу не было выполнено                                                               |
-|AmoCRM\Exceptions\AmoCRMApiErrorResponseException   |Сервер вернул ошибку на выполняемый запрос                                                            |
-|AmoCRM\Exceptions\AmoCRMApiHttpClientException      |Произошла ошибка http клиента                                                                         |
-|AmoCRM\Exceptions\AmoCRMApiNoContentException       |Сервер вернул код 204 без результата, ничего страшного не произошло, просто нет данных на ваш запрос  |
-|AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException|Слишком много редиректов (в нормальном режиме не выкидывается)                                        |
-|AmoCRM\Exceptions\AmoCRMoAuthApiException           |Ошибка в oAuth клиенте                                                                                |
-|AmoCRM\Exceptions\BadTypeException                  |Передан неверный тип данных                                                                          |
-|AmoCRM\Exceptions\InvalidArgumentException          |Передан неверный аргумент                                                                            |
-|AmoCRM\Exceptions\NotAvailableForActionException    |Метод не доступен для вызова                                                                          |
-|AmoCRM\Exceptions\AmoCRMApiPageNotAvailableException|Выбрасывается в случае запроса следующей или предыдущей страницы коллекции, когда страница отсутствует|
-|AmoCRM\Exceptions\AmoCRMMissedTokenException        |Не установлен Access Token для выполнения запроса                                                     |
+| Тип                                                  | Условия                                                                                                |
+|------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| AmoCRM\Exceptions\AmoCRMApiConnectExceptionException | Подключение к серверу не было выполнено                                                                |
+| AmoCRM\Exceptions\AmoCRMApiErrorResponseException    | Сервер вернул ошибку на выполняемый запрос                                                             |
+| AmoCRM\Exceptions\AmoCRMApiHttpClientException       | Произошла ошибка http клиента                                                                          |
+| AmoCRM\Exceptions\AmoCRMApiNoContentException        | Сервер вернул код 204 без результата, ничего страшного не произошло, просто нет данных на ваш запрос   |
+| AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException | Слишком много редиректов (в нормальном режиме не выкидывается)                                         |
+| AmoCRM\Exceptions\AmoCRMoAuthApiException            | Ошибка в oAuth клиенте                                                                                 |
+| AmoCRM\Exceptions\BadTypeException                   | Передан неверный тип данных                                                                            |
+| AmoCRM\Exceptions\InvalidArgumentException           | Передан неверный аргумент                                                                              |
+| AmoCRM\Exceptions\NotAvailableForActionException     | Метод не доступен для вызова                                                                           |
+| AmoCRM\Exceptions\AmoCRMApiPageNotAvailableException | Выбрасывается в случае запроса следующей или предыдущей страницы коллекции, когда страница отсутствует |
+| AmoCRM\Exceptions\AmoCRMMissedTokenException         | Не установлен Access Token для выполнения запроса                                                      |
 
 У выброшенных Exception есть следующие методы:
 1. ```getErrorCode()```
@@ -530,24 +533,24 @@ $leadsService = $apiClient->leads();
 
 В данный момент библиотека поддерживает фильтры для следующих сервисов:
 
-|Сервис                                                       |Фильтр                                     |Особенности                                                                                       |Поддерживает ли сортировку? |
-|-------------------------------------------------------------|-------------------------------------------|--------------------------------------------------------------------------------------------------|----------------------------|
-|```catalogElements```                                        |```\AmoCRM\Filters\CatalogElementsFilter```|Доступен в ограниченном виде, в будущих версиях будет расширен                                    |❌                          |
-|```companies```                                              |```\AmoCRM\Filters\CompaniesFilter```      |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API     |✅                          |
-|```contacts```                                               |```\AmoCRM\Filters\ContactsFilter```       |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API     |✅                          |
-|```customers```                                              |```\AmoCRM\Filters\CustomersFilter```      |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API     |✅                          |
-|```leads```                                                  |```\AmoCRM\Filters\LeadsFilter```          |Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API     |✅                          |
-|```events```                                                 |```\AmoCRM\Filters\EventsFilter```         |Фильтр для списка событий                                                                         |❌                          |
-|```leads```, ```contacts```, ```customers```, ```companies```|```\AmoCRM\Filters\LinksFilter```          |Фильтр для получения связей для метода `\AmoCRM\EntitiesServices\HasLinkMethodInterface::getLinks`|❌                          |
-|```notes```                                                  |```\AmoCRM\Filters\NotesFilter```          |Фильтра для `\AmoCRM\EntitiesServices\EntityNotes::get`                                           |✅                          |
-|```tags```                                                   |```\AmoCRM\Filters\TagsFilter```           |Фильтр для `\AmoCRM\EntitiesServices\EntityTags::get`                                             |❌                          |
-|```tasks```                                                  |```\AmoCRM\Filters\TasksFilter```          |Фильтр для метода `\AmoCRM\EntitiesServices\Tasks::get`                                           |✅                          |
-|```unsorted```                                               |```\AmoCRM\Filters\UnsortedFilter```       |Фильтр для метода `\AmoCRM\EntitiesServices\Unsorted::get`                                        |✅                          |
-|```unsorted```                                               |```\AmoCRM\Filters\UnsortedSummaryFilter```|Фильтр для метода `\AmoCRM\EntitiesServices\Unsorted::summary`                                    |❌                          |
-|```webhooks```                                               |```\AmoCRM\Filters\WebhooksFilter```       |Фильтр для метода получения хуков                                                                 |❌                          |
-|```sources```                                                |```\AmoCRM\Filters\SourcesFilter```        |Фильтр для метода получения источников `\AmoCRM\EntitiesServices\Sources::get`                    |❌                          |
-|```chatTemplates```                                          |```\AmoCRM\Filters\Chats\TemplatesFilter```|Фильтр для метода получения шаблонов чатов `\AmoCRM\EntitiesServices\Chats\Templates::get`        |❌                          |
-|Сервисы, где необходима постраничная навигация               |```\AmoCRM\Filters\PagesFilter```          |Фильтр, который подходит для любого сервиса, где есть постраничная навигация                      |❌                          |
+| Сервис                                                        | Фильтр                                      | Особенности                                                                                        | Поддерживает ли сортировку? |
+|---------------------------------------------------------------|---------------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------|
+| ```catalogElements```                                         | ```\AmoCRM\Filters\CatalogElementsFilter``` | Доступен в ограниченном виде, в будущих версиях будет расширен                                     | ❌                           |
+| ```companies```                                               | ```\AmoCRM\Filters\CompaniesFilter```       | Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API      | ✅                           |
+| ```contacts```                                                | ```\AmoCRM\Filters\ContactsFilter```        | Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API      | ✅                           |
+| ```customers```                                               | ```\AmoCRM\Filters\CustomersFilter```       | Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API      | ✅                           |
+| ```leads```                                                   | ```\AmoCRM\Filters\LeadsFilter```           | Доступен только на аккаунтах, которые подключены к тестированию функционала фильтрации по API      | ✅                           |
+| ```events```                                                  | ```\AmoCRM\Filters\EventsFilter```          | Фильтр для списка событий                                                                          | ❌                           |
+| ```leads```, ```contacts```, ```customers```, ```companies``` | ```\AmoCRM\Filters\LinksFilter```           | Фильтр для получения связей для метода `\AmoCRM\EntitiesServices\HasLinkMethodInterface::getLinks` | ❌                           |
+| ```notes```                                                   | ```\AmoCRM\Filters\NotesFilter```           | Фильтра для `\AmoCRM\EntitiesServices\EntityNotes::get`                                            | ✅                           |
+| ```tags```                                                    | ```\AmoCRM\Filters\TagsFilter```            | Фильтр для `\AmoCRM\EntitiesServices\EntityTags::get`                                              | ❌                           |
+| ```tasks```                                                   | ```\AmoCRM\Filters\TasksFilter```           | Фильтр для метода `\AmoCRM\EntitiesServices\Tasks::get`                                            | ✅                           |
+| ```unsorted```                                                | ```\AmoCRM\Filters\UnsortedFilter```        | Фильтр для метода `\AmoCRM\EntitiesServices\Unsorted::get`                                         | ✅                           |
+| ```unsorted```                                                | ```\AmoCRM\Filters\UnsortedSummaryFilter``` | Фильтр для метода `\AmoCRM\EntitiesServices\Unsorted::summary`                                     | ❌                           |
+| ```webhooks```                                                | ```\AmoCRM\Filters\WebhooksFilter```        | Фильтр для метода получения хуков                                                                  | ❌                           |
+| ```sources```                                                 | ```\AmoCRM\Filters\SourcesFilter```         | Фильтр для метода получения источников `\AmoCRM\EntitiesServices\Sources::get`                     | ❌                           |
+| ```chatTemplates```                                           | ```\AmoCRM\Filters\Chats\TemplatesFilter``` | Фильтр для метода получения шаблонов чатов `\AmoCRM\EntitiesServices\Chats\Templates::get`         | ❌                           |
+| Сервисы, где необходима постраничная навигация                | ```\AmoCRM\Filters\PagesFilter```           | Фильтр, который подходит для любого сервиса, где есть постраничная навигация                       | ❌                           |
 
 
 ## Работа с дополнительными полями сущностей
@@ -594,31 +597,33 @@ Namespace, в котором находятся коллекции моделе�
 
 Namespace, в котором находятся модели дополнительных полей - ```\AmoCRM\Models\CustomFieldsValues```
 
-| Тип поля                 | Модель значения                    | Коллекция моделей значений              | Модель доп поля                     | Контакт | Сделка | Компания | Покупатель | Каталог | Сегмент |
-|--------------------------|------------------------------------|-----------------------------------------|-------------------------------------|:-------:|:------:|:--------:|:----------:|:-------:|:-------:|
-| Текст                    | TextCustomFieldValueModel          | TextCustomFieldValueCollection          | TextCustomFieldValuesModel          |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Число                    | NumericCustomFieldValueModel       | NumericCustomFieldValueCollection       | NumericCustomFieldValuesModel       |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Флаг                     | CheckboxCustomFieldValueModel      | CheckboxCustomFieldValueCollection      | CheckboxCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Список                   | SelectCustomFieldValueModel        | SelectCustomFieldValueCollection        | SelectCustomFieldValuesModel        |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Мультисписок             | MultiselectCustomFieldValueModel   | MultiselectCustomFieldValueCollection   | MultiSelectCustomFieldValuesModel   |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Мультитекст              | MultitextCustomFieldValueModel     | MultitextCustomFieldValueCollection     | MultitextCustomFieldValuesModel     |    ✅    |   ❌    |    ❌     |     ❌      |    ❌    |    ❌    |
-| Дата                     | DateCustomFieldValueModel          | DateCustomFieldValueCollection          | DateCustomFieldValuesModel          |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Ссылка                   | UrlCustomFieldValueModel           | UrlCustomFieldValueCollection           | UrlCustomFieldValuesModel           |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Дата и время             | DateTimeCustomFieldValueModel      | DateTimeCustomFieldValueCollection      | DateTimeCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Текстовая область        | TextareaCustomFieldValueModel      | TextareaCustomFieldValueCollection      | TextareaCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Переключатель            | RadiobuttonCustomFieldValueModel   | RadiobuttonCustomFieldValueCollection   | RadiobuttonCustomFieldValuesModel   |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Короткий адрес           | StreetAddressCustomFieldValueModel | StreetAddressCustomFieldValueCollection | StreetAddressCustomFieldValuesModel |    ✅    |   ✅    |    ✅     |     ✅      |    ✅    |    ✅    |
-| Адрес                    | SmartAddressCustomFieldValueModel  | SmartAddressCustomFieldValueCollection  | SmartAddressCustomFieldValuesModel  |    ✅    |   ✅    |    ✅     |     ❌      |    ❌    |    ❌    |
-| День рождения            | BirthdayCustomFieldValueModel      | BirthdayCustomFieldValueCollection      | BirthdayCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ❌      |    ❌    |    ❌    |
-| Юр. лицо                 | LegalEntityCustomFieldValueModel   | LegalEntityCustomFieldValueCollection   | LegalEntityCustomFieldValuesModel   |    ✅    |   ✅    |    ✅     |     ❌      |    ❌    |    ❌    |
-| Цена                     | PriceCustomFieldValueModel         | PriceCustomFieldValueCollection         | PriceCustomFieldValuesModel         |    ❌    |   ❌    |    ❌     |     ❌      |    ✅    |    ❌    |
-| Категория                | CategoryCustomFieldValueModel      | CategoryCustomFieldValueCollection      | CategoryCustomFieldValuesModel      |    ❌    |   ❌    |    ❌     |     ❌      |    ✅    |    ❌    |
-| Предметы                 | ItemsCustomFieldValueModel         | ItemsCustomFieldValueCollection         | ItemsCustomFieldValuesModel         |    ❌    |   ❌    |    ❌     |     ❌      |    ✅    |    ❌    |
-| Метка                    | TrackingDataCustomFieldValueModel  | TrackingDataCustomFieldValueCollection  | TrackingDataCustomFieldValuesModel  |    ❌    |   ✅    |    ❌     |     ❌      |    ❌    |    ❌    |
-| Связь с другим элементом | LinkedEntityCustomFieldValueModel  | LinkedEntityCustomFieldValueCollection  | LinkedEntityCustomFieldValuesModel  |    ❌    |   ❌    |    ❌     |     ❌      |    ✅    |    ❌    |
-| Денежное                 | MonetaryCustomFieldModel           | MonetaryCustomFieldValueCollection      | MonetaryCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |    ❌    |    ❌    |
-| Каталоги и списки        | ChainedListCustomFieldModel        | ChainedListCustomFieldValueCollection   | ChainedListCustomFieldValuesModel   |    ❌    |   ✅    |    ❌     |     ✅      |    ❌    |    ❌    |
-| Файл                     | FileCustomFieldModel               | FileCustomFieldValueCollection          | FileCustomFieldValuesModel          |    ✅    |   ✅    |    ✅     |     ✅      |    ❌    |    ❌    |
+| Тип поля                 | Модель значения                    | Коллекция моделей значений              | Модель доп поля                     | Контакт | Сделка | Компания | Покупатель |         Каталог          | Сегмент |
+|--------------------------|------------------------------------|-----------------------------------------|-------------------------------------|:-------:|:------:|:--------:|:----------:|:------------------------:|:-------:|
+| Текст                    | TextCustomFieldValueModel          | TextCustomFieldValueCollection          | TextCustomFieldValuesModel          |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Число                    | NumericCustomFieldValueModel       | NumericCustomFieldValueCollection       | NumericCustomFieldValuesModel       |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Флаг                     | CheckboxCustomFieldValueModel      | CheckboxCustomFieldValueCollection      | CheckboxCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Список                   | SelectCustomFieldValueModel        | SelectCustomFieldValueCollection        | SelectCustomFieldValuesModel        |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Мультисписок             | MultiselectCustomFieldValueModel   | MultiselectCustomFieldValueCollection   | MultiSelectCustomFieldValuesModel   |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Мультитекст              | MultitextCustomFieldValueModel     | MultitextCustomFieldValueCollection     | MultitextCustomFieldValuesModel     |    ✅    |   ❌    |    ❌     |     ❌      |            ❌             |    ❌    |
+| Дата                     | DateCustomFieldValueModel          | DateCustomFieldValueCollection          | DateCustomFieldValuesModel          |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Ссылка                   | UrlCustomFieldValueModel           | UrlCustomFieldValueCollection           | UrlCustomFieldValuesModel           |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Дата и время             | DateTimeCustomFieldValueModel      | DateTimeCustomFieldValueCollection      | DateTimeCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Текстовая область        | TextareaCustomFieldValueModel      | TextareaCustomFieldValueCollection      | TextareaCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Переключатель            | RadiobuttonCustomFieldValueModel   | RadiobuttonCustomFieldValueCollection   | RadiobuttonCustomFieldValuesModel   |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Короткий адрес           | StreetAddressCustomFieldValueModel | StreetAddressCustomFieldValueCollection | StreetAddressCustomFieldValuesModel |    ✅    |   ✅    |    ✅     |     ✅      |            ✅             |    ✅    |
+| Адрес                    | SmartAddressCustomFieldValueModel  | SmartAddressCustomFieldValueCollection  | SmartAddressCustomFieldValuesModel  |    ✅    |   ✅    |    ✅     |     ❌      |            ❌             |    ❌    |
+| День рождения            | BirthdayCustomFieldValueModel      | BirthdayCustomFieldValueCollection      | BirthdayCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ❌      |            ❌             |    ❌    |
+| Юр. лицо                 | LegalEntityCustomFieldValueModel   | LegalEntityCustomFieldValueCollection   | LegalEntityCustomFieldValuesModel   |    ✅    |   ✅    |    ✅     |     ❌      |            ❌             |    ❌    |
+| Цена                     | PriceCustomFieldValueModel         | PriceCustomFieldValueCollection         | PriceCustomFieldValuesModel         |    ❌    |   ❌    |    ❌     |     ❌      |            ✅             |    ❌    |
+| Категория                | CategoryCustomFieldValueModel      | CategoryCustomFieldValueCollection      | CategoryCustomFieldValuesModel      |    ❌    |   ❌    |    ❌     |     ❌      |            ✅             |    ❌    |
+| Предметы                 | ItemsCustomFieldValueModel         | ItemsCustomFieldValueCollection         | ItemsCustomFieldValuesModel         |    ❌    |   ❌    |    ❌     |     ❌      |            ✅             |    ❌    |
+| Метка                    | TrackingDataCustomFieldValueModel  | TrackingDataCustomFieldValueCollection  | TrackingDataCustomFieldValuesModel  |    ❌    |   ✅    |    ❌     |     ❌      |            ❌             |    ❌    |
+| Связь с другим элементом | LinkedEntityCustomFieldValueModel  | LinkedEntityCustomFieldValueCollection  | LinkedEntityCustomFieldValuesModel  |    ❌    |   ❌    |    ❌     |     ❌      |            ✅             |    ❌    |
+| Денежное                 | MonetaryCustomFieldModel           | MonetaryCustomFieldValueCollection      | MonetaryCustomFieldValuesModel      |    ✅    |   ✅    |    ✅     |     ✅      |            ❌             |    ❌    |
+| Каталоги и списки        | ChainedListCustomFieldModel        | ChainedListCustomFieldValueCollection   | ChainedListCustomFieldValuesModel   |    ❌    |   ✅    |    ❌     |     ✅      |            ❌             |    ❌    |
+| Файл                     | FileCustomFieldModel               | FileCustomFieldValueCollection          | FileCustomFieldValuesModel          |    ✅    |   ✅    |    ✅     |     ✅      |            ❌             |    ❌    |
+| Плательщик               | PayerCustomFieldModel              | PayerCustomFieldValueCollection         | PayerCustomFieldValuesModel         |    ❌    |   ❌    |    ❌     |     ❌      | ✅ (только счета-покупки) |    ❌    |
+| Поставщик                | SupplierCustomFieldModel           | SupplierCustomFieldValueCollection      | SupplierCustomFieldValuesModel      |    ❌    |   ❌    |    ❌     |     ❌      | ✅ (только счета-покупки) |    ❌    |
 
 Пример кода, как создать коллекцию значения полей сущности:
 ```php
@@ -827,6 +832,7 @@ $lead->setTags((new NullTagsCollection()));
 24. ```\AmoCRM\Enum\Sources\SourceServiceTypeEnum``` - типы сервисов для источников
 25. ```\AmoCRM\Enum\Tags\TagColorsEnum``` - возможные цвета для тегов
 26. ```\AmoCRM\Enum\Invoices\BillStatusEnumCode``` - предустановленные статусы для Счетов/Покупок
+27. ```\AmoCRM\Enum\SuppliersCustomFieldsEnums``` - константы для свойств поля поставщик
 
 ## Работа в случае смены субдомена аккаунта
 

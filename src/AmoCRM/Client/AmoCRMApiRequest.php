@@ -27,6 +27,7 @@ use Psr\Http\Message\ResponseInterface;
 class AmoCRMApiRequest
 {
     public const POST_REQUEST = 'POST';
+    public const PUT_REQUEST = 'PUT';
     public const GET_REQUEST = 'GET';
     public const PATCH_REQUEST = 'PATCH';
     public const DELETE_REQUEST = 'DELETE';
@@ -173,6 +174,94 @@ class AmoCRMApiRequest
         try {
             $response = $this->httpClient->request(
                 self::POST_REQUEST,
+                $isFullPath ? $method : $this->getUrl() . $method,
+                $requestOptions
+            );
+        } catch (ConnectException $e) {
+            throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        } catch (TooManyRedirectsException $e) {
+            throw new AmoCRMApiTooManyRedirectsException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        } catch (GuzzleException $e) {
+            throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode(), $this->getLastRequestInfo());
+        }
+
+        if (!empty($response->getHeader('X-Request-Id'))) {
+            $this->lastRequestId = $response->getHeader('X-Request-Id')[0];
+        }
+
+        /**
+         * В случае получения ошибки авторизации, пробуем обновить токен 1 раз,
+         * если не получилось, то тогда уже выкидываем Exception
+         */
+        try {
+            $response = $this->parseResponse($response);
+        } catch (AmoCRMoAuthApiException $e) {
+            if ($needToRefresh) {
+                throw $e;
+            }
+
+            return $this->post($method, $body, $queryParams, $headers, true);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $method
+     * @param array|mixed $body
+     * @param array $queryParams
+     * @param array $headers
+     * @param bool $needToRefresh
+     * @param bool $isFullPath
+     *
+     * @return array
+     * @throws AmoCRMApiConnectExceptionException
+     * @throws AmoCRMApiException
+     * @throws AmoCRMApiHttpClientException
+     * @throws AmoCRMApiNoContentException
+     * @throws AmoCRMApiTooManyRedirectsException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function put(
+        string $method,
+        $body = [],
+        array $queryParams = [],
+        array $headers = [],
+        bool $needToRefresh = false,
+        bool $isFullPath = false
+    ): array {
+        if ($this->accessToken->hasExpired()) {
+            $needToRefresh = true;
+        }
+
+        if ($needToRefresh) {
+            $this->refreshAccessToken();
+        }
+
+        $headers = array_merge($headers, $this->getBaseHeaders());
+
+        $this->lastHttpMethod = self::PUT_REQUEST;
+        $this->lastMethod = $isFullPath ? $method : $this->getUrl() . $method;
+        $this->lastBody = $body;
+        $this->lastQueryParams = $queryParams;
+
+        $requestOptions = [
+            'connect_timeout' => self::CONNECT_TIMEOUT,
+            'headers' => $headers,
+            'http_errors' => false,
+            'query' => $queryParams,
+            'timeout' => self::REQUEST_TIMEOUT,
+        ];
+
+        if (is_array($body)) {
+            $requestOptions['json'] = $body;
+        } else {
+            $requestOptions['body'] = $body;
+        }
+
+        try {
+            $response = $this->httpClient->request(
+                self::PUT_REQUEST,
                 $isFullPath ? $method : $this->getUrl() . $method,
                 $requestOptions
             );

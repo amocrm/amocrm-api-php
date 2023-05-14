@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models\Files;
+namespace AmoCRM\Models\Files;
 
 use AmoCRM\Models\BaseApiModel;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Models\Files;
+namespace AmoCRM\Models\Files;
 
 use AmoCRM\Collections\FilePreviewsCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
@@ -12,10 +12,10 @@ use function sprintf;
 
 class FileModel extends BaseApiModel implements HasIdInterface
 {
+    use RequestIdTrait;
+
     public const DELETED = 'deleted';
     public const UNBILLED = 'unbilled';
-
-    use RequestIdTrait;
 
     /**
      * @var null|int

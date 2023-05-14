@@ -46,7 +46,7 @@ class Currencies extends BaseEntity implements HasPageMethodsInterface
      */
     protected function getEntitiesFromResponse(array $response): array
     {
-        return (array) ($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CURRENCIES] ?? []);
+        return (array)($response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::CURRENCIES] ?? []);
     }
 
     /**

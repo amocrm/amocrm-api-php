@@ -16,6 +16,7 @@ use AmoCRM\EntitiesServices\Customers\Statuses as CustomersStatuses;
 use AmoCRM\EntitiesServices\Customers\Transactions;
 use AmoCRM\EntitiesServices\CustomFieldGroups;
 use AmoCRM\EntitiesServices\CustomFields;
+use AmoCRM\EntitiesServices\EntityFiles;
 use AmoCRM\EntitiesServices\EntityNotes;
 use AmoCRM\EntitiesServices\Files;
 use AmoCRM\EntitiesServices\Sources;
@@ -386,6 +387,22 @@ class AmoCRMApiClient
         $request->setRequestDomain($domain ?? 'https://drive.amocrm.');
 
         return new Files($request);
+    }
+
+    /**
+     * Метод вернет объект для работы со связями файлов с сущностями
+     *
+     * @param string $entityType
+     * @param int $entityId
+     *
+     * @return EntityFiles
+     * @throws InvalidArgumentException|AmoCRMMissedTokenException
+     */
+    public function entityFiles(string $entityType, int $entityId): EntityFiles
+    {
+        return (new EntityFiles($this->buildRequest()))
+            ->setEntityType($entityType)
+            ->setEntityId($entityId);
     }
 
     /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AmoCRM\Collections;
 
-use AmoCRM\AmoCRM\Models\Files\FilePreviewModel;
+use AmoCRM\Models\Files\FilePreviewModel;
 use AmoCRM\Collections\Interfaces\HasPagesInterface;
 use AmoCRM\Collections\Traits\PagesTrait;
 

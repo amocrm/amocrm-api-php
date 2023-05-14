@@ -2,8 +2,8 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Models\Files\FileModel;
-use AmoCRM\AmoCRM\Models\Files\FileUploadModel;
+use AmoCRM\Models\Files\FileModel;
+use AmoCRM\Models\Files\FileUploadModel;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;

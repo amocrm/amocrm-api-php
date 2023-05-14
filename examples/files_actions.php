@@ -1,7 +1,9 @@
 <?php
 
-use AmoCRM\AmoCRM\Models\Files\FileModel;
-use AmoCRM\AmoCRM\Models\Files\FileUploadModel;
+use AmoCRM\Collections\FileLinksCollection;
+use AmoCRM\Models\FileLinkModel;
+use AmoCRM\Models\Files\FileModel;
+use AmoCRM\Models\Files\FileUploadModel;
 use AmoCRM\Collections\CustomFieldsValuesCollection;
 use AmoCRM\Enum\Chats\Templates\Attachment\TypesEnum;
 use AmoCRM\Exceptions\AmoCRMApiException;
@@ -164,3 +166,40 @@ try {
 //} catch (AmoCRMApiException $e) {
 //    printError($e);
 //}
+
+
+//Привяжем файл к сделке с ID 21825653, чтобы он отображался во вкладке файлы
+try {
+    $result = $apiClient->entityFiles(EntityTypesInterface::LEADS, 21825653)->add(
+        (new FileLinksCollection())
+            ->add(
+                (new FileLinkModel())
+                    ->setFileUuid($file->getUuid())
+            )
+    );
+    var_dump($result);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+}
+
+// Получим все файлы, связанные со сделкой 21825653
+try {
+    $result = $apiClient->entityFiles(EntityTypesInterface::LEADS, 21825653)->get();
+    var_dump($result);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+}
+
+//Отвяжем файл от сделки с ID 21825653
+try {
+    $result = $apiClient->entityFiles(EntityTypesInterface::LEADS, 21825653)->delete(
+        (new FileLinksCollection())
+            ->add(
+                (new FileLinkModel())
+                    ->setFileUuid($file->getUuid())
+            )
+    );
+    var_dump($result);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+}

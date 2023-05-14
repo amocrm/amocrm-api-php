@@ -1,6 +1,6 @@
 <?php
 
-namespace AmoCRM\AmoCRM\Models\Files;
+namespace AmoCRM\Models\Files;
 
 use AmoCRM\Contracts\Support\Arrayable;
 use AmoCRM\Models\BaseApiModel;
