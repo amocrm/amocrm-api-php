@@ -245,7 +245,7 @@ class Unsorted extends BaseEntity implements HasPageMethodsInterface
     }
 
     /**
-     * Добавление сщуности
+     * Добавление сущности
      * @param BaseApiModel|BaseUnsortedModel|SipUnsortedModel|FormUnsortedModel $model
      *
      * @return BaseApiModel|BaseUnsortedModel
