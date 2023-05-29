@@ -40,11 +40,16 @@ class SourceServiceModel extends BaseApiModel implements Arrayable
 
     public function toArray(): array
     {
-        return [
-            'type'  => $this->getType(),
+        $result = [
+            'type' => $this->getType(),
             'pages' => $this->getPages()->toArray(),
-            'params' => $this->getParams()->toArray(),
+            'params' => [],
         ];
+        if ($this->getParams() !== null) {
+            $result['params'] = $this->getParams()->toArray();
+        }
+
+        return $result;
     }
 
     public function toApi(string $requestId = null): array
