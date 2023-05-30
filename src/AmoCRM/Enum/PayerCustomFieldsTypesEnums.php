@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Enum;
+namespace AmoCRM\Enum;
 
 /**
  * Class PayerCustomFieldValueModel

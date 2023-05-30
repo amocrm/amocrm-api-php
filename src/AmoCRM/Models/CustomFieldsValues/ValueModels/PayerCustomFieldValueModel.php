@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
-use AmoCRM\AmoCRM\Enum\PayerCustomFieldsTypesEnums;
+use AmoCRM\Enum\PayerCustomFieldsTypesEnums;
 
 /**
  * Class PayerCustomFieldValueModel
