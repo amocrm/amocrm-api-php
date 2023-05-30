@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
+use AmoCRM\AmoCRM\Enum\PayerCustomFieldsTypesEnums;
+
 /**
  * Class PayerCustomFieldValueModel
  *
@@ -92,6 +94,11 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     public const DIRECTOR = 'director';
 
     /**
+     * @var string Тип плательщика (юр. лицо / физ. лицо)
+     */
+    public const TYPE = 'type';
+
+    /**
      * @var string|null
      */
     protected $name;
@@ -172,6 +179,13 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     protected $director;
 
     /**
+     * @var string|null
+     *
+     * @see PayerCustomFieldsTypesEnums
+     */
+    protected $type;
+
+    /**
      * @param array|null $value
      *
      * @return BaseCustomFieldValueModel
@@ -196,7 +210,8 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             ->setMfo($val[self::MFO] ?? null)
             ->setBankAccountNumber($val[self::BANK_ACCOUNT_NUMBER] ?? null)
             ->setOked($val[self::OKED] ?? null)
-            ->setDirector($val[self::DIRECTOR] ?? null);
+            ->setDirector($val[self::DIRECTOR] ?? null)
+            ->setType($val[self::TYPE] ?? null);
 
         return $model;
     }
@@ -522,6 +537,26 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     }
 
     /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string|null $type
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setType(?string $type): PayerCustomFieldValueModel
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -543,6 +578,7 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::BANK_ACCOUNT_NUMBER => $this->getBankAccountNumber(),
             self::OKED => $this->getOked(),
             self::DIRECTOR => $this->getDirector(),
+            self::TYPE => $this->getType(),
         ];
     }
 
