@@ -561,7 +561,7 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
      */
     public function toArray(): array
     {
-        return [
+        $data = [
             self::NAME => $this->getName(),
             self::VAT_ID => $this->getVatId(),
             self::KPP => $this->getKpp(),
@@ -580,6 +580,13 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::DIRECTOR => $this->getDirector(),
             self::TYPE => $this->getType(),
         ];
+
+        // Временный костыль, пока всем плательщикам не проставим тип
+        if (!is_null($this->getType())) {
+            $data[self::TYPE] = $this->getType();
+        }
+
+        return $data;
     }
 
     /**
