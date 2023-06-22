@@ -578,7 +578,6 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::BANK_ACCOUNT_NUMBER => $this->getBankAccountNumber(),
             self::OKED => $this->getOked(),
             self::DIRECTOR => $this->getDirector(),
-            self::TYPE => $this->getType(),
         ];
 
         // Временный костыль, пока всем плательщикам не проставим тип
