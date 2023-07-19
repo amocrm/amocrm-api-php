@@ -4,6 +4,7 @@ use AmoCRM\Collections\CustomFields\CustomFieldEnumsCollection;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Collections\CustomFields\CustomFieldsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Filters\CustomFieldsFilter;
 use AmoCRM\Models\CustomFields\CheckboxCustomFieldModel;
 use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\CustomFields\EnumModel;
@@ -42,6 +43,16 @@ $customFieldsService = $apiClient->customFields(EntityTypesInterface::LEADS);
 //Получим поля
 try {
     $result = $customFieldsService->get();
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+//Получим поля по типу
+try {
+    $filter = (new CustomFieldsFilter())
+        ->setTypes([CustomFieldModel::TYPE_TEXT, CustomFieldModel::TYPE_URL]); // или ['text', 'url']
+    $result = $customFieldsService->get($filter);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
