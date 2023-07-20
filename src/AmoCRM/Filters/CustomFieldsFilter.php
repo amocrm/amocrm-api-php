@@ -17,7 +17,7 @@ class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface
     /**
      * @var null|string[] An array of custom_field types.
      */
-    private $types = null;
+    private ?array $types = null;
 
     /**
      * @return string[]|null
@@ -46,8 +46,8 @@ class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface
     {
         $filter = [];
 
-        if (!is_null($this->types)) {
-            $filter['filter']['type'] = $this->getTypes();
+        if (!empty($this->types)) {
+            $filter['filter']['type'] = $this->types;
         }
 
         $filter = $this->buildPagesFilter($filter);
