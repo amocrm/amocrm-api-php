@@ -16,4 +16,16 @@ class PayerCustomFieldsTypesEnums
 
     /** @var string Физическое лицо */
     public const TYPE_INDIVIDUAL = 'individual';
+
+    public static function isValid(string $type): bool
+    {
+        return in_array(
+            $type, 
+            [
+                self::TYPE_LEGAL,
+                self::TYPE_INDIVIDUAL
+            ],
+            true
+        );
+    }
 }
