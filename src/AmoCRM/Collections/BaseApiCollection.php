@@ -468,7 +468,7 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
     public function merge(BaseApiCollection $items): BaseApiCollection
     {
         if (!$items instanceof static) {
-            throw new InvalidArgumentException('Item must be an instance of ' . static::class);
+            throw new InvalidArgumentException('Items must be an instance of ' . static::class);
         }
 
         $result = array_merge($this->all(), $items->all());
