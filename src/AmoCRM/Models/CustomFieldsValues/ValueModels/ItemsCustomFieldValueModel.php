@@ -41,6 +41,12 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     public const FIELD_DISCOUNT_TYPE_PERCENTAGE = 'percentage';
     /** Скдика - цифра от стоимости товара */
     public const FIELD_DISCOUNT_TYPE_AMOUNT = 'amount';
+    /** Произошел ли перерасчет скидки товарной позиции */
+    public const FIELD_IS_DISCOUNT_RECALCULATED = 'is_discount_recalculated';
+    /** Произошел ли перерасчет суммы товарной позиции при скидке 0 */
+    public const FIELD_IS_TOTAL_SUM_RECALCULATED = 'is_total_sum_recalculated';
+    /** Сумма товарной позиции. Устанавливается только если произошел перерасчет суммы позиции при скидке 0 */
+    public const FIELD_TOTAL_SUM = 'total_sum';
 
     /**
      * @var string|int|null
@@ -98,6 +104,15 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     /** @var array|null */
     protected $metadata;
 
+    /** @var bool */
+    protected $isDiscountRecalculated;
+
+    /** @var bool */
+    protected $isTotalSumRecalculated;
+
+    /** @var float|null */
+    protected $totalSum;
+
     /**
      * @param int|string|null $value
      *
@@ -133,7 +148,9 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
             ->setProductId($val[self::FIELD_PRODUCT_ID] ?? null)
             ->setBonusPointsPerPurchase($val[self::FIELD_BONUS_POINTS_PER_PURCHASE] ?? null)
             ->setMetadata($val[self::FIELD_METADATA] ?? null)
-        ;
+            ->setIsDiscountRecalculated($val[self::FIELD_IS_DISCOUNT_RECALCULATED] ?? false)
+            ->setIsTotalSumRecalculated($val[self::FIELD_IS_TOTAL_SUM_RECALCULATED] ?? false)
+            ->setTotalSum($val[self::FIELD_TOTAL_SUM] ?? null);
 
         return $model;
     }
@@ -370,9 +387,69 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function getIsDiscountRecalculated(): bool
+    {
+        return $this->isDiscountRecalculated;
+    }
+
+    /**
+     * @param bool $isDiscountRecalculated
+     *
+     * @return ItemsCustomFieldValueModel
+     */
+    private function setIsDiscountRecalculated(bool $isDiscountRecalculated): ItemsCustomFieldValueModel
+    {
+        $this->isDiscountRecalculated = $isDiscountRecalculated;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsTotalSumRecalculated(): bool
+    {
+        return $this->isTotalSumRecalculated;
+    }
+
+    /**
+     * @param bool $isTotalSumRecalculated
+     *
+     * @return ItemsCustomFieldValueModel
+     */
+    private function setIsTotalSumRecalculated(bool $isTotalSumRecalculated): ItemsCustomFieldValueModel
+    {
+        $this->isTotalSumRecalculated = $isTotalSumRecalculated;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getTotalSum(): ?float
+    {
+        return $this->totalSum;
+    }
+
+    /**
+     * @param float|null $totalSum
+     *
+     * @return ItemsCustomFieldValueModel
+     */
+    private function setTotalSum(?float $totalSum): ItemsCustomFieldValueModel
+    {
+        $this->totalSum = $totalSum;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
-        return [
+        $result = [
             self::FIELD_SKU => $this->getSku(),
             self::FIELD_DESCRIPTION => $this->getDescription(),
             self::FIELD_UNIT_PRICE => $this->getUnitPrice(),
@@ -385,7 +462,15 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
             self::FIELD_PRODUCT_ID => $this->getProductId(),
             self::FIELD_BONUS_POINTS_PER_PURCHASE => $this->getBonusPointsPerPurchase(),
             self::FIELD_METADATA => $this->getMetadata(),
+            self::FIELD_IS_DISCOUNT_RECALCULATED => $this->getIsDiscountRecalculated(),
+            self::FIELD_IS_TOTAL_SUM_RECALCULATED => $this->getIsTotalSumRecalculated(),
         ];
+
+        if ($this->getTotalSum() !== null) {
+            $result[self::FIELD_TOTAL_SUM] = $this->getTotalSum();
+        }
+
+        return $result;
     }
 
     /**
@@ -399,8 +484,23 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
 
     public function toApi(string $requestId = null): array
     {
+        $result = [
+            self::FIELD_SKU => $this->getSku(),
+            self::FIELD_DESCRIPTION => $this->getDescription(),
+            self::FIELD_UNIT_PRICE => $this->getUnitPrice(),
+            self::FIELD_QUANTITY => $this->getQuantity(),
+            self::FIELD_UNIT_TYPE => $this->getUnitType(),
+            self::FIELD_DISCOUNT => $this->getDiscount(),
+            self::FIELD_VAT_RATE_ID => $this->getVatRateId(),
+            self::FIELD_VAT_RATE_VALUE => $this->getVatRateValue(),
+            self::FIELD_EXTERNAL_UID => $this->getExternalUid(),
+            self::FIELD_PRODUCT_ID => $this->getProductId(),
+            self::FIELD_BONUS_POINTS_PER_PURCHASE => $this->getBonusPointsPerPurchase(),
+            self::FIELD_METADATA => $this->getMetadata(),
+        ];
+
         return [
-            'value' => $this->getValue(),
+            'value' => $result,
         ];
     }
 }
