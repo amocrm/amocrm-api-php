@@ -8,6 +8,7 @@ use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMApiHttpClientException;
 use AmoCRM\Exceptions\AmoCRMApiNoContentException;
 use AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException;
+use AmoCRM\Exceptions\AmoCRMApiTooManyRequestsException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use Fig\Http\Message\StatusCodeInterface;
@@ -35,7 +36,7 @@ class AmoCRMApiRequest
     public const CONNECT_TIMEOUT = 5;
     public const REQUEST_TIMEOUT = 20;
     //TODO Do not forget to change this on each release
-    public const LIBRARY_VERSION = '1.0.2';
+    public const LIBRARY_VERSION = '1.0.4';
     public const USER_AGENT = 'amoCRM-API-Library/' . self::LIBRARY_VERSION;
 
     public const SUCCESS_STATUSES = [
@@ -594,9 +595,14 @@ class AmoCRMApiRequest
             && !$decodedBody
             && !empty($bodyContents)
         ) {
-            if($e->getCode() == 429) {
-                throw new AmoCRMApiTooManyRequestsException("Too many requests", $e->getCode(), $this->getLastRequestInfo());
+            if ($response->getStatusCode() === StatusCodeInterface::STATUS_TOO_MANY_REQUESTS) {
+                throw new AmoCRMApiTooManyRequestsException(
+                    "Too many requests",
+                    $response->getStatusCode(),
+                    $this->getLastRequestInfo()
+                );
             }
+
             throw new AmoCRMApiException(
                 "Response body is not json",
                 $response->getStatusCode(),
