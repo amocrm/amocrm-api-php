@@ -464,7 +464,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     public function toArray(): array
     {
         $result = [
-            'id' => $this->getId(),
+            'id'   => $this->getId(),
             'name' => $this->getName(),
             'created_by' => $this->getCreatedBy(),
             'updated_by' => $this->getUpdatedBy(),
@@ -477,7 +477,7 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
                 : $this->getCustomFieldsValues()->toArray(),
             'account_id' => $this->getAccountId(),
             'invoice_link' => $this->getInvoiceLink(),
-            'metadata' => [
+            'metadata'   => [
                 'quantity' => $this->getQuantity(),
                 'catalog_id' => $this->getCatalogId(),
                 'price_id' => $this->getPriceId(),
