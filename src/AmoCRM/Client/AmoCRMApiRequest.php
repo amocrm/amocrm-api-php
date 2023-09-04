@@ -594,6 +594,9 @@ class AmoCRMApiRequest
             && !$decodedBody
             && !empty($bodyContents)
         ) {
+            if($e->getCode() == 429) {
+                throw new AmoCRMApiTooManyRequestsException("Too many requests", $e->getCode(), $this->getLastRequestInfo());
+            }
             throw new AmoCRMApiException(
                 "Response body is not json",
                 $response->getStatusCode(),
