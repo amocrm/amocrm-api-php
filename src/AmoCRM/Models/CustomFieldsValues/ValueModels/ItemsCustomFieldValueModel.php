@@ -449,7 +449,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
 
     public function toArray(): array
     {
-        $result = [
+        return [
             self::FIELD_SKU => $this->getSku(),
             self::FIELD_DESCRIPTION => $this->getDescription(),
             self::FIELD_UNIT_PRICE => $this->getUnitPrice(),
@@ -464,13 +464,8 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
             self::FIELD_METADATA => $this->getMetadata(),
             self::FIELD_IS_DISCOUNT_RECALCULATED => $this->getIsDiscountRecalculated(),
             self::FIELD_IS_TOTAL_SUM_RECALCULATED => $this->getIsTotalSumRecalculated(),
+            self::FIELD_TOTAL_SUM => $this->getTotalSum(),
         ];
-
-        if ($this->getTotalSum() !== null) {
-            $result[self::FIELD_TOTAL_SUM] = $this->getTotalSum();
-        }
-
-        return $result;
     }
 
     /**
