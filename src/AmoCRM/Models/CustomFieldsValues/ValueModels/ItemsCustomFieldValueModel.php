@@ -45,7 +45,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     public const FIELD_IS_DISCOUNT_RECALCULATED = 'is_discount_recalculated';
     /** Произошел ли перерасчет суммы товарной позиции при скидке 0 */
     public const FIELD_IS_TOTAL_SUM_RECALCULATED = 'is_total_sum_recalculated';
-    /** Сумма товарной позиции. Устанавливается только если произошел перерасчет суммы позиции при скидке 0 */
+    /** Сумма товарной позиции */
     public const FIELD_TOTAL_SUM = 'total_sum';
 
     /**
