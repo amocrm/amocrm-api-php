@@ -104,11 +104,11 @@ abstract class BaseEntity
 
         $collection = !empty($entities) ? $collection::fromArray($entities) : null;
 
-        if (method_exists($collection, 'setNextPageLink') && isset($response['_links']['next']['href'])) {
+        if ($collection !== null && method_exists($collection, 'setNextPageLink') && isset($response['_links']['next']['href'])) {
             $collection->setNextPageLink($response['_links']['next']['href']);
         }
 
-        if (method_exists($collection, 'setPrevPageLink') && isset($response['_links']['prev']['href'])) {
+        if ($collection !== null && method_exists($collection, 'setPrevPageLink') && isset($response['_links']['prev']['href'])) {
             $collection->setPrevPageLink($response['_links']['prev']['href']);
         }
 
