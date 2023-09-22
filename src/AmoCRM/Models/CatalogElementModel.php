@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
@@ -105,6 +106,13 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
      * @var string|null
      */
     protected $invoiceLink;
+
+    /**
+     * Предупреждение о перерасчете в счете
+     *
+     * @var InvoiceWarningModel|null
+     */
+    protected $invoiceWarning;
 
     /**
      * @return null|int
@@ -353,6 +361,26 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
     }
 
     /**
+     * @return InvoiceWarningModel|null
+     */
+    public function getInvoiceWarning(): ?InvoiceWarningModel
+    {
+        return $this->invoiceWarning;
+    }
+
+    /**
+     * @param InvoiceWarningModel $invoiceWarning
+     *
+     * @return CatalogElementModel
+     */
+    private function setInvoiceWarning(InvoiceWarningModel $invoiceWarning): CatalogElementModel
+    {
+        $this->invoiceWarning = $invoiceWarning;
+
+        return $this;
+    }
+
+    /**
      * @param array $catalogElement
      *
      * @return self
@@ -401,6 +429,13 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
             $customFieldsValues = $valuesCollection::fromArray($catalogElement['custom_fields_values']);
             $catalogElementModel->setCustomFieldsValues($customFieldsValues);
         }
+        if (
+            array_key_exists(AmoCRMApiRequest::EMBEDDED, $catalogElement)
+            && array_key_exists('warning', $catalogElement[AmoCRMApiRequest::EMBEDDED])
+        ) {
+            $invoiceWarning = InvoiceWarningModel::fromArray($catalogElement[AmoCRMApiRequest::EMBEDDED]['warning']);
+            $catalogElementModel->setInvoiceWarning($invoiceWarning);
+        }
 
         //Костылик для связей
         if (isset($catalogElement['to_element_id'])) {
@@ -446,7 +481,11 @@ class CatalogElementModel extends BaseApiModel implements TypeAwareInterface, Ca
                 'quantity' => $this->getQuantity(),
                 'catalog_id' => $this->getCatalogId(),
                 'price_id' => $this->getPriceId(),
-            ]
+            ],
+            'warning' => $this->getInvoiceWarning() === null
+                ? null
+                : $this->getInvoiceWarning()->toArray(),
+
         ];
 
         if (!is_null($this->getCurrencyId())) {
