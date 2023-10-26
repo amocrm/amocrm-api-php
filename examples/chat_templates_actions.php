@@ -5,6 +5,7 @@ declare(strict_types=1);
 use AmoCRM\Collections\Chats\Templates\Buttons\ButtonsCollection;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Models\Chats\Templates\Buttons\TextButtonModel;
+use AmoCRM\Models\Chats\Templates\ReviewModel;
 use AmoCRM\Models\Chats\Templates\TemplateModel;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -69,15 +70,56 @@ try {
 }
 
 
-// Получим шаблоны
+// Получим шаблоны со статусами
 try {
-    $chatTemplatesCollection = $chatTemplatesService->get();
+    $chatTemplatesCollection = $chatTemplatesService->get(null, TemplateModel::getAvailableWith());
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
 }
 var_dump($chatTemplatesCollection->toArray());
 
+$template = $review = null;
+
+// Найдём шаблон со статусом review
+/** @var TemplateModel $chatTemplate */
+foreach ($chatTemplatesCollection as $chatTemplate) {
+    $templateReviews = $chatTemplate->getReviews();
+
+    if (is_null($templateReviews)) {
+        continue;
+    }
+
+    /** @var ReviewModel $templateReview */
+    foreach ($templateReviews as $templateReview) {
+        if ($templateReview->getStatus() === ReviewModel::STATUS_REVIEW_NAME) {
+            $review = $templateReview;
+            break;
+        }
+    }
+
+    if ($review) {
+        $template = $chatTemplate;
+        break;
+    }
+}
+
+// Если нашли - поставим статус отказ
+if ($review && $template) {
+    try {
+        $review = $chatTemplatesService->updateReviewStatus(
+            $template,
+            $review->setStatus(ReviewModel::STATUS_REJECTED_NAME)->setRejectReason('Does not fit')
+        );
+    } catch (AmoCRMApiException $e) {
+        printError($e);
+        die;
+    }
+
+    echo 'Шаблон с отказаом: ';
+    var_dump($review->toArray());
+    echo PHP_EOL;
+}
 
 // Получим шаблоны по ExternalId
 $templatesFilter = new \AmoCRM\Filters\Chats\TemplatesFilter();

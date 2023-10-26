@@ -18,6 +18,7 @@ use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Chats\Templates\ReviewModel;
 use AmoCRM\Models\Chats\Templates\TemplateModel;
 
 /**
@@ -194,6 +195,34 @@ class Templates extends BaseEntity implements HasPageMethodsInterface, HasDelete
         $response = $this->request->delete($method);
 
         return $response['result'];
+    }
+
+    /**
+     * @param TemplateModel $model
+     * @param ReviewModel $model
+     *
+     * @return ReviewModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function updateReviewStatus(TemplateModel $model, ReviewModel $review): ReviewModel
+    {
+        if (is_null($model->getId()) || is_null($review->getId())) {
+            return new ReviewModel();
+        }
+
+        $method = sprintf(
+            '%s/%d/review/%d',
+            $this->getMethod(),
+            $model->getId(),
+            $review->getId()
+        );
+
+        $response = $this->request->post($method, $review->toApi());
+
+        return $review
+            ->setStatus($response['status'] ?? null)
+            ->setRejectReason($response['reject_reason'] ?? null);
     }
 
     /**
