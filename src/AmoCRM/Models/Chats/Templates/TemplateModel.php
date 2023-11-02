@@ -465,7 +465,6 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     public function setType(string $type): TemplateModel
     {
         $this->type = $type;
-
         return $this;
     }
 
