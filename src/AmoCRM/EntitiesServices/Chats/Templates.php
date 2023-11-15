@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AmoCRM\EntitiesServices\Chats;
 
 use AmoCRM\Collections\Chats\Templates\Buttons\ButtonsCollection;
+use AmoCRM\Collections\Chats\Templates\ReviewsCollection;
 use AmoCRM\Collections\Chats\Templates\TemplatesCollection;
 use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
@@ -223,6 +224,26 @@ class Templates extends BaseEntity implements HasPageMethodsInterface, HasDelete
         return $review
             ->setStatus($response['status'] ?? null)
             ->setRejectReason($response['reject_reason'] ?? null);
+    }
+
+    public function sendOnReview(TemplateModel $model): ReviewsCollection
+    {
+        if (is_null($model->getId())) {
+            return new ReviewsCollection();
+        }
+
+        $method = sprintf(
+            '%s/%d/review',
+            $this->getMethod(),
+            $model->getId()
+        );
+
+        $response = $this->request->post($method);
+
+        return isset($response[AmoCRMApiRequest::EMBEDDED]['reviews'])
+            && is_array($response[AmoCRMApiRequest::EMBEDDED]['reviews'])
+                ? ReviewsCollection::fromArray($response[AmoCRMApiRequest::EMBEDDED]['reviews'])
+                : new ReviewsCollection();
     }
 
     /**

@@ -40,6 +40,7 @@ $chatTemplate
     ->setIsEditable(true);
 
 try {
+    /** @var TemplateModel $chatTemplate */
     $chatTemplate = $chatTemplatesService->addOne($chatTemplate);
 } catch (AmoCRMApiException $e) {
     printError($e);
@@ -51,6 +52,7 @@ echo PHP_EOL;
 
 
 // Обновим шаблон и добавим в него кнопки. Кнопок разного типа быть не может
+// Также сменим тип шаблона на WhatsApp
 $buttonsCollection = new ButtonsCollection();
 $buttonsCollection
     ->add(
@@ -60,15 +62,35 @@ $buttonsCollection
         (new TextButtonModel())->setText('Текст кнопки2')
     );
 $chatTemplate->setButtons($buttonsCollection);
+$chatTemplate->setType(TemplateModel::TYPE_WABA);
+$chatTemplate->setWabaCategory(TemplateModel::CATEGORY_UTILITY);
+$chatTemplate->setWabaFooter('Футер шаблона');
+$chatTemplate->setWabaExamples(['{{lead.name}}' => 'Заявка из WhatsApp']);
+$chatTemplate->setWabaLanguage('ru');
 
 
 try {
-    $chatTemplatesService->updateOne($chatTemplate);
+    $chatTemplate = $chatTemplatesService->updateOne($chatTemplate);
 } catch (AmoCRMApiException $e) {
     printError($e);
     die;
 }
 
+echo 'Обновлённый шаблон: ';
+var_dump($chatTemplate->toArray());
+echo PHP_EOL;
+
+// Отправим шаблон WhatsApp на проверку
+try {
+    $reviews = $chatTemplatesService->sendOnReview($chatTemplate);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die;
+}
+
+echo 'Статусы шаблона: ';
+var_dump($reviews->toArray());
+echo PHP_EOL;
 
 // Получим шаблоны со статусами
 try {
