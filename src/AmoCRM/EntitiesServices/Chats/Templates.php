@@ -226,6 +226,13 @@ class Templates extends BaseEntity implements HasPageMethodsInterface, HasDelete
             ->setRejectReason($response['reject_reason'] ?? null);
     }
 
+    /**
+     * @param TemplateModel $model
+     *
+     * @return ReviewsCollection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
     public function sendOnReview(TemplateModel $model): ReviewsCollection
     {
         if (is_null($model->getId())) {
