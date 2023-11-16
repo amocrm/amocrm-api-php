@@ -459,4 +459,20 @@ abstract class BaseApiCollection implements ArrayAccess, JsonSerializable, Itera
 
         return array_combine(array_keys($data), $values);
     }
+
+    /**
+     * @param BaseApiCollection $items
+     *
+     * @return BaseApiCollection
+     */
+    public function merge(BaseApiCollection $items): BaseApiCollection
+    {
+        if (!$items instanceof static) {
+            throw new InvalidArgumentException('Items must be an instance of ' . static::class);
+        }
+
+        $result = array_merge($this->all(), $items->all());
+
+        return static::make($result);
+    }
 }

@@ -22,8 +22,11 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     use RequestIdTrait;
 
     const TYPE_AMOCRM = 'amocrm';
-
     const TYPE_WABA = 'waba';
+
+    public const CATEGORY_UTILITY = 'UTILITY';
+    public const CATEGORY_AUTHENTICATION = 'AUTHENTICATION';
+    public const CATEGORY_MARKETING = 'MARKETING';
 
     /**
      * @var int|null
@@ -219,7 +222,24 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'external_id' => $this->getExternalId(),
             'request_id' => $this->getRequestId(),
             'attachment' => $this->getAttachment() ? $this->getAttachment()->toApi() : null,
+            'type' => $this->getType(),
         ];
+
+        if ($this->getWabaFooter()) {
+            $result['waba_footer'] = $this->getWabaFooter();
+        }
+
+        if ($this->getWabaCategory()) {
+            $result['waba_category'] = $this->getWabaCategory();
+        }
+
+        if ($this->getWabaLanguage()) {
+            $result['waba_language'] = $this->getWabaLanguage();
+        }
+
+        if ($this->getWabaExamples()) {
+            $result['waba_examples'] = $this->getWabaExamples();
+        }
 
         if ($this->getId() !== null) {
             $result['id'] = $this->getId();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AmoCRM\EntitiesServices\Chats;
 
 use AmoCRM\Collections\Chats\Templates\Buttons\ButtonsCollection;
+use AmoCRM\Collections\Chats\Templates\ReviewsCollection;
 use AmoCRM\Collections\Chats\Templates\TemplatesCollection;
 use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\HasDeleteMethodInterface;
@@ -18,6 +19,7 @@ use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
+use AmoCRM\Models\Chats\Templates\ReviewModel;
 use AmoCRM\Models\Chats\Templates\TemplateModel;
 
 /**
@@ -194,6 +196,61 @@ class Templates extends BaseEntity implements HasPageMethodsInterface, HasDelete
         $response = $this->request->delete($method);
 
         return $response['result'];
+    }
+
+    /**
+     * @param TemplateModel $model
+     * @param ReviewModel $model
+     *
+     * @return ReviewModel
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function updateReviewStatus(TemplateModel $model, ReviewModel $review): ReviewModel
+    {
+        if (is_null($model->getId()) || is_null($review->getId())) {
+            return new ReviewModel();
+        }
+
+        $method = sprintf(
+            '%s/%d/review/%d',
+            $this->getMethod(),
+            $model->getId(),
+            $review->getId()
+        );
+
+        $response = $this->request->post($method, $review->toApi());
+
+        return $review
+            ->setStatus($response['status'] ?? null)
+            ->setRejectReason($response['reject_reason'] ?? null);
+    }
+
+    /**
+     * @param TemplateModel $model
+     *
+     * @return ReviewsCollection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function sendOnReview(TemplateModel $model): ReviewsCollection
+    {
+        if (is_null($model->getId())) {
+            return new ReviewsCollection();
+        }
+
+        $method = sprintf(
+            '%s/%d/review',
+            $this->getMethod(),
+            $model->getId()
+        );
+
+        $response = $this->request->post($method);
+
+        return isset($response[AmoCRMApiRequest::EMBEDDED]['reviews'])
+            && is_array($response[AmoCRMApiRequest::EMBEDDED]['reviews'])
+                ? ReviewsCollection::fromArray($response[AmoCRMApiRequest::EMBEDDED]['reviews'])
+                : new ReviewsCollection();
     }
 
     /**
