@@ -65,7 +65,7 @@ class PipelineModel extends BaseApiModel implements Arrayable, HasIdInterface
         $model = new self();
 
         $model->setId($pipeline['id']);
-        $model->setName($pipeline['name']);
+        $model->setName((string)($pipeline['name'] ?? ''));
         $model->setSort($pipeline['sort']);
         $model->setAccountId($pipeline['account_id']);
         $model->setIsMain($pipeline['is_main']);
