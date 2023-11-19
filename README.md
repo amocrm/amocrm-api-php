@@ -103,6 +103,17 @@ $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code'])
 
 Пример авторизации можно посмотреть в файле examples/get_token.php
 
+### Авторизация с правами конкретного пользователя аккаунта
+Начиная с версии 1.4.0 появилась возможность авторизоваться с правами конкретного пользователя, если токен был выпущен администратором аккаунта.
+
+Для авторизации под пользователем аккаунта - необходимо задать ID пользователя у объекта типа ```\AmoCRM\Client\AmoCRMApiClient```.
+
+```php
+$apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+$apiClient->setContextUserId(123);
+```
+
+
 ## Подход к работе с библиотекой
 
 В библиотеке используется сервисный подход. Для каждой сущности имеется сервис.

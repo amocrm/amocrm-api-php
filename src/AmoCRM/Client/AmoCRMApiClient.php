@@ -76,6 +76,11 @@ class AmoCRMApiClient
     private $accessTokenRefreshCallback;
 
     /**
+     * @var null|int
+     */
+    private $contextUserId;
+
+    /**
      * AmoCRMApiClient constructor.
      * @param string $clientId
      * @param string $clientSecret
@@ -101,6 +106,24 @@ class AmoCRMApiClient
     public function getAccessToken(): ?AccessToken
     {
         return $this->accessToken;
+    }
+
+    public function getContextUserId(): ?int
+    {
+        return $this->contextUserId;
+    }
+
+    /**
+     * Для админских токеном можно задать пользователя аккаунта, в контексте которого будет сделан запрос
+     * @param int|null $contextUserId
+     *
+     * @return $this
+     */
+    public function setContextUserId(?int $contextUserId): AmoCRMApiClient
+    {
+        $this->contextUserId = $contextUserId;
+
+        return $this;
     }
 
     /**
@@ -162,7 +185,7 @@ class AmoCRMApiClient
             }
         );
 
-        return new AmoCRMApiRequest($this->accessToken, $oAuthClient);
+        return new AmoCRMApiRequest($this->getAccessToken(), $oAuthClient, $this->getContextUserId());
     }
 
     /**

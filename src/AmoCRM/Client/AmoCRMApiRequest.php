@@ -36,7 +36,7 @@ class AmoCRMApiRequest
     public const CONNECT_TIMEOUT = 5;
     public const REQUEST_TIMEOUT = 20;
     //TODO Do not forget to change this on each release
-    public const LIBRARY_VERSION = '1.1.0';
+    public const LIBRARY_VERSION = '1.4.0';
     public const USER_AGENT = 'amoCRM-API-Library/' . self::LIBRARY_VERSION;
 
     public const SUCCESS_STATUSES = [
@@ -101,16 +101,25 @@ class AmoCRMApiRequest
     /** @var string|null */
     private $requestDomain = null;
 
+    /** @var int|null */
+    private $contextUserId = null;
+
     /**
      * AmoCRMApiRequest constructor.
+     *
      * @param AccessTokenInterface $accessToken
      * @param AmoCRMOAuth $oAuthClient
+     * @param int|null $contextUserId
      */
-    public function __construct(AccessTokenInterface $accessToken, AmoCRMOAuth $oAuthClient)
-    {
+    public function __construct(
+        AccessTokenInterface $accessToken,
+        AmoCRMOAuth $oAuthClient,
+        ?int $contextUserId
+    ) {
         $this->accessToken = $accessToken;
         $this->oAuthClient = $oAuthClient;
         $this->httpClient = $oAuthClient->getHttpClient();
+        $this->contextUserId = $contextUserId;
     }
 
     /**
@@ -129,11 +138,15 @@ class AmoCRMApiRequest
      * @param array $queryParams
      * @param array $headers
      * @param bool $needToRefresh
+     * @param bool $isFullPath
      *
      * @return array
+     * @throws AmoCRMApiConnectExceptionException
      * @throws AmoCRMApiException
-     * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiHttpClientException
      * @throws AmoCRMApiNoContentException
+     * @throws AmoCRMApiTooManyRedirectsException
+     * @throws AmoCRMoAuthApiException
      */
     public function post(
         string $method,
@@ -626,6 +639,10 @@ class AmoCRMApiRequest
         $headers['X-Library-Version'] = self::LIBRARY_VERSION;
         $headers['X-Client-UUID'] = $this->oAuthClient->getOAuthProvider()->getClientId();
 
+        if (!is_null($this->contextUserId)) {
+            $headers['X-Context-User-ID'] = $this->contextUserId;
+        }
+
         return $headers;
     }
 
@@ -635,6 +652,7 @@ class AmoCRMApiRequest
     public function getLastRequestInfo(): array
     {
         return [
+            'context_user_id' => $this->contextUserId,
             'last_http_method' => $this->lastHttpMethod,
             'last_method' => $this->lastMethod,
             'last_body' => $this->lastBody,
