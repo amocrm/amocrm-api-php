@@ -115,15 +115,17 @@ class AmoCRMApiClient
 
     /**
      * Для админских токеном можно задать пользователя аккаунта, в контексте которого будет сделан запрос
+     * Метод возвращает новый объект апи клиента с установленным контекстом
      * @param int|null $contextUserId
      *
      * @return $this
      */
-    public function setContextUserId(?int $contextUserId): AmoCRMApiClient
+    public function withContextUserId(?int $contextUserId): AmoCRMApiClient
     {
-        $this->contextUserId = $contextUserId;
+        $apiClient = clone $this;
+        $apiClient->contextUserId = $contextUserId;
 
-        return $this;
+        return $apiClient;
     }
 
     /**

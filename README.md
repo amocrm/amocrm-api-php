@@ -106,11 +106,11 @@ $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code'])
 ### Авторизация с правами конкретного пользователя аккаунта
 Начиная с версии 1.4.0 появилась возможность авторизоваться с правами конкретного пользователя, если токен был выпущен администратором аккаунта.
 
-Для авторизации под пользователем аккаунта - необходимо задать ID пользователя у объекта типа ```\AmoCRM\Client\AmoCRMApiClient```.
+Для авторизации под пользователем аккаунта - необходимо задать ID пользователя у объекта типа ```\AmoCRM\Client\AmoCRMApiClient```. Метод вернет новый объект с установленным контекстом.
 
 ```php
 $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
-$apiClient->setContextUserId(123);
+$apiClientWithContext = $apiClient->withContextUserId(123);
 ```
 
 

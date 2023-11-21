@@ -23,11 +23,11 @@ $apiClient->setAccessToken($accessToken)
     );
 
 $contextUserId = 123;
-$apiClient->setContextUserId($contextUserId);
+$apiClientWithContext = $apiClient->withContextUserId($contextUserId);
 
 //Получим свойства аккаунта и сравним юезра
 try {
-    $account = $apiClient->account()->getCurrent();
+    $account = $apiClientWithContext->account()->getCurrent();
 
     echo 'Текущий юзер, тот кого вы передали? - ' . ($account->getCurrentUserId() === $contextUserId ? 'да' : 'нет');
 } catch (AmoCRMApiException $e) {
