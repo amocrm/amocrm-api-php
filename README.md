@@ -7,7 +7,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/amocrm/amocrm-api-library.svg)](https://packagist.org/packages/amocrm/amocrm-api-library)
 
 В данном пакете представлен API клиент с поддержкой основных сущностей и авторизацией по протоколу OAuth 2.0 в amoCRM. 
-Для работы библиотеки требуются PHP версии не ниже 7.1.
+Для работы библиотеки требуется PHP версия не ниже 7.1.
 
 ## Оглавление
 - [Установка](#установка)
