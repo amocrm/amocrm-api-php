@@ -85,6 +85,9 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     protected $wabaLanguage = null;
 
     /** @var string|null */
+    protected $wabaHeader = null;
+
+    /** @var string|null */
     protected $wabaFooter = null;
 
     /** @var string */
@@ -155,6 +158,10 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             $model->setType($template['type']);
         }
 
+        if (isset($template['waba_header'])) {
+            $model->setWabaHeader($template['waba_header']);
+        }
+
         if (isset($template['waba_footer'])) {
             $model->setWabaFooter($template['waba_footer']);
         }
@@ -196,6 +203,7 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'external_id' => $this->getExternalId(),
             'request_id' => $this->getRequestId(),
             'type' => $this->getType(),
+            'waba_header' => $this->getWabaHeader(),
             'waba_footer' => $this->getWabaFooter(),
             'waba_category' => $this->getWabaCategory(),
             'waba_language' => $this->getWabaLanguage(),
@@ -224,6 +232,10 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
             'attachment' => $this->getAttachment() ? $this->getAttachment()->toApi() : null,
             'type' => $this->getType(),
         ];
+
+        if ($this->getWabaHeader()) {
+            $result['waba_header'] = $this->getWabaHeader();
+        }
 
         if ($this->getWabaFooter()) {
             $result['waba_footer'] = $this->getWabaFooter();
@@ -469,6 +481,16 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     }
 
     /**
+     * @param string|null $wabaHeader
+     * @return TemplateModel
+     */
+    public function setWabaHeader(?string $wabaHeader): TemplateModel
+    {
+        $this->wabaHeader = $wabaHeader;
+        return $this;
+    }
+
+    /**
      * @param string|null $wabaFooter
      * @return TemplateModel
      */
@@ -520,6 +542,14 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
     public function getWabaLanguage(): ?string
     {
         return $this->wabaLanguage;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWabaHeader(): ?string
+    {
+        return $this->wabaHeader;
     }
 
     /**
