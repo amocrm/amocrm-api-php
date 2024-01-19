@@ -33,7 +33,7 @@ $task->setTaskTypeId(TaskModel::TASK_TYPE_ID_FOLLOW_UP)
     ->setCompleteTill(mktime(10, 0, 0, 10, 3, 2020))
     ->setEntityType(EntityTypesInterface::LEADS)
     ->setEntityId(1)
-    ->setDuration(30 * 60 * 60) //30 минут
+    ->setDuration(30 * 60) //30 минут
     ->setResponsibleUserId(123);
 $tasksCollection->add($task);
 
