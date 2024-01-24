@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Client;
 
+use AmoCRM\AmoCRM\EntitiesServices\Sources\WebsiteButtons;
 use AmoCRM\EntitiesServices\Currencies;
 use AmoCRM\EntitiesServices\Account;
 use AmoCRM\EntitiesServices\Calls;
@@ -396,6 +397,17 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Account($request);
+    }
+
+    /**
+     * @return WebsiteButtons
+     * @throws AmoCRMMissedTokenException
+     */
+    public function websiteButtons(): WebsiteButtons
+    {
+        $request = $this->buildRequest();
+
+        return new WebsiteButtons($request);
     }
 
     /**
