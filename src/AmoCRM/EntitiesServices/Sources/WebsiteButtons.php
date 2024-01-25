@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\EntitiesServices\Sources;
+namespace AmoCRM\EntitiesServices\Sources;
 
-use AmoCRM\AmoCRM\Collections\Sources\WebsiteButtonsCollection;
-use AmoCRM\AmoCRM\Models\Sources\WebsiteButtonModel;
+use AmoCRM\Collections\Sources\WebsiteButtonsCollection;
+use AmoCRM\Models\Sources\WebsiteButtonModel;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Models\Sources\WebsiteButtonCreateRequestModel;
+use AmoCRM\Models\Sources\WebsiteButtonCreateResponseModel;
+use AmoCRM\Models\Sources\WebsiteButtonUpdateRequestModel;
 
 /**
  * @method WebsiteButtonModel|null getOne($id, array $with = [])
@@ -21,10 +24,12 @@ class WebsiteButtons extends BaseEntity
 {
     use PageMethodsTrait;
 
+    private const ONLINECHAT_ENDPOINT = 'online_chat';
+
     /**
      * @var string
      */
-    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/website_buttons';
+    protected $method = 'api/v' . AmoCRMApiClient::API_VERSION . '/' . EntityTypesInterface::WEBSITE_BUTTONS;
 
     /**
      * @var string
@@ -42,6 +47,25 @@ class WebsiteButtons extends BaseEntity
      */
     protected function getEntitiesFromResponse(array $response): array
     {
-        return $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::BUTTONS] ?? [];
+        return $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::WEBSITE_BUTTONS] ?? [];
+    }
+
+    public function createAsync(WebsiteButtonCreateRequestModel $model): WebsiteButtonCreateResponseModel
+    {
+        $response = $this->request->post(parent::getMethod(), $model->toArray());
+
+        return WebsiteButtonCreateResponseModel::fromArray($response);
+    }
+
+    public function addOnlinechatAsync(int $id): void
+    {
+        $this->request->post(sprintf('%s/%d/%s', parent::getMethod(), $id, self::ONLINECHAT_ENDPOINT));
+    }
+
+    public function updateAsync(WebsiteButtonUpdateRequestModel $model): WebsiteButtonModel
+    {
+        $response = $this->request->patch(sprintf('%s/%d', parent::getMethod(), $model->getSourceId()), $model->toArray());
+
+        return WebsiteButtonModel::fromArray($response);
     }
 }

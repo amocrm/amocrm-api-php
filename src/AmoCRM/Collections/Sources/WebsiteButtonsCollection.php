@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Collections\Sources;
+namespace AmoCRM\Collections\Sources;
 
-use AmoCRM\AmoCRM\Models\Sources\WebsiteButtonModel;
+use AmoCRM\Models\Sources\WebsiteButtonModel;
 use AmoCRM\Collections\BaseApiCollection;
 use AmoCRM\Collections\Interfaces\HasPagesInterface;
 use AmoCRM\Collections\Traits\PagesTrait;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models\Sources;
+namespace AmoCRM\Models\Sources;
 
 use AmoCRM\Contracts\Support\Arrayable;
 use AmoCRM\Exceptions\NotAvailableForActionException;
