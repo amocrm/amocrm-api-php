@@ -10,20 +10,26 @@ use AmoCRM\Models\BaseApiModel;
 /**
  * Class WebsiteButtonCreateResponseModel
  *
- * @package AmoCRM\Models\WebsiteButtons
+ * @package AmoCRM\Models\Sources
  */
 class WebsiteButtonCreateResponseModel extends BaseApiModel
 {
     /**
-     * @var int $sourceId
+     * @var int
      */
     private $sourceId;
 
     /**
-     * @var array $trustedWebsites
+     * @var array
      */
     private $trustedWebsites;
 
+    /**
+     * WebsiteButtonCreateResponseModel constructor.
+     *
+     * @param int $sourceId
+     * @param array $trustedWebsites
+     */
     public function __construct(
         int $sourceId,
         array $trustedWebsites = []
@@ -32,21 +38,37 @@ class WebsiteButtonCreateResponseModel extends BaseApiModel
         $this->trustedWebsites = $trustedWebsites;
     }
 
+    /**
+     * @return int
+     */
     public function getSourceId(): int
     {
         return $this->sourceId;
     }
 
+    /**
+     * @param int $sourceId
+     *
+     * @return void
+     */
     public function setSourceId(int $sourceId): void
     {
         $this->sourceId = $sourceId;
     }
 
+    /**
+     * @return array
+     */
     public function getTrustedWebsites(): array
     {
         return $this->trustedWebsites;
     }
 
+    /**
+     * @param array $trustedWebsites
+     *
+     * @return void
+     */
     public function setTrustedWebsites(array $trustedWebsites): void
     {
         $this->trustedWebsites = $trustedWebsites;
@@ -65,6 +87,9 @@ class WebsiteButtonCreateResponseModel extends BaseApiModel
         );
     }
 
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         return [

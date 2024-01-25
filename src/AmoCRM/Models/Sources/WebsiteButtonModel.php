@@ -21,11 +21,6 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     private $accountId;
 
     /**
-     * @var int
-     */
-    private $buttonId;
-
-    /**
      * @var bool
      */
     private $isDuplicationControlEnabled;
@@ -36,14 +31,19 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     private $name;
 
     /**
-     * @var string|null
+     * @var int|null
      */
-    private $creationStatus;
+    private $buttonId;
 
     /**
      * @var int|null
      */
     private $pipelineId;
+
+    /**
+     * @var string|null
+     */
+    private $creationStatus;
 
     /**
      * @var string|null
@@ -60,11 +60,11 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     {
         return (new self())
             ->setAccountId((int)$button['account_id'])
-            ->setButtonId((int)$button['button_id'])
             ->setIsDuplicationControlEnabled((bool)$button['is_duplication_control_enabled'])
             ->setName((string)$button['name'])
-            ->setCreationStatus(!empty($button['creation_status']) ? $button['creation_status'] : null)
+            ->setButtonId((int)($button['button_id'] ?? 0) ?: null)
             ->setPipelineId(!empty($button['pipeline_id']) ? $button['pipeline_id'] : null)
+            ->setCreationStatus(!empty($button['creation_status']) ? $button['creation_status'] : null)
             ->setScript(!empty($button['script']) ? $button['script'] : null);
     }
 
@@ -126,19 +126,19 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getButtonId(): int
+    public function getButtonId(): ?int
     {
         return $this->buttonId;
     }
 
     /**
-     * @param int $buttonId
+     * @param int|null $buttonId
      *
      * @return WebsiteButtonModel
      */
-    public function setButtonId(int $buttonId): self
+    public function setButtonId(?int $buttonId): self
     {
         $this->buttonId = $buttonId;
 
