@@ -9,7 +9,7 @@ use AmoCRM\Models\BaseApiModel;
 /**
  * Class WebsiteButtonCreateRequestModel
  *
- * @package AmoCRM\Models\WebsiteButtons
+ * @package AmoCRM\Models\Sources
  */
 class WebsiteButtonCreateRequestModel extends BaseApiModel
 {
@@ -30,12 +30,12 @@ class WebsiteButtonCreateRequestModel extends BaseApiModel
 
     public function __construct(
         int $pipelineId,
-        bool $isUsedInApp = false,
-        array $trustedWebsites = []
+        array $trustedWebsites = [],
+        bool $isUsedInApp = false
     ) {
         $this->pipelineId = $pipelineId;
-        $this->isUsedInApp = $isUsedInApp;
         $this->trustedWebsites = $trustedWebsites;
+        $this->isUsedInApp = $isUsedInApp;
     }
 
     public function getPipelineId(): int

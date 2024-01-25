@@ -10,7 +10,7 @@ use AmoCRM\Models\BaseApiModel;
 /**
  * Class WebsiteButtonCreateResponseModel
  *
- * @package AmoCRM\Models\WebsiteButtons
+ * @package AmoCRM\Models\Sources
  */
 class WebsiteButtonCreateResponseModel extends BaseApiModel
 {
@@ -22,7 +22,7 @@ class WebsiteButtonCreateResponseModel extends BaseApiModel
     /**
      * @var array $trustedWebsites
      */
-    private array $trustedWebsites;
+    private $trustedWebsites;
 
     public function __construct(
         int $sourceId,
@@ -53,18 +53,16 @@ class WebsiteButtonCreateResponseModel extends BaseApiModel
     }
 
     /**
-     * @param array $WebsiteButtonCreateResponseModel
+     * @param array $websiteButtonCreateResponse
      *
      * @return WebsiteButtonCreateResponseModel
      */
     public static function fromArray(array $websiteButtonCreateResponse): WebsiteButtonCreateResponseModel
     {
-        $model = new WebsiteButtonCreateResponseModel(
+        return new WebsiteButtonCreateResponseModel(
             (int) ($websiteButtonCreateResponse['source_id'] ?? 0),
             (array) ($websiteButtonCreateResponse['trusted_websites'] ?? [])
         );
-
-        return $model;
     }
 
     public function toArray(): array

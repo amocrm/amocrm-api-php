@@ -20,7 +20,7 @@ class WebsiteButtonUpdateRequestModel extends BaseApiModel
     private $trustedWebsitesToAdd;
 
     /**
-     * @var int $trustedWebsitesToAdd
+     * @var int $sourceId
      */
     private $sourceId;
 
@@ -49,7 +49,7 @@ class WebsiteButtonUpdateRequestModel extends BaseApiModel
 
     public function setSourceId(int $sourceId): void
     {
-        $this->$sourceId = $sourceId;
+        $this->sourceId = $sourceId;
     }
 
     public function toArray(): array

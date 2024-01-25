@@ -16,37 +16,37 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     private const SCRIPTS = 'scripts';
 
     /**
-     * @var int
+     * @var int $accountId
      */
     private $accountId;
 
     /**
-     * @var int
-     */
-    private $buttonId;
-
-    /**
-     * @var bool
+     * @var bool $isDuplicationControlEnabled
      */
     private $isDuplicationControlEnabled;
 
     /**
-     * @var string
+     * @var string $name
      */
     private $name;
 
     /**
-     * @var string|null
+     * @var int|null $buttonId
      */
-    private $creationStatus;
+    private $buttonId;
 
     /**
-     * @var int|null
+     * @var int|null $pipelineId
      */
     private $pipelineId;
 
     /**
-     * @var string|null
+     * @var string|null $creationStatus
+     */
+    private $creationStatus;
+
+    /**
+     * @var string|null $script
      */
     private $script;
 
@@ -60,11 +60,11 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     {
         return (new self())
             ->setAccountId((int)$button['account_id'])
-            ->setButtonId((int)$button['button_id'])
             ->setIsDuplicationControlEnabled((bool)$button['is_duplication_control_enabled'])
             ->setName((string)$button['name'])
-            ->setCreationStatus(!empty($button['creation_status']) ? $button['creation_status'] : null)
+            ->setButtonId((int)($button['button_id'] ?? 0) ?: null)
             ->setPipelineId(!empty($button['pipeline_id']) ? $button['pipeline_id'] : null)
+            ->setCreationStatus(!empty($button['creation_status']) ? $button['creation_status'] : null)
             ->setScript(!empty($button['script']) ? $button['script'] : null);
     }
 
@@ -126,19 +126,19 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getButtonId(): int
+    public function getButtonId(): ?int
     {
         return $this->buttonId;
     }
 
     /**
-     * @param int $buttonId
+     * @param int|null $buttonId
      *
      * @return WebsiteButtonModel
      */
-    public function setButtonId(int $buttonId): self
+    public function setButtonId(?int $buttonId): self
     {
         $this->buttonId = $buttonId;
 

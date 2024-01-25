@@ -57,9 +57,9 @@ class WebsiteButtons extends BaseEntity
         return WebsiteButtonCreateResponseModel::fromArray($response);
     }
 
-    public function addOnlinechatAsync(int $id): void
+    public function addOnlinechatAsync(int $sourceId): void
     {
-        $this->request->post(sprintf('%s/%d/%s', parent::getMethod(), $id, self::ONLINECHAT_ENDPOINT));
+        $this->request->post(sprintf('%s/%d/%s', parent::getMethod(), $sourceId, self::ONLINECHAT_ENDPOINT));
     }
 
     public function updateAsync(WebsiteButtonUpdateRequestModel $model): WebsiteButtonModel
