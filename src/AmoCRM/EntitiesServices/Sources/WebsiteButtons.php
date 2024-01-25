@@ -52,7 +52,7 @@ class WebsiteButtons extends BaseEntity
 
     public function createAsync(WebsiteButtonCreateRequestModel $model): WebsiteButtonCreateResponseModel
     {
-        $response = $this->request->post(parent::getMethod(), $model->toArray());
+        $response = $this->request->post(parent::getMethod(), $model->toApi());
 
         return WebsiteButtonCreateResponseModel::fromArray($response);
     }
@@ -64,7 +64,7 @@ class WebsiteButtons extends BaseEntity
 
     public function updateAsync(WebsiteButtonUpdateRequestModel $model): WebsiteButtonModel
     {
-        $response = $this->request->patch(sprintf('%s/%d', parent::getMethod(), $model->getSourceId()), $model->toArray());
+        $response = $this->request->patch(sprintf('%s/%d', parent::getMethod(), $model->getSourceId()), $model->toApi());
 
         return WebsiteButtonModel::fromArray($response);
     }

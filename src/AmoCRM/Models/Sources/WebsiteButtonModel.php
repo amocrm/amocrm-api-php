@@ -16,37 +16,37 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     private const SCRIPTS = 'scripts';
 
     /**
-     * @var int $accountId
+     * @var int
      */
     private $accountId;
 
     /**
-     * @var bool $isDuplicationControlEnabled
+     * @var bool
      */
     private $isDuplicationControlEnabled;
 
     /**
-     * @var string $name
+     * @var string
      */
     private $name;
 
     /**
-     * @var int|null $buttonId
+     * @var int|null
      */
     private $buttonId;
 
     /**
-     * @var int|null $pipelineId
+     * @var int|null
      */
     private $pipelineId;
 
     /**
-     * @var string|null $creationStatus
+     * @var string|null
      */
     private $creationStatus;
 
     /**
-     * @var string|null $script
+     * @var string|null
      */
     private $script;
 
