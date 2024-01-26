@@ -21,6 +21,11 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     private $accountId;
 
     /**
+     * @var int
+     */
+    private $sourceId;
+
+    /**
      * @var bool
      */
     private $isDuplicationControlEnabled;
@@ -60,6 +65,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     {
         return (new self())
             ->setAccountId((int)$button['account_id'])
+            ->setSource((int)$button['source_id'])
             ->setIsDuplicationControlEnabled((bool)$button['is_duplication_control_enabled'])
             ->setName((string)$button['name'])
             ->setButtonId((int)($button['button_id'] ?? 0) ?: null)
@@ -75,6 +81,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     {
         return [
             'account_id' => $this->getAccountId(),
+            'source_id' => $this->getSourceId(),
             'button_id' => $this->getButtonId(),
             'is_duplication_control_enabled' => $this->isDuplicationControlEnabled(),
             'name' => $this->getName(),
@@ -121,6 +128,26 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     public function setAccountId(int $accountId): self
     {
         $this->accountId = $accountId;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSourceId(): int
+    {
+        return $this->sourceId;
+    }
+
+    /**
+     * @param int $sourceId
+     *
+     * @return WebsiteButtonModel
+     */
+    public function setSource(int $sourceId): self
+    {
+        $this->sourceId = $sourceId;
 
         return $this;
     }
