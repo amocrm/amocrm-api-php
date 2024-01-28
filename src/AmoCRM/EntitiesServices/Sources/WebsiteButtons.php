@@ -10,6 +10,9 @@ use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\EntitiesServices\BaseEntity;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMApiNoContentException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Sources\WebsiteButtonCreateRequestModel;
@@ -52,19 +55,33 @@ class WebsiteButtons extends BaseEntity
 
     public function createAsync(WebsiteButtonCreateRequestModel $model): WebsiteButtonCreateResponseModel
     {
-        $response = $this->request->post(parent::getMethod(), $model->toApi());
+        $response = $this->request->post($this->getMethod(), $model->toApi());
 
         return WebsiteButtonCreateResponseModel::fromArray($response);
     }
 
-    public function addOnlinechatAsync(int $sourceId): void
+    /**
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiNoContentException
+     */
+    public function addOnlineChatAsync(int $sourceId): void
     {
-        $this->request->post(sprintf('%s/%d/%s', parent::getMethod(), $sourceId, self::ONLINECHAT_ENDPOINT));
+        $this->request->post(
+            sprintf('%s/%d/%s', $this->getMethod(), $sourceId, self::ONLINE_CHAT_ENDPOINT)
+        );
     }
 
+    /**
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiNoContentException
+     */
     public function updateAsync(WebsiteButtonUpdateRequestModel $model): WebsiteButtonModel
     {
-        $response = $this->request->patch(sprintf('%s/%d', parent::getMethod(), $model->getSourceId()), $model->toApi());
+        $response = $this->request->patch(
+            sprintf('%s/%d', $this->getMethod(), $model->getSourceId()), $model->toApi()
+        );
 
         return WebsiteButtonModel::fromArray($response);
     }
