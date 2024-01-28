@@ -20,7 +20,7 @@ class PayerCustomFieldsTypesEnums
     public static function isValid(string $type): bool
     {
         return in_array(
-            $type, 
+            $type,
             [
                 self::TYPE_LEGAL,
                 self::TYPE_INDIVIDUAL
