@@ -199,6 +199,7 @@ $leadsService = $apiClient->leads();
 | getRequest           | Голые запросы                 |
 | files                | Файлы                         |
 | entityFiles          | Связь файлов с сущностями     |
+| websiteButtons       | Кнопка на сайт                |
 
 #### Для большинства сервисов есть базовый набор методов:
 
@@ -518,6 +519,45 @@ $leadsService = $apiClient->leads();
    2. Результатом выполнения является модель FileModel
     ```php
     uploadOne(FileUploadModel $model);
+    ```
+
+#### Методы, доступные в сервисе ```websiteButtons```
+1. getOne - получить 1 сущность:
+   1. id (int|string) - id источника
+   2. with (array) - массив параметров with, которые поддерживает модель сервиса
+   3. Результатом выполнения будет модель сущности ```WebsiteButtonModel```
+    ```php
+    getOne($id, array $with => []);
+    ```
+2. get - получить несколько сущностей:
+   1. filter (BaseEntityFilter) - фильтр для сущности
+   2. with (array) - массив параметров with, которые поддерживает модель сервиса
+   3. Результатом выполнения будет коллекция ```WebsiteButtonsCollection``` из сущностей ```WebsiteButtonModel```
+    ```php
+    get(BaseEntityFilter $filter = null, array $with = []);
+    ```
+3. createAsync - добавить источник типа "кнопка на сайт"
+   1. model (WebsiteButtonCreateRequestModel) - модель со свойствами:
+      1. pipelineId (int) - id воронки
+      2. trustedWebsites (array) - список доверенных адресов на которых будет размещена "кнопка на сайт". Например amocrm.ru, https://amocrm.ru
+      3. isUsedInApp (true|false) - true, если кнопка встраивается в приложение, а не на сайт
+   2. Результатом выполнения будет модель ```WebsiteButtonCreateResponseModel```
+    ```php
+   createAsync(WebsiteButtonCreateRequestModel $model);
+    ```
+4. updateAsync - добавить дополнительные доверенные адреса
+   1. model (WebsiteButtonUpdateRequestModel) - модель со свойствами:
+      1. sourceId (int) - id источника
+      2. trustedWebsitesToAdd (array) - список доверенных адресов на которых будет размещена "кнопка на сайт"
+   2. Результатом выполнения будет модель ```WebsiteButtonModel```
+    ```php
+   updateAsync(WebsiteButtonUpdateRequestModel $model);
+    ```
+5. addOnlineChatAsync - добавить канал связи "Онлайн-чат" к кнопке на сайт
+   1. sourceId - id источника
+   2. Результатом выполнения будет void значение
+    ```php
+   addOnlineChatAsync(int $sourceId);
     ```
 
 
