@@ -68,7 +68,7 @@ class WebsiteButtons extends BaseEntity
     public function addOnlineChatAsync(int $sourceId): void
     {
         $this->request->post(
-            sprintf('%s/%d/%s', $this->getMethod(), $sourceId, self::ONLINE_CHAT_ENDPOINT)
+            sprintf('%s/%d/%s', $this->getMethod(), $sourceId, self::ONLINECHAT_ENDPOINT)
         );
     }
 
@@ -80,7 +80,8 @@ class WebsiteButtons extends BaseEntity
     public function updateAsync(WebsiteButtonUpdateRequestModel $model): WebsiteButtonModel
     {
         $response = $this->request->patch(
-            sprintf('%s/%d', $this->getMethod(), $model->getSourceId()), $model->toApi()
+            sprintf('%s/%d', $this->getMethod(), $model->getSourceId()),
+            $model->toApi()
         );
 
         return WebsiteButtonModel::fromArray($response);
