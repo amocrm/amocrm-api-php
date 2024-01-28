@@ -52,6 +52,7 @@ interface EntityTypesInterface
     public const SUPPLIERS_CATALOG_TYPE_STRING = 'suppliers';
 
     public const CHAT_TEMPLATES = 'chat_templates';
+    public const WEBSITE_BUTTONS = 'website_buttons';
 
     public const MIN_CATALOG_ID = 1000;
 }

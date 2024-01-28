@@ -32,6 +32,7 @@ use AmoCRM\EntitiesServices\Products;
 use AmoCRM\EntitiesServices\Roles;
 use AmoCRM\EntitiesServices\Segments;
 use AmoCRM\EntitiesServices\ShortLinks;
+use AmoCRM\EntitiesServices\Sources\WebsiteButtons;
 use AmoCRM\EntitiesServices\Talks;
 use AmoCRM\EntitiesServices\Tasks;
 use AmoCRM\EntitiesServices\Unsorted;
@@ -371,6 +372,17 @@ class AmoCRMApiClient
         $request = $this->buildRequest();
 
         return new Account($request);
+    }
+
+    /**
+     * @return WebsiteButtons
+     * @throws AmoCRMMissedTokenException
+     */
+    public function websiteButtons(): WebsiteButtons
+    {
+        $request = $this->buildRequest();
+
+        return new WebsiteButtons($request);
     }
 
     /**
