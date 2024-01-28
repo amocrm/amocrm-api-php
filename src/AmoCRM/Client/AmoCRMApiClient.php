@@ -82,6 +82,11 @@ class AmoCRMApiClient
     private $contextUserId;
 
     /**
+     * @var string|null
+     */
+    private $userAgent;
+
+    /**
      * AmoCRMApiClient constructor.
      * @param string $clientId
      * @param string $clientSecret
@@ -127,6 +132,18 @@ class AmoCRMApiClient
         $apiClient->contextUserId = $contextUserId;
 
         return $apiClient;
+    }
+
+    public function setUserAgent(?string $userAgent): self
+    {
+        $this->userAgent = $userAgent;
+
+        return $this;
+    }
+
+    public function getUserAgent(): ?string
+    {
+        return $this->userAgent;
     }
 
     /**
@@ -188,7 +205,12 @@ class AmoCRMApiClient
             }
         );
 
-        return new AmoCRMApiRequest($this->getAccessToken(), $oAuthClient, $this->getContextUserId());
+        return new AmoCRMApiRequest(
+            $this->getAccessToken(),
+            $oAuthClient,
+            $this->getContextUserId(),
+            $this->getUserAgent()
+        );
     }
 
     /**

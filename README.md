@@ -113,6 +113,14 @@ $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redir
 $apiClientWithContext = $apiClient->withContextUserId(123);
 ```
 
+### Установка кастомного User Agent
+Начиная с версии 1.5.0 появилась возможность указать свой User Agent для запросов с библиотекой.
+
+```php
+$apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+$apiClient = $apiClient->setUserAgnet('App Name');
+```
+
 
 ## Подход к работе с библиотекой
 

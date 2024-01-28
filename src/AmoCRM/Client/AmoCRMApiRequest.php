@@ -36,7 +36,7 @@ class AmoCRMApiRequest
     public const CONNECT_TIMEOUT = 5;
     public const REQUEST_TIMEOUT = 20;
     //TODO Do not forget to change this on each release
-    public const LIBRARY_VERSION = '1.4.0';
+    public const LIBRARY_VERSION = '1.5.0';
     public const USER_AGENT = 'amoCRM-API-Library/' . self::LIBRARY_VERSION;
 
     public const SUCCESS_STATUSES = [
@@ -104,22 +104,28 @@ class AmoCRMApiRequest
     /** @var int|null */
     private $contextUserId = null;
 
+    /** @var string|null */
+    private $userAgent = null;
+
     /**
      * AmoCRMApiRequest constructor.
      *
      * @param AccessTokenInterface $accessToken
      * @param AmoCRMOAuth $oAuthClient
      * @param int|null $contextUserId
+     * @param string|null $userAgent
      */
     public function __construct(
         AccessTokenInterface $accessToken,
         AmoCRMOAuth $oAuthClient,
-        ?int $contextUserId
+        ?int $contextUserId,
+        ?string $userAgent
     ) {
         $this->accessToken = $accessToken;
         $this->oAuthClient = $oAuthClient;
         $this->httpClient = $oAuthClient->getHttpClient();
         $this->contextUserId = $contextUserId;
+        $this->userAgent = $userAgent;
     }
 
     /**
@@ -635,7 +641,7 @@ class AmoCRMApiRequest
     {
         $headers = $this->oAuthClient->getAuthorizationHeaders($this->accessToken);
 
-        $headers['User-Agent'] = self::USER_AGENT;
+        $headers['User-Agent'] = $this->getUserAgent();
         $headers['X-Library-Version'] = self::LIBRARY_VERSION;
         $headers['X-Client-UUID'] = $this->oAuthClient->getOAuthProvider()->getClientId();
 
@@ -726,5 +732,12 @@ $.ajax({
     private function getUrl(): string
     {
         return !is_null($this->getRequestDomain()) ? $this->getRequestDomain() . '/' : $this->oAuthClient->getAccountUrl();
+    }
+
+    public function getUserAgent(): string
+    {
+        return !empty($this->userAgent)
+            ? sprintf('%s (%s)', $this->userAgent, self::USER_AGENT)
+            : self::USER_AGENT;
     }
 }
