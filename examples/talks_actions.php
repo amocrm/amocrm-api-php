@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use AmoCRM\Models\Talks\TalkCloseActionModel;
 use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Filters\Talks\TalksCountFilter;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 include_once __DIR__ . '/bootstrap.php';
@@ -30,6 +31,15 @@ $talksService = $apiClient->talks();
 
 try {
     $talk = $talksService->getOne('114');
+} catch (AmoCRMApiException $exception) {
+    printError($exception);
+    die;
+}
+
+/** Получение количества бесед с непрочитанными сообщениями */
+try {
+    $filter = new TalksCountFilter();
+    $talksCount = $talksService->count($filter);
 } catch (AmoCRMApiException $exception) {
     printError($exception);
     die;
