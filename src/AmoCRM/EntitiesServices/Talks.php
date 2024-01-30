@@ -13,6 +13,7 @@ use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Filters\BaseEntityFilter;
+use AmoCRM\Filters\Talks\TalksCountFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\BaseApiModel;
 
@@ -21,6 +22,7 @@ use AmoCRM\Models\BaseApiModel;
  */
 class Talks extends BaseEntity
 {
+    private const TALKS_COUNT_ENDPOINT = 'count';
     public const ITEM_CLASS = TalkModel::class;
 
     /** @var string */
@@ -39,6 +41,24 @@ class Talks extends BaseEntity
     public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         throw new NotAvailableForActionException('Method not available for this entity');
+    }
+
+    /**
+     * @param TalksCountFilter $filter
+     *
+     * @return int
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function count(TalksCountFilter $filter): int
+    {
+        $queryParams = $filter->buildFilter();
+        $response = $this->request->get(
+            sprintf('%s/%s', $this->getMethod(), self::TALKS_COUNT_ENDPOINT),
+            $queryParams
+        );
+
+        return (int) ($response['count'] ?? 0);
     }
 
     /**
