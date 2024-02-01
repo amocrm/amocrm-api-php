@@ -201,6 +201,7 @@ class AccountModel extends BaseApiModel
 
     /**
      * @return null|int
+     * @deprecated
      */
     public function getCreatedBy(): ?int
     {
@@ -211,6 +212,7 @@ class AccountModel extends BaseApiModel
      * @param null|int $userId
      *
      * @return self
+     * @deprecated
      */
     public function setCreatedBy(?int $userId): self
     {
@@ -221,6 +223,7 @@ class AccountModel extends BaseApiModel
 
     /**
      * @return null|int
+     * @deprecated
      */
     public function getUpdatedBy(): ?int
     {
@@ -231,6 +234,7 @@ class AccountModel extends BaseApiModel
      * @param null|int $userId
      *
      * @return self
+     * @deprecated
      */
     public function setUpdatedBy(?int $userId): self
     {
@@ -241,6 +245,7 @@ class AccountModel extends BaseApiModel
 
     /**
      * @return int
+     * @deprecated
      */
     public function getCreatedAt(): int
     {
@@ -251,6 +256,7 @@ class AccountModel extends BaseApiModel
      * @param int $timestamp
      *
      * @return self
+     * @deprecated
      */
     public function setCreatedAt(int $timestamp): self
     {
@@ -261,6 +267,7 @@ class AccountModel extends BaseApiModel
 
     /**
      * @return int
+     * @deprecated
      */
     public function getUpdatedAt(): int
     {
@@ -271,6 +278,7 @@ class AccountModel extends BaseApiModel
      * @param int $timestamp
      *
      * @return self
+     * @deprecated
      */
     public function setUpdatedAt(int $timestamp): self
     {
