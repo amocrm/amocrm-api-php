@@ -94,6 +94,16 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     public const DIRECTOR = 'director';
 
     /**
+     * @var string Номер телефона
+     */
+    public const PHONE = 'phone';
+
+    /**
+     * @var string Адрес электронной почты
+     */
+    public const EMAIL = 'email';
+
+    /**
      * @var string Тип плательщика (юр. лицо / физ. лицо)
      */
     public const TYPE = 'type';
@@ -176,6 +186,16 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /**
      * @var string|null
      */
+    protected $phone;
+
+    /**
+     * @var string|null
+     */
+    protected $email;
+
+    /**
+     * @var string|null
+     */
     protected $director;
 
     /**
@@ -210,6 +230,8 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             ->setMfo($val[self::MFO] ?? null)
             ->setBankAccountNumber($val[self::BANK_ACCOUNT_NUMBER] ?? null)
             ->setOked($val[self::OKED] ?? null)
+            ->setPhone($val[self::PHONE] ?? null)
+            ->setEmail($val[self::EMAIL] ?? null)
             ->setDirector($val[self::DIRECTOR] ?? null)
             ->setType($val[self::TYPE] ?? null);
 
@@ -519,6 +541,46 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
     /**
      * @return string|null
      */
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string|null $phone
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setPhone(?string $phone): PayerCustomFieldValueModel
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     *
+     * @return PayerCustomFieldValueModel
+     */
+    public function setEmail(?string $email): PayerCustomFieldValueModel
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getDirector(): ?string
     {
         return $this->director;
@@ -577,6 +639,8 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
             self::MFO => $this->getMfo(),
             self::BANK_ACCOUNT_NUMBER => $this->getBankAccountNumber(),
             self::OKED => $this->getOked(),
+            self::PHONE => $this->getPhone(),
+            self::EMAIL => $this->getEmail(),
             self::DIRECTOR => $this->getDirector(),
         ];
 
