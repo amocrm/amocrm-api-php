@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AmoCRM\Models\Sources;
 
 use AmoCRM\Models\BaseApiModel;
+use InvalidArgumentException;
 
 /**
  * Class WebsiteButtonUpdateRequestModel
@@ -24,6 +25,11 @@ class WebsiteButtonUpdateRequestModel extends BaseApiModel
     private $sourceId;
 
     /**
+     * @var string|null
+     */
+    private $name;
+
+    /**
      * WebsiteButtonUpdateRequestModel constructor.
      *
      * @param array $trustedWebsitesToAdd
@@ -31,10 +37,12 @@ class WebsiteButtonUpdateRequestModel extends BaseApiModel
      */
     public function __construct(
         array $trustedWebsitesToAdd,
-        int $sourceId
+        int $sourceId,
+        ?string $name = null
     ) {
         $this->trustedWebsitesToAdd = $trustedWebsitesToAdd;
         $this->sourceId = $sourceId;
+        $this->name = $name;
     }
 
     /**
@@ -74,24 +82,57 @@ class WebsiteButtonUpdateRequestModel extends BaseApiModel
     }
 
     /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     *
+     * @return void
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
     {
-        return [
-            'trusted_websites' => [
+        $atttributes = [];
+
+        if (!empty($this->getTrustedWebsitesToAdd())) {
+            $atttributes['trusted_websites'] = [
                 'add' => $this->getTrustedWebsitesToAdd(),
-            ],
-        ];
+            ];
+        }
+
+        if (!empty($this->getName())) {
+            $atttributes['name'] = $this->getName();
+        }
+
+        return $atttributes;
     }
 
     /**
      * @param string|null $requestId
      *
      * @return array
+     * @throws InvalidArgumentException
      */
     public function toApi(?string $requestId = '0'): array
     {
-        return $this->toArray();
+        $data = $this->toArray();
+
+        if (empty($data)) {
+            throw new InvalidArgumentException('No atttributes to update given');
+        }
+
+        return $data;
     }
 }
