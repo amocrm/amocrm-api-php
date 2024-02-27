@@ -104,19 +104,17 @@ class WebsiteButtonUpdateRequestModel extends BaseApiModel
      */
     public function toArray(): array
     {
-        $atttributes = [];
+        $attributes = [];
 
         if (!empty($this->getTrustedWebsitesToAdd())) {
-            $atttributes['trusted_websites'] = [
-                'add' => $this->getTrustedWebsitesToAdd(),
-            ];
+            $attributes['trusted_websites']['add'] = $this->getTrustedWebsitesToAdd();
         }
 
         if (!empty($this->getName())) {
-            $atttributes['name'] = $this->getName();
+            $attributes['name'] = $this->getName();
         }
 
-        return $atttributes;
+        return $attributes;
     }
 
     /**
@@ -130,7 +128,7 @@ class WebsiteButtonUpdateRequestModel extends BaseApiModel
         $data = $this->toArray();
 
         if (empty($data)) {
-            throw new InvalidArgumentException('No atttributes to update given');
+            throw new InvalidArgumentException('No attributes to update given');
         }
 
         return $data;
