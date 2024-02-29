@@ -29,6 +29,11 @@ class WebsiteButtonCreateRequestModel extends BaseApiModel
     private $trustedWebsites;
 
     /**
+     * @var string|null $name
+     */
+    private $name;
+
+    /**
      * WebsiteButtonCreateRequestModel constructor.
      *
      * @param int $pipelineId
@@ -38,11 +43,13 @@ class WebsiteButtonCreateRequestModel extends BaseApiModel
     public function __construct(
         int $pipelineId,
         array $trustedWebsites = [],
-        bool $isUsedInApp = false
+        bool $isUsedInApp = false,
+        ?string $name = null
     ) {
         $this->pipelineId = $pipelineId;
         $this->trustedWebsites = $trustedWebsites;
         $this->isUsedInApp = $isUsedInApp;
+        $this->name = $name;
     }
 
     /**
@@ -100,15 +107,39 @@ class WebsiteButtonCreateRequestModel extends BaseApiModel
     }
 
     /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     *
+     * @return void
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
     {
-        return [
+        $attributes = [
             'pipeline_id' => $this->getPipelineId(),
             'is_used_in_app' => $this->isUsedInApp(),
             'trusted_websites' => $this->getTrustedWebsites(),
         ];
+
+        if (!empty($this->getName())) {
+            $attributes['name'] = $this->getName();
+        }
+
+        return $attributes;
     }
 
     /**
