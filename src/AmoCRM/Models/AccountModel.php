@@ -446,7 +446,8 @@ class AccountModel extends BaseApiModel
 
         if (isset($account[self::INVOICES_SETTINGS])) {
             $accountModel->setInvoicesSettings(new InvoicesSettings(
-                $account[self::INVOICES_SETTINGS]['lang'] ?? null
+                $account[self::INVOICES_SETTINGS]['lang'] ?? null,
+                $account[self::INVOICES_SETTINGS]['invoices_catalog_id'] ?? null
             ));
         }
 
