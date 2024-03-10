@@ -70,7 +70,7 @@ class AmoCRMOAuth
     /**
      * @var null|callable
      */
-    private $accessTokenRefreshCallback = null;
+    private $accessTokenRefreshCallback;
 
     /**
      * @var string
@@ -89,11 +89,12 @@ class AmoCRMOAuth
 
     /**
      * AmoCRMOAuth constructor.
-     * @param string $clientId
-     * @param string $clientSecret
+     *
+     * @param string|null $clientId
+     * @param string|null $clientSecret
      * @param null|string $redirectUri
      */
-    public function __construct(string $clientId, string $clientSecret, ?string $redirectUri)
+    public function __construct(?string $clientId, ?string $clientSecret, ?string $redirectUri)
     {
         $this->oauthProvider = new AmoCRM(
             [
@@ -313,15 +314,21 @@ class AmoCRMOAuth
         $mode = isset($options['mode']) && in_array($options['mode'], ['popup', 'post_message'])
             ? $options['mode']
             : 'post_message';
+
         try {
             $state = $options['state'] ?? bin2hex(random_bytes(10));
         } catch (Exception $exception) {
             $state = rand(1, 100);
         }
 
+        $mainClassName = isset($options['is_kommo']) && $options['is_kommo'] ? 'kommo_oauth' : 'amocrm_oauth';
+        $scriptPath = isset($options['is_kommo']) && $options['is_kommo']
+            ? 'https://www.kommo.com/auth/button.min.js'
+            : 'https://www.amocrm.ru/auth/button.min.js';
+
         return '<div>
                 <script
-                    class="amocrm_oauth"
+                    class="' . $mainClassName . '"
                     charset="utf-8"
                     data-client-id="' . $this->oauthProvider->getClientId() . '"
                     data-title="' . $title . '"
@@ -331,7 +338,7 @@ class AmoCRMOAuth
                     data-state="' . $state . '"
                     data-error-callback="' . $errorCallback . '"
                     data-mode="' . $mode . '"
-                    src="https://www.amocrm.ru/auth/button.min.js"
+                    src="' . $scriptPath . '"
                 ></script>
         </div>';
     }
@@ -464,8 +471,8 @@ class AmoCRMOAuth
             new SignedWith($signer, $key),
             // Проверим наш ли адресат
             new PermittedFor($clientBaseUri),
-            // Проверка жизни токена, с 4.2 deprecated use LooseValidAt
-            new ValidAt(FrozenClock::fromUTC()),
+            // Проверка жизни токена
+            new Constraint\LooseValidAt(FrozenClock::fromUTC()),
         ];
 
         $configuration = Configuration::forSymmetricSigner($signer, $key);

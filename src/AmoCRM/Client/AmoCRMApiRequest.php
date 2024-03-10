@@ -36,7 +36,7 @@ class AmoCRMApiRequest
     public const CONNECT_TIMEOUT = 5;
     public const REQUEST_TIMEOUT = 20;
     //TODO Do not forget to change this on each release
-    public const LIBRARY_VERSION = '1.5.1';
+    public const LIBRARY_VERSION = '1.6.0';
     public const USER_AGENT = 'amoCRM-API-Library/' . self::LIBRARY_VERSION;
 
     public const SUCCESS_STATUSES = [
@@ -132,8 +132,12 @@ class AmoCRMApiRequest
      * Обновляем в библиотеке oAuth access токен по refresh
      * @throws AmoCRMoAuthApiException
      */
-    private function refreshAccessToken()
+    private function refreshAccessToken(): void
     {
+        if ($this->accessToken instanceof LongLivedAccessToken) {
+            throw new AmoCRMoAuthApiException('Can not update LongLivedAccessToken');
+        }
+
         $newAccessToken = $this->oAuthClient->getAccessTokenByRefreshToken($this->accessToken);
         $this->accessToken = $newAccessToken;
     }
@@ -162,7 +166,7 @@ class AmoCRMApiRequest
         bool $needToRefresh = false,
         bool $isFullPath = false
     ): array {
-        if ($this->accessToken->hasExpired()) {
+        if ($this->isAccessTokenNeedToBeRefreshed()) {
             $needToRefresh = true;
         }
 
@@ -216,7 +220,7 @@ class AmoCRMApiRequest
         try {
             $response = $this->parseResponse($response);
         } catch (AmoCRMoAuthApiException $e) {
-            if ($needToRefresh) {
+            if ($needToRefresh || $this->accessToken instanceof LongLivedAccessToken) {
                 throw $e;
             }
 
@@ -250,7 +254,7 @@ class AmoCRMApiRequest
         bool $needToRefresh = false,
         bool $isFullPath = false
     ): array {
-        if ($this->accessToken->hasExpired()) {
+        if ($this->isAccessTokenNeedToBeRefreshed()) {
             $needToRefresh = true;
         }
 
@@ -304,7 +308,7 @@ class AmoCRMApiRequest
         try {
             $response = $this->parseResponse($response);
         } catch (AmoCRMoAuthApiException $e) {
-            if ($needToRefresh) {
+            if ($needToRefresh || $this->accessToken instanceof LongLivedAccessToken) {
                 throw $e;
             }
 
@@ -332,7 +336,7 @@ class AmoCRMApiRequest
         array $headers = [],
         bool $needToRefresh = false
     ): array {
-        if ($this->accessToken->hasExpired()) {
+        if ($this->isAccessTokenNeedToBeRefreshed()) {
             $needToRefresh = true;
         }
 
@@ -379,7 +383,7 @@ class AmoCRMApiRequest
         try {
             $response = $this->parseResponse($response);
         } catch (AmoCRMoAuthApiException $e) {
-            if ($needToRefresh) {
+            if ($needToRefresh || $this->accessToken instanceof LongLivedAccessToken) {
                 throw $e;
             }
 
@@ -406,7 +410,7 @@ class AmoCRMApiRequest
         array $headers = [],
         bool $needToRefresh = false
     ): array {
-        if ($this->accessToken->hasExpired()) {
+        if ($this->isAccessTokenNeedToBeRefreshed()) {
             $needToRefresh = true;
         }
 
@@ -453,7 +457,7 @@ class AmoCRMApiRequest
         try {
             $response = $this->parseResponse($response);
         } catch (AmoCRMoAuthApiException $e) {
-            if ($needToRefresh) {
+            if ($needToRefresh || $this->accessToken instanceof LongLivedAccessToken) {
                 throw $e;
             }
 
@@ -480,7 +484,7 @@ class AmoCRMApiRequest
         array $headers = [],
         bool $needToRefresh = false
     ): array {
-        if ($this->accessToken->hasExpired()) {
+        if ($this->isAccessTokenNeedToBeRefreshed()) {
             $needToRefresh = true;
         }
 
@@ -532,7 +536,7 @@ class AmoCRMApiRequest
         try {
             $response = $this->parseResponse($response);
         } catch (AmoCRMoAuthApiException $e) {
-            if ($needToRefresh) {
+            if ($needToRefresh || $this->accessToken instanceof LongLivedAccessToken) {
                 throw $e;
             }
 
@@ -739,5 +743,10 @@ $.ajax({
         return !empty($this->userAgent)
             ? sprintf('%s (%s)', $this->userAgent, self::USER_AGENT)
             : self::USER_AGENT;
+    }
+
+    private function isAccessTokenNeedToBeRefreshed(): bool
+    {
+        return !$this->accessToken instanceof LongLivedAccessToken && $this->accessToken->hasExpired();
     }
 }
