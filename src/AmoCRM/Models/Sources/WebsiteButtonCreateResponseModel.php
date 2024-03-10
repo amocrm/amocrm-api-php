@@ -25,17 +25,25 @@ class WebsiteButtonCreateResponseModel extends BaseApiModel
     private $trustedWebsites;
 
     /**
+     * @var string|null
+     */
+    private $name;
+
+    /**
      * WebsiteButtonCreateResponseModel constructor.
      *
      * @param int $sourceId
      * @param array $trustedWebsites
+     * @param string|null $name
      */
     public function __construct(
         int $sourceId,
-        array $trustedWebsites = []
+        array $trustedWebsites = [],
+        ?string $name = null
     ) {
         $this->sourceId = $sourceId;
         $this->trustedWebsites = $trustedWebsites;
+        $this->name = $name;
     }
 
     /**
@@ -75,6 +83,24 @@ class WebsiteButtonCreateResponseModel extends BaseApiModel
     }
 
     /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     *
+     * @return void
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
      * @param array $websiteButtonCreateResponse
      *
      * @return WebsiteButtonCreateResponseModel
@@ -83,7 +109,8 @@ class WebsiteButtonCreateResponseModel extends BaseApiModel
     {
         return new WebsiteButtonCreateResponseModel(
             (int) ($websiteButtonCreateResponse['source_id'] ?? 0),
-            (array) ($websiteButtonCreateResponse['trusted_websites'] ?? [])
+            (array) ($websiteButtonCreateResponse['trusted_websites'] ?? []),
+            (string) ($websiteButtonCreateResponse['name'] ?? '') ?: null
         );
     }
 
@@ -95,6 +122,7 @@ class WebsiteButtonCreateResponseModel extends BaseApiModel
         return [
             'source_id' => $this->getSourceId(),
             'trusted_websites' => $this->getTrustedWebsites(),
+            'name' => $this->getName(),
         ];
     }
 
