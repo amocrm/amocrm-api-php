@@ -31,7 +31,7 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Validation\Constraint;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use Lcobucci\JWT\Validation\Constraint\ValidAt;
+use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\ConstraintViolation;
 use League\OAuth2\Client\Grant\AuthorizationCode;
 use League\OAuth2\Client\Grant\RefreshToken;
@@ -472,7 +472,7 @@ class AmoCRMOAuth
             // Проверим наш ли адресат
             new PermittedFor($clientBaseUri),
             // Проверка жизни токена
-            new Constraint\LooseValidAt(FrozenClock::fromUTC()),
+            new LooseValidAt(FrozenClock::fromUTC()),
         ];
 
         $configuration = Configuration::forSymmetricSigner($signer, $key);
@@ -489,7 +489,7 @@ class AmoCRMOAuth
                     throw DisposableTokenVerificationFailedException::create();
                 case $constraint instanceof PermittedFor:
                     throw DisposableTokenInvalidDestinationException::create();
-                case $constraint instanceof ValidAt:
+                case $constraint instanceof LooseValidAt:
                     throw DisposableTokenExpiredException::create();
             }
         }
@@ -519,7 +519,7 @@ class AmoCRMOAuth
             // Проверка подписи
             new SignedWith($signer, $key),
             // Проверка жизни токена, с 4.2 deprecated use LooseValidAt
-            new ValidAt(FrozenClock::fromUTC()),
+            new LooseValidAt(FrozenClock::fromUTC()),
         ];
 
         if ($receiverPath !== null) {
@@ -542,7 +542,7 @@ class AmoCRMOAuth
                     throw DisposableTokenVerificationFailedException::create();
                 case $constraint instanceof PermittedFor:
                     throw DisposableTokenInvalidDestinationException::create();
-                case $constraint instanceof ValidAt:
+                case $constraint instanceof LooseValidAt:
                     throw DisposableTokenExpiredException::create();
             }
         }
