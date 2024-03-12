@@ -11,10 +11,17 @@ class InvoicesSettings implements Arrayable
      */
     protected $lang;
 
+    /**
+     * @var int|null
+     */
+    protected $invoicesCatalogId;
+
     public function __construct(
-        ?string $lang
+        ?string $lang,
+        ?int $invoicesCatalogId
     ) {
         $this->lang = $lang;
+        $this->invoicesCatalogId = $invoicesCatalogId;
     }
 
     /**
@@ -24,6 +31,7 @@ class InvoicesSettings implements Arrayable
     {
         return [
             'lang' => $this->getLang(),
+            'invoices_catalog_id' => $this->getInvoicesCatalogId(),
         ];
     }
 
@@ -33,5 +41,13 @@ class InvoicesSettings implements Arrayable
     public function getLang(): ?string
     {
         return $this->lang;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getInvoicesCatalogId(): ?int
+    {
+        return $this->invoicesCatalogId;
     }
 }
