@@ -162,12 +162,7 @@ class EventsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setCreatedAt($createdAt)
     {
-        //todo support for range filter
-        if (!is_array($createdAt)) {
-            $createdAt = [$createdAt];
-        }
-
-        $this->createdAt = $createdAt;
+        $this->createdAt = $this->parseIntOrIntRangeFilter($createdAt);
 
         return $this;
     }
@@ -242,7 +237,7 @@ class EventsFilter extends BaseEntityFilter implements HasPagesInterface
         }
 
         if (!is_null($this->getCreatedAt())) {
-            $filter['filter']['created_at'] = implode(',', $this->getCreatedAt());
+            $filter['filter']['created_at'] = $this->getCreatedAt();
         }
 
         if (!is_null($this->getEntityIds())) {
