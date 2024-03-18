@@ -154,6 +154,10 @@ class CatalogElements extends BaseEntityIdEntity implements HasLinkMethodInterfa
         if (isset($entity['catalog_id'])) {
             $apiModel->setCatalogId($entity['catalog_id']);
         }
+
+        if (isset($entity['invoice_link'])) {
+            $apiModel->setInvoiceLink($entity['invoice_link']);
+        }
     }
 
 
