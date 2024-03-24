@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models;
 
+use AmoCRM\AmoCRM\Models\Traits\MutateTagsTrait;
 use AmoCRM\Collections\SocialProfiles\SocialProfilesCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -28,6 +29,7 @@ class ContactModel extends BaseApiModel implements
 {
     use RequestIdTrait;
     use GetLinkTrait;
+    use MutateTagsTrait;
 
     public const LEADS = 'leads';
     public const CUSTOMERS = 'customers';
@@ -713,6 +715,11 @@ class ContactModel extends BaseApiModel implements
 
         if (!is_null($this->getCustomFieldsValues())) {
             $result['custom_fields_values'] = $this->getCustomFieldsValues()->toApi();
+        }
+
+        if (!is_null($this->getTagsToAdd()) || !is_null($this->getTagsToDelete())) {
+            $result = $this->mutateTags($result);
+            $this->setTags(null);
         }
 
         if (!is_null($this->getTags())) {

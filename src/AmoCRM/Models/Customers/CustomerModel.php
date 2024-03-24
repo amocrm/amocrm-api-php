@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\Customers;
 
+use AmoCRM\AmoCRM\Models\Traits\MutateTagsTrait;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
@@ -30,6 +31,7 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
 {
     use GetLinkTrait;
     use RequestIdTrait;
+    use MutateTagsTrait;
 
     public const CATALOG_ELEMENTS = 'catalog_elements';
     public const CONTACTS = 'contacts';
@@ -833,6 +835,11 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
 
         if (!is_null($this->getCustomFieldsValues())) {
             $result['custom_fields_values'] = $this->getCustomFieldsValues()->toApi();
+        }
+
+        if (!is_null($this->getTagsToAdd()) || !is_null($this->getTagsToDelete())) {
+            $result = $this->mutateTags($result);
+            $this->setTags(null);
         }
 
         if (!is_null($this->getTags())) {
