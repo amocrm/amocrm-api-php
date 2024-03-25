@@ -71,6 +71,16 @@ $lead->setName('Название сделки')
             ->setId(19187743)
     );
 
+$tagsToAdd = [
+    0 => [
+        'name' => 'Тег 123',
+    ],
+    1 => [
+        'name' => 'Тег 456'
+    ]
+];
+$lead->setTagsToAdd($tagsToAdd);
+
 $leadsCollection = new LeadsCollection();
 $leadsCollection->add($lead);
 
