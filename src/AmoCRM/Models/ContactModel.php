@@ -2,7 +2,8 @@
 
 namespace AmoCRM\Models;
 
-use AmoCRM\AmoCRM\Models\Traits\MutateTagsTrait;
+use AmoCRM\Models\Interfaces\ComplexTagsManagerInterface;
+use AmoCRM\Models\Traits\MutateTagsTrait;
 use AmoCRM\Collections\SocialProfiles\SocialProfilesCollection;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -25,7 +26,8 @@ class ContactModel extends BaseApiModel implements
     TypeAwareInterface,
     CanBeLinkedInterface,
     HasIdInterface,
-    CanReturnDeletedInterface
+    CanReturnDeletedInterface,
+    ComplexTagsManagerInterface
 {
     use RequestIdTrait;
     use GetLinkTrait;
@@ -719,7 +721,6 @@ class ContactModel extends BaseApiModel implements
 
         if (!is_null($this->getTagsToAdd()) || !is_null($this->getTagsToDelete())) {
             $result = $this->mutateTags($result);
-            $this->setTags(null);
         }
 
         if (!is_null($this->getTags())) {

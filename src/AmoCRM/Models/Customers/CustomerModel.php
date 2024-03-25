@@ -2,7 +2,8 @@
 
 namespace AmoCRM\Models\Customers;
 
-use AmoCRM\AmoCRM\Models\Traits\MutateTagsTrait;
+use AmoCRM\Models\Interfaces\ComplexTagsManagerInterface;
+use AmoCRM\Models\Traits\MutateTagsTrait;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
@@ -27,7 +28,11 @@ use function array_key_exists;
  *
  * @package AmoCRM\Models\Customers
  */
-class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLinkedInterface, HasIdInterface
+class CustomerModel extends BaseApiModel implements
+    TypeAwareInterface,
+    CanBeLinkedInterface,
+    HasIdInterface,
+    ComplexTagsManagerInterface
 {
     use GetLinkTrait;
     use RequestIdTrait;
@@ -839,7 +844,6 @@ class CustomerModel extends BaseApiModel implements TypeAwareInterface, CanBeLin
 
         if (!is_null($this->getTagsToAdd()) || !is_null($this->getTagsToDelete())) {
             $result = $this->mutateTags($result);
-            $this->setTags(null);
         }
 
         if (!is_null($this->getTags())) {

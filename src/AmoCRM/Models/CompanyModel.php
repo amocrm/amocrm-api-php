@@ -2,7 +2,8 @@
 
 namespace AmoCRM\Models;
 
-use AmoCRM\AmoCRM\Models\Traits\MutateTagsTrait;
+use AmoCRM\Models\Interfaces\ComplexTagsManagerInterface;
+use AmoCRM\Models\Traits\MutateTagsTrait;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\Interfaces\CanBeLinkedInterface;
@@ -25,7 +26,8 @@ class CompanyModel extends BaseApiModel implements
     TypeAwareInterface,
     CanBeLinkedInterface,
     HasIdInterface,
-    CanReturnDeletedInterface
+    CanReturnDeletedInterface,
+    ComplexTagsManagerInterface
 {
     use RequestIdTrait;
     use GetLinkTrait;
@@ -605,7 +607,6 @@ class CompanyModel extends BaseApiModel implements
 
         if (!is_null($this->getTagsToAdd()) || !is_null($this->getTagsToDelete())) {
             $result = $this->mutateTags($result);
-            $this->setTags(null);
         }
 
         if (!is_null($this->getTags())) {

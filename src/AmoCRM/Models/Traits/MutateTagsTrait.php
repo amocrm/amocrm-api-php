@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models\Traits;
+namespace AmoCRM\Models\Traits;
+
+use AmoCRM\Models\Interfaces\ComplexTagsManagerInterface;
 
 /**
  * Trait TagsTrait
@@ -80,6 +82,7 @@ trait MutateTagsTrait
         if (!is_null($this->getTagsToDelete())) {
             $entity['tags_to_delete'] = $this->getTagsToDelete();
         }
+        $this->setTags(null);
 
         return $entity;
     }
