@@ -15,13 +15,13 @@ class SourceServiceParams extends BaseApiModel
     /**
      * @var bool
      */
-    protected $isSupportListMessage = false;
+    protected $isSupportsListMessage = false;
 
     public function toArray(): array
     {
         return [
             'waba' => $this->isWaba(),
-            'is_supports_list_message' => $this->isSupportListMessage(),
+            'is_supports_list_message' => $this->isSupportsListMessage(),
         ];
     }
 
@@ -35,7 +35,7 @@ class SourceServiceParams extends BaseApiModel
         $params = new self();
         $params->setWaba($data['waba'] ?? false);
         if (isset($data['is_supports_list_message'])) {
-            $params->setIsSupportListMessage((bool)$data['is_supports_list_message']);
+            $params->setIsSupportsListMessage((bool)$data['is_supports_list_message']);
         }
 
         return $params;
@@ -58,18 +58,18 @@ class SourceServiceParams extends BaseApiModel
     }
 
     /**
-     * @param bool $isSupportListMessage
+     * @param bool $isSupportsListMessage
      */
-    public function setIsSupportListMessage(bool $isSupportListMessage): void
+    public function setIsSupportsListMessage(bool $isSupportsListMessage): void
     {
-        $this->isSupportListMessage = $isSupportListMessage;
+        $this->isSupportsListMessage = $isSupportsListMessage;
     }
 
     /**
      * @return bool
      */
-    public function isSupportListMessage(): bool
+    public function isSupportsListMessage(): bool
     {
-        return $this->isSupportListMessage;
+        return $this->isSupportsListMessage;
     }
 }
