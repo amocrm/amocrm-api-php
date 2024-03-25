@@ -7,14 +7,14 @@ namespace AmoCRM\Models\Interfaces;
 /**
  * Interface ComplexTagsManagerInterface
  *
+ * Используется в моделях, которые поддерживают новый формат работы с тегами tags_to_add и tags_to_delete.
+ * Реализация находится в MutateTagsTraits
+ *
  * @package AmoCRM\Models\Interfaces
  */
 interface ComplexTagsManagerInterface
 {
     /**
-     * Функция для мутирования тегов нового формата tags_to_add и tags_to_delete.
-     * Реализация находится в MutateTagsTraits
-     *
      * @param array $entity
      *
      * @return array
