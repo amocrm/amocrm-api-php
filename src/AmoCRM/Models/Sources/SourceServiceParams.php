@@ -12,11 +12,16 @@ class SourceServiceParams extends BaseApiModel
      * @var bool
      */
     protected $waba = null;
+    /**
+     * @var bool
+     */
+    protected $isSupportListMessage = false;
 
     public function toArray(): array
     {
         return [
-            'waba' => $this->isWaba()
+            'waba' => $this->isWaba(),
+            'is_supports_list_message' => $this->isSupportListMessage(),
         ];
     }
 
@@ -29,6 +34,9 @@ class SourceServiceParams extends BaseApiModel
     {
         $params = new self();
         $params->setWaba($data['waba'] ?? false);
+        if (isset($data['is_supports_list_message'])) {
+            $params->setIsSupportListMessage((bool)$data['is_supports_list_message']);
+        }
 
         return $params;
     }
@@ -47,5 +55,21 @@ class SourceServiceParams extends BaseApiModel
     public function setWaba(bool $waba): void
     {
         $this->waba = $waba;
+    }
+
+    /**
+     * @param bool $isSupportListMessage
+     */
+    public function setIsSupportListMessage(bool $isSupportListMessage): void
+    {
+        $this->isSupportListMessage = $isSupportListMessage;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportListMessage(): bool
+    {
+        return $this->isSupportListMessage;
     }
 }
