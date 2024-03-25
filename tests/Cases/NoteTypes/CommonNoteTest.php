@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Cases\NoteTypes;
+namespace Cases\NoteTypes;
 
 use AmoCRM\Models\Factories\NoteFactory;
 use AmoCRM\Models\NoteType\CommonNote;

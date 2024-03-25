@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Tests\Cases\NoteTypes;
+namespace Cases\AmoCRM\Models;
 
 use AmoCRM\Models\NoteType\CallInNote;
 use PHPUnit\Framework\TestCase;

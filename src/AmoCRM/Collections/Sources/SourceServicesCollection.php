@@ -14,6 +14,5 @@ use AmoCRM\Models\Sources\SourceServiceModel;
  */
 class SourceServicesCollection extends BaseApiCollection
 {
-
     public const ITEM_CLASS = SourceServiceModel::class;
 }

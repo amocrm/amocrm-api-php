@@ -27,7 +27,6 @@ use AmoCRM\Models\SourceModel;
  */
 class Sources extends BaseEntity implements HasDeleteMethodInterface
 {
-
     /**
      * @var string
      */

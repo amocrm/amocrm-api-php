@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Cases\AmoCRM\Client;
+
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\EntitiesServices\Account;
@@ -30,6 +34,9 @@ use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\OAuth\AmoCRMOAuth;
 use League\OAuth2\Client\Token\AccessToken;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
+use TypeError;
 
 class AmoCRMApiClientTest extends TestCase
 {

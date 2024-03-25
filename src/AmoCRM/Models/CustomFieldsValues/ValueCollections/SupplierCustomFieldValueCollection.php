@@ -11,5 +11,4 @@ namespace AmoCRM\Models\CustomFieldsValues\ValueCollections;
  */
 class SupplierCustomFieldValueCollection extends BaseCustomFieldValueCollection
 {
-
 }

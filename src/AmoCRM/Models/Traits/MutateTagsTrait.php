@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace AmoCRM\Models\Traits;
 
-use AmoCRM\Models\Interfaces\ComplexTagsManagerInterface;
-
 /**
  * Trait TagsTrait
  *

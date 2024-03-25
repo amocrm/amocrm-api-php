@@ -11,5 +11,4 @@ namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
  */
 class PriceCustomFieldValueModel extends BaseCustomFieldValueModel
 {
-
 }

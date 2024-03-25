@@ -9,5 +9,4 @@ namespace AmoCRM\Models\CustomFieldsValues\ValueCollections;
  */
 class TextareaCustomFieldValueCollection extends BaseCustomFieldValueCollection
 {
-
 }

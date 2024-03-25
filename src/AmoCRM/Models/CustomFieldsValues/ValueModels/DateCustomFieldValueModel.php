@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AmoCRM\Models\CustomFieldsValues\ValueModels;
 
 use AmoCRM\Exceptions\InvalidArgumentException;
@@ -39,16 +41,18 @@ class DateCustomFieldValueModel extends BaseCustomFieldValueModel
 
             if (is_numeric($value)) {
                 $fieldValue = (int)$value;
-            } else {
+            } elseif (is_string($value)) {
                 $fieldValue = strtotime($value);
+            } else {
+                throw new InvalidArgumentException('Given value is not valid - ' . $value);
             }
 
             if (!$fieldValue && $fieldValue !== 0) {
                 throw new InvalidArgumentException('Given value is not valid - ' . $value);
-            } else {
-                $dateTimeValue = Carbon::createFromTimestamp($fieldValue);
-                $this->value = $dateTimeValue;
             }
+
+            $dateTimeValue = Carbon::createFromTimestamp($fieldValue);
+            $this->value = $dateTimeValue;
         }
 
         return $this;

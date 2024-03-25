@@ -13,6 +13,5 @@ use AmoCRM\Models\Sources\SourceServicePageModel;
  */
 class SourceServicesPagesCollection extends BaseApiCollection
 {
-
     public const ITEM_CLASS = SourceServicePageModel::class;
 }

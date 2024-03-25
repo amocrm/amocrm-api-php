@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Tests\Cases\NoteTypes;
+namespace Cases\AmoCRM\Models\CustomFieldsValues\ValueModel;
 
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\CustomFieldsValues\ValueModels\DateCustomFieldValueModel;

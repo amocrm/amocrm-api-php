@@ -9,6 +9,7 @@ use AmoCRM\Filters\Traits\ArrayOrStringFilterTrait;
 use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 use AmoCRM\Filters\Traits\IntOrIntRangeFilterTrait;
+use TypeError;
 
 use function array_filter;
 use function array_map;
@@ -312,13 +313,13 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface, HasOrde
         $statusesFilter = [];
 
         foreach ($statuses as $status) {
-            if (!isset($status['status_id']) || !isset($status['pipeline_id'])) {
+            if (!isset($status['status_id'], $status['pipeline_id'])) {
                 continue;
             }
 
             $statusesFilter[] = [
-                'status_id' => (int)$status['status_id'] ?? null,
-                'pipeline_id' => (int)$status['pipeline_id'] ?? null,
+                'status_id' => !empty($status['status_id']) ? (int)$status['status_id'] : null,
+                'pipeline_id' => !empty($status['pipeline_id']) ? (int)$status['pipeline_id'] : null,
             ];
         }
 
@@ -401,12 +402,16 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface, HasOrde
     }
 
     /**
-     * @param string|null $query
+     * @param string|int|null $query
      *
      * @return LeadsFilter
      */
-    public function setQuery(?string $query): self
+    public function setQuery($query): self
     {
+        if (!is_string($query) && !is_numeric($query)) {
+            throw new TypeError('Invalid query type');
+        }
+
         if (!empty($query)) {
             $this->query = (string)$query;
         }
@@ -481,8 +486,6 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface, HasOrde
             $filter['order'] = $this->getOrder();
         }
 
-        $filter = $this->buildPagesFilter($filter);
-
-        return $filter;
+        return $this->buildPagesFilter($filter);
     }
 }

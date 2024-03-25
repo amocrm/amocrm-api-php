@@ -8,7 +8,6 @@ use AmoCRM\Contracts\Support\Arrayable;
 
 class SourceServiceModel extends BaseApiModel implements Arrayable
 {
-
     /**
      * @var string
      */
