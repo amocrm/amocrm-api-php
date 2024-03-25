@@ -65,7 +65,7 @@ trait MutateTagsTrait
     }
 
     /**
-     * При получении покупателя из API, он приходит вместе с _embedded[tags]. Поэтому если в него засетить
+     * При получении сущности из API, она приходит вместе с _embedded[tags]. Поэтому если в него засетить
      * tagsToDelete или tagsToAdd, то в запросе на обновление оно уйдет вместе с _embedded[tags] и в приоритете
      * будут теги из _embedded[tags] и tagsToAdd/tagsToDelete не будут учтены.
      *
