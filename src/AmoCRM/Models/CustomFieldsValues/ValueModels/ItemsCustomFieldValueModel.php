@@ -388,9 +388,9 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getIsDiscountRecalculated(): bool
+    public function getIsDiscountRecalculated(): ?bool
     {
         return $this->isDiscountRecalculated;
     }
@@ -408,9 +408,9 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getIsTotalSumRecalculated(): bool
+    public function getIsTotalSumRecalculated(): ?bool
     {
         return $this->isTotalSumRecalculated;
     }
@@ -428,19 +428,19 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getTotalSum(): float
+    public function getTotalSum(): ?float
     {
         return $this->totalSum;
     }
 
     /**
-     * @param float $totalSum
+     * @param float|null $totalSum
      *
      * @return ItemsCustomFieldValueModel
      */
-    private function setTotalSum(float $totalSum): ItemsCustomFieldValueModel
+    private function setTotalSum(?float $totalSum): ItemsCustomFieldValueModel
     {
         $this->totalSum = $totalSum;
 
