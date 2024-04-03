@@ -439,7 +439,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     }
 
     /**
-     * @param float|null $totalSum
+     * @param float $totalSum
      *
      * @return ItemsCustomFieldValueModel
      */
