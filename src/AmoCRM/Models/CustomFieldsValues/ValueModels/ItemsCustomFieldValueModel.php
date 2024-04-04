@@ -431,11 +431,11 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     }
 
     /**
-     * @return float|null
+     * @return float
      */
-    public function getTotalSum(): ?float
+    public function getTotalSum(): float
     {
-        return $this->totalSum;
+        return $this->totalSum ?? 0;
     }
 
     /**
