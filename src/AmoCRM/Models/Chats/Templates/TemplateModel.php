@@ -183,12 +183,16 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
      */
     public function toArray(): array
     {
+        $buttons = $this->getButtons() !== null && !$this->getButtons()->isEmpty()
+            ? $this->getButtons()->toArray()
+            : null;
+
         return [
             'id' => $this->getId(),
             'account_id' => $this->getAccountId(),
             'name' => $this->getName(),
             'content' => $this->getContent(),
-            'buttons' => $this->getButtons() ? $this->getButtons()->toArray() : null,
+            'buttons' => $buttons,
             'created_at' => $this->getCreatedAt(),
             'updated_at' => $this->getUpdatedAt(),
             'is_editable' => $this->getIsEditable(),
@@ -213,11 +217,14 @@ class TemplateModel extends BaseApiModel implements HasIdInterface
         if (is_null($this->getRequestId()) && !is_null($requestId)) {
             $this->setRequestId($requestId);
         }
+        $buttons = $this->getButtons() !== null && !$this->getButtons()->isEmpty()
+            ? $this->getButtons()->toArray()
+            : null;
 
         $result = [
             'name' => $this->getName(),
             'content' => $this->getContent(),
-            'buttons' => $this->getButtons() ? $this->getButtons()->toApi() : null,
+            'buttons' => $buttons,
             'is_editable' => $this->getIsEditable(),
             'external_id' => $this->getExternalId(),
             'request_id' => $this->getRequestId(),
