@@ -468,19 +468,13 @@ class AmoCRMOAuth
         $clientBaseUri = new Uri($this->redirectUri);
         $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
 
-        if (PHP_MAJOR_VERSION < 8) {
-            $validAtConstraint = new ValidAt(FrozenClock::fromUTC());
-        } else {
-            $validAtConstraint = new LooseValidAt(FrozenClock::fromUTC());
-        }
-
         $constraints = [
             // Проверка подписи
             new SignedWith($signer, $key),
             // Проверим наш ли адресат
             new PermittedFor($clientBaseUri),
             // Проверка жизни токена
-            $validAtConstraint,
+            new LooseValidAt(FrozenClock::fromUTC()),
         ];
 
         $configuration = Configuration::forSymmetricSigner($signer, $key);
