@@ -32,7 +32,6 @@ use Lcobucci\JWT\Validation\Constraint;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
-use Lcobucci\JWT\Validation\Constraint\ValidAt;
 use Lcobucci\JWT\Validation\ConstraintViolation;
 use League\OAuth2\Client\Grant\AuthorizationCode;
 use League\OAuth2\Client\Grant\RefreshToken;
@@ -467,7 +466,6 @@ class AmoCRMOAuth
 
         $clientBaseUri = new Uri($this->redirectUri);
         $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
-
         $constraints = [
             // Проверка подписи
             new SignedWith($signer, $key),
