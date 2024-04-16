@@ -32,6 +32,7 @@ use Lcobucci\JWT\Validation\Constraint;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
+use Lcobucci\JWT\Validation\Constraint\ValidAt;
 use Lcobucci\JWT\Validation\ConstraintViolation;
 use League\OAuth2\Client\Grant\AuthorizationCode;
 use League\OAuth2\Client\Grant\RefreshToken;
@@ -466,13 +467,20 @@ class AmoCRMOAuth
 
         $clientBaseUri = new Uri($this->redirectUri);
         $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
+
+        if (PHP_MAJOR_VERSION < 8) {
+            $validAtConstraint = new ValidAt(FrozenClock::fromUTC());
+        } else {
+            $validAtConstraint = new LooseValidAt(FrozenClock::fromUTC());
+        }
+
         $constraints = [
             // Проверка подписи
             new SignedWith($signer, $key),
             // Проверим наш ли адресат
             new PermittedFor($clientBaseUri),
             // Проверка жизни токена
-            new LooseValidAt(FrozenClock::fromUTC()),
+            $validAtConstraint,
         ];
 
         $configuration = Configuration::forSymmetricSigner($signer, $key);
