@@ -3,6 +3,7 @@
 namespace AmoCRM\Filters;
 
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
+use AmoCRM\Filters\Traits\ArrayOrNumericFilterTrait;
 use AmoCRM\Filters\Traits\ArrayOrStringFilterTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
@@ -13,11 +14,32 @@ class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface
 {
     use PagesFilterTrait;
     use ArrayOrStringFilterTrait;
+    use ArrayOrNumericFilterTrait;
 
     /**
      * @var null|string[] An array of custom_field types.
      */
     private ?array $types = null;
+
+    /**
+     * @var null|int[]
+     */
+    private ?array $ids = null;
+
+    /**
+     * @return int[]|null
+     */
+    public function getIds(): ?array
+    {
+        return $this->ids;
+    }
+
+    public function setIds(?array $ids): self
+    {
+        $this->ids = $this->parseArrayOrNumberFilter($ids);
+
+        return $this;
+    }
 
     /**
      * @return string[]|null
@@ -45,6 +67,10 @@ class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface
     public function buildFilter(): array
     {
         $filter = [];
+
+        if (!empty($this->getIds())) {
+            $filter['filter']['id'] = $this->getIds();
+        }
 
         if (!empty($this->types)) {
             $filter['filter']['type'] = $this->types;
