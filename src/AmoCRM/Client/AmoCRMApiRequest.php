@@ -136,11 +136,6 @@ class AmoCRMApiRequest
         };
     }
 
-    public function getRefreshAccessTokenCallback(): callable
-    {
-        return $this->refreshAccessTokenCallback;
-    }
-
     public function setRefreshAccessTokenCallback(callable $callback): void
     {
         $this->refreshAccessTokenCallback = $callback;
@@ -156,7 +151,7 @@ class AmoCRMApiRequest
             throw new AmoCRMoAuthApiException('Can not update LongLivedAccessToken');
         }
 
-        $newAccessToken = $this->getRefreshAccessTokenCallback();
+        $newAccessToken = ($this->refreshAccessTokenCallback)();
         $this->accessToken = $newAccessToken;
     }
 
