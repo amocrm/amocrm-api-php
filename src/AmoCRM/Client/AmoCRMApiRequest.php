@@ -108,6 +108,11 @@ class AmoCRMApiRequest
     private $userAgent = null;
 
     /**
+     * @var callable
+     */
+    private $refreshAccessTokenCallback;
+
+    /**
      * AmoCRMApiRequest constructor.
      *
      * @param AccessTokenInterface $accessToken
@@ -126,6 +131,19 @@ class AmoCRMApiRequest
         $this->httpClient = $oAuthClient->getHttpClient();
         $this->contextUserId = $contextUserId;
         $this->userAgent = $userAgent;
+        $this->refreshAccessTokenCallback = function () {
+            return $this->oAuthClient->getAccessTokenByRefreshToken($this->accessToken);
+        };
+    }
+
+    public function getRefreshAccessTokenCallback(): callable
+    {
+        return $this->refreshAccessTokenCallback;
+    }
+
+    public function setRefreshAccessTokenCallback(callable $callback): void
+    {
+        $this->refreshAccessTokenCallback = $callback;
     }
 
     /**
@@ -138,7 +156,7 @@ class AmoCRMApiRequest
             throw new AmoCRMoAuthApiException('Can not update LongLivedAccessToken');
         }
 
-        $newAccessToken = $this->oAuthClient->getAccessTokenByRefreshToken($this->accessToken);
+        $newAccessToken = $this->getRefreshAccessTokenCallback();
         $this->accessToken = $newAccessToken;
     }
 
