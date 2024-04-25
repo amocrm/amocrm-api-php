@@ -205,7 +205,7 @@ class EventsFilter extends BaseEntityFilter implements HasPagesInterface
      */
     public function setEntityIds($entityIds)
     {
-        $this->entityIds = $entityIds;
+        $this->entityIds = $this->parseArrayOrNumberFilter($entityIds);
 
         return $this;
     }
