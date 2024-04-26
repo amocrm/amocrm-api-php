@@ -149,8 +149,11 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
             ->setBonusPointsPerPurchase($val[self::FIELD_BONUS_POINTS_PER_PURCHASE] ?? null)
             ->setMetadata($val[self::FIELD_METADATA] ?? null)
             ->setIsDiscountRecalculated($val[self::FIELD_IS_DISCOUNT_RECALCULATED] ?? false)
-            ->setIsTotalSumRecalculated($val[self::FIELD_IS_TOTAL_SUM_RECALCULATED] ?? false)
-            ->setTotalSum($val[self::FIELD_TOTAL_SUM] ?? null);
+            ->setIsTotalSumRecalculated($val[self::FIELD_IS_TOTAL_SUM_RECALCULATED] ?? false);
+
+        if (isset($val[self::FIELD_TOTAL_SUM])) {
+            $model->setTotalSum((float)$val[self::FIELD_TOTAL_SUM]);
+        }
 
         return $model;
     }
@@ -392,7 +395,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
      */
     public function getIsDiscountRecalculated(): bool
     {
-        return $this->isDiscountRecalculated;
+        return $this->isDiscountRecalculated ?? false;
     }
 
     /**
@@ -412,7 +415,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
      */
     public function getIsTotalSumRecalculated(): bool
     {
-        return $this->isTotalSumRecalculated;
+        return $this->isTotalSumRecalculated ?? false;
     }
 
     /**
@@ -432,7 +435,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
      */
     public function getTotalSum(): float
     {
-        return $this->totalSum;
+        return $this->totalSum ?? 0;
     }
 
     /**

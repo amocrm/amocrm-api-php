@@ -2,6 +2,7 @@
 
 namespace AmoCRM\Models\Factories;
 
+use AmoCRM\Models\NoteType\AiResultNote;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\NoteModel;
 use AmoCRM\Models\NoteType\AmoMailMessageNote;
@@ -58,6 +59,7 @@ class NoteFactory
      * Данное событие отличается от invoice_paid тем, что вызывает событие Счет оплачен в Digital Pipeline
      */
     public const NOTE_TYPE_CODE_BILL_PAID = 'bill_paid';
+    public const NOTE_TYPE_AI_RESULT = 'ai_result';
 
     /**
      * @param string $type
@@ -132,6 +134,8 @@ class NoteFactory
             case self::NOTE_TYPE_CODE_BILL_PAID:
                 return (new BillPaidNote())->fromArray($note);
                 break;
+            case self::NOTE_TYPE_AI_RESULT:
+                return (new AiResultNote())->fromArray($note);
             default:
                 return (new NoteModel())->fromArray($note);
                 break;
