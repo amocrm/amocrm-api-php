@@ -87,6 +87,11 @@ class AmoCRMApiClient
     private $userAgent;
 
     /**
+     * @var callable|null
+     */
+    private $refreshAccessTokenCallback;
+
+    /**
      * AmoCRMApiClient constructor.
      *
      * @param string|null $clientId
@@ -182,6 +187,19 @@ class AmoCRMApiClient
     }
 
     /**
+     * Устанавливаем callback, который будет вызван для обновления AccessToken`a библиотеки
+     *
+     * @param callable $callable
+     * @return $this
+     */
+    public function setRefreshAccessTokenCallback(callable $callable): self
+    {
+        $this->refreshAccessTokenCallback = $callable;
+
+        return $this;
+    }
+
+    /**
      * Метод строит объект для совершения запросов для сервисов сущностей
      *
      * @return AmoCRMApiRequest
@@ -206,12 +224,18 @@ class AmoCRMApiClient
             }
         );
 
-        return new AmoCRMApiRequest(
+        $request = new AmoCRMApiRequest(
             $this->getAccessToken(),
             $oAuthClient,
             $this->getContextUserId(),
             $this->getUserAgent()
         );
+
+        if ($this->refreshAccessTokenCallback !== null) {
+            $request->setRefreshAccessTokenCallback($this->refreshAccessTokenCallback);
+        }
+
+        return $request;
     }
 
     /**

@@ -36,7 +36,7 @@ class AmoCRMApiRequest
     public const CONNECT_TIMEOUT = 5;
     public const REQUEST_TIMEOUT = 20;
     //TODO Do not forget to change this on each release
-    public const LIBRARY_VERSION = '1.7.2';
+    public const LIBRARY_VERSION = '1.7.3';
     public const USER_AGENT = 'amoCRM-API-Library/' . self::LIBRARY_VERSION;
 
     public const SUCCESS_STATUSES = [
@@ -108,6 +108,11 @@ class AmoCRMApiRequest
     private $userAgent = null;
 
     /**
+     * @var callable
+     */
+    private $refreshAccessTokenCallback;
+
+    /**
      * AmoCRMApiRequest constructor.
      *
      * @param AccessTokenInterface $accessToken
@@ -126,6 +131,14 @@ class AmoCRMApiRequest
         $this->httpClient = $oAuthClient->getHttpClient();
         $this->contextUserId = $contextUserId;
         $this->userAgent = $userAgent;
+        $this->refreshAccessTokenCallback = function () {
+            return $this->oAuthClient->getAccessTokenByRefreshToken($this->accessToken);
+        };
+    }
+
+    public function setRefreshAccessTokenCallback(callable $callback): void
+    {
+        $this->refreshAccessTokenCallback = $callback;
     }
 
     /**
@@ -138,7 +151,7 @@ class AmoCRMApiRequest
             throw new AmoCRMoAuthApiException('Can not update LongLivedAccessToken');
         }
 
-        $newAccessToken = $this->oAuthClient->getAccessTokenByRefreshToken($this->accessToken);
+        $newAccessToken = ($this->refreshAccessTokenCallback)();
         $this->accessToken = $newAccessToken;
     }
 
