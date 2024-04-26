@@ -192,7 +192,7 @@ class AmoCRMApiClient
      * @param callable $callable
      * @return $this
      */
-    public function onRefreshAccessTokenCallback(callable $callable): self
+    public function setRefreshAccessTokenCallback(callable $callable): self
     {
         $this->refreshAccessTokenCallback = $callable;
 
