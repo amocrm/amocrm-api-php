@@ -2,16 +2,19 @@
 
 namespace AmoCRM\Filters;
 
+use AmoCRM\Filters\Interfaces\HasOrderInterface;
 use AmoCRM\Filters\Interfaces\HasPagesInterface;
 use AmoCRM\Filters\Traits\ArrayOrNumericFilterTrait;
 use AmoCRM\Filters\Traits\ArrayOrStringFilterTrait;
+use AmoCRM\Filters\Traits\OrderTrait;
 use AmoCRM\Filters\Traits\PagesFilterTrait;
 
 /**
  * Supports pagination and filtering custom_fields by types.
  */
-class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface
+class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface, HasOrderInterface
 {
+    use OrderTrait;
     use PagesFilterTrait;
     use ArrayOrStringFilterTrait;
     use ArrayOrNumericFilterTrait;
@@ -34,7 +37,7 @@ class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface
         return $this->ids;
     }
 
-    public function setIds(?array $ids): self
+    public function setIds(array $ids): self
     {
         $this->ids = $this->parseArrayOrNumberFilter($ids);
 
@@ -74,6 +77,10 @@ class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface
 
         if (!empty($this->types)) {
             $filter['filter']['type'] = $this->types;
+        }
+
+        if (!is_null($this->getOrder())) {
+            $filter['order'] = $this->getOrder();
         }
 
         $filter = $this->buildPagesFilter($filter);
