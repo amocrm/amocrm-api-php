@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AmoCRM\Models\CustomFields;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
+use AmoCRM\Contracts\Support\Arrayable;
+use AmoCRM\Contracts\Support\Jsonable;
 
 use function json_encode;
 
@@ -71,9 +71,6 @@ final class ChainedList implements Arrayable, Jsonable
         ];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function toJson($options = 0)
     {
         return json_encode($this->toArray(), $options);

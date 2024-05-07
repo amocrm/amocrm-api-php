@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace AmoCRM\Models\CustomFields;
 
-use Illuminate\Support\Collection;
-
 use function array_filter;
 use function array_values;
 use function is_array;
@@ -14,16 +12,25 @@ use function is_array;
  * Коллекция моделей вложенных списков
  *
  * @since Release Spring 2022
- * @template ChainedList
  */
-final class ChainedLists extends Collection
+final class ChainedLists
 {
+    /** @var array<int, ChainedList> */
+    protected $items = [];
+
+    public function addItem(int $catalogId, ChainedList $data): self
+    {
+        $this->items[$catalogId] = $data;
+
+        return $this;
+    }
+
     /**
      * @param array $items
      *
-     * @return ChainedLists<ChainedList>
+     * @return ChainedLists
      */
-    public static function fromArray(array $items): ChainedLists
+    public static function fromArray(array $items): self
     {
         $collection = new self();
 
@@ -41,9 +48,22 @@ final class ChainedLists extends Collection
             $parentCatalogId = (int) ($item['parent_catalog_id'] ?? 0) ?: null;
             $title = (string) ($item['title'] ?? '');
 
-            $collection->put($catalogId, new ChainedList($catalogId, $parentCatalogId, $title));
+            $collection->addItem($catalogId, new ChainedList($catalogId, $parentCatalogId, $title));
         }
 
         return $collection;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $result = [];
+        foreach ($this->items as $key => $item) {
+            $result[$key] = $item->toArray();
+        }
+
+        return $result;
     }
 }

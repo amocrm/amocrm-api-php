@@ -24,7 +24,7 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
     protected $id;
 
     /**
-     * @var string
+     * @var int
      */
     protected $entityId;
 

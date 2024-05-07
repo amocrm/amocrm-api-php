@@ -23,7 +23,7 @@
     "ext-json": "*",
     "amocrm/oauth2-amocrm": "^2.0",
     "guzzlehttp/guzzle": "6.* || 7.*",
-    "symfony/dotenv": "3.* || 4.* || 5.* || 6.*",
+    "symfony/dotenv": "3.* || 4.* || 5.* || 6.* || 7.*",
     "fig/http-message-util": "1.*",
     "ramsey/uuid": "^3 || ^4",
     "lcobucci/jwt": "^3.4.6 || ^4.0.4",
