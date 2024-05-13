@@ -144,6 +144,17 @@ class AmoCRMApiClientTest extends TestCase
         $this->assertIsCallable($callback);
     }
 
+    public function testSetOnRefreshAccessTokenCallback()
+    {
+        $this->assertInstanceOf(
+            AmoCRMApiClient::class,
+            $this->apiClient->setRefreshAccessTokenCallback(function () {
+            })
+        );
+        $callback = $this->_getInnerPropertyValueByReflection('refreshAccessTokenCallback');
+        $this->assertIsCallable($callback);
+    }
+
     public function testSetAccountBaseDomain()
     {
         $this->assertInstanceOf(
