@@ -22,12 +22,12 @@ class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface, 
     /**
      * @var null|string[] An array of custom_field types.
      */
-    private ?array $types = null;
+    private $types = null;
 
     /**
      * @var null|int[]
      */
-    private ?array $ids = null;
+    private $ids = null;
 
     /**
      * @return int[]|null
@@ -83,8 +83,6 @@ class CustomFieldsFilter extends BaseEntityFilter implements HasPagesInterface, 
             $filter['order'] = $this->getOrder();
         }
 
-        $filter = $this->buildPagesFilter($filter);
-
-        return $filter;
+        return $this->buildPagesFilter($filter);
     }
 }
