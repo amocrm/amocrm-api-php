@@ -113,6 +113,11 @@ class AmoCRMApiRequest
     private $refreshAccessTokenCallback;
 
     /**
+     * @var callable|null
+     */
+    private $customCheckHttpStatusCallback;
+
+    /**
      * AmoCRMApiRequest constructor.
      *
      * @param AccessTokenInterface $accessToken
@@ -140,6 +145,12 @@ class AmoCRMApiRequest
     {
         $this->refreshAccessTokenCallback = $callback;
     }
+
+    public function setCustomCheckStatusCallback(callable $callback): void
+    {
+        $this->customCheckHttpStatusCallback = $callback;
+    }
+
 
     /**
      * Обновляем в библиотеке oAuth access токен по refresh
@@ -569,6 +580,15 @@ class AmoCRMApiRequest
     protected function checkHttpStatus(ResponseInterface $response, $decodedBody = []): void
     {
         $this->lastResponseCode = $response->getStatusCode();
+
+        if (
+            $this->customCheckHttpStatusCallback !== null
+            && is_callable($this->customCheckHttpStatusCallback)
+            && ($this->customCheckHttpStatusCallback)($response, $decodedBody) === true
+        ) {
+            return;
+        }
+
         if ((int)$response->getStatusCode() === StatusCodeInterface::STATUS_UNAUTHORIZED) {
             throw new AmoCRMoAuthApiException(
                 "Unauthorized",

@@ -92,6 +92,11 @@ class AmoCRMApiClient
     private $refreshAccessTokenCallback;
 
     /**
+     * @var callable|null
+     */
+    private $checkHttpStatusCallback;
+
+    /**
      * AmoCRMApiClient constructor.
      *
      * @param string|null $clientId
@@ -200,6 +205,21 @@ class AmoCRMApiClient
     }
 
     /**
+     * Устанавливаем callback, который будет вызван при обработке ответа от сервера.
+     * Если нет необходимости в отработке стандартной логики обработки ответа библиотеки,
+     * то callback должен возвращать true
+     *
+     * @param callable $callable
+     * @return $this
+     */
+    public function setCheckHttpStatusCallback(callable $callable): self
+    {
+        $this->checkHttpStatusCallback = $callable;
+
+        return $this;
+    }
+
+    /**
      * Метод строит объект для совершения запросов для сервисов сущностей
      *
      * @return AmoCRMApiRequest
@@ -233,6 +253,10 @@ class AmoCRMApiClient
 
         if ($this->refreshAccessTokenCallback !== null) {
             $request->setRefreshAccessTokenCallback($this->refreshAccessTokenCallback);
+        }
+
+        if ($this->checkHttpStatusCallback !== null) {
+            $request->setCustomCheckStatusCallback($this->checkHttpStatusCallback);
         }
 
         return $request;
