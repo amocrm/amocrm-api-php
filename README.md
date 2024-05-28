@@ -123,6 +123,28 @@ $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redir
 $apiClient = $apiClient->setUserAgnet('App Name');
 ```
 
+### Установка кастомного callback-обработчика ответа от сервера
+Начиная с версии 1.9.0 появилась возможность устанавливать callback-обработчик ответа от сервера.
+
+Вы можете установить функцию-callback на событие обработки ответа, если есть необходимость в дополнительной логике (например логировать ответ от сервера или же переопределить обработку 204 кода ответа).
+
+Если нет необходимости в отработке стандартной логики обработки ответа, то callback должен возвращать true 
+
+```php
+$apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+
+$this->apiClient
+     ->setCheckHttpStatusCallback(
+         function (ResponseInterface $response, $decodedBody) {
+             if ($response->getStatusCode() === 204) {
+                 return true;
+             }
+
+             $this->logger->info('Response: ', $decodedBody);
+         }
+     );
+```
+
 
 ## Авторизация с долгоживущим токеном
 Не так давно в amoCRM появилась возможность создавать долгоживущие токены. Их можно легко использовать с этой библиотекой.

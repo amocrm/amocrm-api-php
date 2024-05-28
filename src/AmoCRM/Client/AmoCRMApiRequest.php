@@ -36,7 +36,7 @@ class AmoCRMApiRequest
     public const CONNECT_TIMEOUT = 5;
     public const REQUEST_TIMEOUT = 20;
     //TODO Do not forget to change this on each release
-    public const LIBRARY_VERSION = '1.8.1';
+    public const LIBRARY_VERSION = '1.9.0';
     public const USER_AGENT = 'amoCRM-API-Library/' . self::LIBRARY_VERSION;
 
     public const SUCCESS_STATUSES = [
@@ -113,6 +113,11 @@ class AmoCRMApiRequest
     private $refreshAccessTokenCallback;
 
     /**
+     * @var callable|null
+     */
+    private $customCheckHttpStatusCallback;
+
+    /**
      * AmoCRMApiRequest constructor.
      *
      * @param AccessTokenInterface $accessToken
@@ -140,6 +145,12 @@ class AmoCRMApiRequest
     {
         $this->refreshAccessTokenCallback = $callback;
     }
+
+    public function setCustomCheckStatusCallback(callable $callback): void
+    {
+        $this->customCheckHttpStatusCallback = $callback;
+    }
+
 
     /**
      * Обновляем в библиотеке oAuth access токен по refresh
@@ -569,6 +580,15 @@ class AmoCRMApiRequest
     protected function checkHttpStatus(ResponseInterface $response, $decodedBody = []): void
     {
         $this->lastResponseCode = $response->getStatusCode();
+
+        if (
+            $this->customCheckHttpStatusCallback !== null
+            && is_callable($this->customCheckHttpStatusCallback)
+            && ($this->customCheckHttpStatusCallback)($response, $decodedBody) === true
+        ) {
+            return;
+        }
+
         if ((int)$response->getStatusCode() === StatusCodeInterface::STATUS_UNAUTHORIZED) {
             throw new AmoCRMoAuthApiException(
                 "Unauthorized",
