@@ -5,6 +5,7 @@ namespace AmoCRM\OAuth;
 use AmoCRM\Exceptions\DisposableTokenExpiredException;
 use AmoCRM\Exceptions\DisposableTokenInvalidDestinationException;
 use AmoCRM\Exceptions\DisposableTokenVerificationFailedException;
+use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Models\AccountDomainModel;
 use AmoCRM\Models\BotDisposableTokenModel;
 use AmoCRM\Models\DisposableTokenModel;
@@ -40,6 +41,7 @@ use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
+use Throwable;
 use function sprintf;
 
 /**
@@ -396,6 +398,7 @@ class AmoCRMOAuth
     }
 
     /**
+     * @deprecated
      * Получение субдомена аккаунта по токену
      *
      * @param AccessTokenInterface $accessToken
@@ -418,6 +421,60 @@ class AmoCRMOAuth
                 ),
                 [
                     'headers' => $this->oauthProvider->getHeaders($accessToken),
+                    'connect_timeout' => AmoCRMApiRequest::CONNECT_TIMEOUT,
+                    'http_errors' => false,
+                    'timeout' => self::REQUEST_TIMEOUT,
+                    'query' => [],
+                    'json' => [],
+                ]
+            );
+
+            $responseBody = (string)$response->getBody();
+            if ($response->getStatusCode() !== StatusCodeInterface::STATUS_OK) {
+                throw new AmoCRMApiErrorResponseException(
+                    'Invalid response',
+                    $response->getStatusCode(),
+                    [],
+                    $responseBody
+                );
+            }
+            $response = json_decode($responseBody, true);
+            $accountDomainModel = AccountDomainModel::fromArray($response);
+        } catch (ConnectException $e) {
+            throw new AmoCRMApiConnectExceptionException($e->getMessage(), $e->getCode());
+        } catch (GuzzleException $e) {
+            throw new AmoCRMApiHttpClientException($e->getMessage(), $e->getCode());
+        }
+
+        return $accountDomainModel;
+    }
+
+    /**
+     * Получение субдомена аккаунта по рефреш токену
+     *
+     * @param AccessTokenInterface $accessToken
+     *
+     * @return AccountDomainModel
+     * @throws AmoCRMApiConnectExceptionException
+     * @throws AmoCRMApiErrorResponseException
+     * @throws AmoCRMApiHttpClientException
+     * @throws InvalidArgumentException
+     */
+    public function getAccountDomainByRefreshToken(AccessTokenInterface $accessToken): AccountDomainModel
+    {
+        $sharedApiDomain = $this->getSharedApiDomain($accessToken);
+
+        try {
+            $response = $this->oauthProvider->getHttpClient()->request(
+                AmoCRMApiRequest::GET_REQUEST,
+                sprintf(
+                    '%s%s%s',
+                    $this->oauthProvider->getProtocol(),
+                    $sharedApiDomain,
+                    '/oauth2/account/current/subdomain'
+                ),
+                [
+                    'headers' => ['X-Refresh-Token' => $accessToken->getRefreshToken()],
                     'connect_timeout' => AmoCRMApiRequest::CONNECT_TIMEOUT,
                     'http_errors' => false,
                     'timeout' => self::REQUEST_TIMEOUT,
@@ -548,5 +605,41 @@ class AmoCRMOAuth
         }
 
         return BotDisposableTokenModel::fromJwtToken($jwtToken);
+    }
+
+    /**
+     * Получает домен для общих api методов из access токена, домен присутствует в токенах выписанных после 21.08.2024
+     *
+     * @param AccessTokenInterface $accessToken
+     * @return string
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getSharedApiDomain(AccessTokenInterface $accessToken): string
+    {
+        try {
+            $parsedToken = Configuration::forUnsecuredSigner()->parser()->parse($accessToken->getToken());
+        } catch (Throwable $e) {
+            throw new InvalidArgumentException(
+                'Error parsing given access token. Prev error: ' . $e->getMessage(),
+                0,
+                [],
+                'Check access token.'
+            );
+        }
+
+        $claims = $parsedToken->claims();
+        $apiDomain = $claims->get('api_domain', '');
+
+        if (empty($apiDomain)) {
+            throw new InvalidArgumentException(
+                'Token does not contain shared api domain.',
+                0,
+                [],
+                'Update your access token.'
+            );
+        }
+
+        return $apiDomain;
     }
 }
