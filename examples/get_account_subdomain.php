@@ -9,12 +9,13 @@ $accessToken = getToken();
 try {
     /**
      * В случае потери/смены субдомена аккаунта, мы можем его получить с помощью refresh_token
-     * Сделав запрос на api-{a|b}.amocrm.ru/oauth2/account/current/subdomain
+     * api_domain - Claim из access_token
+     * Сделав запрос на {api_domain}.amocrm.ru/oauth2/account/current/subdomain
      *
      * Получим модель с информацией о домене аккаунта по refresh_token
      * Подробнее: @see AccountDomainModel
      *
-     * Запрос уходит на api-{a|b}.amocrm.ru/oauth2/account/current/subdomain
+     * Запрос уходит на {api_domain}.amocrm.ru/oauth2/account/current/subdomain
      * С X-Refresh-Token: {refresh_token}
      *
      * @example curl 'https://api-a.amocrm.ru/oauth2/account/current/subdomain' -H 'X-Refresh-Token: {refresh_token}'
