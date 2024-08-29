@@ -86,7 +86,6 @@ $apiClient->getOAuthClient()->getOAuthButton(
             ]
         );
 ```
-Для аккаунтов kommo.com - добавьте параметр ```is_kommo => true,```.
 
 2. Отправив пользователя на страницу авторизации
 ```php
