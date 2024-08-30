@@ -137,11 +137,6 @@ class AmoCRMApiRequest
         $this->contextUserId = $contextUserId;
         $this->userAgent = $userAgent;
         $this->refreshAccessTokenCallback = function () {
-            $accountDomainModel = $this->oAuthClient->getAccountDomainByRefreshToken($this->accessToken);
-
-            $oAuthProvider = $this->oAuthClient->getOAuthProvider();
-            $this->setRequestDomain($oAuthProvider->getProtocol() . $accountDomainModel->getDomain());
-
             return $this->oAuthClient->getAccessTokenByRefreshToken($this->accessToken);
         };
     }
