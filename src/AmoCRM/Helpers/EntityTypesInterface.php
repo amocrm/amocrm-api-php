@@ -20,6 +20,7 @@ interface EntityTypesInterface
     public const CUSTOMERS = 'customers';
     public const CUSTOMERS_TRANSACTIONS = 'transactions';
     public const EVENTS = 'events';
+    public const EVENTS_TYPES = 'events_types';
     public const NOTES = 'notes';
     public const TAGS = 'tags';
     public const TASKS = 'tasks';
