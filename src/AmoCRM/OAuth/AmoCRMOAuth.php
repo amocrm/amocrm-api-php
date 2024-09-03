@@ -164,7 +164,9 @@ class AmoCRMOAuth
                 'refresh_token' => $accessToken->getRefreshToken(),
             ]);
         } catch (IdentityProviderException $e) {
-            if ($e->getCode() === StatusCodeInterface::STATUS_NOT_FOUND) {
+            if (in_array(
+                $e->getCode(), [StatusCodeInterface::STATUS_NOT_FOUND, StatusCodeInterface::STATUS_UNAUTHORIZED], true
+            )) {
                 $accountDomainModel = $this->getAccountDomainByRefreshToken($accessToken);
                 $this->setBaseDomain($accountDomainModel->getDomain());
 
