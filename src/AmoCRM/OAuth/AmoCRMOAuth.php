@@ -164,13 +164,34 @@ class AmoCRMOAuth
                 'refresh_token' => $accessToken->getRefreshToken(),
             ]);
         } catch (IdentityProviderException $e) {
-            throw new AmoCRMoAuthApiException(
-                $e->getMessage(),
-                $e->getCode(),
-                [],
-                $e->getResponseBody(),
-                $e
-            );
+            if (in_array(
+                $e->getCode(), [StatusCodeInterface::STATUS_NOT_FOUND, StatusCodeInterface::STATUS_UNAUTHORIZED], true
+            )) {
+                $accountDomainModel = $this->getAccountDomainByRefreshToken($accessToken);
+                $this->setBaseDomain($accountDomainModel->getDomain());
+
+                try {
+                    $accessToken = $this->oauthProvider->getAccessToken(new RefreshToken(), [
+                        'refresh_token' => $accessToken->getRefreshToken(),
+                    ]);
+                } catch (IdentityProviderException $e) {
+                    throw new AmoCRMoAuthApiException(
+                        $e->getMessage(),
+                        $e->getCode(),
+                        [],
+                        $e->getResponseBody(),
+                        $e
+                    );
+                }
+            } else {
+                throw new AmoCRMoAuthApiException(
+                    $e->getMessage(),
+                    $e->getCode(),
+                    [],
+                    $e->getResponseBody(),
+                    $e
+                );
+            }
         }
 
         if (is_callable($this->accessTokenRefreshCallback)) {
