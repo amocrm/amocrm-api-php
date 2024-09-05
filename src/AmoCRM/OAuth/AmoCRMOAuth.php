@@ -40,8 +40,8 @@ use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
-
 use Throwable;
+
 use function sprintf;
 
 /**
@@ -164,16 +164,26 @@ class AmoCRMOAuth
                 'refresh_token' => $accessToken->getRefreshToken(),
             ]);
         } catch (IdentityProviderException $e) {
-            if (in_array(
-                $e->getCode(), [StatusCodeInterface::STATUS_NOT_FOUND, StatusCodeInterface::STATUS_UNAUTHORIZED], true
-            )) {
+            if (
+                in_array(
+                    $e->getCode(),
+                    [
+                        StatusCodeInterface::STATUS_NOT_FOUND,
+                        StatusCodeInterface::STATUS_UNAUTHORIZED,
+                    ],
+                    true
+                )
+            ) {
                 $accountDomainModel = $this->getAccountDomainByRefreshToken($accessToken);
                 $this->setBaseDomain($accountDomainModel->getDomain());
 
                 try {
-                    $accessToken = $this->oauthProvider->getAccessToken(new RefreshToken(), [
-                        'refresh_token' => $accessToken->getRefreshToken(),
-                    ]);
+                    $accessToken = $this->oauthProvider->getAccessToken(
+                        new RefreshToken(),
+                        [
+                            'refresh_token' => $accessToken->getRefreshToken(),
+                        ]
+                    );
                 } catch (IdentityProviderException $e) {
                     throw new AmoCRMoAuthApiException(
                         $e->getMessage(),
