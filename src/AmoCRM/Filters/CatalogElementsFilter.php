@@ -18,7 +18,7 @@ class CatalogElementsFilter extends BaseEntityFilter implements HasPagesInterfac
     private $ids = null;
 
     /**
-     * @var string|null
+     * @var string|array|null
      */
     private $query = null;
 
@@ -42,21 +42,21 @@ class CatalogElementsFilter extends BaseEntityFilter implements HasPagesInterfac
     }
 
     /**
-     * @return string|null
+     * @return string|array|null
      */
-    public function getQuery(): ?string
+    public function getQuery()
     {
         return $this->query;
     }
 
     /**
-     * @param string|null $query
+     * @param string|array|null $query
      * @return CatalogElementsFilter
      */
-    public function setQuery(?string $query): self
+    public function setQuery($query): self
     {
-        if (!empty($query)) {
-            $this->query = (string)$query;
+        if (!empty($query) && (is_array($query) || is_string($query))) {
+            $this->query = $query;
         }
 
         return $this;
