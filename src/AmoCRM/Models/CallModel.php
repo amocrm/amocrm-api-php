@@ -101,7 +101,7 @@ class CallModel extends BaseApiModel implements HasIdInterface
             $this->setPhone($call['phone']);
         }
 
-        if (isset($call['call_result'])) {
+        if (isset($call['call_result']) && $call['call_result']!= null) {
             $this->setCallResult($call['call_result']);
         }
 
@@ -195,6 +195,14 @@ class CallModel extends BaseApiModel implements HasIdInterface
 
         if ($updatedAt = $this->getUpdatedAt()) {
             $call['updated_at'] = $updatedAt;
+        }
+
+        if ($callStatus = $this->getCallStatus()) {
+            $call['call_status'] = $callStatus;
+        }
+
+        if ($callResult = $this->getCallResult()) {
+            $call['call_result'] = $callResult;
         }
 
         return $call;
