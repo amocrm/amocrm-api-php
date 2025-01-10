@@ -197,6 +197,14 @@ class CallModel extends BaseApiModel implements HasIdInterface
             $call['updated_at'] = $updatedAt;
         }
 
+        if ($callStatus = $this->getCallStatus()) {
+            $call['call_status'] = $callStatus;
+        }
+
+        if ($callResult = $this->getCallResult()) {
+            $call['call_result'] = $callResult;
+        }
+
         return $call;
     }
 
