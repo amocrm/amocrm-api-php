@@ -27,7 +27,7 @@
     "fig/http-message-util": "1.*",
     "ramsey/uuid": "^3 || ^4",
     "lcobucci/jwt": "^3.4.6 || ^4.0.4",
-    "lcobucci/clock": "~2.0.0 || ^2.1.0",
+    "lcobucci/clock": "1.1.0 ||^2.0.0",
     "nesbot/carbon": "^2.52 || ^3.0.0",
     "ext-fileinfo": "*"
   },
