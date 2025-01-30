@@ -571,13 +571,13 @@ class AmoCRMOAuth
                 $constraint->assert($jwtToken);
             }
         } catch (ConstraintViolation $e) {
-            $validAtConstraint = get_class($validAtConstraint);
+            $validAtConstraintClassName = get_class($validAtConstraint);
             switch (true) {
                 case $constraint instanceof SignedWith:
                     throw DisposableTokenVerificationFailedException::create();
                 case $constraint instanceof PermittedFor:
                     throw DisposableTokenInvalidDestinationException::create();
-                case $constraint instanceof $validAtConstraint:
+                case $constraint instanceof $validAtConstraintClassName:
                     throw DisposableTokenExpiredException::create();
             }
         }
@@ -626,13 +626,13 @@ class AmoCRMOAuth
                 $constraint->assert($jwtToken);
             }
         } catch (ConstraintViolation $e) {
-            $validAtConstraint = get_class($validAtConstraint);
+            $validAtConstraintClassName = get_class($validAtConstraint);
             switch (true) {
                 case $constraint instanceof SignedWith:
                     throw DisposableTokenVerificationFailedException::create();
                 case $constraint instanceof PermittedFor:
                     throw DisposableTokenInvalidDestinationException::create();
-                case $constraint instanceof $validAtConstraint:
+                case $constraint instanceof $validAtConstraintClassName:
                     throw DisposableTokenExpiredException::create();
             }
         }
