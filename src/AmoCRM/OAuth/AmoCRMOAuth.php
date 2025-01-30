@@ -552,6 +552,8 @@ class AmoCRMOAuth
         $signer = new Sha256();
         $key = InMemory::plainText($this->clientSecret);
 
+        $validAtConstraint = $this->createValidAtConstraint();
+
         $clientBaseUri = new Uri($this->redirectUri);
         $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
         $constraints = [
@@ -560,7 +562,7 @@ class AmoCRMOAuth
             // Проверим наш ли адресат
             new PermittedFor($clientBaseUri),
             // Проверка жизни токена
-            new ValidAt(FrozenClock::fromUTC()),
+            $validAtConstraint,
         ];
 
         $configuration = Configuration::forSymmetricSigner($signer, $key);
@@ -577,7 +579,7 @@ class AmoCRMOAuth
                     throw DisposableTokenVerificationFailedException::create();
                 case $constraint instanceof PermittedFor:
                     throw DisposableTokenInvalidDestinationException::create();
-                case $constraint instanceof ValidAt:
+                case $constraint instanceof $validAtConstraint:
                     throw DisposableTokenExpiredException::create();
             }
         }
@@ -603,11 +605,12 @@ class AmoCRMOAuth
         $signer = new Sha512();
         $key = InMemory::plainText($this->clientSecret);
 
+        $validAtConstraint = $this->createValidAtConstraint();
         $constraints = [
             // Проверка подписи
             new SignedWith($signer, $key),
             // Проверка жизни токена, с 4.2 deprecated use LooseValidAt
-            new ValidAt(FrozenClock::fromUTC()),
+            $validAtConstraint,
         ];
 
         if ($receiverPath !== null) {
@@ -630,7 +633,7 @@ class AmoCRMOAuth
                     throw DisposableTokenVerificationFailedException::create();
                 case $constraint instanceof PermittedFor:
                     throw DisposableTokenInvalidDestinationException::create();
-                case $constraint instanceof ValidAt:
+                case $constraint instanceof $validAtConstraint:
                     throw DisposableTokenExpiredException::create();
             }
         }
@@ -673,4 +676,25 @@ class AmoCRMOAuth
 
         return $apiDomain;
     }
+    private function createValidAtConstraint(): object
+    {
+        $availableConstraints = [
+            'Lcobucci\JWT\Validation\Constraint\LooseValidAt',
+            'Lcobucci\JWT\Validation\Constraint\ValidAt'
+        ];
+
+        foreach ($availableConstraints as $constraintClass) {
+            if (class_exists($constraintClass, false)) {
+                $clockClass = class_exists(\Lcobucci\Clock\FrozenClock::class)
+                    ? \Lcobucci\Clock\FrozenClock::class
+                    : \Lcobucci\Clock\SystemClock::class;
+
+                return new $constraintClass($clockClass::fromUTC());
+            }
+        }
+
+        throw new \RuntimeException("Neither LooseValidAt nor ValidAt are available.");
+    }
+
+
 }
