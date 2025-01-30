@@ -549,7 +549,6 @@ class AmoCRMOAuth
     {
         $signer = new Sha256();
         $key = InMemory::plainText($this->clientSecret);
-
         $validAtConstraint = $this->createValidAtConstraint();
 
         $clientBaseUri = new Uri($this->redirectUri);
@@ -572,6 +571,7 @@ class AmoCRMOAuth
                 $constraint->assert($jwtToken);
             }
         } catch (ConstraintViolation $e) {
+            $validAtConstraint = get_class($validAtConstraint);
             switch (true) {
                 case $constraint instanceof SignedWith:
                     throw DisposableTokenVerificationFailedException::create();
@@ -626,6 +626,7 @@ class AmoCRMOAuth
                 $constraint->assert($jwtToken);
             }
         } catch (ConstraintViolation $e) {
+            $validAtConstraint = get_class($validAtConstraint);
             switch (true) {
                 case $constraint instanceof SignedWith:
                     throw DisposableTokenVerificationFailedException::create();
