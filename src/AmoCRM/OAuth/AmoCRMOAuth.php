@@ -693,6 +693,4 @@ class AmoCRMOAuth
 
         throw new \RuntimeException("Neither LooseValidAt nor ValidAt are available.");
     }
-
-
 }
