@@ -24,7 +24,6 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TooManyRedirectsException;
 use GuzzleHttp\Psr7\Uri;
-use Lcobucci\Clock\FrozenClock;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Hmac\Sha512;
@@ -32,7 +31,6 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Validation\Constraint;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\ConstraintViolation;
 use League\OAuth2\Client\Grant\AuthorizationCode;
 use League\OAuth2\Client\Grant\RefreshToken;
@@ -552,6 +550,8 @@ class AmoCRMOAuth
         $signer = new Sha256();
         $key = InMemory::plainText($this->clientSecret);
 
+        $validAtConstraint = $this->createValidAtConstraint();
+
         $clientBaseUri = new Uri($this->redirectUri);
         $clientBaseUri = sprintf('%s://%s', $clientBaseUri->getScheme(), $clientBaseUri->getHost());
         $constraints = [
@@ -560,7 +560,7 @@ class AmoCRMOAuth
             // Проверим наш ли адресат
             new PermittedFor($clientBaseUri),
             // Проверка жизни токена
-            new LooseValidAt(FrozenClock::fromUTC()),
+            $validAtConstraint,
         ];
 
         $configuration = Configuration::forSymmetricSigner($signer, $key);
@@ -572,12 +572,13 @@ class AmoCRMOAuth
                 $constraint->assert($jwtToken);
             }
         } catch (ConstraintViolation $e) {
+            $validAtConstraintClassName = get_class($validAtConstraint);
             switch (true) {
                 case $constraint instanceof SignedWith:
                     throw DisposableTokenVerificationFailedException::create();
                 case $constraint instanceof PermittedFor:
                     throw DisposableTokenInvalidDestinationException::create();
-                case $constraint instanceof LooseValidAt:
+                case $constraint instanceof $validAtConstraintClassName:
                     throw DisposableTokenExpiredException::create();
             }
         }
@@ -603,11 +604,13 @@ class AmoCRMOAuth
         $signer = new Sha512();
         $key = InMemory::plainText($this->clientSecret);
 
+        $validAtConstraint = $this->createValidAtConstraint();
+
         $constraints = [
             // Проверка подписи
             new SignedWith($signer, $key),
             // Проверка жизни токена, с 4.2 deprecated use LooseValidAt
-            new LooseValidAt(FrozenClock::fromUTC()),
+            $validAtConstraint,
         ];
 
         if ($receiverPath !== null) {
@@ -625,12 +628,13 @@ class AmoCRMOAuth
                 $constraint->assert($jwtToken);
             }
         } catch (ConstraintViolation $e) {
+            $validAtConstraintClassName = get_class($validAtConstraint);
             switch (true) {
                 case $constraint instanceof SignedWith:
                     throw DisposableTokenVerificationFailedException::create();
                 case $constraint instanceof PermittedFor:
                     throw DisposableTokenInvalidDestinationException::create();
-                case $constraint instanceof LooseValidAt:
+                case $constraint instanceof $validAtConstraintClassName:
                     throw DisposableTokenExpiredException::create();
             }
         }
@@ -672,5 +676,35 @@ class AmoCRMOAuth
         }
 
         return $apiDomain;
+    }
+
+    /**
+     * Создает и возвращает объект ограничения проверки времени действия токена.
+     *
+     * Метод динамически выбирает между `LooseValidAt` и `ValidAt` (приоритет у `LooseValidAt`).
+     * Также автоматически выбирает подходящий класс часов (`FrozenClock` или `SystemClock`).
+     *
+     * @psalm-suppress UndefinedClass
+     * @return object
+     * @throws \RuntimeException Если ни один из классов `LooseValidAt` или `ValidAt` недоступен.
+     */
+    private function createValidAtConstraint(): object
+    {
+        $availableConstraints = [
+            'Lcobucci\JWT\Validation\Constraint\LooseValidAt',
+            'Lcobucci\JWT\Validation\Constraint\ValidAt'
+        ];
+
+        foreach ($availableConstraints as $constraintClass) {
+            if (class_exists($constraintClass, false)) {
+                $clockClass = class_exists(\Lcobucci\Clock\FrozenClock::class)
+                    ? \Lcobucci\Clock\FrozenClock::class
+                    : \Lcobucci\Clock\SystemClock::class;
+
+                return new $constraintClass($clockClass::fromUTC());
+            }
+        }
+
+        throw new \RuntimeException("Neither LooseValidAt nor ValidAt are available.");
     }
 }
