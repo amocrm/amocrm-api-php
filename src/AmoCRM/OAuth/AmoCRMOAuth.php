@@ -675,6 +675,17 @@ class AmoCRMOAuth
 
         return $apiDomain;
     }
+
+    /**
+     * Создает и возвращает объект ограничения проверки времени действия токена.
+     *
+     * Метод динамически выбирает между `LooseValidAt` и `ValidAt` (приоритет у `LooseValidAt`).
+     * Также автоматически выбирает подходящий класс часов (`FrozenClock` или `SystemClock`).
+     *
+     * @psalm-suppress UndefinedClass
+     * @return object
+     * @throws \RuntimeException Если ни один из классов `LooseValidAt` или `ValidAt` недоступен.
+     */
     private function createValidAtConstraint(): object
     {
         $availableConstraints = [
