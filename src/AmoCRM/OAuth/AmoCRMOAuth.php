@@ -549,6 +549,7 @@ class AmoCRMOAuth
     {
         $signer = new Sha256();
         $key = InMemory::plainText($this->clientSecret);
+
         $validAtConstraint = $this->createValidAtConstraint();
 
         $clientBaseUri = new Uri($this->redirectUri);
@@ -604,6 +605,7 @@ class AmoCRMOAuth
         $key = InMemory::plainText($this->clientSecret);
 
         $validAtConstraint = $this->createValidAtConstraint();
+
         $constraints = [
             // Проверка подписи
             new SignedWith($signer, $key),
