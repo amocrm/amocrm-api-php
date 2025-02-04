@@ -176,7 +176,7 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
 
     /**
      * @param int $entityId
-     * @return NoteModel
+     * @return self
      */
     public function setEntityId(int $entityId): self
     {
