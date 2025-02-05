@@ -28,7 +28,7 @@
     "ramsey/uuid": "^3 || ^4",
     "lcobucci/jwt": "^3.4.6 || ^4.0.4",
     "lcobucci/clock": "1.1.0 ||^2.0.0",
-    "nesbot/carbon": "^2.52 || ^3.0.0",
+    "nesbot/carbon": "^2.72.6 || ^3.8.4",
     "ext-fileinfo": "*"
   },
   "require-dev": {
