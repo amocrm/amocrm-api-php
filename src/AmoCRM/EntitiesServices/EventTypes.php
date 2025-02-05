@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
 use AmoCRM\Collections\BaseApiCollection;
-use AmoCRM\Collections\EventsCollections;
 use AmoCRM\Collections\EventTypesCollections;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Filters\BaseEntityFilter;
@@ -18,7 +19,7 @@ use AmoCRM\Models\EventTypeModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method null|EventsCollections get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|EventTypesCollections get(BaseEntityFilter $filter = null, array $with = [])
  */
 class EventTypes extends BaseEntity
 {
@@ -44,9 +45,7 @@ class EventTypes extends BaseEntity
      */
     protected function getEntitiesFromResponse(array $response): array
     {
-        $entities = $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::EVENTS_TYPES] ?? [];
-        
-        return $entities;
+        return $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::EVENTS_TYPES] ?? [];
     }
 
     /**
