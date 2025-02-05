@@ -24,6 +24,8 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TooManyRedirectsException;
 use GuzzleHttp\Psr7\Uri;
+use Lcobucci\Clock\FrozenClock;
+use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Hmac\Sha512;
@@ -38,7 +40,10 @@ use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
+use RuntimeException;
 use Throwable;
+use Lcobucci\JWT\Validation\Constraint\ValidAt;
+use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 
 use function sprintf;
 
@@ -685,26 +690,26 @@ class AmoCRMOAuth
      * Также автоматически выбирает подходящий класс часов (`FrozenClock` или `SystemClock`).
      *
      * @psalm-suppress UndefinedClass
-     * @return object
-     * @throws \RuntimeException Если ни один из классов `LooseValidAt` или `ValidAt` недоступен.
+     * @return Constraint
+     * @throws RuntimeException Если ни один из классов `LooseValidAt` или `ValidAt` недоступен.
      */
-    private function createValidAtConstraint(): object
+    private function createValidAtConstraint(): Constraint
     {
         $availableConstraints = [
-            'Lcobucci\JWT\Validation\Constraint\LooseValidAt',
-            'Lcobucci\JWT\Validation\Constraint\ValidAt'
+            LooseValidAt::class,
+            ValidAt::class,
         ];
 
         foreach ($availableConstraints as $constraintClass) {
-            if (class_exists($constraintClass, false)) {
-                $clockClass = class_exists(\Lcobucci\Clock\FrozenClock::class)
-                    ? \Lcobucci\Clock\FrozenClock::class
-                    : \Lcobucci\Clock\SystemClock::class;
+            if (class_exists($constraintClass)) {
+                $clockClass = class_exists(FrozenClock::class)
+                    ? FrozenClock::class
+                    : SystemClock::class;
 
                 return new $constraintClass($clockClass::fromUTC());
             }
         }
 
-        throw new \RuntimeException("Neither LooseValidAt nor ValidAt are available.");
+        throw new RuntimeException('Neither LooseValidAt nor ValidAt are available.');
     }
 }
