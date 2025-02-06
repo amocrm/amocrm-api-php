@@ -224,6 +224,7 @@ $leadsService = $apiClient->leads();
 | users                | Роли юзеров                   |
 | customersSegments    | Сегменты покупателей          |
 | events               | Список событий                |
+| eventTypes           | Типы событий                  |
 | webhooks             | Вебхуки                       | 
 | unsorted             | Неразобранное                 |
 | pipelines            | Воронки сделок                |
