@@ -22,7 +22,7 @@ use function array_key_exists;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method null|TagsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|TagsCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method TagModel addOne(BaseApiModel $model)
  * @method TagsCollection add(BaseApiCollection $collection)
  */

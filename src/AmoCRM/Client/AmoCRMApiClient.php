@@ -386,7 +386,7 @@ class AmoCRMApiClient
      * @return CatalogElements
      * @throws InvalidArgumentException|AmoCRMMissedTokenException
      */
-    public function catalogElements(int $catalogId = null)
+    public function catalogElements(?int $catalogId = null)
     {
         $request = $this->buildRequest();
         $service = new CatalogElements($request);
@@ -444,7 +444,7 @@ class AmoCRMApiClient
      * @return CustomFieldGroups
      * @throws InvalidArgumentException|AmoCRMMissedTokenException
      */
-    public function customFieldGroups(string $entityType = null)
+    public function customFieldGroups(?string $entityType = null)
     {
         $request = $this->buildRequest();
 

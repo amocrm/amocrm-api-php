@@ -34,7 +34,7 @@ use AmoCRM\Models\Unsorted\UnsortedSummaryModel;
  * @package AmoCRM\EntitiesServices
  *
  * @method null|BaseUnsortedModel getOne($id, array $with = [])
- * @method null|UnsortedCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|UnsortedCollection get(?BaseEntityFilter $filter = null, array $with = [])
  */
 class Unsorted extends BaseEntity implements HasPageMethodsInterface
 {

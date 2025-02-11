@@ -18,7 +18,7 @@ use AmoCRM\Models\TaskModel;
  *
  * @package AmoCRM\EntitiesServices
  * @method null|TaskModel getOne($id, array $with = [])
- * @method null|TasksCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|TasksCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method TaskModel addOne(BaseApiModel $model)
  * @method TasksCollection add(BaseApiCollection $collection)
  * @method TaskModel updateOne(BaseApiModel $apiModel)

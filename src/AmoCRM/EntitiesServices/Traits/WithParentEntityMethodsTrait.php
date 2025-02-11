@@ -135,7 +135,7 @@ trait WithParentEntityMethodsTrait
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
+    public function getByParentId(int $parentId, ?BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         $queryParams = [];
         if ($filter instanceof BaseEntityFilter) {

@@ -322,7 +322,7 @@ class LeadsFilterTest extends TestCase
     public function testInvalidStatuses()
     {
         $statuses = [
-            '123'
+            '123',
         ];
         $this->leadsFilter->setStatuses($statuses);
         $this->assertNull($this->leadsFilter->getStatuses());
@@ -378,7 +378,8 @@ class LeadsFilterTest extends TestCase
     /**
      * @return array
      */
-    public function getValidArrayOrStringFilter() {
+    public function getValidArrayOrStringFilter()
+    {
         return [
             [
                 "hello", ["hello"],
@@ -395,7 +396,8 @@ class LeadsFilterTest extends TestCase
     /**
      * @return array
      */
-    public function getValidArrayOrNumericFilter() {
+    public function getValidArrayOrNumericFilter()
+    {
         return [
             [
                 0, [0],
@@ -410,15 +412,16 @@ class LeadsFilterTest extends TestCase
                 [1, 2, 3, 4], [1, 2, 3, 4],
             ],
             [
-                [-1, 1, 2], [1 , 2],
-            ]
+                [-1, 1, 2], [1, 2],
+            ],
         ];
     }
 
     /**
      * @return array
      */
-    public function getInvalidArrayOrStringFilter() {
+    public function getInvalidArrayOrStringFilter()
+    {
         return [
             [
                 -1,
@@ -426,7 +429,7 @@ class LeadsFilterTest extends TestCase
             [
                 [
                     -1,
-                    -100
+                    -100,
                 ],
             ],
             [
@@ -435,19 +438,19 @@ class LeadsFilterTest extends TestCase
                 ],
             ],
             [
-                100
+                100,
             ],
             [
                 [
                     true,
-                    false
-                ]
+                    false,
+                ],
             ],
             [
-                false
+                false,
             ],
             [
-                null
+                null,
             ],
         ];
     }
@@ -455,7 +458,8 @@ class LeadsFilterTest extends TestCase
     /**
      * @return array
      */
-    public function getInvalidArrayOrNumericFilter() {
+    public function getInvalidArrayOrNumericFilter()
+    {
         return [
             [
                 -1,
@@ -463,7 +467,7 @@ class LeadsFilterTest extends TestCase
             [
                 [
                     -1,
-                    -100
+                    -100,
                 ],
             ],
             [
@@ -472,19 +476,19 @@ class LeadsFilterTest extends TestCase
                 ],
             ],
             [
-                "hello"
+                "hello",
             ],
             [
                 [
                     true,
-                    false
-                ]
+                    false,
+                ],
             ],
             [
-                false
+                false,
             ],
             [
-                null
+                null,
             ],
         ];
     }
@@ -492,7 +496,8 @@ class LeadsFilterTest extends TestCase
     /**
      * @return array
      */
-    public function getValidIntOrIntRangeFilter() {
+    public function getValidIntOrIntRangeFilter()
+    {
         return [
             [
                 (new BaseRangeFilter())
@@ -509,7 +514,8 @@ class LeadsFilterTest extends TestCase
     /**
      * @return array
      */
-    public function getInvalidIntOrIntRangeFilter() {
+    public function getInvalidIntOrIntRangeFilter()
+    {
         return [
             [
                 -1,
@@ -517,7 +523,7 @@ class LeadsFilterTest extends TestCase
             [
                 [
                     -1,
-                    -100
+                    -100,
                 ],
             ],
             [
@@ -526,19 +532,19 @@ class LeadsFilterTest extends TestCase
                 ],
             ],
             [
-                "hello"
+                "hello",
             ],
             [
                 [
                     true,
-                    false
-                ]
+                    false,
+                ],
             ],
             [
-                false
+                false,
             ],
             [
-                null
+                null,
             ],
             [
                 "1", 1,

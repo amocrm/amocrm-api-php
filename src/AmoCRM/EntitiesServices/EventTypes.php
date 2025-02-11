@@ -19,7 +19,7 @@ use AmoCRM\Models\EventTypeModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method null|EventTypesCollections get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|EventTypesCollections get(?BaseEntityFilter $filter = null, array $with = [])
  */
 class EventTypes extends BaseEntity
 {

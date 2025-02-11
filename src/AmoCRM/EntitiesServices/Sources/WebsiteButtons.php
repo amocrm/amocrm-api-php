@@ -24,7 +24,7 @@ use AmoCRM\Models\Sources\WebsiteButtonUpdateRequestModel;
 
 /**
  * @method WebsiteButtonModel|null getOne($id, array $with = [])
- * @method WebsiteButtonsCollection|null get(BaseEntityFilter $filter = null, array $with = [])
+ * @method WebsiteButtonsCollection|null get(?BaseEntityFilter $filter = null, array $with = [])
  */
 class WebsiteButtons extends BaseEntity
 {

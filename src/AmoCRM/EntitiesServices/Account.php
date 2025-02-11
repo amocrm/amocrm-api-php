@@ -89,7 +89,7 @@ class Account extends BaseEntity
      * @return BaseApiCollection|null
      * @throws NotAvailableForActionException
      */
-    public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
+    public function get(?BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         throw new NotAvailableForActionException('Use getCurrent for this entity');
     }

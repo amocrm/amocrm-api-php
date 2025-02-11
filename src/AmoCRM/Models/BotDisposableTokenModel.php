@@ -256,7 +256,7 @@ class BotDisposableTokenModel extends BaseApiModel
      *
      * @return array
      */
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return $this->toArray();
     }

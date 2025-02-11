@@ -480,7 +480,7 @@ class ItemsCustomFieldValueModel extends BaseCustomFieldValueModel
     }
 
 
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $result = [
             self::FIELD_SKU => $this->getSku(),

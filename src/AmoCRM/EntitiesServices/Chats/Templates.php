@@ -28,7 +28,7 @@ use AmoCRM\Models\Chats\Templates\TemplateModel;
  * @package AmoCRM\EntitiesServices\Chats
  *
  * @method null|TemplateModel getOne($id, array $with = [])
- * @method null|TemplatesCollection get(TemplatesFilter $filter = null, array $with = [])
+ * @method null|TemplatesCollection get(?TemplatesFilter $filter = null, array $with = [])
  * @method TemplateModel updateOne(BaseApiModel $apiModel)
  * @method TemplatesCollection update(BaseApiCollection $collection)
  * @method TemplateModel syncOne(BaseApiModel $apiModel, $with = [])
