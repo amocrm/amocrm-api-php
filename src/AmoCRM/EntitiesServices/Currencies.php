@@ -18,7 +18,7 @@ use AmoCRM\Models\BaseApiModel;
 
 /**
  * @since Release Spring 2022
- * @method null|CurrenciesCollection get(CurrenciesFilter $filter = null, array $with = [])
+ * @method null|CurrenciesCollection get(?CurrenciesFilter $filter = null, array $with = [])
  */
 class Currencies extends BaseEntity implements HasPageMethodsInterface
 {

@@ -145,7 +145,7 @@ class BaseCustomFieldValuesModel extends BaseApiModel
         ];
     }
 
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         $values = $this->getValues();
         return [

@@ -22,7 +22,7 @@ use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\BaseApiModel;
 
 /**
- * @method null|SubscriptionsCollection getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = [])
+ * @method null|SubscriptionsCollection getByParentId(int $parentId, ?BaseEntityFilter $filter = null, array $with = [])
  */
 class EntitySubscriptions extends BaseEntityTypeEntity implements HasPageMethodsInterface, HasParentEntity
 {
@@ -149,7 +149,7 @@ class EntitySubscriptions extends BaseEntityTypeEntity implements HasPageMethods
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
+    public function get(?BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         throw new NotAvailableForActionException('Method not available for this entity');
     }

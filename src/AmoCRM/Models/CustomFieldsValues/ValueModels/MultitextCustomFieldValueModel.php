@@ -55,7 +55,7 @@ class MultitextCustomFieldValueModel extends BaseEnumCustomFieldValueModel
         return $model;
     }
 
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [
             'value' => $this->getValue(),

@@ -42,10 +42,11 @@ class EventsFilterTest extends TestCase
         $this->assertNull($this->eventsFilter->getEntityIds());
     }
 
-      /**
+    /**
      * @return array
      */
-    public function getInvalidArrayOrNumericFilter() {
+    public function getInvalidArrayOrNumericFilter()
+    {
         return [
             [
                 -1,
@@ -53,7 +54,7 @@ class EventsFilterTest extends TestCase
             [
                 [
                     -1,
-                    -100
+                    -100,
                 ],
             ],
             [
@@ -62,27 +63,28 @@ class EventsFilterTest extends TestCase
                 ],
             ],
             [
-                "hello"
+                "hello",
             ],
             [
                 [
                     true,
-                    false
-                ]
+                    false,
+                ],
             ],
             [
-                false
+                false,
             ],
             [
-                null
+                null,
             ],
         ];
     }
 
-     /**
+    /**
      * @return array
      */
-    public function getValidArrayOrNumericFilter() {
+    public function getValidArrayOrNumericFilter()
+    {
         return [
             [
                 0, [0],
@@ -97,8 +99,8 @@ class EventsFilterTest extends TestCase
                 [1, 2, 3, 4], [1, 2, 3, 4],
             ],
             [
-                [-1, 1, 2], [1 , 2],
-            ]
+                [-1, 1, 2], [1, 2],
+            ],
         ];
     }
 }

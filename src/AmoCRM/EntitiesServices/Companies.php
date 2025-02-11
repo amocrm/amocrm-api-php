@@ -20,7 +20,7 @@ use AmoCRM\Models\CompanyModel;
  * @package AmoCRM\EntitiesServices
  *
  * @method null|CompanyModel getOne($id, array $with = [])
- * @method null|CompaniesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|CompaniesCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method CompanyModel addOne(BaseApiModel $model)
  * @method CompaniesCollection add(BaseApiCollection $collection)
  * @method CompanyModel updateOne(BaseApiModel $apiModel)

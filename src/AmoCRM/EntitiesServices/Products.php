@@ -61,7 +61,7 @@ class Products extends BaseEntity
      * @return BaseApiCollection|null
      * @throws NotAvailableForActionException
      */
-    public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
+    public function get(?BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         throw new NotAvailableForActionException('Method not available for this entity');
     }

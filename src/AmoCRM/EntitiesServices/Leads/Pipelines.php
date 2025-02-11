@@ -23,7 +23,7 @@ use AmoCRM\Models\Leads\Pipelines\PipelineModel;
  * @package AmoCRM\EntitiesServices\Leads
  *
  * @method null|PipelineModel getOne($id, array $with = [])
- * @method null|PipelinesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|PipelinesCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method PipelineModel addOne(BaseApiModel $model)
  * @method PipelinesCollection add(BaseApiCollection $collection)
  * @method PipelineModel updateOne(BaseApiModel $apiModel)

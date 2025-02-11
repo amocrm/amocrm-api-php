@@ -27,7 +27,7 @@ use function is_null;
  * @package AmoCRM\EntitiesServices
  *
  * @method null|LeadModel getOne($id, array $with = [])
- * @method null|LeadsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|LeadsCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method LeadModel addOne(BaseApiModel $model)
  * @method LeadsCollection add(BaseApiCollection $collection)
  * @method LeadModel updateOne(BaseApiModel $apiModel)

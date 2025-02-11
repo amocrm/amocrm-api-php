@@ -31,7 +31,7 @@ class InvoiceWarningModel extends BaseApiModel
         ];
     }
 
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return $this->toArray();
     }

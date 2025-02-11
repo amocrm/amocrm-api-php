@@ -38,7 +38,7 @@ class Links extends BaseEntityTypeEntity
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
+    public function get(?BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         $queryParams = [];
         if ($filter instanceof BaseEntityFilter) {

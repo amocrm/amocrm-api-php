@@ -58,7 +58,7 @@ class CurrencyModel extends BaseApiModel
      *
      * @return string[]
      */
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return $this->toArray();
     }
