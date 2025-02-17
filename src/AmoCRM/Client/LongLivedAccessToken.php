@@ -7,6 +7,8 @@ namespace AmoCRM\Client;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use DateTimeImmutable;
 use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key\InMemory;
 use League\OAuth2\Client\Token\AccessToken;
 use Throwable;
 
@@ -23,7 +25,10 @@ class LongLivedAccessToken extends AccessToken
     public function __construct(string $accessToken)
     {
         try {
-            $parsedAccessToken = Configuration::forUnsecuredSigner()->parser()->parse($accessToken);
+            $signer = new Sha256();
+            $key = InMemory::plainText($accessToken);
+            $configuration = Configuration::forSymmetricSigner($signer, $key);
+            $parsedAccessToken = $configuration->parser()->parse($accessToken);
         } catch (Throwable $e) {
             throw new InvalidArgumentException(
                 'Error parsing given access token. Prev error: ' . $e->getMessage(),
