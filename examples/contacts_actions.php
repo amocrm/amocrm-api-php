@@ -82,7 +82,7 @@ try {
     die;
 }
 
-//Работает только, если уже существует что то внутри getCustomFieldsValues(). В противном случае возвращает null и следует использовать setCustomFieldsValues 
+//Работает только, если уже существует что то внутри getCustomFieldsValues(). В противном случае возвращает null и следует использовать setCustomFieldsValues
 //Получим коллекцию значений полей контакта
 $customFields = $contact->getCustomFieldsValues();
 //Получим значение поля по его коду

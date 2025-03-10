@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Collections;
+namespace AmoCRM\Collections;
 
-use AmoCRM\AmoCRM\Models\ChatLinkModel;
-use AmoCRM\Collections\BaseApiCollection;
+use AmoCRM\Models\ChatLinkModel;
 
 class ChatLinksCollection extends BaseApiCollection
 {

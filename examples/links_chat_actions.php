@@ -1,7 +1,7 @@
 <?php
 
-use AmoCRM\AmoCRM\Collections\ChatLinksCollection;
-use AmoCRM\AmoCRM\Models\ChatLinkModel;
+use AmoCRM\Collections\ChatLinksCollection;
+use AmoCRM\Models\ChatLinkModel;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 

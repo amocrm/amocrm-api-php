@@ -383,7 +383,7 @@ class LeadsFilter extends BaseEntityFilter implements HasPagesInterface, HasOrde
         foreach ($customFieldsValues as $fieldId => $customFieldsValue) {
             if ($customFieldsValue instanceof BaseRangeFilter) {
                 $cfFilter[$fieldId] = $customFieldsValue->toFilter();
-            } else if (is_array($customFieldsValue)) {
+            } elseif (is_array($customFieldsValue)) {
                 $cfFilter[$fieldId] = $customFieldsValue;
             } else {
                 $cfFilter[$fieldId][] = $customFieldsValue;

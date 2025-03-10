@@ -2,9 +2,9 @@
 
 namespace AmoCRM\EntitiesServices;
 
-use AmoCRM\AmoCRM\Collections\ChatLinksCollection;
-use AmoCRM\AmoCRM\Filters\ChatLinksFilter;
-use AmoCRM\AmoCRM\Models\ChatLinkModel;
+use AmoCRM\Collections\ChatLinksCollection;
+use AmoCRM\Filters\ChatLinksFilter;
+use AmoCRM\Models\ChatLinkModel;
 use AmoCRM\EntitiesServices\Traits\LinkMethodsTrait;
 use AmoCRM\Exceptions\AmoCRMApiException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
@@ -198,7 +198,6 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
         $resultCollection = new ChatLinksCollection();
 
         foreach ($response['_embedded']['chats'] as $linkChat) {
-
             $linkChat = (new ChatLinkModel())
                 ->setContactId($linkChat['contact_id'])
                 ->setChatId($linkChat['chat_id'])

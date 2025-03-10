@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AmoCRM\AmoCRM\Models;
+namespace AmoCRM\Models;
 
 use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Traits\RequestIdTrait;
