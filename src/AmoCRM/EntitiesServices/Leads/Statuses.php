@@ -24,7 +24,7 @@ use Exception;
  * @package AmoCRM\EntitiesServices\Leads
  *
  * @method null|StatusModel getOne($id, array $with = [])
- * @method null|StatusesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|StatusesCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method StatusModel addOne(BaseApiModel $model)
  * @method StatusesCollection add(BaseApiCollection $collection)
  * @method StatusModel updateOne(BaseApiModel $apiModel)

@@ -19,7 +19,7 @@ use AmoCRM\Models\SourceModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method null|SourcesCollection get(SourcesFilter $filter = null, array $with = [])
+ * @method null|SourcesCollection get(?SourcesFilter $filter = null, array $with = [])
  * @method SourceModel addOne(SourceModel $model)
  * @method SourcesCollection add(SourcesCollection $collection)
  * @method SourceModel updateOne(SourceModel $model)

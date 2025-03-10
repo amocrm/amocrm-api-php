@@ -21,7 +21,7 @@ use AmoCRM\Models\UserModel;
  *
  * @package AmoCRM\EntitiesServices
  * @method null|UserModel getOne($id, array $with = [])
- * @method null|UsersCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|UsersCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method UserModel addOne(BaseApiModel $model)
  * @method UsersCollection add(BaseApiCollection $collection)
  * @method UserModel syncOne(BaseApiModel $apiModel, $with = [])

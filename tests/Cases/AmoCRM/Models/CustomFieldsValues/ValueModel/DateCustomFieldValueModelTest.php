@@ -27,7 +27,7 @@ final class DateCustomFieldValueModelTest extends TestCase
             [null], // null
             [[123]], // array
             [false], // bool
-            [new stdClass()] //object
+            [new stdClass()], //object
         ];
     }
 

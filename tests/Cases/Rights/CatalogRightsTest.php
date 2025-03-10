@@ -16,16 +16,16 @@ class CatalogRightsTest extends TestCase
         $rightsData = [];
         $caseAllOk = [
             [
-                RightModel::ACTION_ADD    => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_VIEW   => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_EDIT   => RightModel::RIGHTS_LINKED,
+                RightModel::ACTION_ADD => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_VIEW => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_EDIT => RightModel::RIGHTS_LINKED,
                 RightModel::ACTION_DELETE => RightModel::RIGHTS_DENIED,
                 RightModel::ACTION_EXPORT => RightModel::RIGHTS_FULL,
             ],
             [
-                RightModel::ACTION_ADD    => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_VIEW   => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_EDIT   => RightModel::RIGHTS_LINKED,
+                RightModel::ACTION_ADD => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_VIEW => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_EDIT => RightModel::RIGHTS_LINKED,
                 RightModel::ACTION_DELETE => RightModel::RIGHTS_DENIED,
                 RightModel::ACTION_EXPORT => RightModel::RIGHTS_FULL,
             ],
@@ -34,16 +34,16 @@ class CatalogRightsTest extends TestCase
 
         $caseWrongPriority = [
             [
-                RightModel::ACTION_ADD    => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_VIEW   => RightModel::RIGHTS_LINKED,
-                RightModel::ACTION_EDIT   => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_ADD => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_VIEW => RightModel::RIGHTS_LINKED,
+                RightModel::ACTION_EDIT => RightModel::RIGHTS_FULL,
                 RightModel::ACTION_DELETE => RightModel::RIGHTS_LINKED,
                 RightModel::ACTION_EXPORT => RightModel::RIGHTS_FULL,
             ],
             [
-                RightModel::ACTION_ADD    => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_VIEW   => RightModel::RIGHTS_LINKED,
-                RightModel::ACTION_EDIT   => RightModel::RIGHTS_LINKED,
+                RightModel::ACTION_ADD => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_VIEW => RightModel::RIGHTS_LINKED,
+                RightModel::ACTION_EDIT => RightModel::RIGHTS_LINKED,
                 RightModel::ACTION_DELETE => RightModel::RIGHTS_LINKED,
                 RightModel::ACTION_EXPORT => RightModel::RIGHTS_LINKED,
             ],
@@ -52,16 +52,16 @@ class CatalogRightsTest extends TestCase
 
         $caseWrongPerm = [
             [
-                RightModel::ACTION_ADD    => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_VIEW   => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_EDIT   => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_ADD => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_VIEW => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_EDIT => RightModel::RIGHTS_FULL,
                 RightModel::ACTION_DELETE => RightModel::RIGHTS_ONLY_RESPONSIBLE,
                 RightModel::ACTION_EXPORT => RightModel::RIGHTS_FULL,
             ],
             [
-                RightModel::ACTION_ADD    => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_VIEW   => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_EDIT   => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_ADD => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_VIEW => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_EDIT => RightModel::RIGHTS_FULL,
                 RightModel::ACTION_DELETE => RightModel::RIGHTS_DENIED,
                 RightModel::ACTION_EXPORT => RightModel::RIGHTS_FULL,
             ],
@@ -70,14 +70,14 @@ class CatalogRightsTest extends TestCase
 
         $caseEmptyAction = [
             [
-                RightModel::ACTION_ADD    => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_VIEW   => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_EDIT   => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_ADD => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_VIEW => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_EDIT => RightModel::RIGHTS_FULL,
             ],
             [
-                RightModel::ACTION_ADD    => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_VIEW   => RightModel::RIGHTS_FULL,
-                RightModel::ACTION_EDIT   => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_ADD => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_VIEW => RightModel::RIGHTS_FULL,
+                RightModel::ACTION_EDIT => RightModel::RIGHTS_FULL,
                 RightModel::ACTION_DELETE => RightModel::RIGHTS_DENIED,
                 RightModel::ACTION_EXPORT => RightModel::RIGHTS_DENIED,
             ],
