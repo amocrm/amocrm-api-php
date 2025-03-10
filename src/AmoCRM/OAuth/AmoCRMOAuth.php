@@ -42,7 +42,7 @@ use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use RuntimeException;
 use Throwable;
-use Lcobucci\JWT\Validation\Constraint\ValidAt;
+use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 
 use function sprintf;
@@ -658,7 +658,10 @@ class AmoCRMOAuth
     private function getSharedApiDomain(AccessTokenInterface $accessToken): string
     {
         try {
-            $parsedToken = Configuration::forUnsecuredSigner()->parser()->parse($accessToken->getToken());
+            $signer = new Sha256();
+            $key = InMemory::plainText($this->clientSecret);
+            $configuration = Configuration::forSymmetricSigner($signer, $key);
+            $parsedToken = $configuration->parser()->parse($accessToken->getToken());
         } catch (Throwable $e) {
             throw new InvalidArgumentException(
                 'Error parsing given access token. Prev error: ' . $e->getMessage(),
@@ -686,18 +689,18 @@ class AmoCRMOAuth
     /**
      * Создает и возвращает объект ограничения проверки времени действия токена.
      *
-     * Метод динамически выбирает между `LooseValidAt` и `ValidAt` (приоритет у `LooseValidAt`).
+     * Метод динамически выбирает между `LooseValidAt` и `StrictValidAt` (приоритет у `LooseValidAt`).
      * Также автоматически выбирает подходящий класс часов (`FrozenClock` или `SystemClock`).
      *
      * @psalm-suppress UndefinedClass
      * @return Constraint
-     * @throws RuntimeException Если ни один из классов `LooseValidAt` или `ValidAt` недоступен.
+     * @throws RuntimeException Если ни один из классов `LooseValidAt` или `StrictValidAt` недоступен.
      */
     private function createValidAtConstraint(): Constraint
     {
         $availableConstraints = [
             LooseValidAt::class,
-            ValidAt::class,
+            StrictValidAt::class,
         ];
 
         foreach ($availableConstraints as $constraintClass) {
@@ -710,6 +713,6 @@ class AmoCRMOAuth
             }
         }
 
-        throw new RuntimeException('Neither LooseValidAt nor ValidAt are available.');
+        throw new RuntimeException('Neither LooseValidAt nor StrictValidAt are available.');
     }
 }
