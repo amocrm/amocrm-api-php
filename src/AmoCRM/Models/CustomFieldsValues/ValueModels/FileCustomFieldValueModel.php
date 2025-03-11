@@ -116,7 +116,7 @@ class FileCustomFieldValueModel extends BaseCustomFieldValueModel
     /**
      * @return array{value: array{file_uuid?: string, version_uuid?: string, file_name?: string, file_size?: int}}
      */
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [
             'value' => [

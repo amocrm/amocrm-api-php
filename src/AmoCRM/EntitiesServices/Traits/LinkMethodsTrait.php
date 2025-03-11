@@ -54,7 +54,7 @@ trait LinkMethodsTrait
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function getLinks(BaseApiModel $model, LinksFilter $filter = null): LinksCollection
+    public function getLinks(BaseApiModel $model, ?LinksFilter $filter = null): LinksCollection
     {
         $queryParams = [];
         if ($filter instanceof BaseEntityFilter) {
