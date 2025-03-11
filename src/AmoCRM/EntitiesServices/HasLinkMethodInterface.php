@@ -28,7 +28,7 @@ interface HasLinkMethodInterface
      *
      * @return LinksCollection
      */
-    public function getLinks(BaseApiModel $model, LinksFilter $filter = null): LinksCollection;
+    public function getLinks(BaseApiModel $model, ?LinksFilter $filter = null): LinksCollection;
 
     /**
      * @param BaseApiModel $mainEntity

@@ -63,7 +63,7 @@ class DateCustomFieldValueModel extends BaseCustomFieldValueModel
      *
      * @return array
      */
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [
             'value' => $this->value->format(DateTime::RFC3339),

@@ -665,7 +665,7 @@ class PayerCustomFieldValueModel extends BaseArrayCustomFieldValueModel
      *
      * @return array
      */
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [
             'value' => $this->getValue(),

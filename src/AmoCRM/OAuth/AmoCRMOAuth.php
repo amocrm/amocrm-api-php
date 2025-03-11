@@ -604,7 +604,7 @@ class AmoCRMOAuth
      * @throws DisposableTokenVerificationFailedException
      * @link https://www.amocrm.ru/developers/content/web_sdk/mechanics
      */
-    public function parseBotDisposableToken(string $token, string $receiverPath = null): BotDisposableTokenModel
+    public function parseBotDisposableToken(string $token, ?string $receiverPath = null): BotDisposableTokenModel
     {
         $signer = new Sha512();
         $key = InMemory::plainText($this->clientSecret);

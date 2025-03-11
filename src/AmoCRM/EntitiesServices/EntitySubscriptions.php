@@ -142,14 +142,14 @@ class EntitySubscriptions extends BaseEntityTypeEntity implements HasPageMethods
     }
 
     /**
-     * @param null|BaseEntityFilter $filter
+     * @param BaseEntityFilter|null $filter
      * @param array $with
      *
      * @return BaseApiCollection|null
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
+    public function get(?BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         throw new NotAvailableForActionException('Method not available for this entity');
     }

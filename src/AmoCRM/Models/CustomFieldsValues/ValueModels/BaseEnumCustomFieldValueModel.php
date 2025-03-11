@@ -61,7 +61,7 @@ class BaseEnumCustomFieldValueModel extends BaseCustomFieldValueModel
         ];
     }
 
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return [
             'value' => $this->getValue(),
