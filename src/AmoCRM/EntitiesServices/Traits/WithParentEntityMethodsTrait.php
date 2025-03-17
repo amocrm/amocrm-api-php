@@ -128,7 +128,7 @@ trait WithParentEntityMethodsTrait
      * Получение коллекции сущностей по ID родительской сущности
      *
      * @param int $parentId
-     * @param null|BaseEntityFilter $filter
+     * @param BaseEntityFilter|null $filter
      * @param array $with
      *
      * @return BaseApiCollection|null

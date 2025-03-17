@@ -68,7 +68,7 @@ abstract class BaseEntity
 
     /**
      * Получение коллекции сущностей
-     * @param null|BaseEntityFilter $filter
+     * @param BaseEntityFilter|null $filter
      * @param array $with
      *
      * @return BaseApiCollection|null

@@ -142,7 +142,7 @@ class EntitySubscriptions extends BaseEntityTypeEntity implements HasPageMethods
     }
 
     /**
-     * @param null|BaseEntityFilter $filter
+     * @param BaseEntityFilter|null $filter
      * @param array $with
      *
      * @return BaseApiCollection|null

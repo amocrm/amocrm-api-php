@@ -83,7 +83,7 @@ class Account extends BaseEntity
     }
 
     /**
-     * @param null|BaseEntityFilter $filter
+     * @param BaseEntityFilter|null $filter
      * @param array $with
      *
      * @return BaseApiCollection|null
