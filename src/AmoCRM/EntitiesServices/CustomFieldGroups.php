@@ -21,7 +21,7 @@ use AmoCRM\Models\CustomFieldGroupModel;
  * @package AmoCRM\EntitiesServices
  *
  * @method null|CustomFieldGroupModel getOne($id, array $with = [])
- * @method null|CustomFieldGroupsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|CustomFieldGroupsCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method CustomFieldGroupModel addOne(BaseApiModel $model)
  * @method CustomFieldGroupsCollection add(BaseApiCollection $collection)
  * @method CustomFieldGroupModel updateOne(BaseApiModel $apiModel)

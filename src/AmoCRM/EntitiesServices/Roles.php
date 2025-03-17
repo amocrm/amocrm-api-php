@@ -24,7 +24,7 @@ use AmoCRM\Models\RoleModel;
  * @package AmoCRM\EntitiesServices
  *
  * @method null|RoleModel getOne($id, array $with = [])
- * @method null|RolesCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|RolesCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method RoleModel addOne(BaseApiModel $model)
  * @method RolesCollection add(BaseApiCollection $collection)
  * @method RoleModel updateOne(BaseApiModel $apiModel)

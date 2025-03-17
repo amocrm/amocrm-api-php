@@ -25,7 +25,7 @@ abstract class BaseApiModel
      * @param string|null $requestId
      * @return array
      */
-    abstract public function toApi(string $requestId = null): array;
+    abstract public function toApi(?string $requestId = null): array;
 
     public function __get($name)
     {

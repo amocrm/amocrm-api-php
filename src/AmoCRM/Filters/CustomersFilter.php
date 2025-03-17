@@ -250,6 +250,8 @@ class CustomersFilter extends BaseEntityFilter implements HasPagesInterface, Has
         foreach ($customFieldsValues as $fieldId => $customFieldsValue) {
             if ($customFieldsValue instanceof BaseRangeFilter) {
                 $cfFilter[$fieldId] = $customFieldsValue->toFilter();
+            } elseif (is_array($customFieldsValue)) {
+                $cfFilter[$fieldId] = $customFieldsValue;
             } else {
                 $cfFilter[$fieldId][] = $customFieldsValue;
             }

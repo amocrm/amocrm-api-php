@@ -19,7 +19,7 @@ use AmoCRM\Models\CatalogModel;
  * @package AmoCRM\EntitiesServices
  *
  * @method null|CatalogModel getOne($id, array $with = [])
- * @method null|CatalogsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|CatalogsCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method CatalogModel addOne(BaseApiModel $model)
  * @method CatalogsCollection add(BaseApiCollection $collection)
  * @method CatalogModel updateOne(BaseApiModel $apiModel)

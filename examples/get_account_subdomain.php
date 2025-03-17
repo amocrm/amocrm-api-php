@@ -1,6 +1,7 @@
 <?php
 
 use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Models\AccountDomainModel;
 
 include_once __DIR__ . '/bootstrap.php';
 

@@ -128,14 +128,14 @@ trait WithParentEntityMethodsTrait
      * Получение коллекции сущностей по ID родительской сущности
      *
      * @param int $parentId
-     * @param null|BaseEntityFilter $filter
+     * @param BaseEntityFilter|null $filter
      * @param array $with
      *
      * @return BaseApiCollection|null
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
+    public function getByParentId(int $parentId, ?BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         $queryParams = [];
         if ($filter instanceof BaseEntityFilter) {
