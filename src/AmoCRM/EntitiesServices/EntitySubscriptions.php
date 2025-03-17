@@ -22,7 +22,7 @@ use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Models\BaseApiModel;
 
 /**
- * @method null|SubscriptionsCollection getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = [])
+ * @method null|SubscriptionsCollection getByParentId(int $parentId, ?BaseEntityFilter $filter = null, array $with = [])
  */
 class EntitySubscriptions extends BaseEntityTypeEntity implements HasPageMethodsInterface, HasParentEntity
 {

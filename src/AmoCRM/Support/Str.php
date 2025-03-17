@@ -21,7 +21,8 @@ class Str
     /**
      * Convert the given string to upper-case.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public static function upper($value)
@@ -32,9 +33,10 @@ class Str
     /**
      * Returns the portion of the string specified by the start and length parameters.
      *
-     * @param  string  $string
-     * @param  int  $start
-     * @param  int|null  $length
+     * @param string $string
+     * @param int $start
+     * @param int|null $length
+     *
      * @return string
      */
     public static function substr($string, $start, $length = null)
@@ -45,7 +47,8 @@ class Str
     /**
      * Make a string's first character uppercase.
      *
-     * @param  string  $string
+     * @param string $string
+     *
      * @return string
      */
     public static function ucfirst($string)
@@ -56,7 +59,8 @@ class Str
     /**
      * Convert a value to studly caps case.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public static function studly($value)
@@ -79,7 +83,8 @@ class Str
     /**
      * Convert a value to camel case.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public static function camel($value)
@@ -94,9 +99,10 @@ class Str
     /**
      * Replace the given value in the given string.
      *
-     * @param  string|string[]  $search
-     * @param  string|string[]  $replace
-     * @param  string|string[]  $subject
+     * @param string|string[] $search
+     * @param string|string[] $replace
+     * @param string|string[] $subject
+     *
      * @return string
      */
     public static function replace($search, $replace, $subject)

@@ -6,7 +6,7 @@
 [![Build Status](https://app.travis-ci.com/amocrm/amocrm-api-php.svg?branch=master)](https://app.travis-ci.com/amocrm/amocrm-api-php)
 [![Total Downloads](https://img.shields.io/packagist/dt/amocrm/amocrm-api-library.svg)](https://packagist.org/packages/amocrm/amocrm-api-library)
 
-В данном пакете представлен API клиент с поддержкой основных сущностей и авторизацией по протоколу OAuth 2.0 в amoCRM. 
+В данном пакете представлен API клиент с поддержкой основных сущностей и авторизацией по протоколу OAuth 2.0 в amoCRM.
 Для работы библиотеки требуется PHP версии не ниже 7.1.
 
 ## Оглавление
@@ -127,7 +127,7 @@ $apiClient = $apiClient->setUserAgnet('App Name');
 
 Вы можете установить функцию-callback на событие обработки ответа, если есть необходимость в дополнительной логике (например логировать ответ от сервера или же переопределить обработку 204 кода ответа).
 
-Если нет необходимости в отработке стандартной логики обработки ответа, то callback должен возвращать true 
+Если нет необходимости в отработке стандартной логики обработки ответа, то callback должен возвращать true
 
 ```php
 $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
@@ -225,7 +225,7 @@ $leadsService = $apiClient->leads();
 | customersSegments    | Сегменты покупателей          |
 | events               | Список событий                |
 | eventTypes           | Типы событий                  |
-| webhooks             | Вебхуки                       | 
+| webhooks             | Вебхуки                       |
 | unsorted             | Неразобранное                 |
 | pipelines            | Воронки сделок                |
 | statuses             | Статусы сделок                |
@@ -264,16 +264,16 @@ $leadsService = $apiClient->leads();
     2. with (array) - массив параметров with, которые поддерживает модель сервиса
     3. Результатом выполнения будет коллекция сущностей
     ```php
-    get(BaseEntityFilter $filter = null, array $with = []);
+    get(?BaseEntityFilter $filter = null, array $with = []);
     ```
-   
+
 3. addOne Создать одну сущность:
     1. model (BaseApiModel) - модель создаваемой сущности
     2. Результатом выполнения будет модель сущности
     ```php
     addOne(BaseApiModel $model);
     ```
-   
+
 4. add Создать сущности пакетно:
     1. collection (BaseApiCollection) - коллекция моделей создаваемой сущности
     2. Результатом выполнения будет коллекция моделей сущности
@@ -287,14 +287,14 @@ $leadsService = $apiClient->leads();
     ```php
     updateOne(BaseApiModel $model);
     ```
-   
+
 6. update Обновить сущности пакетно:
     1. collection (BaseApiCollection) - коллекция моделей создаваемой сущности
     2. Результатом выполнения будет коллекция моделей сущности
     ```php
     update(BaseApiCollection $collection);
     ```
-   
+
 7. syncOne Синхронизировать одну модель с сервером:
     1. model (BaseApiModel) - коллекция моделей создаваемой сущности
     2. with (array) - массив параметров with, которые поддерживает модель сервиса
@@ -302,7 +302,7 @@ $leadsService = $apiClient->leads();
     ```php
     syncOne(BaseApiModel $model, $with = []);
     ```
-   
+
 Не все методы доступны во всех сервисах. В случае их вызова будет выброшены Exception.
 
 Некоторые сервисы имеют специфичные методы, ниже рассмотрим сервисы, которые имеют специфичные методы.
@@ -331,21 +331,21 @@ $leadsService = $apiClient->leads();
     ```php
     getAuthorizeUrl(array $options = []);
     ```
-   
+
 2. getAccessTokenByCode получение access токена по коду авторизации
     1. code (string) код авторизации
     2. Результатом выполнения будет объект (AccessTokenInterface)
     ```php
     getAccessTokenByCode(string $code);
     ```
-   
+
 3. getAccessTokenByRefreshToken получение access токена по refresh токену
     1. accessToken (AccessTokenInterface) объект access токена
     2. Результатом выполнения будет объект (AccessTokenInterface)
     ```php
     getAccessTokenByRefreshToken(AccessTokenInterface $accessToken);
     ```
-   
+
 4. setBaseDomain установка базового домена, куда будут отправляться запросы необходимые для работы с токенами
     1. domain (string)
     ```php
@@ -371,7 +371,7 @@ $leadsService = $apiClient->leads();
     ```php
     getOAuthButton(array $options = []);
     ```
-   
+
 7. exchangeApiKey метод для обмена API ключа на код авторизации
     1. login - email пользователя, для которого обменивается API ключ
     2. apiKey - API ключ пользователя
@@ -397,7 +397,7 @@ $leadsService = $apiClient->leads();
     ```php
     getLinks(BaseApiModel $model, LinksFilter $filter);
     ```
-       
+
 3. unlink Отвязать сущность
     1. model (BaseApiModel) - модель главной сущности
     2. links (LinksCollection|LinkModel) - коллекция или модель связи
@@ -414,7 +414,7 @@ $leadsService = $apiClient->leads();
     ```php
     deleteOne(BaseApiModel $model);
     ```
-   
+
 2. deleteOne
     1. collection (BaseApiCollection) - коллекция моделей сущностей
     2. Результатом выполнения является bool значение
@@ -452,7 +452,7 @@ $leadsService = $apiClient->leads();
     2. filter (BaseEntityFilter) - фильтр
     3. with (array) - массив параметров with, которые поддерживает модель сервиса
     ```php
-   getByParentId(int $parentId, BaseEntityFilter $filter = null, array $with = []);
+   getByParentId(int $parentId, ?BaseEntityFilter $filter = null, array $with = []);
     ```
 
 #### Методы доступные в сервисе ```account```
@@ -470,7 +470,7 @@ $leadsService = $apiClient->leads();
     ```php
     addOne(BaseApiModel $model);
     ```
-   
+
 2. add Создать сущности пакетно:
     1. collection (BaseApiCollection) - коллекция моделей создаваемой сущности
     2. Результатом выполнения будет коллекция моделей сущности
@@ -480,15 +480,15 @@ $leadsService = $apiClient->leads();
 
 3. link
     1. model (BaseApiModel) - модель неразобранного
-    2. body (array) - массив дополнительной информации для привязки 
+    2. body (array) - массив дополнительной информации для привязки
     3. Результатом выполнения будет модель LinkUnsortedModel
     ```php
     link(BaseApiModel $unsortedModel, $body = []);
     ```
-   
+
 4. accept
     1. model (BaseApiModel) - модель неразобранного
-    2. body (array) - массив дополнительной информации для принятия 
+    2. body (array) - массив дополнительной информации для принятия
     3. Результатом выполнения будет модель AcceptUnsortedModel
     ```php
     accept(BaseApiModel $unsortedModel, $body = []);
@@ -496,7 +496,7 @@ $leadsService = $apiClient->leads();
 
 5. decline
     1. model (BaseApiModel) - модель неразобранного
-    2. body (array) - массив дополнительной информации для отклонения 
+    2. body (array) - массив дополнительной информации для отклонения
     3. Результатом выполнения будет модель DeclineUnsortedModel
     ```php
     decline(BaseApiModel $unsortedModel, $body = []);
@@ -516,7 +516,7 @@ $leadsService = $apiClient->leads();
     ```php
     subscribe(WebhookModel $webhookModel);
     ```
-   
+
 2. unsubscribe
     1. model (WebhookModel) - модель вебхука
     2. Результатом выполнения является bool значение
@@ -531,7 +531,7 @@ $leadsService = $apiClient->leads();
     ```php
     install(WidgetModel $widgetModel);
     ```
-   
+
 2. uninstall
     1. model (WidgetModel) - модель виджета
     2. Результатом выполнения является модель WidgetModel
@@ -545,7 +545,7 @@ $leadsService = $apiClient->leads();
     ```php
     settings();
     ```
-   
+
 2. updateSettings
     1. model (ProductsSettingsModel) - модель виджета
     2. Результатом выполнения является модель ProductsSettingsModel
@@ -582,7 +582,7 @@ $leadsService = $apiClient->leads();
    2. with (array) - массив параметров with, которые поддерживает модель сервиса
    3. Результатом выполнения будет коллекция ```WebsiteButtonsCollection``` из сущностей ```WebsiteButtonModel```
     ```php
-    get(BaseEntityFilter $filter = null, array $with = []);
+    get(?BaseEntityFilter $filter = null, array $with = []);
     ```
 3. createAsync - добавить источник типа "кнопка на сайт"
    1. model (WebsiteButtonCreateRequestModel) - модель со свойствами:
@@ -672,10 +672,10 @@ $leadsService = $apiClient->leads();
 6. ```segments```
 
 У моделей, которые возвращаются этими сервисами, поля можно получить через метод ```getCustomFieldsValues()```.
-На вызов данного метода возвращается объект ```CustomFieldsValuesCollection``` или ```null```, 
+На вызов данного метода возвращается объект ```CustomFieldsValuesCollection``` или ```null```,
 если значений полей нет.
 
-Внутри коллекции ```CustomFieldsValuesCollection``` находятся модели значений полей, 
+Внутри коллекции ```CustomFieldsValuesCollection``` находятся модели значений полей,
 все модели наследуются от ```BaseCustomFieldValuesModel```, но зависят от типа поля.
 
 У моделей, наследующих ```BaseCustomFieldValuesModel``` доступны следующие методы:
@@ -753,7 +753,7 @@ $textCustomFieldValuesModel->setValues(
 $leadCustomFieldsValues->add($textCustomFieldValuesModel);
 //Установим в сущности эти поля
 $lead->setCustomFieldsValues($leadCustomFieldsValues);
-``` 
+```
 
 Чтобы удалить значения поля доступен специальный объект ```\AmoCRM\Models\CustomFieldsValues\ValueCollections\NullCustomFieldValueCollection```.
 
@@ -849,7 +849,7 @@ $lead->setTags((new NullTagsCollection()));
 
 При добавлении источника обязательными полями являются `external_id`, `name` интеграция может создать в аккаунте
 не более 50 активных источников на аккаунт. При удалении источника, к примеру, со значением `external_id: 'sales'`
-и при повторном создании с тем же `external_id` crm может вернуть `id` раннее удаленного источника. Поэтому не стоит 
+и при повторном создании с тем же `external_id` crm может вернуть `id` раннее удаленного источника. Поэтому не стоит
 на стороне интеграции формировать первичный ключ из поля `id`.
 
 Чтобы источник отображался в кнопке whatsapp CRM Plugin необходимо указать поле источника `services` с таким содержимым:
@@ -876,37 +876,37 @@ $lead->setTags((new NullTagsCollection()));
 по-умолчанию в сделках будет указан источник АПИ-интеграция с названием интеграции (как при создании неразобранного через АПИ).
 
 Чтобы сменить источник по-умолчанию, достаточно нужному источнику проставить поле `default=true`, у предыдущего источника
-поле default будет выставлено в `default=false`. Но при удалении источника по-умолчанию интеграция сама должна указать 
+поле default будет выставлено в `default=false`. Но при удалении источника по-умолчанию интеграция сама должна указать
 новый источник по-умолчанию.
 
 ### Миграция интеграции на множественные источники (для интеграций с чатами)
 
 Источник по-умолчанию может быть использован интеграцией при переходе на множественные источники, особенно если
-интеграция поддерживает опцию написать первым. 
+интеграция поддерживает опцию написать первым.
 
-К примеру исходное состояние:  
-   Есть аккаунт с подключенной интеграцией с чатами, эта интеграция поддерживает только 1 источник. 
+К примеру исходное состояние:
+   Есть аккаунт с подключенной интеграцией с чатами, эта интеграция поддерживает только 1 источник.
    На данный момент нам не важно как была установлена интеграция: через DP или маркетплейс.
 
-Интеграция начинает внедрение поддержки множественных источников, логически разобьем на этапы:  
+Интеграция начинает внедрение поддержки множественных источников, логически разобьем на этапы:
 
-**1 этап**   
-Интеграция умеет работать с АПИ источниками (но не отправляет и не принимает источник в сообщениях amojo). 
-Добавляет источник по-умолчанию, который логически соответствует источнику, использовавшемуся когда не было поддержки нескольких источников. Теперь crm будет присылать в сообщениях `external_id` этого источника для всех чатов которые явно 
+**1 этап**
+Интеграция умеет работать с АПИ источниками (но не отправляет и не принимает источник в сообщениях amojo).
+Добавляет источник по-умолчанию, который логически соответствует источнику, использовавшемуся когда не было поддержки нескольких источников. Теперь crm будет присылать в сообщениях `external_id` этого источника для всех чатов которые явно
 не закреплены за конкретным источником.
 
-**2 этап**  
+**2 этап**
 Интеграция умеет работать с источниками и при отправке сообщений от клиента (при создании чата) указывает `external_id`
-Все чаты с новыми сообщениями становятся размеченными по источнику. 
+Все чаты с новыми сообщениями становятся размеченными по источнику.
 
 Так же интеграция теперь обрабатывает источник и учитывает его при отправке сообщения от менеджера, в том числе при начале чата с клиентом (опция "написать первым").
 
-**3 этап**  
+**3 этап**
 Интеграция позволяет администратору аккаунта добавить (через интеграцию) второй и последующие источники.
 Вся переписка числится за каким-то источником
 
 **Важный момент**
-Источник по-умолчанию не привязывается к чатам, если его явно не передавали с сообщениями и тогда при смене 
+Источник по-умолчанию не привязывается к чатам, если его явно не передавали с сообщениями и тогда при смене
 источника по-умолчанию чат без разметки будет "числиться" за новым источником
 
 ## Константы
@@ -923,7 +923,7 @@ $lead->setTags((new NullTagsCollection()));
 7. ```\AmoCRM\Models\Rights\RightModel``` - константы, связанные с правами
 8. ```\AmoCRM\Models\AccountModel``` - константы для аргумента with для сервиса ```account```
 9. ```\AmoCRM\Models\TaskModel``` - константы для дефолтных типов задач
-10. ```\AmoCRM\Models\NoteType\TargetingNote``` - константы поддерживаемых внешних сервисов для примечаний о таргетинге (добавляют DP) 
+10. ```\AmoCRM\Models\NoteType\TargetingNote``` - константы поддерживаемых внешних сервисов для примечаний о таргетинге (добавляют DP)
 11. ```\AmoCRM\Models\RoleModel``` - константы для аргумента with для сервиса ```roles```
 12. ```\AmoCRM\Models\Factories\NoteFactory``` - константы типов примечаний
 13. ```\AmoCRM\Models\NoteType\MessageCashierNote``` - статусы примечания "Сообщение кассиру"
@@ -955,7 +955,7 @@ $lead->setTags((new NullTagsCollection()));
  *
  * @example examples/get_account_subdomain.php
  */
-$accountDomain = $apiClient->getOAuthClient()
+use AmoCRM\Models\AccountDomainModel;$accountDomain = $apiClient->getOAuthClient()
         ->getAccountDomain($accessToken);
 
 // Возьмём из полученной модели текущий subdomain аккаунта и засетим наш апи клиент
@@ -964,10 +964,11 @@ $apiClient->setAccountBaseDomain($accountDomain->getSubdomain());
 ```
 
 ## Одноразовые токены интеграций, расшифровка
+
 ```php
 // Как пример, получим заголовки с реквеста
 // И получим нужный нам X-Auth-Token
-$token = $_SERVER['HTTP_X_AUTH_TOKEN'];
+use AmoCRM\Models\DisposableTokenModel;$token = $_SERVER['HTTP_X_AUTH_TOKEN'];
 
 try {
     /**
@@ -1002,8 +1003,9 @@ try {
 ```
 Также вы можете распарсить и модель одноразового токена для Salesbot/Marketingbot.
 Для этого необходимо сделать вызов метода `parseBotDisposableToken`:
+
 ```php
-$token = 'XXX';
+use AmoCRM\Models\BotDisposableTokenModel;$token = 'XXX';
 try {
     /**
      * Одноразовый токен для ботов, его вы можете получить, сделав вызов widget_request в виджете в боте
@@ -1011,7 +1013,7 @@ try {
      *
      * Данный токен содержит в себе информацию об аккаунте и о сущности, с которой работает бот
      * Для продолжения бота необходимо сделать запрос на метод, который был получен в теле хука
-     * Подробнее: @link https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-continue  
+     * Подробнее: @link https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-continue
      *
      * Расшифруем пришедший токен и получим модель с информацией
      * Подробнее: @see BotDisposableTokenModel
@@ -1079,7 +1081,7 @@ CLIENT_REDIRECT_URI="https://example.com/examples/get_token.php (Важно об
 
 Затем вы можете поднять локальный сервер командой ```composer serve```. После конфигурации необходимо перейти в браузере на страницу
 ```http://localhost:8181/examples/get_token.php``` для получения Access Token.
-Для получения доступа к вашему локальному серверу извне можно использовать сервис ngrok.io. 
+Для получения доступа к вашему локальному серверу извне можно использовать сервис ngrok.io.
 
 После авторизации вы можете проверить работу примеров, обращаясь к ним из браузера. Стоит отметить, что для корректной работы примеров
 необходимо проверить ID сущностей в них.
@@ -1093,7 +1095,7 @@ CLIENT_REDIRECT_URI="https://example.com/examples/get_token.php (Важно об
 
 Также могут быть рассмотрены пожелания по улучшению библиотеки.
 
-Вы можете предложить свои исправления/изменения исходного кода библиотеки, посредством создания Issue с описанием, а также Pull request с упоминанием Issue в комментарии к нему. 
+Вы можете предложить свои исправления/изменения исходного кода библиотеки, посредством создания Issue с описанием, а также Pull request с упоминанием Issue в комментарии к нему.
 Они будут рассмотрены и будут приняты или отклонены. Некоторые Pull Request могут остаться без ответа и действия, в случае, если правки потенциально жизнеспособны, но в данный момент не являются ключевыми для проекта.
 
 Если вы столкнулись с проблемой функционала amoCRM - обратитесь в техническую поддержку через чат в вашем аккаунте.

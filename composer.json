@@ -20,35 +20,25 @@
   ],
   "require": {
     "php": ">=7.1 || >=8.0",
+    "ext-fileinfo": "*",
     "ext-json": "*",
     "amocrm/oauth2-amocrm": "^3.0",
-    "guzzlehttp/guzzle": "6.* || 7.*",
-    "symfony/dotenv": "3.* || 4.* || 5.* || 6.* || 7.*",
     "fig/http-message-util": "1.*",
-    "ramsey/uuid": "^3 || ^4",
-    "lcobucci/jwt": "^3.4.6 || ^4.0.4",
+    "guzzlehttp/guzzle": "6.* || 7.*",
     "lcobucci/clock": "1.1.0 ||^2.0.0",
+    "lcobucci/jwt": "^3.4.6 || ^4.0.4",
     "nesbot/carbon": "^2.72.6 || ^3.8.4",
-    "ext-fileinfo": "*"
+    "ramsey/uuid": "^3 || ^4",
+    "symfony/dotenv": "3.* || 4.* || 5.* || 6.* || 7.*"
   },
   "require-dev": {
     "phpunit/phpunit": "7.* || 8.* || 9.*",
+    "roave/security-advisories": "dev-latest",
     "squizlabs/php_codesniffer": "^3.5.2"
   },
   "autoload": {
     "psr-4": {
-      "AmoCRM\\": "src/",
-      "AmoCRM\\Client\\": "src/AmoCRM/Client",
-      "AmoCRM\\Enum\\": "src/AmoCRM/Enum",
-      "AmoCRM\\OAuth\\": "src/AmoCRM/OAuth",
-      "AmoCRM\\EntitiesServices\\": "src/AmoCRM/EntitiesServices",
-      "AmoCRM\\Exceptions\\": "src/AmoCRM/Exceptions",
-      "AmoCRM\\Models\\": "src/AmoCRM/Models",
-      "AmoCRM\\Collections\\": "src/AmoCRM/Collections",
-      "AmoCRM\\Filters\\": "src/AmoCRM/Filters",
-      "AmoCRM\\Helpers\\": "src/AmoCRM/Helpers",
-      "AmoCRM\\Contracts\\": "src/AmoCRM/Contracts",
-      "AmoCRM\\Support\\": "src/AmoCRM/Support"
+      "AmoCRM\\": "src/AmoCRM"
     }
   },
   "scripts": {
@@ -60,5 +50,8 @@
       "@style:check",
       "@test"
     ]
+  },
+  "config": {
+    "sort-packages": true
   }
 }

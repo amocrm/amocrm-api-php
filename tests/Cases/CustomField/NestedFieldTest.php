@@ -55,12 +55,12 @@ class NestedFieldTest extends TestCase
     public function testFullToApiMethod(): void
     {
         $correctResult = [
-            'request_id'        => 'Request1',
+            'request_id' => 'Request1',
             'parent_request_id' => 'ParentRequest1',
-            'sort'              => 1,
-            'value'             => 'value123',
-            'id'                => 123,
-            'parent_id'         => 1234,
+            'sort' => 1,
+            'value' => 'value123',
+            'id' => 123,
+            'parent_id' => 1234,
         ];
 
         $model = (new NestedModel())

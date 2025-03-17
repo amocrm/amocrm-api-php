@@ -20,7 +20,7 @@ use AmoCRM\Models\EventModel;
  * @package AmoCRM\EntitiesServices
  *
  * @method null|EventModel getOne($id, array $with = [])
- * @method null|EventsCollections get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|EventsCollections get(?BaseEntityFilter $filter = null, array $with = [])
  */
 class Events extends BaseEntity implements HasPageMethodsInterface
 {

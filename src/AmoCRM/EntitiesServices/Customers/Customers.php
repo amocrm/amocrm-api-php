@@ -26,7 +26,7 @@ use AmoCRM\Models\Customers\CustomerModel;
  * @package AmoCRM\EntitiesServices\Customers
  *
  * @method null|CustomerModel getOne($id, array $with = [])
- * @method null|CustomersCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|CustomersCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method CustomerModel addOne(BaseApiModel $model)
  * @method CustomersCollection add(BaseApiCollection $collection)
  * @method CustomerModel updateOne(BaseApiModel $apiModel)

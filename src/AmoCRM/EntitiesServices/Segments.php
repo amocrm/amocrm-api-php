@@ -23,7 +23,7 @@ use AmoCRM\Models\Customers\Segments\SegmentModel;
  * @package AmoCRM\EntitiesServices
  *
  * @method null|SegmentModel getOne($id, array $with = [])
- * @method null|SegmentsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|SegmentsCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method SegmentModel updateOne(BaseApiModel $apiModel)
  * @method SegmentModel syncOne(BaseApiModel $apiModel, $with = [])
  */

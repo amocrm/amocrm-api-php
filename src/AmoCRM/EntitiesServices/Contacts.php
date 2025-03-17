@@ -25,7 +25,7 @@ use AmoCRM\Models\ContactModel;
  * @package AmoCRM\EntitiesServices
  *
  * @method null|ContactModel getOne($id, array $with = [])
- * @method null|ContactsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|ContactsCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method ContactModel addOne(BaseApiModel $model)
  * @method ContactsCollection add(BaseApiCollection $collection)
  * @method ContactModel updateOne(BaseApiModel $apiModel)

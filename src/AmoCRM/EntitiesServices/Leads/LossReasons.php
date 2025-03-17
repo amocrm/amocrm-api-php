@@ -22,7 +22,7 @@ use AmoCRM\Models\Leads\LossReasons\LossReasonModel;
  * @package AmoCRM\EntitiesServices\Leads
  *
  * @method null|LossReasonModel getOne($id, array $with = [])
- * @method null|LossReasonsCollection get(BaseEntityFilter $filter = null, array $with = [])
+ * @method null|LossReasonsCollection get(?BaseEntityFilter $filter = null, array $with = [])
  * @method LossReasonModel addOne(LossReasonModel $model)
  * @method LossReasonsCollection add(BaseApiCollection $collection)
  * @method LossReasonModel updateOne(LossReasonModel $apiModel)

@@ -49,6 +49,7 @@ use function sprintf;
 
 /**
  * Class AmoCRMOAuth
+ *
  * @package AmoCRM\OAuth
  */
 class AmoCRMOAuth
@@ -129,6 +130,7 @@ class AmoCRMOAuth
 
     /**
      * Получение Access токена по коду авторизации
+     *
      * @param string $code
      *
      * @return AccessTokenInterface
@@ -155,6 +157,7 @@ class AmoCRMOAuth
 
     /**
      * Получение нового Access токена по Refresh токену
+     *
      * @param AccessTokenInterface $accessToken
      *
      * @return AccessTokenInterface
@@ -228,6 +231,7 @@ class AmoCRMOAuth
 
     /**
      * Установка базового домена, куда будут отправляться запросы необходимые для работы с токенами
+     *
      * @param string $domain
      *
      * @return $this
@@ -241,6 +245,7 @@ class AmoCRMOAuth
 
     /**
      * Установка протокола
+     *
      * @param string $protocol
      *
      * @return $this
@@ -278,6 +283,7 @@ class AmoCRMOAuth
 
     /**
      * Получение авторизационных заголовков для переданного Access токена
+     *
      * @param AccessTokenInterface $accessToken
      *
      * @return array
@@ -299,6 +305,7 @@ class AmoCRMOAuth
 
     /**
      * Установка Callback при обновлении Access токена по
+     *
      * @param callable $function
      *
      * @return AmoCRMOAuth
@@ -312,6 +319,7 @@ class AmoCRMOAuth
 
     /**
      * Получение данных о том, кому принадлежит токен
+     *
      * @param AccessTokenInterface $accessToken
      *
      * @return ResourceOwnerInterface
@@ -432,7 +440,6 @@ class AmoCRMOAuth
     }
 
     /**
-     * @deprecated
      * Получение субдомена аккаунта по токену
      *
      * @param AccessTokenInterface $accessToken
@@ -441,6 +448,8 @@ class AmoCRMOAuth
      * @throws AmoCRMApiErrorResponseException
      * @throws AmoCRMApiConnectExceptionException
      * @throws AmoCRMApiHttpClientException
+     *
+     * @deprecated
      */
     public function getAccountDomain(AccessTokenInterface $accessToken): AccountDomainModel
     {
@@ -651,6 +660,7 @@ class AmoCRMOAuth
      * Получает домен для общих api методов из access токена, домен присутствует в токенах выписанных после 21.08.2024
      *
      * @param AccessTokenInterface $accessToken
+     *
      * @return string
      *
      * @throws InvalidArgumentException
