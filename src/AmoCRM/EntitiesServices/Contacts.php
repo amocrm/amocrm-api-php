@@ -2,7 +2,12 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Collections\ChatLinksCollection;
+use AmoCRM\Filters\ChatLinksFilter;
+use AmoCRM\Models\ChatLinkModel;
 use AmoCRM\EntitiesServices\Traits\LinkMethodsTrait;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
@@ -146,5 +151,61 @@ class Contacts extends BaseEntity implements HasLinkMethodInterface, HasPageMeth
             EntityTypesInterface::CUSTOMERS,
             EntityTypesInterface::COMPANIES,
         ];
+    }
+
+    /**
+     * Получение списка привязанных чатов
+     *
+     * @param ChatLinksFilter $filter
+     * @return ChatLinksCollection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function getChats(ChatLinksFilter $filter): ChatLinksCollection
+    {
+        $response = $this->request->get($this->getLinkChatsMethod(), $filter->buildFilter());
+
+        return $this->processLinkChatsAction($response);
+    }
+
+    /**
+     * @param ChatLinksCollection $linksCollection
+     * @return ChatLinksCollection
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     */
+    public function linkChats(ChatLinksCollection $linksCollection): ChatLinksCollection
+    {
+        $response = $this->request->post($this->getLinkChatsMethod(), $linksCollection->toApi());
+
+        return $this->processLinkChatsAction($response);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLinkChatsMethod(): string
+    {
+        return $this->method . '/chats';
+    }
+
+    /**
+     * @param array $response
+     * @return ChatLinksCollection
+     */
+    protected function processLinkChatsAction(array $response): ChatLinksCollection
+    {
+        $resultCollection = new ChatLinksCollection();
+
+        foreach ($response['_embedded']['chats'] as $linkChat) {
+            $linkChat = (new ChatLinkModel())
+                ->setContactId($linkChat['contact_id'])
+                ->setChatId($linkChat['chat_id'])
+                ->setRequestId($linkChat['request_id'] ?? 0);
+
+            $resultCollection->add($linkChat);
+        }
+
+        return $resultCollection;
     }
 }

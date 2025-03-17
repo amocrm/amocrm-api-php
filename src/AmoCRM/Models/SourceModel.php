@@ -21,6 +21,8 @@ class SourceModel extends BaseApiModel implements Arrayable, HasIdInterface
      */
     protected $name;
 
+    /** @var string */
+    protected $originCode;
 
     /**
      * @var bool|null
@@ -62,6 +64,7 @@ class SourceModel extends BaseApiModel implements Arrayable, HasIdInterface
         );
 
         $model->setExternalId($source['external_id']);
+        $model->setOriginCode(isset($source['origin_code']) ? (string) $source['origin_code'] : null);
         $model->setPipelineId(isset($source['pipeline_id']) ? (int)$source['pipeline_id'] : null);
 
         return $model;
@@ -77,6 +80,7 @@ class SourceModel extends BaseApiModel implements Arrayable, HasIdInterface
             'name'        => $this->getName(),
             'default'     => $this->isDefault(),
             'external_id' => $this->getExternalId(),
+            'origin_code' => $this->getOriginCode(),
             'pipeline_id' => $this->getPipelineId(),
             'services'    => $this->getServices() ? $this->getServices()->toArray() : null,
         ];
@@ -118,6 +122,18 @@ class SourceModel extends BaseApiModel implements Arrayable, HasIdInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getOriginCode(): ?string
+    {
+        return $this->originCode;
+    }
+
+    public function setOriginCode(?string $originCode): self
+    {
+        $this->originCode = $originCode;
 
         return $this;
     }
@@ -220,6 +236,10 @@ class SourceModel extends BaseApiModel implements Arrayable, HasIdInterface
 
         if (!is_null($this->getExternalId())) {
             $result['external_id'] = $this->getExternalId();
+        }
+
+        if (!is_null($this->getOriginCode())) {
+            $result['origin_code'] = $this->getOriginCode();
         }
 
         if (!is_null($this->getPipelineId())) {

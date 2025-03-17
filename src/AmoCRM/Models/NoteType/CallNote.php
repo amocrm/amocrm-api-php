@@ -91,10 +91,19 @@ abstract class CallNote extends NoteModel
             'source' => $this->getSource(),
             'link' => $this->getLink(),
             'phone' => $this->getPhone(),
-            'call_result' => $this->getCallResult(),
-            'call_status' => $this->getCallStatus(),
-            'call_responsible' => $this->getCallResponsible(),
         ];
+
+        if ($this->getCallResult() !== null) {
+            $result['params']['call_result'] = $this->getCallResult();
+        }
+
+        if ($this->getCallStatus() !== null) {
+            $result['params']['call_status'] = $this->getCallStatus();
+        }
+
+        if ($this->getCallResponsible() !== null) {
+            $result['params']['call_responsible'] = $this->getCallResponsible();
+        }
 
         return $result;
     }
