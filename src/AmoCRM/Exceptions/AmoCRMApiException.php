@@ -45,7 +45,7 @@ class AmoCRMApiException extends Exception
         $code = 0,
         array $lastRequestInfo = [],
         string $description = "",
-        Throwable $previous = null
+        ?Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
 

@@ -36,7 +36,7 @@ class Talks extends BaseEntity
         return $response[AmoCRMApiRequest::EMBEDDED][EntityTypesInterface::TALKS] ?? [];
     }
 
-    public function get(BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
+    public function get(?BaseEntityFilter $filter = null, array $with = []): ?BaseApiCollection
     {
         throw new NotAvailableForActionException('Method not available for this entity');
     }

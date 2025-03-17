@@ -21,7 +21,7 @@
   "require": {
     "php": ">=7.1 || >=8.0",
     "ext-json": "*",
-    "amocrm/oauth2-amocrm": "^2.0",
+    "amocrm/oauth2-amocrm": "^3.0",
     "guzzlehttp/guzzle": "6.* || 7.*",
     "symfony/dotenv": "3.* || 4.* || 5.* || 6.* || 7.*",
     "fig/http-message-util": "1.*",

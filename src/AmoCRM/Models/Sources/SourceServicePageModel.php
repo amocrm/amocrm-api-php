@@ -42,7 +42,7 @@ class SourceServicePageModel extends BaseApiModel implements Arrayable
         ];
     }
 
-    public function toApi(string $requestId = null): array
+    public function toApi(?string $requestId = null): array
     {
         return $this->toArray();
     }
