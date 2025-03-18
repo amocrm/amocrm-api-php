@@ -43,6 +43,7 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
 use RuntimeException;
 use Throwable;
 use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
+use Lcobucci\JWT\Validation\Constraint\ValidAt;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 
 use function sprintf;
@@ -682,7 +683,7 @@ class AmoCRMOAuth
         }
 
         $claims = $parsedToken->claims();
-        $apiDomain = $claims->get('api_domain', '');
+        $apiDomain = $claims->get('api_domain');
 
         if (empty($apiDomain)) {
             throw new InvalidArgumentException(
@@ -699,18 +700,19 @@ class AmoCRMOAuth
     /**
      * Создает и возвращает объект ограничения проверки времени действия токена.
      *
-     * Метод динамически выбирает между `LooseValidAt` и `StrictValidAt` (приоритет у `LooseValidAt`).
+     * Метод динамически выбирает между `LooseValidAt` и `StrictValidAt` и `ValidAt` (приоритет у `LooseValidAt`).
      * Также автоматически выбирает подходящий класс часов (`FrozenClock` или `SystemClock`).
      *
      * @psalm-suppress UndefinedClass
      * @return Constraint
-     * @throws RuntimeException Если ни один из классов `LooseValidAt` или `StrictValidAt` недоступен.
+     * @throws RuntimeException Если ни один из классов `LooseValidAt` или `StrictValidAt`, или `ValidAt` недоступен.
      */
     private function createValidAtConstraint(): Constraint
     {
         $availableConstraints = [
             LooseValidAt::class,
             StrictValidAt::class,
+            ValidAt::class,
         ];
 
         foreach ($availableConstraints as $constraintClass) {
@@ -723,6 +725,6 @@ class AmoCRMOAuth
             }
         }
 
-        throw new RuntimeException('Neither LooseValidAt nor StrictValidAt are available.');
+        throw new RuntimeException('Neither LooseValidAt nor StrictValidAt nor ValidAt are available.');
     }
 }
