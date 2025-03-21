@@ -13,7 +13,8 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
 {
     use RequestIdTrait;
 
-    private const SCRIPTS = 'scripts';
+    public const SCRIPTS = 'scripts';
+    public const WITH_DELETED = 'deleted';
 
     /**
      * @var int
@@ -55,6 +56,9 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
      */
     private $script;
 
+    /** @var bool|null */
+    private $isDeleted;
+
 
     /**
      * @param array $button
@@ -63,7 +67,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
      */
     public static function fromArray(array $button): self
     {
-        return (new self())
+        $buttonModel = (new self())
             ->setAccountId((int)$button['account_id'])
             ->setSourceId((int)$button['source_id'])
             ->setIsDuplicationControlEnabled((bool)$button['is_duplication_control_enabled'])
@@ -72,6 +76,12 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
             ->setPipelineId(!empty($button['pipeline_id']) ? $button['pipeline_id'] : null)
             ->setCreationStatus(!empty($button['creation_status']) ? $button['creation_status'] : null)
             ->setScript(!empty($button['script']) ? $button['script'] : null);
+
+        if (isset($button['is_deleted'])) {
+            $buttonModel->setIsDeleted((bool)$button['is_deleted']);
+        }
+
+        return $buttonModel;
     }
 
     /**
@@ -88,6 +98,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
             'creation_status' => $this->getCreationStatus(),
             'pipeline_id' => $this->getPipelineId(),
             'script' => $this->getScript(),
+            'is_deleted' => $this->isDeleted(),
         ];
     }
 
@@ -109,6 +120,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     {
         return [
             self::SCRIPTS,
+            self::WITH_DELETED,
         ];
     }
 
@@ -267,6 +279,18 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     public function setScript(?string $script): self
     {
         $this->script = $script;
+
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
