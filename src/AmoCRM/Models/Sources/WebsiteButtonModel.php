@@ -13,8 +13,9 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
 {
     use RequestIdTrait;
 
-    public const SCRIPTS = 'scripts';
     public const WITH_DELETED = 'deleted';
+
+    private const SCRIPTS = 'scripts';
 
     /**
      * @var int
@@ -67,7 +68,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
      */
     public static function fromArray(array $button): self
     {
-        $buttonModel = (new self())
+        return (new self())
             ->setAccountId((int)$button['account_id'])
             ->setSourceId((int)$button['source_id'])
             ->setIsDuplicationControlEnabled((bool)$button['is_duplication_control_enabled'])
@@ -75,13 +76,8 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
             ->setButtonId((int)($button['button_id'] ?? 0) ?: null)
             ->setPipelineId(!empty($button['pipeline_id']) ? $button['pipeline_id'] : null)
             ->setCreationStatus(!empty($button['creation_status']) ? $button['creation_status'] : null)
-            ->setScript(!empty($button['script']) ? $button['script'] : null);
-
-        if (isset($button['is_deleted'])) {
-            $buttonModel->setIsDeleted((bool)$button['is_deleted']);
-        }
-
-        return $buttonModel;
+            ->setScript(!empty($button['script']) ? $button['script'] : null)
+            ->setIsDeleted((bool)$button['is_deleted']);
     }
 
     /**

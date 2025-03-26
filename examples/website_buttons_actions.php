@@ -89,7 +89,7 @@ try {
 try {
     $button = $apiClient
         ->websiteButtons()
-        ->getOne($source->getSourceId(), [WebsiteButtonModel::SCRIPTS]);
+        ->getOne($source->getSourceId(), WebsiteButtonModel::getAvailableWith());
     var_dump($button->toArray());
 } catch (AmoCRMApiException $e) {
     printError($e);
