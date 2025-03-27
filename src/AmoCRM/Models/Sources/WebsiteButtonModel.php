@@ -13,7 +13,8 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
 {
     use RequestIdTrait;
 
-    private const SCRIPTS = 'scripts';
+    public const DELETED = 'deleted';
+    public const SCRIPTS = 'scripts';
 
     /**
      * @var int
@@ -55,6 +56,9 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
      */
     private $script;
 
+    /** @var bool */
+    private $isDeleted;
+
 
     /**
      * @param array $button
@@ -71,7 +75,8 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
             ->setButtonId((int)($button['button_id'] ?? 0) ?: null)
             ->setPipelineId(!empty($button['pipeline_id']) ? $button['pipeline_id'] : null)
             ->setCreationStatus(!empty($button['creation_status']) ? $button['creation_status'] : null)
-            ->setScript(!empty($button['script']) ? $button['script'] : null);
+            ->setScript(!empty($button['script']) ? $button['script'] : null)
+            ->setIsDeleted((bool)$button['is_deleted']);
     }
 
     /**
@@ -88,6 +93,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
             'creation_status' => $this->getCreationStatus(),
             'pipeline_id' => $this->getPipelineId(),
             'script' => $this->getScript(),
+            'is_deleted' => $this->isDeleted(),
         ];
     }
 
@@ -109,6 +115,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     {
         return [
             self::SCRIPTS,
+            self::DELETED,
         ];
     }
 
@@ -267,6 +274,25 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     public function setScript(?string $script): self
     {
         $this->script = $script;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted(): bool
+    {
+        return $this->isDeleted;
+    }
+
+    /**
+     * @param bool $isDeleted
+     * @return WebsiteButtonModel
+     */
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
