@@ -15,7 +15,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
 
     public const WITH_DELETED = 'deleted';
 
-    private const SCRIPTS = 'scripts';
+    public const SCRIPTS = 'scripts';
 
     /**
      * @var int
@@ -57,7 +57,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
      */
     private $script;
 
-    /** @var bool|null */
+    /** @var bool */
     private $isDeleted;
 
 
@@ -279,11 +279,18 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function isDeleted(): bool
     {
         return $this->isDeleted;
     }
 
+    /**
+     * @param bool $isDeleted
+     * @return WebsiteButtonModel
+     */
     public function setIsDeleted(bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
