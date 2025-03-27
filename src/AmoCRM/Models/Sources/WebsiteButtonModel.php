@@ -13,8 +13,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
 {
     use RequestIdTrait;
 
-    public const WITH_DELETED = 'deleted';
-
+    public const DELETED = 'deleted';
     public const SCRIPTS = 'scripts';
 
     /**
@@ -116,7 +115,7 @@ class WebsiteButtonModel extends BaseApiModel implements Arrayable
     {
         return [
             self::SCRIPTS,
-            self::WITH_DELETED,
+            self::DELETED,
         ];
     }
 
