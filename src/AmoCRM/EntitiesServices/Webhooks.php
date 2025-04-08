@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Filters\WebhooksFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
 use AmoCRM\Client\AmoCRMApiClient;
 use AmoCRM\Client\AmoCRMApiRequest;
@@ -18,7 +19,7 @@ use AmoCRM\Models\BaseApiModel;
  *
  * @package AmoCRM\EntitiesServices
  *
- * @method null|WebhooksCollection get(?WebhookModel $filter = null, array $with = [])
+ * @method null|WebhooksCollection get(?WebhooksFilter $filter = null, array $with = [])
  */
 class Webhooks extends BaseEntity
 {
