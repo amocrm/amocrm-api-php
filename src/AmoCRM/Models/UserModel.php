@@ -42,6 +42,8 @@ class UserModel extends BaseApiModel implements HasIdInterface
     /** @var string Ранг пользователя */
     public const USER_RANK = 'user_rank';
 
+    public const PHONE_NUMBER = 'phone_number';
+
     /**
      * @var int|null
      */
@@ -97,6 +99,9 @@ class UserModel extends BaseApiModel implements HasIdInterface
      */
     protected $rank;
 
+    /** @var string|null */
+    protected $phoneNumber;
+
     /**
      * @param array $user
      *
@@ -118,6 +123,7 @@ class UserModel extends BaseApiModel implements HasIdInterface
             ->setUuid($user['uuid'] ?? null)
             ->setAmojoId($user['amojo_id'] ?? null)
             ->setRank($user[self::USER_RANK] ?? null)
+            ->setPhoneNumber($user[self::PHONE_NUMBER] ?? null)
             ->setRights(RightModel::fromArray($user['rights']));
 
         $groupsCollection = new UsersGroupsCollection();
@@ -150,7 +156,8 @@ class UserModel extends BaseApiModel implements HasIdInterface
             'rights' => $this->getRights()->toArray(),
             'roles' => is_null($this->getRoles()) ? null : $this->getRoles()->toArray(),
             'groups' => is_null($this->getGroups()) ? null : $this->getGroups()->toArray(),
-            self::USER_RANK => $this->getRank()
+            self::USER_RANK => $this->getRank(),
+            self::PHONE_NUMBER => $this->getPhoneNumber(),
         ];
     }
 
@@ -371,6 +378,18 @@ class UserModel extends BaseApiModel implements HasIdInterface
         return $this;
     }
 
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): UserModel
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
     /**
      * @param string|null $requestId
      * @return array
@@ -418,7 +437,8 @@ class UserModel extends BaseApiModel implements HasIdInterface
             self::UUID,
             self::GROUP,
             self::AMOJO_ID,
-            self::USER_RANK
+            self::USER_RANK,
+            self::PHONE_NUMBER,
         ];
     }
 }
