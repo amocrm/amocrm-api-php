@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace AmoCRM\Models\Leads\Sources;
 
-
 class LeadSourceApi
 {
-    private int $id;
-    private string $name;
+    /** @var int */
+    private $id;
+    /** @var string */
+    private $name;
 
     public function getId(): int
     {
