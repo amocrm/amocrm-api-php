@@ -3,6 +3,7 @@
 namespace AmoCRM\Models;
 
 use AmoCRM\Models\Interfaces\ComplexTagsManagerInterface;
+use AmoCRM\Models\Leads\Sources\LeadSourceApi;
 use AmoCRM\Models\Traits\MutateTagsTrait;
 use AmoCRM\EntitiesServices\Unsorted;
 use AmoCRM\Exceptions\InvalidArgumentException;
@@ -42,6 +43,7 @@ class LeadModel extends BaseApiModel implements
     public const LOSS_REASON = 'loss_reason';
     public const SOURCE_ID = 'source_id';
     public const CONTACTS = 'contacts';
+    public const SOURCE = 'source';
 
     /**
      * @var int
@@ -137,6 +139,9 @@ class LeadModel extends BaseApiModel implements
      * @var int|null
      */
     protected $sourceId;
+
+    /** @var LeadSourceApi|null */
+    protected $source;
 
     /**
      * @var string|null
@@ -589,6 +594,26 @@ class LeadModel extends BaseApiModel implements
     }
 
     /**
+     * @return LeadSourceApi|null
+     */
+    public function getSource(): ?LeadSourceApi
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param LeadSourceApi|null $source
+     *
+     * @return self
+     */
+    public function setSource(?LeadSourceApi $source): self
+    {
+        $this->source = $source;
+
+        return $this;
+    }
+
+    /**
      * @return null|CompanyModel
      */
     public function getCompany(): ?CompanyModel
@@ -747,6 +772,10 @@ class LeadModel extends BaseApiModel implements
             $leadModel->setSourceId($lead['source_id'] > 0 ? (int)$lead['source_id'] : null);
         }
 
+        if (!empty($lead[AmoCRMApiRequest::EMBEDDED][self::SOURCE])) {
+            $leadModel->setSource(LeadSourceApi::fromArray($lead[AmoCRMApiRequest::EMBEDDED]['source']));
+        }
+
         if (!empty($lead['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
             $customFieldsValues = $valuesCollection->fromArray($lead['custom_fields_values']);
@@ -878,6 +907,10 @@ class LeadModel extends BaseApiModel implements
 
         if (!is_null($this->getContacts())) {
             $result['contacts'] = $this->getContacts()->toArray();
+        }
+
+        if ($this->getSource() !== null) {
+            $result[self::SOURCE] = $this->getSource()->toArray();
         }
 
         return $result;
@@ -1027,6 +1060,7 @@ class LeadModel extends BaseApiModel implements
             self::SOURCE_ID,
             self::LOSS_REASON,
             self::ONLY_DELETED,
+            self::SOURCE,
         ];
     }
 
