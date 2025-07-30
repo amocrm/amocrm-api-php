@@ -1,6 +1,7 @@
 <?php
 
 use AmoCRM\Collections\FileLinksCollection;
+use AmoCRM\Filters\FilesFilter;
 use AmoCRM\Models\FileLinkModel;
 use AmoCRM\Models\Files\FileModel;
 use AmoCRM\Models\Files\FileUploadModel;
@@ -36,16 +37,20 @@ $apiClient->setAccessToken($accessToken)
     );
 
 
-//Получим список файлов
+// Получим список файлов
+$filter = new FilesFilter();
+$filter->setExtensions(['jpg', 'jpeg', 'png']); // фильтр, который ищет все изображения
+//$filter->setDeleted(true); // фильтр, который ищет только среди удаленных файлов
+
 try {
-    $files = $apiClient->files()->get();
+    $files = $apiClient->files()->get($filter);
     var_dump($files->toArray());
 } catch (AmoCRMApiException $e) {
     printError($e);
 }
 
 
-//Получим модель файла
+// Получим модель файла
 try {
     $file = $apiClient->files()->getOne('83bd6974-d54e-4fed-9fec-a3e5a31220db');
     var_dump($file->toArray());
@@ -54,7 +59,7 @@ try {
 }
 
 
-//Освежим модель файла
+// Освежим модель файла
 try {
     $file = (new FileModel())->setUuid('6639ccbf-4bc6-4a08-8537-65adb868967d');
     $file = $apiClient->files()->syncOne($file);
@@ -74,7 +79,7 @@ try {
 }
 
 
-//Загрузим файл
+// Загрузим файл
 $uploadModel = new FileUploadModel();
 $uploadModel->setName('Название файла123.txt')
     ->setLocalPath('/tmp/123');
@@ -142,7 +147,7 @@ try {
 }
 
 
-//Создадим примечание с файлом
+// Создадим примечание с файлом
 $noteModel = new AttachmentNote();
 $noteModel->setEntityId(20285255)
     ->setFileName($file->getNameWithExtension()) // название файла, которое будет отображаться в примечании
@@ -168,7 +173,7 @@ try {
 //}
 
 
-//Привяжем файл к сделке с ID 21825653, чтобы он отображался во вкладке файлы
+// Привяжем файл к сделке с ID 21825653, чтобы он отображался во вкладке файлы
 try {
     $result = $apiClient->entityFiles(EntityTypesInterface::LEADS, 21825653)->add(
         (new FileLinksCollection())
@@ -190,7 +195,7 @@ try {
     printError($e);
 }
 
-//Отвяжем файл от сделки с ID 21825653
+// Отвяжем файл от сделки с ID 21825653
 try {
     $result = $apiClient->entityFiles(EntityTypesInterface::LEADS, 21825653)->delete(
         (new FileLinksCollection())

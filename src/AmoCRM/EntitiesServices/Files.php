@@ -2,6 +2,7 @@
 
 namespace AmoCRM\EntitiesServices;
 
+use AmoCRM\Filters\FilesFilter;
 use AmoCRM\Models\Files\FileModel;
 use AmoCRM\Models\Files\FileUploadModel;
 use AmoCRM\Client\AmoCRMApiClient;
@@ -22,6 +23,7 @@ use AmoCRM\Models\Interfaces\HasIdInterface;
  * Class Files
  *
  * @package AmoCRM\EntitiesServices
+ * @method null|FilesCollection get(?FilesFilter $filter = null, array $with = [])
  * @method null|FileModel getOne($uuid, array $with = [])
  */
 class Files extends BaseEntity implements HasPageMethodsInterface, HasDeleteMethodInterface
