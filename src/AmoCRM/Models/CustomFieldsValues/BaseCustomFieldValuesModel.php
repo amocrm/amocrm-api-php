@@ -136,12 +136,13 @@ class BaseCustomFieldValuesModel extends BaseApiModel
 
     public function toArray(): array
     {
+        $values = $this->getValues();
         return [
             'field_id' => $this->getFieldId(),
             'field_code' => $this->getFieldCode(),
             'field_name' => $this->getFieldName(),
             'field_type' => $this->getFieldType(),
-            'values' => $this->getValues()->toArray(),
+            'values' => $values ? $values->toArray() : null,
         ];
     }
 
