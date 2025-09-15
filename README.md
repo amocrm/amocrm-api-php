@@ -72,22 +72,33 @@ $apiClient->setAccessToken($accessToken)
             });
 ```
 
-Отправить пользователя на страницу авторизации можно 2мя способами:
-1. Отрисовав кнопку на сайт:
+Доступные методы отправки на страницу авторизации пользователя
+1. Кнопка установки существующей интеграции по client_id
 ```php
-$apiClient->getOAuthClient()->getOAuthButton(
-            [
-                'title' => 'Установить интеграцию',
-                'compact' => true,
-                'class_name' => 'className',
-                'color' => 'default',
-                'error_callback' => 'handleOauthError',
-                'state' => $state,
-            ]
-        );
+// data-client-id будет взят из API клиента
+$apiClient->getOAuthClient()->getOAuthButton([
+    'title' => 'Установить интеграцию',
+    'compact' => true,
+    'class_name' => 'className',
+    'color' => 'default',
+    'error_callback' => 'handleOauthError',
+    'state' => $state,
+]);
 ```
 
-2. Отправив пользователя на страницу авторизации
+2. Кнопка с метаданными для создания внешней интеграции. Для каждой установки создается отдельная интеграция
+
+```php
+// redirect_uri будет взят из API клиента
+$apiClient->getOAuthClient()->getOAuthButton([
+    'is_metadata' => true, // указываем, что передаем метаданные в кнопку. По умолчанию - false
+    'secrets_uri' => 'https://your-domain.com/secrets'
+    'title' => 'Создать интеграцию',
+    // ... другие параметры
+]);
+```
+
+3. Прямой редирект на страницу авторизации
 ```php
 $authorizationUrl = $apiClient->getOAuthClient()->getAuthorizeUrl([
             'state' => $state,
