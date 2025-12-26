@@ -129,8 +129,7 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
             $widgetModel->toApi()
         );
 
-        foreach ($response as $key => $value) 
-        {
+        foreach ($response as $key => $value) {
             $widgetModel->$key = $value;
         }
 
@@ -142,14 +141,20 @@ class Widgets extends BaseEntity implements HasPageMethodsInterface
      *
      * @param WidgetModel $widgetModel
      *
-     * @return bool
+     * @return WidgetModel
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      */
-    public function uninstall(WidgetModel $widgetModel): bool
+    public function uninstall(WidgetModel $widgetModel): WidgetModel
     {
-        $response = $this->request->delete($this->getMethod() . '/' . $widgetModel->getCode());
+        $response = $this->request->delete(
+            $this->getMethod() . '/' . $widgetModel->getCode()
+        );
 
-        return $response['result'];
+        foreach ($response as $key => $value) {
+            $widgetModel->$key = $value;
+        }
+
+        return $widgetModel;
     }
 }
