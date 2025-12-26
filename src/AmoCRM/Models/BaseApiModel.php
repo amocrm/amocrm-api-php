@@ -37,10 +37,26 @@ abstract class BaseApiModel
         }
     }
 
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         $methodName = 'set' . Str::camel(Str::ucfirst($name));
-        if (method_exists($this, $methodName) && is_callable([$this, $methodName])) {
+        
+        if (method_exists($this, $methodName) && is_callable([$this, $methodName])) 
+        {
+            $method = new \ReflectionMethod($this, $methodName);
+            $param  = $method->getParameters()[0] ?? null;
+            $type   = $param?->getType();
+            
+            if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) 
+            {
+                $class = $type->getName();
+
+                if (is_array($value) && method_exists($class, 'fromArray')) 
+                {
+                    $value = $class::fromArray($value);
+                }
+            }
+
             $this->$methodName($value);
         }
     }
