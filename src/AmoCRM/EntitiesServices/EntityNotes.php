@@ -4,7 +4,11 @@ namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\EntitiesServices\Interfaces\HasParentEntity;
 use AmoCRM\EntitiesServices\Traits\WithParentEntityMethodsTrait;
+use AmoCRM\Exceptions\AmoCRMApiConnectExceptionException;
 use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMApiHttpClientException;
+use AmoCRM\Exceptions\AmoCRMApiNoContentException;
+use AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\InvalidArgumentException;
 use AmoCRM\Filters\BaseEntityFilter;
@@ -16,7 +20,6 @@ use AmoCRM\Collections\NotesCollection;
 use AmoCRM\EntitiesServices\Interfaces\HasPageMethodsInterface;
 use AmoCRM\EntitiesServices\Traits\PageMethodsTrait;
 use AmoCRM\Models\BaseApiModel;
-use AmoCRM\Models\CustomFields\CustomFieldModel;
 use AmoCRM\Models\NoteModel;
 
 /**
@@ -197,5 +200,43 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
         $collection = !empty($response) ? $this->collectionClass::fromArray([$response]) : null;
 
         return !empty($response) ? $collection->first() : null;
+    }
+
+    /**
+     * Закрепляет примечание.
+     * @param NoteModel $model
+     *
+     * @return void
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiConnectExceptionException
+     * @throws AmoCRMApiHttpClientException
+     * @throws AmoCRMApiTooManyRedirectsException
+     */
+    public function pin(NoteModel $model): void
+    {
+        try {
+            $this->request->post(sprintf('%s/%d/pin', $this->getMethod(), $model->getId()));
+        } catch (AmoCRMApiNoContentException $exception) {
+        }
+    }
+
+    /**
+     * Открепляет примечание.
+     * @param NoteModel $model
+     *
+     * @return void
+     * @throws AmoCRMApiException
+     * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiConnectExceptionException
+     * @throws AmoCRMApiHttpClientException
+     * @throws AmoCRMApiTooManyRedirectsException
+     */
+    public function unpin(NoteModel $model): void
+    {
+        try {
+            $this->request->post(sprintf('%s/%d/unpin', $this->getMethod(), $model->getId()));
+        } catch (AmoCRMApiNoContentException $exception) {
+        }
     }
 }

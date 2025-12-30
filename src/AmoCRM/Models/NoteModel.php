@@ -16,6 +16,9 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
 {
     use RequestIdTrait;
 
+    /** @var string Закреплено ли примечание */
+    public const IS_PINNED = 'is_pinned';
+
     protected $modelClass = NoteModel::class;
 
     /**
@@ -66,6 +69,11 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
     /**
      * @var null|bool
      */
+    protected $isPinned = null;
+
+    /**
+     * @var null|bool
+     */
     protected $isNeedToTriggerDigitalPipelineFlag;
 
     /**
@@ -107,6 +115,10 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
 
         if (!empty($note['account_id'])) {
             $model->setAccountId((int)$note['account_id']);
+        }
+
+        if (isset($note['is_pinned'])) {
+            $model->setIsPinned((bool)$note['is_pinned']);
         }
 
         if (!empty($note['is_need_to_trigger_digital_pipeline'])) {
@@ -319,6 +331,26 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
     }
 
     /**
+     * Возвращает закреплено ли примечание
+     * @return bool|null
+     */
+    public function getIsPinned(): ?bool
+    {
+        return $this->isPinned;
+    }
+
+    /**
+     * @param bool|null $isPinned
+     * @return NoteModel
+     */
+    public function setIsPinned(?bool $isPinned): NoteModel
+    {
+        $this->isPinned = $isPinned;
+
+        return $this;
+    }
+
+    /**
      * @return bool|null
      */
     public function getIsNeedToTriggerDigitalPipeline(): ?bool
@@ -393,6 +425,8 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
      */
     public static function getAvailableWith(): array
     {
-        return [];
+        return [
+            self::IS_PINNED,
+        ];
     }
 }
