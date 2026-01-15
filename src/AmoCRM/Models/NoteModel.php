@@ -341,9 +341,9 @@ class NoteModel extends BaseApiModel implements Arrayable, HasIdInterface
 
     /**
      * @param bool|null $isPinned
-     * @return NoteModel
+     * @return self
      */
-    public function setIsPinned(?bool $isPinned): NoteModel
+    public function setIsPinned(?bool $isPinned): self
     {
         $this->isPinned = $isPinned;
 
