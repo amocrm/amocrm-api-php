@@ -44,8 +44,14 @@ abstract class BaseApiModel
         if (method_exists($this, $methodName) && is_callable([$this, $methodName])) 
         {
             $method = new \ReflectionMethod($this, $methodName);
-            $param  = $method->getParameters()[0] ?? null;
-            $type   = $param?->getType();
+            $params = $method->getParameters();
+            $param  = isset($params[0]) ? $params[0] : null;
+
+            $type = null;
+            if ($param !== null && method_exists($param, 'getType')) 
+            {
+                $type = $param->getType();
+            }
             
             if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) 
             {
