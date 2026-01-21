@@ -151,8 +151,8 @@ class Webhooks extends BaseEntity
      */
     public function unsubscribe(WebhookModel $webhookModel): bool
     {
-        $response = $this->request->delete($this->getMethod(), $webhookModel->toUnsubscribeApi());
+        $result = $this->request->delete($this->getMethod(), $webhookModel->toUnsubscribeApi());
 
-        return $response['result'];
+        return $result['result'];
     }
 }

@@ -37,7 +37,7 @@ abstract class BaseApiModel
         }
     }
 
-    public function __set($name, $value): void
+    public function __set($name, $value)
     {
         $methodName = 'set' . Str::camel(Str::ucfirst($name));
         
