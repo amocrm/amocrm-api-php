@@ -206,37 +206,43 @@ class EntityNotes extends BaseEntityTypeEntity implements HasPageMethodsInterfac
      * Закрепляет примечание.
      * @param NoteModel $model
      *
-     * @return void
+     * @return bool
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      * @throws AmoCRMApiConnectExceptionException
      * @throws AmoCRMApiHttpClientException
      * @throws AmoCRMApiTooManyRedirectsException
      */
-    public function pin(NoteModel $model): void
+    public function pin(NoteModel $model): bool
     {
         try {
             $this->request->post(sprintf('%s/%d/pin', $this->getMethod(), $model->getId()));
         } catch (AmoCRMApiNoContentException $exception) {
+            return true;
         }
+
+        return false;
     }
 
     /**
      * Открепляет примечание.
      * @param NoteModel $model
      *
-     * @return void
+     * @return bool
      * @throws AmoCRMApiException
      * @throws AmoCRMoAuthApiException
      * @throws AmoCRMApiConnectExceptionException
      * @throws AmoCRMApiHttpClientException
      * @throws AmoCRMApiTooManyRedirectsException
      */
-    public function unpin(NoteModel $model): void
+    public function unpin(NoteModel $model): bool
     {
         try {
             $this->request->post(sprintf('%s/%d/unpin', $this->getMethod(), $model->getId()));
         } catch (AmoCRMApiNoContentException $exception) {
+            return true;
         }
+
+        return false;
     }
 }
