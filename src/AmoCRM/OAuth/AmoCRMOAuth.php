@@ -17,6 +17,8 @@ use AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\OAuth2\Client\Provider\AmoCRM;
+use DateTimeImmutable;
+use DateTimeZone;
 use Exception;
 use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\ClientInterface;
@@ -24,8 +26,6 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TooManyRedirectsException;
 use GuzzleHttp\Psr7\Uri;
-use Lcobucci\Clock\FrozenClock;
-use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Hmac\Sha512;
@@ -40,6 +40,7 @@ use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
+use Psr\Clock\ClockInterface;
 use RuntimeException;
 use Throwable;
 use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
@@ -717,11 +718,12 @@ class AmoCRMOAuth
 
         foreach ($availableConstraints as $constraintClass) {
             if (class_exists($constraintClass)) {
-                $clockClass = class_exists(FrozenClock::class)
-                    ? FrozenClock::class
-                    : SystemClock::class;
-
-                return new $constraintClass($clockClass::fromUTC());
+                return new $constraintClass(new class implements ClockInterface {
+                    public function now(): DateTimeImmutable
+                    {
+                        return new DateTimeImmutable('now', new DateTimeZone('UTC'));
+                    }
+                });
             }
         }
 
