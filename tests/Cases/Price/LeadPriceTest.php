@@ -183,6 +183,22 @@ class LeadPriceTest extends TestCase
         $this->assertSame(['request_id' => '0'], (new LeadModel())->toApi());
     }
 
+    public function testSetPriceWithStringThrowsException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Lead price must be an integer, float or null.');
+
+        (new LeadModel())->setPrice('100.0');
+    }
+
+    public function testSetPriceWithArrayThrowsException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Lead price must be an integer, float or null.');
+
+        (new LeadModel())->setPrice([100]);
+    }
+
     private function assertPriceState(LeadModel $lead, ?int $legacyPrice, ?float $priceWithMinorUnits): void
     {
         $this->assertSame($legacyPrice, $lead->getPrice());

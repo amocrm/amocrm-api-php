@@ -267,6 +267,10 @@ class LeadModel extends BaseApiModel implements
      */
     public function setPrice($price): self
     {
+        if (!is_int($price) && !is_float($price) && !is_null($price)) {
+            throw new InvalidArgumentException('Lead price must be an integer, float or null.');
+        }
+
         $this->price = $price;
 
         return $this;
