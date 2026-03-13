@@ -54,7 +54,7 @@ class CustomerModel extends BaseApiModel implements
     protected $name;
 
     /**
-     * @var int|null
+     * @var int|float|null
      */
     protected $nextPrice;
 
@@ -471,16 +471,25 @@ class CustomerModel extends BaseApiModel implements
      */
     public function getNextPrice(): ?int
     {
-        return $this->nextPrice;
+        return isset($this->nextPrice) ? (int)$this->nextPrice : null;
+    }
+
+    public function getNextPriceWithMinorUnits(): ?float
+    {
+        return isset($this->nextPrice) ? (float)$this->nextPrice : null;
     }
 
     /**
-     * @param int|null $nextPrice
+     * @param int|float|null $nextPrice
      *
      * @return CustomerModel
      */
-    public function setNextPrice(?int $nextPrice): CustomerModel
+    public function setNextPrice($nextPrice): CustomerModel
     {
+        if (!is_int($nextPrice) && !is_float($nextPrice) && !is_null($nextPrice)) {
+            throw new InvalidArgumentException('Customer next price must be an integer, float or null.');
+        }
+
         $this->nextPrice = $nextPrice;
 
         return $this;
@@ -635,7 +644,9 @@ class CustomerModel extends BaseApiModel implements
         if (!empty($customer['name'])) {
             $customerModel->setName($customer['name']);
         }
-        if (array_key_exists('next_price', $customer) && !is_null($customer['next_price'])) {
+        if (array_key_exists('next_price_with_minor_units', $customer) && !is_null($customer['next_price_with_minor_units'])) {
+            $customerModel->setNextPrice((float)$customer['next_price_with_minor_units']);
+        } elseif (array_key_exists('next_price', $customer) && !is_null($customer['next_price'])) {
             $customerModel->setNextPrice((int)$customer['next_price']);
         }
         if (array_key_exists('next_date', $customer) && !is_null($customer['next_date'])) {
@@ -744,6 +755,7 @@ class CustomerModel extends BaseApiModel implements
             'id' => $this->getId(),
             'name' => $this->getName(),
             'next_price' => $this->getNextPrice(),
+            'next_price_with_minor_units' => $this->getNextPriceWithMinorUnits(),
             'next_date' => $this->getNextDate(),
             'responsible_user_id' => $this->getResponsibleUserId(),
             'status_id' => $this->getStatusId(),
@@ -807,7 +819,7 @@ class CustomerModel extends BaseApiModel implements
         }
 
         if (!is_null($this->getNextPrice())) {
-            $result['next_price'] = $this->getNextPrice();
+            $result['next_price'] = $this->getNextPriceWithMinorUnits();
         }
 
         if (!is_null($this->getNextDate())) {
