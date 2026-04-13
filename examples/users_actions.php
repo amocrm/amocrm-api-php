@@ -117,6 +117,14 @@ try {
     die;
 }
 
+// Деактивация добавленных пользователей
+try {
+    $usersService->deactivate($usersCollection);
+} catch (AmoCRMApiException $e) {
+    printError($e);
+    die();
+}
+
 //Получим всех пользователей аккаунта
 try {
     $usersCollection = $usersService->get();
