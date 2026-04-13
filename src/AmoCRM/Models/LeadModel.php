@@ -111,7 +111,7 @@ class LeadModel extends BaseApiModel implements
     protected $closestTaskAt;
 
     /**
-     * @var int
+     * @var int|float|null
      */
     protected $price;
 
@@ -252,21 +252,28 @@ class LeadModel extends BaseApiModel implements
         return $this;
     }
 
-    /**
-     * @return null|int
-     */
     public function getPrice(): ?int
     {
-        return $this->price;
+        return isset($this->price) ? (int)$this->price : null;
     }
 
     /**
-     * @param null|int $price
-     *
-     * @return self
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
      */
-    public function setPrice(?int $price): self
+    public function getPriceWithMinorUnits(): ?float
     {
+        return isset($this->price) ? (float)$this->price : null;
+    }
+
+    /**
+     * @param int|float|null $price
+     */
+    public function setPrice($price): self
+    {
+        if (!is_int($price) && !is_float($price) && !is_null($price)) {
+            throw new InvalidArgumentException('Lead price must be an integer, float or null.');
+        }
+
         $this->price = $price;
 
         return $this;
@@ -744,7 +751,9 @@ class LeadModel extends BaseApiModel implements
             $leadModel->setName($lead['name']);
         }
 
-        if (array_key_exists('price', $lead) && !is_null($lead['price'])) {
+        if (array_key_exists('price_with_minor_units', $lead) && !is_null($lead['price_with_minor_units'])) {
+            $leadModel->setPrice((float)$lead['price_with_minor_units']);
+        } elseif (array_key_exists('price', $lead) && !is_null($lead['price'])) {
             $leadModel->setPrice((int)$lead['price']);
         }
 
@@ -861,6 +870,7 @@ class LeadModel extends BaseApiModel implements
         $result = [
             'name' => $this->getName(),
             'price' => $this->getPrice(),
+            'price_with_minor_units' => $this->getPriceWithMinorUnits(),
             'responsible_user_id' => $this->getResponsibleUserId(),
             'group_id' => $this->getGroupId(),
             'status_id' => $this->getStatusId(),
@@ -932,8 +942,8 @@ class LeadModel extends BaseApiModel implements
             $result['name'] = $this->getName();
         }
 
-        if (!is_null($this->getPrice())) {
-            $result['price'] = $this->getPrice();
+        if (!is_null($this->getPriceWithMinorUnits())) {
+            $result['price'] = $this->getPriceWithMinorUnits();
         }
 
         if (!is_null($this->getResponsibleUserId())) {
