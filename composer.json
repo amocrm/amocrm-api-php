@@ -25,7 +25,6 @@
     "amocrm/oauth2-amocrm": "^3.0",
     "fig/http-message-util": "1.*",
     "guzzlehttp/guzzle": "6.* || 7.*",
-    "lcobucci/clock": "1.1.0 ||^2.0.0",
     "lcobucci/jwt": "^3.4.6 || ^4.0.4 || ^5.0",
     "nesbot/carbon": "^2.72.6 || ^3.8.4",
     "ramsey/uuid": "^3 || ^4",
