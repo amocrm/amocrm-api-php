@@ -257,6 +257,9 @@ class LeadModel extends BaseApiModel implements
         return isset($this->price) ? (int)$this->price : null;
     }
 
+    /**
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
+     */
     public function getPriceWithMinorUnits(): ?float
     {
         return isset($this->price) ? (float)$this->price : null;

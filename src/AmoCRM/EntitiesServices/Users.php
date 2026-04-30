@@ -3,6 +3,12 @@
 namespace AmoCRM\EntitiesServices;
 
 use AmoCRM\Collections\UsersCollection;
+use AmoCRM\Exceptions\AmoCRMApiConnectExceptionException;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Exceptions\AmoCRMApiHttpClientException;
+use AmoCRM\Exceptions\AmoCRMApiNoContentException;
+use AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException;
+use AmoCRM\Exceptions\AmoCRMoAuthApiException;
 use AmoCRM\Exceptions\NotAvailableForActionException;
 use AmoCRM\Filters\BaseEntityFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -15,6 +21,7 @@ use AmoCRM\Models\BaseApiModel;
 use AmoCRM\Models\Rights\RightModel;
 use AmoCRM\Models\RoleModel;
 use AmoCRM\Models\UserModel;
+use InvalidArgumentException;
 
 /**
  * Class Users
@@ -98,6 +105,67 @@ class Users extends BaseEntity implements HasPageMethodsInterface
         }
 
         return $collection;
+    }
+
+    /**
+     * @throws AmoCRMApiException
+     * @throws AmoCRMApiNoContentException
+     * @throws AmoCRMApiHttpClientException
+     * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiConnectExceptionException
+     * @throws AmoCRMApiTooManyRedirectsException
+     */
+    public function activate(UsersCollection $users): bool
+    {
+        try {
+            $this->request->post(sprintf('%s/activate', $this->getMethod()), $this->prepareUserIdsPayload($users));
+        } catch (AmoCRMApiNoContentException $exception) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @throws AmoCRMApiException
+     * @throws AmoCRMApiNoContentException
+     * @throws AmoCRMApiHttpClientException
+     * @throws AmoCRMoAuthApiException
+     * @throws AmoCRMApiConnectExceptionException
+     * @throws AmoCRMApiTooManyRedirectsException
+     */
+    public function deactivate(UsersCollection $users): bool
+    {
+        try {
+            $this->request->post(sprintf('%s/deactivate', $this->getMethod()), $this->prepareUserIdsPayload($users));
+        } catch (AmoCRMApiNoContentException $exception) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function prepareUserIdsPayload(UsersCollection $users): array
+    {
+        if ($users->isEmpty()) {
+            throw new InvalidArgumentException('Collection is empty');
+        }
+
+        if ($users->count() > 10) {
+            throw new InvalidArgumentException('Maximum 10 users per request');
+        }
+
+        $payload = [];
+        foreach ($users as $user) {
+            /** @var UserModel $user */
+            if (!$id = $user->getId()) {
+                throw new InvalidArgumentException('User without ID in collection');
+            }
+
+            $payload[] = ['id' => $id];
+        }
+
+        return $payload;
     }
 
     /**
