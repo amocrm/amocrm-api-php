@@ -26,7 +26,7 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
     protected $id;
 
     /**
-     * @var int|null
+     * @var int|float|null
      */
     protected $price;
 
@@ -91,7 +91,7 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
     protected $nextDate;
 
     /**
-     * @var int|null
+     * @var int|float|null
      */
     protected $nextPrice;
 
@@ -116,8 +116,18 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
 
         $model->setId($transaction['id']);
 
-        if (array_key_exists('price', $transaction) && !is_null($transaction['price'])) {
+        if (array_key_exists('price_with_minor_units', $transaction) && !is_null($transaction['price_with_minor_units'])) {
+            $model->setPrice((float)$transaction['price_with_minor_units']);
+        }
+        elseif (array_key_exists('price', $transaction) && !is_null($transaction['price'])) {
             $model->setPrice((int)$transaction['price']);
+        }
+
+        if (array_key_exists('next_price_with_minor_units', $transaction) && !is_null($transaction['next_price_with_minor_units'])) {
+            $model->setNextPrice((float)$transaction['next_price_with_minor_units']);
+        }
+        elseif (array_key_exists('next_price', $transaction) && !is_null($transaction['next_price'])) {
+            $model->setNextPrice((int)$transaction['next_price']);
         }
 
         if (array_key_exists('completed_at', $transaction) && !is_null($transaction['completed_at'])) {
@@ -185,6 +195,7 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
         return [
             'id' => $this->getId(),
             'price' => $this->getPrice(),
+            'price_with_minor_units' => $this->getPriceWithMinorUnits(),
             'completed_at' => $this->getCompletedAt(),
             'comment' => $this->getComment(),
             'created_at' => $this->getCreatedAt(),
@@ -195,7 +206,6 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
             'account_id' => $this->getAccountId(),
             'catalog_elements' => $this->getCatalogElements() ? $this->getCatalogElements()->toArray() : null,
             'customer_id' => $this->getCustomerId(),
-            'customer' =>  $this->getCustomer()->toArray(),
         ];
     }
 
@@ -224,16 +234,28 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
      */
     public function getPrice(): ?int
     {
-        return $this->price;
+        return isset($this->price) ? (int)$this->price : null;
     }
 
     /**
-     * @param int|null $price
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
+     */
+    public function getPriceWithMinorUnits(): ?float
+    {
+        return isset($this->price) ? (float)$this->price : null;
+    }
+
+    /**
+     * @param int|float|null $price
      *
      * @return TransactionModel
      */
-    public function setPrice(?int $price): TransactionModel
+    public function setPrice($price): TransactionModel
     {
+        if (!is_int($price) && !is_float($price) && !is_null($price)) {
+            throw new InvalidArgumentException('Transaction price must be an integer, float or null.');
+        }
+
         $this->price = $price;
 
         return $this;
@@ -484,16 +506,28 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
      */
     public function getNextPrice(): ?int
     {
-        return $this->nextPrice;
+        return isset($this->nextPrice) ? (int)$this->nextPrice : null;
     }
 
     /**
-     * @param int|null $nextPrice
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
+     */
+    public function getNextPriceWithMinorUnits(): ?float
+    {
+        return isset($this->nextPrice) ? (float)$this->nextPrice : null;
+    }
+
+    /**
+     * @param int|float|null $nextPrice
      *
      * @return TransactionModel
      */
-    public function setNextPrice(?int $nextPrice): TransactionModel
+    public function setNextPrice($nextPrice): TransactionModel
     {
+        if (!is_int($nextPrice) && !is_float($nextPrice) && !is_null($nextPrice)) {
+            throw new InvalidArgumentException('Transaction next price must be an integer, float or null.');
+        }
+
         $this->nextPrice = $nextPrice;
 
         return $this;
@@ -507,7 +541,7 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
     public function toApi(?string $requestId = "0"): array
     {
         $result = [
-            'price' => $this->getPrice(),
+            'price' => $this->getPriceWithMinorUnits(),
         ];
 
         if (!is_null($this->getCompletedAt())) {
@@ -539,7 +573,7 @@ class TransactionModel extends BaseApiModel implements HasIdInterface
         }
 
         if (!is_null($this->getNextPrice())) {
-            $result['next_price'] = $this->getNextPrice();
+            $result['next_price'] = $this->getNextPriceWithMinorUnits();
         }
 
         if (!is_null($this->getReceiptLink())) {
