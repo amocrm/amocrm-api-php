@@ -54,7 +54,7 @@ class CustomerModel extends BaseApiModel implements
     protected $name;
 
     /**
-     * @var int|null
+     * @var int|float|null
      */
     protected $nextPrice;
 
@@ -109,7 +109,7 @@ class CustomerModel extends BaseApiModel implements
     protected $closestTaskAt;
 
     /**
-     * @var int|null
+     * @var int|float|null
      */
     protected $ltv;
 
@@ -119,7 +119,7 @@ class CustomerModel extends BaseApiModel implements
     protected $purchasesCount;
 
     /**
-     * @var int|null
+     * @var int|float|null
      */
     protected $averageCheck;
 
@@ -471,16 +471,29 @@ class CustomerModel extends BaseApiModel implements
      */
     public function getNextPrice(): ?int
     {
-        return $this->nextPrice;
+        return isset($this->nextPrice) ? (int)$this->nextPrice : null;
     }
 
     /**
-     * @param int|null $nextPrice
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
+     */
+    public function getNextPriceWithMinorUnits(): ?float
+    {
+        return isset($this->nextPrice) ? (float)$this->nextPrice : null;
+    }
+
+    /**
+     * @param int|float|null $nextPrice
      *
      * @return CustomerModel
+     * @throws InvalidArgumentException
      */
-    public function setNextPrice(?int $nextPrice): CustomerModel
+    public function setNextPrice($nextPrice): CustomerModel
     {
+        if (!is_int($nextPrice) && !is_float($nextPrice) && !is_null($nextPrice)) {
+            throw new InvalidArgumentException('Customer next price must be an integer, float or null.');
+        }
+
         $this->nextPrice = $nextPrice;
 
         return $this;
@@ -531,16 +544,29 @@ class CustomerModel extends BaseApiModel implements
      */
     public function getLtv(): ?int
     {
-        return $this->ltv;
+        return isset($this->ltv) ? (int)$this->ltv : null;
     }
 
     /**
-     * @param int|null $ltv
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
+     */
+    public function getLtvWithMinorUnits(): ?float
+    {
+        return isset($this->ltv) ? (float)$this->ltv : null;
+    }
+
+    /**
+     * @param int|float|null $ltv
      *
      * @return CustomerModel
+     * @throws InvalidArgumentException
      */
-    public function setLtv(?int $ltv): CustomerModel
+    public function setLtv($ltv): CustomerModel
     {
+        if (!is_int($ltv) && !is_float($ltv) && !is_null($ltv)) {
+            throw new InvalidArgumentException('Customer ltv must be an integer, float or null.');
+        }
+
         $this->ltv = $ltv;
 
         return $this;
@@ -571,16 +597,29 @@ class CustomerModel extends BaseApiModel implements
      */
     public function getAverageCheck(): ?int
     {
-        return $this->averageCheck;
+        return isset($this->averageCheck) ? (int)$this->averageCheck : null;
     }
 
     /**
-     * @param int|null $averageCheck
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
+     */
+    public function getAverageCheckWithMinorUnits(): ?float
+    {
+        return isset($this->averageCheck) ? (float)$this->averageCheck : null;
+    }
+
+    /**
+     * @param int|float|null $averageCheck
      *
      * @return CustomerModel
+     * @throws InvalidArgumentException
      */
-    public function setAverageCheck(?int $averageCheck): CustomerModel
+    public function setAverageCheck($averageCheck): CustomerModel
     {
+        if (!is_int($averageCheck) && !is_float($averageCheck) && !is_null($averageCheck)) {
+            throw new InvalidArgumentException('Customer average check must be an integer, float or null.');
+        }
+
         $this->averageCheck = $averageCheck;
 
         return $this;
@@ -635,7 +674,9 @@ class CustomerModel extends BaseApiModel implements
         if (!empty($customer['name'])) {
             $customerModel->setName($customer['name']);
         }
-        if (array_key_exists('next_price', $customer) && !is_null($customer['next_price'])) {
+        if (array_key_exists('next_price_with_minor_units', $customer) && !is_null($customer['next_price_with_minor_units'])) {
+            $customerModel->setNextPrice((float)$customer['next_price_with_minor_units']);
+        } elseif (array_key_exists('next_price', $customer) && !is_null($customer['next_price'])) {
             $customerModel->setNextPrice((int)$customer['next_price']);
         }
         if (array_key_exists('next_date', $customer) && !is_null($customer['next_date'])) {
@@ -650,14 +691,18 @@ class CustomerModel extends BaseApiModel implements
         if (array_key_exists('periodicity', $customer) && !is_null($customer['periodicity'])) {
             $customerModel->setPeriodicity((int)$customer['periodicity']);
         }
-        if (array_key_exists('ltv', $customer) && !is_null($customer['ltv'])) {
+        if (array_key_exists('ltv_with_minor_units', $customer) && !is_null($customer['ltv_with_minor_units'])) {
+            $customerModel->setLtv((float)$customer['ltv_with_minor_units']);
+        } elseif (array_key_exists('ltv', $customer) && !is_null($customer['ltv'])) {
             $customerModel->setLtv((int)$customer['ltv']);
         }
         if (array_key_exists('purchases_count', $customer) && !is_null($customer['purchases_count'])) {
-            $customerModel->setPeriodicity((int)$customer['purchases_count']);
+            $customerModel->setPurchasesCount((int)$customer['purchases_count']);
         }
-        if (array_key_exists('average_check', $customer) && !is_null($customer['average_check'])) {
-            $customerModel->setPeriodicity((int)$customer['average_check']);
+        if (array_key_exists('average_check_with_minor_units', $customer) && !is_null($customer['average_check_with_minor_units'])) {
+            $customerModel->setAverageCheck((float)$customer['average_check_with_minor_units']);
+        } elseif (array_key_exists('average_check', $customer) && !is_null($customer['average_check'])) {
+            $customerModel->setAverageCheck((int)$customer['average_check']);
         }
         if (!empty($customer['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
@@ -683,13 +728,7 @@ class CustomerModel extends BaseApiModel implements
             $customerModel->setIsDeleted((bool)$customer['is_deleted']);
         }
 
-        if (array_key_exists('average_check', $customer) && !is_null($customer['average_check'])) {
-            $customerModel->setAverageCheck((int)$customer['average_check']);
-        }
 
-        if (array_key_exists('purchases_count', $customer) && !is_null($customer['purchases_count'])) {
-            $customerModel->setPurchasesCount((int)$customer['purchases_count']);
-        }
 
         if (!empty($customer[AmoCRMApiRequest::EMBEDDED]['tags'])) {
             $tagsCollection = new TagsCollection();
@@ -744,6 +783,7 @@ class CustomerModel extends BaseApiModel implements
             'id' => $this->getId(),
             'name' => $this->getName(),
             'next_price' => $this->getNextPrice(),
+            'next_price_with_minor_units' => $this->getNextPriceWithMinorUnits(),
             'next_date' => $this->getNextDate(),
             'responsible_user_id' => $this->getResponsibleUserId(),
             'status_id' => $this->getStatusId(),
@@ -758,8 +798,10 @@ class CustomerModel extends BaseApiModel implements
                 ? null
                 : $this->getCustomFieldsValues()->toArray(),
             'ltv' => $this->getLtv(),
+            'ltv_with_minor_units' => $this->getLtvWithMinorUnits(),
             'purchases_count' => $this->getPurchasesCount(),
             'average_check' => $this->getAverageCheck(),
+            'average_check_with_minor_units' => $this->getAverageCheckWithMinorUnits(),
             'account_id' => $this->getAccountId(),
         ];
 
@@ -807,7 +849,7 @@ class CustomerModel extends BaseApiModel implements
         }
 
         if (!is_null($this->getNextPrice())) {
-            $result['next_price'] = $this->getNextPrice();
+            $result['next_price'] = $this->getNextPriceWithMinorUnits();
         }
 
         if (!is_null($this->getNextDate())) {
@@ -816,6 +858,14 @@ class CustomerModel extends BaseApiModel implements
 
         if (!is_null($this->getPeriodicity())) {
             $result['periodicity'] = $this->getPeriodicity();
+        }
+
+        if (!is_null($this->getLtv())) {
+            $result['ltv'] = $this->getLtvWithMinorUnits();
+        }
+
+        if (!is_null($this->getAverageCheck())) {
+            $result['average_check'] = $this->getAverageCheckWithMinorUnits();
         }
 
         if (!is_null($this->getResponsibleUserId())) {
