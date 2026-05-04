@@ -109,7 +109,7 @@ class CustomerModel extends BaseApiModel implements
     protected $closestTaskAt;
 
     /**
-     * @var int|null
+     * @var int|float|null
      */
     protected $ltv;
 
@@ -119,7 +119,7 @@ class CustomerModel extends BaseApiModel implements
     protected $purchasesCount;
 
     /**
-     * @var int|null
+     * @var int|float|null
      */
     protected $averageCheck;
 
@@ -540,16 +540,25 @@ class CustomerModel extends BaseApiModel implements
      */
     public function getLtv(): ?int
     {
-        return $this->ltv;
+        return isset($this->ltv) ? (int)$this->ltv : null;
+    }
+
+    public function getLtvWithMinorUnits(): ?float
+    {
+        return isset($this->ltv) ? (float)$this->ltv : null;
     }
 
     /**
-     * @param int|null $ltv
+     * @param int|float|null $ltv
      *
      * @return CustomerModel
      */
-    public function setLtv(?int $ltv): CustomerModel
+    public function setLtv($ltv): CustomerModel
     {
+        if (!is_int($ltv) && !is_float($ltv) && !is_null($ltv)) {
+            throw new InvalidArgumentException('Customer ltv must be an integer, float or null.');
+        }
+
         $this->ltv = $ltv;
 
         return $this;
@@ -580,16 +589,25 @@ class CustomerModel extends BaseApiModel implements
      */
     public function getAverageCheck(): ?int
     {
-        return $this->averageCheck;
+        return isset($this->averageCheck) ? (int)$this->averageCheck : null;
+    }
+
+    public function getAverageCheckWithMinorUnits(): ?float
+    {
+        return isset($this->averageCheck) ? (float)$this->averageCheck : null;
     }
 
     /**
-     * @param int|null $averageCheck
+     * @param int|float|null $averageCheck
      *
      * @return CustomerModel
      */
-    public function setAverageCheck(?int $averageCheck): CustomerModel
+    public function setAverageCheck($averageCheck): CustomerModel
     {
+        if (!is_int($averageCheck) && !is_float($averageCheck) && !is_null($averageCheck)) {
+            throw new InvalidArgumentException('Customer average check must be an integer, float or null.');
+        }
+
         $this->averageCheck = $averageCheck;
 
         return $this;
@@ -661,14 +679,18 @@ class CustomerModel extends BaseApiModel implements
         if (array_key_exists('periodicity', $customer) && !is_null($customer['periodicity'])) {
             $customerModel->setPeriodicity((int)$customer['periodicity']);
         }
-        if (array_key_exists('ltv', $customer) && !is_null($customer['ltv'])) {
+        if (array_key_exists('ltv_with_minor_units', $customer) && !is_null($customer['ltv_with_minor_units'])) {
+            $customerModel->setLtv((float)$customer['ltv_with_minor_units']);
+        } elseif (array_key_exists('ltv', $customer) && !is_null($customer['ltv'])) {
             $customerModel->setLtv((int)$customer['ltv']);
         }
         if (array_key_exists('purchases_count', $customer) && !is_null($customer['purchases_count'])) {
-            $customerModel->setPeriodicity((int)$customer['purchases_count']);
+            $customerModel->setPurchasesCount((int)$customer['purchases_count']);
         }
-        if (array_key_exists('average_check', $customer) && !is_null($customer['average_check'])) {
-            $customerModel->setPeriodicity((int)$customer['average_check']);
+        if (array_key_exists('average_check_with_minor_units', $customer) && !is_null($customer['average_check_with_minor_units'])) {
+            $customerModel->setAverageCheck((float)$customer['average_check_with_minor_units']);
+        } elseif (array_key_exists('average_check', $customer) && !is_null($customer['average_check'])) {
+            $customerModel->setAverageCheck((int)$customer['average_check']);
         }
         if (!empty($customer['custom_fields_values'])) {
             $valuesCollection = new CustomFieldsValuesCollection();
@@ -694,13 +716,7 @@ class CustomerModel extends BaseApiModel implements
             $customerModel->setIsDeleted((bool)$customer['is_deleted']);
         }
 
-        if (array_key_exists('average_check', $customer) && !is_null($customer['average_check'])) {
-            $customerModel->setAverageCheck((int)$customer['average_check']);
-        }
 
-        if (array_key_exists('purchases_count', $customer) && !is_null($customer['purchases_count'])) {
-            $customerModel->setPurchasesCount((int)$customer['purchases_count']);
-        }
 
         if (!empty($customer[AmoCRMApiRequest::EMBEDDED]['tags'])) {
             $tagsCollection = new TagsCollection();
@@ -770,8 +786,10 @@ class CustomerModel extends BaseApiModel implements
                 ? null
                 : $this->getCustomFieldsValues()->toArray(),
             'ltv' => $this->getLtv(),
+            'ltv_with_minor_units' => $this->getLtvWithMinorUnits(),
             'purchases_count' => $this->getPurchasesCount(),
             'average_check' => $this->getAverageCheck(),
+            'average_check_with_minor_units' => $this->getAverageCheckWithMinorUnits(),
             'account_id' => $this->getAccountId(),
         ];
 
@@ -828,6 +846,14 @@ class CustomerModel extends BaseApiModel implements
 
         if (!is_null($this->getPeriodicity())) {
             $result['periodicity'] = $this->getPeriodicity();
+        }
+
+        if (!is_null($this->getLtv())) {
+            $result['ltv'] = $this->getLtvWithMinorUnits();
+        }
+
+        if (!is_null($this->getAverageCheck())) {
+            $result['average_check'] = $this->getAverageCheckWithMinorUnits();
         }
 
         if (!is_null($this->getResponsibleUserId())) {
