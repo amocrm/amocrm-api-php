@@ -267,6 +267,7 @@ class LeadModel extends BaseApiModel implements
 
     /**
      * @param int|float|null $price
+     * @throws InvalidArgumentException
      */
     public function setPrice($price): self
     {

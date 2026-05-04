@@ -474,6 +474,9 @@ class CustomerModel extends BaseApiModel implements
         return isset($this->nextPrice) ? (int)$this->nextPrice : null;
     }
 
+    /**
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
+     */
     public function getNextPriceWithMinorUnits(): ?float
     {
         return isset($this->nextPrice) ? (float)$this->nextPrice : null;
@@ -483,6 +486,7 @@ class CustomerModel extends BaseApiModel implements
      * @param int|float|null $nextPrice
      *
      * @return CustomerModel
+     * @throws InvalidArgumentException
      */
     public function setNextPrice($nextPrice): CustomerModel
     {
@@ -543,6 +547,9 @@ class CustomerModel extends BaseApiModel implements
         return isset($this->ltv) ? (int)$this->ltv : null;
     }
 
+    /**
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
+     */
     public function getLtvWithMinorUnits(): ?float
     {
         return isset($this->ltv) ? (float)$this->ltv : null;
@@ -552,6 +559,7 @@ class CustomerModel extends BaseApiModel implements
      * @param int|float|null $ltv
      *
      * @return CustomerModel
+     * @throws InvalidArgumentException
      */
     public function setLtv($ltv): CustomerModel
     {
@@ -592,6 +600,9 @@ class CustomerModel extends BaseApiModel implements
         return isset($this->averageCheck) ? (int)$this->averageCheck : null;
     }
 
+    /**
+     * На данный момент поддержка минорных единиц валют доступна только в Kommo
+     */
     public function getAverageCheckWithMinorUnits(): ?float
     {
         return isset($this->averageCheck) ? (float)$this->averageCheck : null;
@@ -601,6 +612,7 @@ class CustomerModel extends BaseApiModel implements
      * @param int|float|null $averageCheck
      *
      * @return CustomerModel
+     * @throws InvalidArgumentException
      */
     public function setAverageCheck($averageCheck): CustomerModel
     {
