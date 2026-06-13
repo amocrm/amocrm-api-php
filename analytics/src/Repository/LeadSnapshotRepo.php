@@ -67,21 +67,68 @@ class LeadSnapshotRepo
      */
     public function insertBatch(array $snapshots): int
     {
-        $count = 0;
+        if (empty($snapshots)) {
+            return 0;
+        }
 
         $this->db->beginTransaction();
         try {
+            // Build batch insert query
+            $placeholders = [];
+            $params = [];
+            $paramIndex = 0;
+
             foreach ($snapshots as $snapshot) {
-                $this->insert($snapshot);
-                $count++;
+                $placeholders[] = sprintf(
+                    '(:lead_id_%d, :pipeline_id_%d, :status_id_%d, :status_name_%d, :price_%d,
+                     :source_id_%d, :responsible_user_id_%d, :contact_ids_%d, :company_id_%d,
+                     :loss_reason_id_%d, :tags_%d, :custom_fields_%d,
+                     :created_at_%d, :updated_at_%d, :closed_at_%d, :snapshot_at_%d, :is_deleted_%d)',
+                    $paramIndex, $paramIndex, $paramIndex, $paramIndex, $paramIndex,
+                    $paramIndex, $paramIndex, $paramIndex, $paramIndex,
+                    $paramIndex, $paramIndex, $paramIndex,
+                    $paramIndex, $paramIndex, $paramIndex, $paramIndex, $paramIndex
+                );
+
+                $params["lead_id_{$paramIndex}"] = $snapshot->getLeadId();
+                $params["pipeline_id_{$paramIndex}"] = $snapshot->getPipelineId();
+                $params["status_id_{$paramIndex}"] = $snapshot->getStatusId();
+                $params["status_name_{$paramIndex}"] = $snapshot->getStatusName();
+                $params["price_{$paramIndex}"] = $snapshot->getPrice();
+                $params["source_id_{$paramIndex}"] = $snapshot->getSourceId();
+                $params["responsible_user_id_{$paramIndex}"] = $snapshot->getResponsibleUserId();
+                $params["contact_ids_{$paramIndex}"] = json_encode($snapshot->getContactIds());
+                $params["company_id_{$paramIndex}"] = $snapshot->getCompanyId();
+                $params["loss_reason_id_{$paramIndex}"] = $snapshot->getLossReasonId();
+                $params["tags_{$paramIndex}"] = json_encode($snapshot->getTags());
+                $params["custom_fields_{$paramIndex}"] = json_encode($snapshot->getCustomFields());
+                $params["created_at_{$paramIndex}"] = $snapshot->getCreatedAt()?->toDateTimeString();
+                $params["updated_at_{$paramIndex}"] = $snapshot->getUpdatedAt()?->toDateTimeString();
+                $params["closed_at_{$paramIndex}"] = $snapshot->getClosedAt()?->toDateTimeString();
+                $params["snapshot_at_{$paramIndex}"] = $snapshot->getSnapshotAt()->toDateTimeString();
+                $params["is_deleted_{$paramIndex}"] = $snapshot->isDeleted();
+
+                $paramIndex++;
             }
+
+            $sql = sprintf(
+                'INSERT INTO lead_snapshots (
+                    lead_id, pipeline_id, status_id, status_name, price,
+                    source_id, responsible_user_id, contact_ids, company_id,
+                    loss_reason_id, tags, custom_fields,
+                    created_at, updated_at, closed_at, snapshot_at, is_deleted
+                ) VALUES %s',
+                implode(', ', $placeholders)
+            );
+
+            $this->db->executeStatement($sql, $params);
             $this->db->commit();
+
+            return count($snapshots);
         } catch (\Exception $e) {
             $this->db->rollBack();
             throw $e;
         }
-
-        return $count;
     }
 
     /**

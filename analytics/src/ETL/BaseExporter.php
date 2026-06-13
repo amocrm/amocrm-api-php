@@ -137,9 +137,9 @@ abstract class BaseExporter
             return null;
         }
 
-        // Check if collection has next page method
-        if (method_exists($collection, 'nextPage')) {
-            return $collection->nextPage($collection);
+        // Check if collection has nextPage method
+        if (method_exists($collection, 'getNextPage')) {
+            return $collection->getNextPage();
         }
 
         return null;
