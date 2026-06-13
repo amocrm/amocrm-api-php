@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Analytics\Console\EtlFullCommand;
+use Analytics\Console\EtlIncrementalCommand;
+use Analytics\Console\EtlLeadsCommand;
+use Analytics\Console\EtlEventsCommand;
+use Analytics\Console\SyncPipelinesCommand;
+use Analytics\Console\WebhookSubscribeCommand;
+use Analytics\Console\WebhookStatusCommand;
+
+$application = new Application('Analytics CLI', '1.0.0');
+
+// Register commands
+$application->add(new EtlFullCommand());
+$application->add(new EtlIncrementalCommand());
+$application->add(new EtlLeadsCommand());
+$application->add(new EtlEventsCommand());
+$application->add(new SyncPipelinesCommand());
+$application->add(new WebhookSubscribeCommand());
+$application->add(new WebhookStatusCommand());
+
+$application->run();
