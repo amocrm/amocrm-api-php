@@ -2,6 +2,7 @@
 
 namespace AmoCRM\OAuth;
 
+use AmoCRM\Exceptions\AmoCRMOAuthButtonConfigurationException;
 use AmoCRM\Exceptions\DisposableTokenExpiredException;
 use AmoCRM\Exceptions\DisposableTokenInvalidDestinationException;
 use AmoCRM\Exceptions\DisposableTokenVerificationFailedException;
@@ -15,7 +16,6 @@ use AmoCRM\Exceptions\AmoCRMApiErrorResponseException;
 use AmoCRM\Exceptions\AmoCRMApiHttpClientException;
 use AmoCRM\Exceptions\AmoCRMApiTooManyRedirectsException;
 use AmoCRM\Exceptions\AmoCRMoAuthApiException;
-use AmoCRM\Exceptions\BadTypeException;
 use AmoCRM\OAuth2\Client\Provider\AmoCRM;
 use Exception;
 use Fig\Http\Message\StatusCodeInterface;
@@ -66,6 +66,11 @@ class AmoCRMOAuth
         'orange' => '#F57F17',
         'red' => '#D84315',
     ];
+
+    /**
+     *  Доступные scopes для кнопки с метаданными, необходимые для создания внешней интеграции.
+     */
+    public const METADATA_BUTTON_AVAILABLE_SCOPES = ['crm', 'notifications'];
 
     protected const REQUEST_TIMEOUT = 15;
 
@@ -333,24 +338,38 @@ class AmoCRMOAuth
 
     /**
      * Доступные значения для options:
+     * string class_name
      * string title
      * bool compact
-     * string class_name
      * string color
      * string state
      * string error_callback
+     * string mode
+     * bool is_kommo - Использовать Kommo вместо amoCRM
+     * bool is_metadata - Создать кнопку с передачей метаданных для установки внешней интеграции
+     *
+     * Для кнопки с метаданными:
+     * string name - Название интеграции
+     * string secrets_uri - Адрес, куда будет отправлен webhook с client_id, state и секретным ключом интеграции
+     * string description - Описание интеграции
+     * array scopes - Запрашиваемые права
+     * string logo - URL логотипа
      *
      * @param array $options
      *
-     * @return string
-     * @throws BadTypeException
+     * @return string HTML код кнопки
+     * @throws AmoCRMOAuthButtonConfigurationException
      */
     public function getOAuthButton(array $options = []): string
     {
         if (isset($options['color']) && !array_key_exists($options['color'], self::BUTTON_COLORS)) {
-            throw new BadTypeException('Invalid color selected');
+            throw new AmoCRMOAuthButtonConfigurationException(
+                'Cannot create OAuth button: Invalid color selected'
+            );
         }
 
+        $isMetadata = $options['is_metadata'] ?? false;
+        $clientId = $this->oauthProvider->getClientId();
         $title = $options['title'] ?? 'Установить интеграцию';
         $compact = isset($options['compact']) && $options['compact'] ? 'true' : 'false';
         $className = $options['class_name'] ?? 'className';
@@ -371,11 +390,79 @@ class AmoCRMOAuth
             ? 'https://www.kommo.com/auth/button.min.js'
             : 'https://www.amocrm.ru/auth/button.min.js';
 
-        return '<div>
+        if ($isMetadata === false) {
+            return '<div>
                 <script
                     class="' . $mainClassName . '"
                     charset="utf-8"
                     data-client-id="' . $this->oauthProvider->getClientId() . '"
+                    data-title="' . $title . '"
+                    data-compact="' . $compact . '"
+                    data-class-name="' . $className . '"
+                    data-color="' . $color . '"
+                    data-state="' . $state . '"
+                    data-error-callback="' . $errorCallback . '"
+                    data-mode="' . $mode . '"
+                    src="' . $scriptPath . '"
+                ></script>
+        </div>';
+        }
+
+        $secretsUri = $options['secrets_uri'] ?? '';
+        $redirectUri = $this->redirectUri;
+
+        // Должны быть заполнены т.к при передаче метаданных после установки приходит два хука
+        // с данными по самой интеграции и с данными для получения токенов.
+        if (empty($secretsUri) || empty($redirectUri)) {
+            throw new AmoCRMOAuthButtonConfigurationException(
+                'Cannot create metadata OAuth button: For metadata OAuth button,
+                both secrets_uri and redirect_uri must be configured'
+            );
+        }
+
+        $description = $options['description'] ?? 'Описание интеграции';
+        $name = $options['name'] ?? 'Название интеграции';
+        $logo = $options['logo'] ?? 'https://example.com/amocrm_logo.png';
+
+        if (!isset($options['scopes'])) {
+            $scopes = self::METADATA_BUTTON_AVAILABLE_SCOPES;
+        } else {
+            if (!is_array($options['scopes'])) {
+                throw new AmoCRMOAuthButtonConfigurationException(
+                    'scopes parameter must be an array.'
+                );
+            }
+
+            $scopes = $options['scopes'];
+        }
+
+        $scopes = array_filter($scopes);
+
+        if (empty($scopes)) {
+            $scopes = self::METADATA_BUTTON_AVAILABLE_SCOPES;
+        }
+
+        $invalidScopes = array_diff($scopes, self::METADATA_BUTTON_AVAILABLE_SCOPES);
+        if (!empty($invalidScopes)) {
+            throw new AmoCRMOAuthButtonConfigurationException(sprintf(
+                'Invalid scopes: %s. Available scopes: %s',
+                implode(', ', $invalidScopes),
+                implode(', ', self::METADATA_BUTTON_AVAILABLE_SCOPES)
+            ));
+        }
+
+        $scopes = implode(',', $scopes);
+
+        return '<div>
+                <script
+                    class="' . $mainClassName . '"
+                    charset="utf-8"
+                    data-name="' . $name . '"
+                    data-description="' . $description . '"
+                    data-redirect_uri="' . $redirectUri . '"
+                    data-secrets_uri="' . $secretsUri . '"
+                    data-logo="' . $logo . '"
+                    data-scopes="' . $scopes . '"
                     data-title="' . $title . '"
                     data-compact="' . $compact . '"
                     data-class-name="' . $className . '"

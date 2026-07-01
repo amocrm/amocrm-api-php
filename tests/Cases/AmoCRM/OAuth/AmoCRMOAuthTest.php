@@ -10,7 +10,7 @@ use Lcobucci\JWT\Validation\Constraint;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
-class AmoCRMOAuth extends TestCase
+class AmoCRMOAuthTest extends TestCase
 {
     public function testCreateValidAtConstraintReturnsConstraintInstance()
     {
