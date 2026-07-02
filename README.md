@@ -1135,6 +1135,8 @@ $report = $orchestrator->incrementalSync(new DateTime('2024-01-01'));
 
 Полный пример: `examples/dwh_full_sync.php`.
 
+Подробная документация: [docs/DWH.md](docs/DWH.md) — архитектура, структура таблиц, ETL-сервисы, SQL-примеры.
+
 ### Накатывание миграций
 
 ```bash
