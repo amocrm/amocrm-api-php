@@ -1087,6 +1087,62 @@ CLIENT_REDIRECT_URI="https://example.com/examples/get_token.php (Важно об
 После авторизации вы можете проверить работу примеров, обращаясь к ним из браузера. Стоит отметить, что для корректной работы примеров
 необходимо проверить ID сущностей в них.
 
+## Аналитические таблицы (DWH)
+
+Библиотека включает модуль для выгрузки данных amoCRM в аналитическое хранилище данных (DWH) на базе MySQL/MariaDB.
+
+### Архитектура DWH
+
+Модуль реализует трёхслойную архитектуру в namespace `AmoCRM\Dwh`:
+
+- **SQL-слой** (`migrations/`) — 15 миграций для создания 48+ таблиц: справочники, измерения, факты и связующие таблицы
+- **Модельный слой** (`src/AmoCRM/Dwh/Models/`) — PHP-модели, соответствующие таблицам DWH
+- **ETL-слой** (`src/AmoCRM/Dwh/Services/`) — сервисы для извлечения данных из API и загрузки в DWH
+
+### Структура таблиц
+
+| Группа | Количество | Назначение |
+|---|---|---|
+| Вспомогательные | 3 | Справочники: воронки, этапы, статусы покупателей |
+| SHD-измерения | 3 | Общие измерения: даты, трафик, clientIds |
+| Измерения | 27 | Атрибуты сущностей: сделки, контакты, компании, покупатели и др. |
+| Связующие | 4 | M:N связи (сделки-контакты, покупатели-сегменты и др.) |
+| Факты | 11 | Числовые метрики со ссылками на измерения |
+
+### Быстрый старт
+
+```php
+use AmoCRM\Client\AmoCRMApiClient;
+use AmoCRM\Dwh\DwhDbAdapter;
+use AmoCRM\Dwh\DwhSyncOrchestrator;
+
+// Инициализация API-клиента
+$apiClient = new AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+$apiClient->setAccessToken($accessToken)
+    ->setAccountBaseDomain('example.amocrm.ru');
+
+// Подключение к MySQL
+$pdo = new PDO('mysql:host=127.0.0.1;dbname=amocrm_dwh;charset=utf8mb4', 'user', 'pass');
+$db = new DwhDbAdapter($pdo);
+
+// Полная синхронизация
+$orchestrator = new DwhSyncOrchestrator($apiClient, $db, $accountId);
+$report = $orchestrator->fullSync();
+
+// Инкрементальная синхронизация
+$report = $orchestrator->incrementalSync(new DateTime('2024-01-01'));
+```
+
+Полный пример: `examples/dwh_full_sync.php`.
+
+### Накатывание миграций
+
+```bash
+for f in migrations/*.sql; do
+    mysql -u root -p amocrm_dwh < "$f"
+done
+```
+
 ## Работа с Issues
 Если вы столкнулись с проблемой при работе с библиотекой, вы можете составить Issue, который будет рассмотрен при первой возможности.
 
